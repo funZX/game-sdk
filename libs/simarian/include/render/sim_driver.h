@@ -455,6 +455,8 @@ protected:
 
 	u32							m_screenWidth;
 	u32							m_screenHeight;
+	u32							m_viewportWidth;
+	u32							m_viewportHeight;
 	// ------------------------------------------------------------------//
 	CEffect*					m_crtEffect;
 	CMaterial*					m_crtMaterial;

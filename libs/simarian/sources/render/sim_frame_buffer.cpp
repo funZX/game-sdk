@@ -56,8 +56,8 @@ CFrameBuffer::~CFrameBuffer()
 
 void CFrameBuffer::Generate( u32 width, u32 height )
 {
-	m_width		= width;
-	m_height	= height;
+	m_width		= mat::nextPowerOfTwo(width * 3 / 4);
+	m_height	= mat::nextPowerOfTwo(height * 3 / 4);
 
 	glGenFramebuffers(1, &m_bufferiD);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_bufferiD);
@@ -65,11 +65,11 @@ void CFrameBuffer::Generate( u32 width, u32 height )
 	glGenTextures( 1, &m_iD );
 	CTexture::ApplyWrap(this, CTexture::k_Wrap_Clamp);
 	CTexture::ApplyFilter(this, CTexture::k_Filter_Nearest);
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0 );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0 );
 
 	glGenRenderbuffers(1, &m_depthiD);
 	glBindRenderbuffer(GL_RENDERBUFFER, m_depthiD);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, m_width, m_height);
 
 	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_iD, 0 );
 	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthiD );

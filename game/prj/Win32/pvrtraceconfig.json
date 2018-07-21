@@ -1,13 +1,47 @@
 {
-  "*": {
-    "Tracing": {
-      "StartFrame": 0,
-      "EndFrame": 9999
-    },
-    "Host": {
-      "EglLibraryPath": "../../libs/opengles/bin/libEGL.dll",
-	  "Es1LibraryPath": "../../libs/opengles/bin/libGLES_CM.dll",
-      "Es2LibraryPath": "../../libs/opengles/bin/libGLESv2.dll"
-    }
-  }
+	"*": {
+		"Enabled": true,
+		"Tracing": {
+			"OutputFilename": "D:/Work/game-sdk/%pname.pvrtrace",
+			"RecordData": true,
+			"StartFrame": 0,
+			"AppendTraceVersion": true,
+			"EndFrame": 100,
+			"ExitOnLastFrame": false,
+			"ClientBufferRecordFrequency": 1,
+			"SaveFrameBuffer": true,
+			"UseCompression": false
+		},
+		"Profiling": {
+			"Enabled": false,
+			"FunctionTimelineLevel": 1,
+			"RenderstateOverride": false,
+			"SoftwareCounters": true,
+			"Overrides": {
+				"CullingMode": 0,
+				"DisableStencilTest": false,
+				"DisableAlphaTest": false,
+				"ForceFlatColourFrag": false,
+				"DisableDrawCalls": false,
+				"DisableDepthTest": false,
+				"DisableBlending": false,
+				"Force2x2Textures": false,
+				"DisableTextureModifications": false,
+				"DisableScissorTest": false,
+				"DisableFBAccess": false,
+				"ForceViewport": false,
+				"DisableFlushNFinish": false,
+				"DisableTextureFiltering": false
+			},
+			"SwapInterval": 0
+		},
+		"Debug": {
+			"Level": 1
+		},
+
+		"Host": {
+			"EglLibraryPath": "D:/Work/game-sdk/libs/opengles/bin/libEGL.dll",
+			"Es2LibraryPath": "D:/Work/game-sdk/libs/opengles/bin/libGLESv2.dll"
+		}
+	}
 }

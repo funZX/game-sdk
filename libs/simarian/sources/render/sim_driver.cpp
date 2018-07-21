@@ -307,11 +307,15 @@ CFrameBuffer* CDriver::BindFrameBuffer( CFrameBuffer* framebuffer )
 	if (framebuffer != NULL)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->GetBufferID());
+		SIM_CHECK_OPENGL();
+
 		SetViewport(framebuffer->GetWidth(), framebuffer->GetHeight());
 	}
 	else
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		SIM_CHECK_OPENGL();
+
 		SetViewport(m_screenWidth, m_screenHeight);
 	}
 
@@ -704,7 +708,9 @@ void CDriver::Clear()
 	m_crtMaterial		= 0;
 	m_crtVertexSource	= 0;
 
+#if 0
 	BindFrameBuffer(m_framebuffer);
+#endif
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -713,6 +719,7 @@ void CDriver::Clear()
 
 void CDriver::Swap(CMaterial* material)
 {
+#if 0
 	CRect2D r("Swap");
 	CRect2D texRect(0, 0, 1, 1);
 
@@ -729,6 +736,7 @@ void CDriver::Swap(CMaterial* material)
 	material->SetTexture( tex, 0 );
 
 	BindTexture(0);
+#endif
 }
 // ----------------------------------------------------------------------//
 
@@ -746,8 +754,14 @@ void CDriver::SetScreenSize( u32 width, u32 height )
 
 void CDriver::SetViewport( u32 width, u32 height )
 {
-	glViewport( 0, 0, width, height );
-	glScissor( 0, 0, width, height );
+	if (width != m_viewportWidth || height != m_viewportHeight)
+	{
+		glViewport(0, 0, width, height);
+		glScissor(0, 0, width, height);
+
+		m_viewportWidth = width;
+		m_viewportHeight = height;
+	}
 }
 
 // ----------------------------------------------------------------------//

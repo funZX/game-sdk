@@ -236,7 +236,14 @@ void CFontAtlas::Create()
 	}
 
 	m_texture = SIM_NEW CTexture( m_name );
-	m_texture->Generate( data, texWidth, texHeight, CTexture::k_Type_TGA, CTexture::k_Wrap_Clamp, CTexture::k_Filter_Quadlinear, CTexture::k_Format_Alpha );
+	m_texture->Generate( data
+		, texWidth
+		, texHeight
+		, CTexture::k_Type_TGA
+		, CTexture::k_Wrap_Clamp
+		, CTexture::k_Filter_Nearest
+		, CTexture::k_Format_Alpha
+	);
 	
 	CreateMaterial();
 

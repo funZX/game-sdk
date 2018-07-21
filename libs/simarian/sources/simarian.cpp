@@ -248,6 +248,8 @@ f32 CSimarian::Smooth( f32 deltaTime )
 
 void CSimarian::Run( void )
 {
+	//SIM_CHECK_OPENGL();
+
 	u64 begin		= ::GetTimeMicro();
 
 	m_currentTime	= begin;
