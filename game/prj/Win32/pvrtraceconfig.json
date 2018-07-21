@@ -5,8 +5,9 @@
       "EndFrame": 9999
     },
     "Host": {
-      "EglLibraryPath": "../../libs/opengles/bin/pvrframe/libEGL.dll",
-      "Es2LibraryPath": "../../libs/opengles/bin/pvrframe/libGLESv2.dll"
+      "EglLibraryPath": "../../libs/opengles/bin/libEGL.dll",
+	  "Es1LibraryPath": "../../libs/opengles/bin/libGLES_CM.dll",
+      "Es2LibraryPath": "../../libs/opengles/bin/libGLESv2.dll"
     }
   }
 }
