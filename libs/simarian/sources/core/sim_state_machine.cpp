@@ -91,12 +91,7 @@ void CStateMachine::Update( f32 dt, void *userData )
 
 void CStateMachine::Render2D( rnr::CDriver *driver )
 {
-	rnr::CDriver::K_SELECT_BATCH batchSelect =
-		driver->SelectBatch(rnr::CDriver::k_Select_Batch_2D);
-
 	m_currState->Render2D( driver );
-	
-	driver->SelectBatch(batchSelect);
 }
 
 // ----------------------------------------------------------------------//

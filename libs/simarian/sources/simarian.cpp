@@ -359,12 +359,16 @@ void CSimarian::On2D()
 
 	m_driver->SelectMatrix( CDriver::k_Select_Matrix_World );
 	m_driver->MatrixLoadIdentity();
+
+	m_driver->SelectBatch(rnr::CDriver::k_Select_Batch_2D);
 }
 
 // ----------------------------------------------------------------------//
 
 void CSimarian::Off2D()
 {
+	m_driver->SelectBatch(rnr::CDriver::k_Select_Batch_None);
+
 	m_driver->EnableDepthTest( true );
 	m_driver->EnableBlending( false );
 
@@ -385,12 +389,15 @@ void CSimarian::On3D()
 	m_driver->MatrixLoadIdentity();
 
 	m_camera->Render( m_driver );
+
+	m_driver->SelectBatch(rnr::CDriver::k_Select_Batch_3D);
 }
 
 // ----------------------------------------------------------------------//
 
 void CSimarian::Off3D()
 {
+	m_driver->SelectBatch(rnr::CDriver::k_Select_Batch_None);
 }
 
 // ----------------------------------------------------------------------//

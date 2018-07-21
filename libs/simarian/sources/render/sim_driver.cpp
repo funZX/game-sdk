@@ -1060,6 +1060,7 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 	switch ( m_batchSelect )
 	{
 	case k_Select_Batch_None:
+	case k_Select_Batch_3D: // not yet implemented
 		{
 			static const K_RENDER_TYPE primitives [] = {
 				k_Render_Type_Lines,
@@ -1113,12 +1114,6 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 					&vboData[ qOff + vtxSize * 3 ] );
 			}
 			
-			break;
-		}
-
-	case k_Select_Batch_3D:
-		{
-		
 			break;
 		}
 	}
