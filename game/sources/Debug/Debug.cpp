@@ -35,7 +35,7 @@ CDebug::CDebug( CFileSystem* fs )
 	m_fs			= fs;
 
 	m_framebuffer	= SIM_NEW CFrameBuffer("Debug_FrameBuffer");
-	m_framebuffer->Generate( 300, 300 );
+	m_framebuffer->Generate( 256, 256 );
 }
 
 CDebug::~CDebug()

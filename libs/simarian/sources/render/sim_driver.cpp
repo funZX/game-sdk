@@ -301,26 +301,22 @@ u32  CDriver::BindTexture( u32 tex )
 
 CFrameBuffer* CDriver::BindFrameBuffer( CFrameBuffer* framebuffer )
 {
-	CFrameBuffer* old = m_crtFrameBuffer;
-
 	if (framebuffer == m_crtFrameBuffer)
 		return m_crtFrameBuffer;
 
 	if (framebuffer != NULL)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->GetBufferID());
-		glBindRenderbuffer(GL_RENDERBUFFER, framebuffer->GetDepthID());
-		
 		SetViewport(framebuffer->GetWidth(), framebuffer->GetHeight());
 	}
 	else
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
 		SetViewport(m_screenWidth, m_screenHeight);
 	}
 
+
+	CFrameBuffer* old = m_crtFrameBuffer;
 	m_crtFrameBuffer = framebuffer;
 
 	return old;
@@ -704,13 +700,13 @@ void CDriver::MatrixScaleZ( const f32 scale )
 
 void CDriver::Clear()
 {
-	BindFrameBuffer(m_framebuffer);
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	m_crtEffect			= 0;
 	m_crtMaterial		= 0;
 	m_crtVertexSource	= 0;
+
+	BindFrameBuffer(m_framebuffer);
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 // ----------------------------------------------------------------------//
@@ -720,18 +716,19 @@ void CDriver::Swap(CMaterial* material)
 	CRect2D r("Swap");
 	CRect2D texRect(0, 0, 1, 1);
 
-	CTexture* tex = material->GetTexture(0);
-
 	BindFrameBuffer(0);
 
-	material->SetTexture(m_framebuffer, 0);
+	CTexture* tex = material->GetTexture(0);
+	material->SetTexture( m_framebuffer, 0 );
 
 	r.Bound(0.0f, 0.0f, m_screenWidth, m_screenHeight);
 	r.SetMaterial(material);
 
 	r.Render(this, &texRect, NULL);
 
-	material->SetTexture(tex, 0);
+	material->SetTexture( tex, 0 );
+
+	BindTexture(0);
 }
 // ----------------------------------------------------------------------//
 
@@ -742,7 +739,7 @@ void CDriver::SetScreenSize( u32 width, u32 height )
 	m_screenWidth = width;
 	m_screenHeight = height;
 
-	m_framebuffer->Generate(width, height);
+	m_framebuffer->Generate( width, height );
 }
 
 // ----------------------------------------------------------------------//

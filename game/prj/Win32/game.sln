@@ -51,14 +51,23 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{A0B58AF0-94CC-49E1-AB09-840AB4672D5C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "json2sim", "..\..\..\tools\json2sim\prj\Win32\json2sim.vcxproj", "{32A20720-9AC3-410B-B3EC-B6181AF6024A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CED2AAC1-80AE-427E-BDAB-D920211C9F8B} = {CED2AAC1-80AE-427E-BDAB-D920211C9F8B}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sim2lod", "..\..\..\tools\sim2lod\prj\Win32\sim2lod.vcxproj", "{DCF41EE7-E3B7-4CEE-AB3D-1EF70E30A5D8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CED2AAC1-80AE-427E-BDAB-D920211C9F8B} = {CED2AAC1-80AE-427E-BDAB-D920211C9F8B}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sim2mip", "..\..\..\tools\sim2mip\prj\Win32\sim2mip.vcxproj", "{4AECC26B-18D3-485F-929C-983E59FB71B1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sim2strip", "..\..\..\tools\sim2strip\prj\Win32\sim2strip.vcxproj", "{1341D294-274F-4D03-9700-046279156F75}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sq2sim", "..\..\..\tools\sq2sim\prj\Win32\sq2sim.vcxproj", "{BD4FFC08-AD8C-4C28-8286-891589C4D235}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CED2AAC1-80AE-427E-BDAB-D920211C9F8B} = {CED2AAC1-80AE-427E-BDAB-D920211C9F8B}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

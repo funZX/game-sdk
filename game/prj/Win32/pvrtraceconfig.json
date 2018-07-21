@@ -1,0 +1,12 @@
+{
+  "*": {
+    "Tracing": {
+      "StartFrame": 0,
+      "EndFrame": 9999
+    },
+    "Host": {
+      "EglLibraryPath": "../../libs/opengles/bin/pvrframe/libEGL.dll",
+      "Es2LibraryPath": "../../libs/opengles/bin/pvrframe/libGLESv2.dll"
+    }
+  }
+}

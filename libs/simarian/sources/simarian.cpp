@@ -320,7 +320,7 @@ void CSimarian::Render( CDriver *driver )
 	}
 	Off2D();
 
-	driver->Swap( m_material );
+	driver->Swap(m_material);
 }
 
 // ----------------------------------------------------------------------//

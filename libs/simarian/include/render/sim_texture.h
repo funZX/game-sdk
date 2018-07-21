@@ -99,6 +99,7 @@ public:
 	inline std::string&		GetName() { return m_name; }
 
 	static void				ApplyFilter( CTexture *tex, K_FILTER filter );
+	static void				ApplyWrap(CTexture *tex, K_WRAP wrap);
 	// ------------------------------------------------------------------//
 
 public:
