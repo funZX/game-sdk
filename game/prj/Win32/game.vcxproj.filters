@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="base">
+      <UniqueIdentifier>{353d947f-d210-4747-9f3e-e2134cda3385}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="base\simulator">
+      <UniqueIdentifier>{9aca7afd-9217-4f82-8c03-a685e32b68bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World">
+      <UniqueIdentifier>{d413cd8a-1768-4bac-adba-df350527611a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Debug">
+      <UniqueIdentifier>{14394de6-d0b7-4728-9c50-708763377842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameState">
+      <UniqueIdentifier>{5c46f8ef-56e8-4308-8884-83927642297f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="base\simulator\SimulatorWindow.cpp">
+      <Filter>base\simulator</Filter>
+    </ClCompile>
+    <ClCompile Include="base\main.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\Game.cpp" />
+    <ClCompile Include="..\..\sources\World\World.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\Debug\Debug.cpp">
+      <Filter>Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\Options.cpp" />
+    <ClCompile Include="..\..\sources\GameState\State_AppLoad.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\GameState\State_AppInit.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\GameState\State_MenuMain.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\GameState\State_Game.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="base\simulator\SimulatorWindow.h">
+      <Filter>base\simulator</Filter>
+    </ClInclude>
+    <ClInclude Include="base\simulator.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\Game.h" />
+    <ClInclude Include="..\..\sources\World\World.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\Debug\Debug.h">
+      <Filter>Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\Options.h" />
+    <ClInclude Include="..\..\sources\GameState\State_AppInit.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\GameState\State_AppLoad.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\GameState\State_MenuMain.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\GameState\State_Game.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\libs\TODO.txt" />
+  </ItemGroup>
+</Project>

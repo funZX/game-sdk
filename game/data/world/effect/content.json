@@ -1,0 +1,303 @@
+[
+	{
+		"name": "default",
+		"vsh": "color_vsh",
+		"fsh": "color_fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"
+		},
+		
+		"tex": []
+	},
+
+	{
+		"name": "basic_vertex_color",
+		"vsh": "vertex_color_vsh",
+		"fsh": "vertex_color_fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"		
+		},
+		
+		"tex": []
+	},	
+	
+	{
+		"name": "basic_color_vertex_color",
+		"vsh": "color_vertex_color_vsh",
+		"fsh": "color_vertex_color_fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"			
+		},
+		
+		"tex": []
+	},	
+
+	{
+		"name": "basic_texture_color",
+		"vsh": "texture_color_vsh",
+		"fsh": "texture_color_fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"			
+		},
+		
+		"tex": []
+	},
+	
+	{
+		"name": "basic_texture_vertex_color",
+		"vsh": "texture_vertex_color_vsh",
+		"fsh": "texture_vertex_color_fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"		
+		},
+		
+		"tex": []
+	},
+	
+	{
+		"name": "basic_texture_color_vertex_color",
+		"vsh": "texture_color_vertex_color_vsh",
+		"fsh": "texture_color_vertex_color_fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"			
+		},
+		
+		"tex": []
+	},	
+
+	{
+		"name": "lighting_bump_map",
+		"vsh": "lighting_bump_map_vsh",
+		"fsh": "lighting_bump_map_fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"			
+		},
+		
+		"tex": []
+	},
+	
+	{
+		"name": "lighting_bump_reflective",
+		"vsh": "lighting_bump_reflective_vsh",
+		"fsh": "lighting_bump_reflective_fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"			
+		},
+		
+		"tex": []
+	},
+	
+	{
+		"name": "lighting_phong",
+		"vsh": "lighting_phong_vsh",
+		"fsh": "lighting_phong_fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"			
+		},
+		
+		"tex": []
+	},	
+	
+	{
+		"name": "lighting_reflection",
+		"vsh": "lighting_reflection_vsh",
+		"fsh": "lighting_reflection_fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"		
+		},
+		
+		"tex": []
+	},	
+
+	{
+		"name": "lighting_parallax",
+		"vsh": "lighting_parallax_vsh",
+		"fsh": "lighting_parallax_fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"			
+		},
+		
+		"tex": []
+	},	
+	
+	{
+		"name": "custom_cube",
+		"vsh": "custom_cube_vsh",
+		"fsh": "custom_cube_fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"			
+		},
+		
+		"tex": [
+			{ "name" : "cube_disp.pvr",		"channel" : 3 }
+		]
+	}		
+]

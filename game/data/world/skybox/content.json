@@ -1,0 +1,12 @@
+[
+	{ 
+		"name" 		: "sunny", 
+		
+		"front" 	: "skybox/sunny/front.pvr",
+		"back" 		: "skybox/sunny/back.pvr",
+		"right" 	: "skybox/sunny/right.pvr",
+		"left" 		: "skybox/sunny/left.pvr",
+		"top" 		: "skybox/sunny/top.pvr",
+		"bottom" 	: "skybox/sunny/bottom.pvr"
+	}	
+]

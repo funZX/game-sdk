@@ -1,0 +1,37 @@
+- framebuffer
+- svg vector graphics
+- octree
+- scene manager
+- line & curves math
+- plane math
+- memory pool
+
+- tool: re-calculate normals ?
+- tool: exporter: texture, material, camera, light, actor, scene, animation
+- tool: data builder - tex converter
+- tool: model reduction
+- tool: model optimize as triangle strips
+- tool: sprite editor ?
+- tool: yed automat exporter
+
+- engine: box2D physics
+- engine: vbo buffers !?
+- engine: scene node interface
+- engine: scene manager
+- engine: automaton
+- engine: controller
+- engine: signal-slot, event manager
+- engine: curves
+- engine: recast & detour
+- engine: ragdoll physics
+- engine: colision meshes
+- engine: animations 2d & 3d, animator
+- engine: 3d batch
+- engine: particle system
+- engine: gui support
+- engine: buffered sound
+- engine: memory manager ?
+- engine: const properties !?
+- engine: networking
+
+- boost libraries ???

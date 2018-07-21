@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\DebugUtils\DebugDraw.h" />
+    <ClInclude Include="..\..\include\DebugUtils\DetourDebugDraw.h" />
+    <ClInclude Include="..\..\include\DebugUtils\RecastDebugDraw.h" />
+    <ClInclude Include="..\..\include\DebugUtils\RecastDump.h" />
+    <ClInclude Include="..\..\include\DetourCrowd\DetourCrowd.h" />
+    <ClInclude Include="..\..\include\DetourCrowd\DetourLocalBoundary.h" />
+    <ClInclude Include="..\..\include\DetourCrowd\DetourObstacleAvoidance.h" />
+    <ClInclude Include="..\..\include\DetourCrowd\DetourPathCorridor.h" />
+    <ClInclude Include="..\..\include\DetourCrowd\DetourPathQueue.h" />
+    <ClInclude Include="..\..\include\DetourCrowd\DetourProximityGrid.h" />
+    <ClInclude Include="..\..\include\DetourTileCache\DetourTileCache.h" />
+    <ClInclude Include="..\..\include\DetourTileCache\DetourTileCacheBuilder.h" />
+    <ClInclude Include="..\..\include\Detour\DetourAlloc.h" />
+    <ClInclude Include="..\..\include\Detour\DetourAssert.h" />
+    <ClInclude Include="..\..\include\Detour\DetourCommon.h" />
+    <ClInclude Include="..\..\include\Detour\DetourNavMesh.h" />
+    <ClInclude Include="..\..\include\Detour\DetourNavMeshBuilder.h" />
+    <ClInclude Include="..\..\include\Detour\DetourNavMeshQuery.h" />
+    <ClInclude Include="..\..\include\Detour\DetourNode.h" />
+    <ClInclude Include="..\..\include\Detour\DetourStatus.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\sources\DebugUtils\DebugDraw.cpp" />
+    <ClCompile Include="..\..\sources\DebugUtils\DetourDebugDraw.cpp" />
+    <ClCompile Include="..\..\sources\DebugUtils\RecastDebugDraw.cpp" />
+    <ClCompile Include="..\..\sources\DebugUtils\RecastDump.cpp" />
+    <ClCompile Include="..\..\sources\DetourCrowd\DetourCrowd.cpp" />
+    <ClCompile Include="..\..\sources\DetourCrowd\DetourLocalBoundary.cpp" />
+    <ClCompile Include="..\..\sources\DetourCrowd\DetourObstacleAvoidance.cpp" />
+    <ClCompile Include="..\..\sources\DetourCrowd\DetourPathCorridor.cpp" />
+    <ClCompile Include="..\..\sources\DetourCrowd\DetourPathQueue.cpp" />
+    <ClCompile Include="..\..\sources\DetourCrowd\DetourProximityGrid.cpp" />
+    <ClCompile Include="..\..\sources\DetourTileCache\DetourTileCache.cpp" />
+    <ClCompile Include="..\..\sources\DetourTileCache\DetourTileCacheBuilder.cpp" />
+    <ClCompile Include="..\..\sources\Detour\DetourAlloc.cpp" />
+    <ClCompile Include="..\..\sources\Detour\DetourCommon.cpp" />
+    <ClCompile Include="..\..\sources\Detour\DetourNavMesh.cpp" />
+    <ClCompile Include="..\..\sources\Detour\DetourNavMeshBuilder.cpp" />
+    <ClCompile Include="..\..\sources\Detour\DetourNavMeshQuery.cpp" />
+    <ClCompile Include="..\..\sources\Detour\DetourNode.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FA18F93C-CBFE-46C3-B09D-B6995B2155AA}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>detour</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>../../bin/Win32/$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>../../build/Win32/$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>../../bin/Win32/$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IntDir>../../build/Win32/$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../include; ../../../recast\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../include;../../../recast\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

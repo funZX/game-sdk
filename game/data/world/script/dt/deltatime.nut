@@ -1,0 +1,1 @@
+::print("\ndt: " + simarian.GetDeltaTime());

@@ -1,0 +1,521 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\core">
+      <UniqueIdentifier>{054a0205-3588-4e19-b4f5-73ecdaeabd75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\math">
+      <UniqueIdentifier>{91c81ebd-4752-42cf-ae17-e792f336a30a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\render">
+      <UniqueIdentifier>{23c6189d-b1b3-42c6-983a-bb46256edf0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{effdb33d-b94c-4559-b442-f5569326b770}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\math">
+      <UniqueIdentifier>{c93ab69c-02c8-4761-84d0-7e4e4f58a010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\render">
+      <UniqueIdentifier>{3b1bcbbd-fdfb-46bc-8267-d047713ce6ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\network">
+      <UniqueIdentifier>{bd4cdaba-d4e6-491e-a32e-c827f198d5ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\network">
+      <UniqueIdentifier>{883d7af1-d44a-48b2-806c-c1869274f941}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\render\font">
+      <UniqueIdentifier>{4df36ddf-4318-4622-9091-6134f30c6c5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\render\gui">
+      <UniqueIdentifier>{8c151a18-14e2-4b10-926a-40ca1debc7c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\render\font">
+      <UniqueIdentifier>{ba072429-e274-4bfd-b744-b46db5251cfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\render\gui">
+      <UniqueIdentifier>{073395c5-797c-46b0-8fab-56b3c2585320}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\sound">
+      <UniqueIdentifier>{e732a530-46cc-4cd3-9747-c9f2a8a4a61a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sound">
+      <UniqueIdentifier>{94812981-ed3a-4f05-ab8b-b3027ad0a49f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\core\io">
+      <UniqueIdentifier>{78482b6b-da97-4692-8d50-eb35eac063ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\core\sys">
+      <UniqueIdentifier>{4f30eed3-462a-4836-851b-56912179fb95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\io">
+      <UniqueIdentifier>{da1eba65-16a7-4668-91e2-65b26d2cac40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core\sys">
+      <UniqueIdentifier>{d70da43d-ed6f-4525-88b2-4a0133893c9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\render\particle">
+      <UniqueIdentifier>{c7c25060-0e59-426d-8958-e306787ffee3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\render\particle">
+      <UniqueIdentifier>{0b44721c-073e-49d5-8733-f88d5fa08bc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\vm">
+      <UniqueIdentifier>{0e658e23-5844-4833-83c5-333d9d80d3a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\vm">
+      <UniqueIdentifier>{e47e0c2f-5097-4ec5-b6aa-8c5e8eb360fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\render\animation">
+      <UniqueIdentifier>{fd221ced-8e65-4afc-a184-392d2d405eb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\render\animation">
+      <UniqueIdentifier>{89e807df-8e53-4157-9612-2d999168e6ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\physic">
+      <UniqueIdentifier>{a6dff42f-56c7-41fc-90ad-433e8867afa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\physic">
+      <UniqueIdentifier>{8a43f641-e73b-4475-a130-ce254cc25fb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\render\scene">
+      <UniqueIdentifier>{c9a34cae-6cd0-448e-9c10-2bacc6b19e7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\render\scene">
+      <UniqueIdentifier>{037e69db-b056-49e6-9f24-94dbc23df864}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\sources\math\sim_matrix3.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\math\sim_matrix4.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\math\sim_quat.cpp">
+      <Filter>Source Files\math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\font\sim_font.cpp">
+      <Filter>Source Files\render\font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\font\sim_font_atlas.cpp">
+      <Filter>Source Files\render\font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\font\sim_font_char.cpp">
+      <Filter>Source Files\render\font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\font\sim_font_node.cpp">
+      <Filter>Source Files\render\font</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\gui\sim_widget_button.cpp">
+      <Filter>Source Files\render\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\gui\sim_widget_checkbox.cpp">
+      <Filter>Source Files\render\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\gui\sim_widget_label.cpp">
+      <Filter>Source Files\render\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\gui\sim_widget_slider.cpp">
+      <Filter>Source Files\render\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_glaux.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_material.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_rect_2d.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_shader.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_texture.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_vertex_source.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_widget.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_batch_2d.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_canvas.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_color.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_driver.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_effect.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\sound\sim_sound_source.cpp">
+      <Filter>Source Files\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\sound\sim_sound_data.cpp">
+      <Filter>Source Files\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_render.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\sound\sim_sound.cpp">
+      <Filter>Source Files\sound</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\core\io\sim_file_stream.cpp">
+      <Filter>Source Files\core\io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\core\io\sim_mem_stream.cpp">
+      <Filter>Source Files\core\io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\core\sys\sim_mutex.cpp">
+      <Filter>Source Files\core\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\core\sys\sim_thread.cpp">
+      <Filter>Source Files\core\sys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\core\sim_core.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\core\sim_shellsort.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\core\io\sim_json_stream.cpp">
+      <Filter>Source Files\core\io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\core\sim_state_machine.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\core\io\sim_lzma_stream.cpp">
+      <Filter>Source Files\core\io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\core\sim_utf.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\animation\sim_bone.cpp">
+      <Filter>Source Files\render\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_vertex_group.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\physic\sim_physic.cpp">
+      <Filter>Source Files\physic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\vm\sim_script.cpp">
+      <Filter>Source Files\vm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_sprite.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\simarian.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\scene\sim_actor.cpp">
+      <Filter>Source Files\render\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\scene\sim_camera.cpp">
+      <Filter>Source Files\render\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\scene\sim_light.cpp">
+      <Filter>Source Files\render\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\scene\sim_scene.cpp">
+      <Filter>Source Files\render\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\scene\sim_sky_box.cpp">
+      <Filter>Source Files\render\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_cube_texture.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\animation\sim_bone_hierarchy.cpp">
+      <Filter>Source Files\render\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\animation\sim_bone_animation.cpp">
+      <Filter>Source Files\render\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\animation\sim_animation_blend.cpp">
+      <Filter>Source Files\render\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\animation\sim_animation_frame.cpp">
+      <Filter>Source Files\render\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\animation\sim_animation_player.cpp">
+      <Filter>Source Files\render\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\animation\sim_animation_pose.cpp">
+      <Filter>Source Files\render\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\animation\sim_bone_mask.cpp">
+      <Filter>Source Files\render\animation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\scene\sim_scene_node.cpp">
+      <Filter>Source Files\render\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\core\sim_polygon.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\vm\sim_squirrel.cpp">
+      <Filter>Source Files\vm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\core\io\sim_file_system.cpp">
+      <Filter>Source Files\core\io</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_mesh.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_frame_buffer.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\math\sim_math.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\math\sim_matrix3.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\math\sim_matrix4.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\math\sim_matrix4_stack.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\math\sim_plane.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\math\sim_quat.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\math\sim_vec2.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\math\sim_vec3.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\math\sim_vec4.h">
+      <Filter>Header Files\math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\font\sim_font.h">
+      <Filter>Header Files\render\font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\font\sim_font_atlas.h">
+      <Filter>Header Files\render\font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\font\sim_font_char.h">
+      <Filter>Header Files\render\font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\font\sim_font_node.h">
+      <Filter>Header Files\render\font</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\gui\sim_widget_button.h">
+      <Filter>Header Files\render\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\gui\sim_widget_checkbox.h">
+      <Filter>Header Files\render\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\gui\sim_widget_label.h">
+      <Filter>Header Files\render\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\gui\sim_widget_slider.h">
+      <Filter>Header Files\render\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_glaux.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_material.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_rect_2d.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_render.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_shader.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_texture.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_vertex_source.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_widget.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_batch_2d.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_canvas.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_color.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_driver.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_effect.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\simarian.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sound\sim_sound.h">
+      <Filter>Header Files\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sound\sim_sound_source.h">
+      <Filter>Header Files\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sound\sim_sound_data.h">
+      <Filter>Header Files\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\io\sim_file_stream.h">
+      <Filter>Header Files\core\io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\io\sim_mem_stream.h">
+      <Filter>Header Files\core\io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sys\sim_mutex.h">
+      <Filter>Header Files\core\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sys\sim_thread.h">
+      <Filter>Header Files\core\sys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_list.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_pool.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_queue.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_shellsort.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_singleton.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_stack.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_core.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_interfaces.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\io\sim_json_stream.h">
+      <Filter>Header Files\core\io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_binary_tree.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_balance_tree.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_state_machine.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\io\sim_lzma_stream.h">
+      <Filter>Header Files\core\io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_utf.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\animation\sim_bone.h">
+      <Filter>Header Files\render\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_vertex_group.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\physic\sim_physic.h">
+      <Filter>Header Files\physic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\vm\sim_script.h">
+      <Filter>Header Files\vm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_sprite.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\scene\sim_actor.h">
+      <Filter>Header Files\render\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\scene\sim_camera.h">
+      <Filter>Header Files\render\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\scene\sim_light.h">
+      <Filter>Header Files\render\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\scene\sim_scene.h">
+      <Filter>Header Files\render\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\scene\sim_sky_box.h">
+      <Filter>Header Files\render\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_cube_texture.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\animation\sim_bone_hierarchy.h">
+      <Filter>Header Files\render\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\animation\sim_bone_animation.h">
+      <Filter>Header Files\render\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\animation\sim_animation_pose.h">
+      <Filter>Header Files\render\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\animation\sim_animation_player.h">
+      <Filter>Header Files\render\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\animation\sim_animation_frame.h">
+      <Filter>Header Files\render\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\animation\sim_animation_blend.h">
+      <Filter>Header Files\render\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\animation\sim_bone_mask.h">
+      <Filter>Header Files\render\animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\scene\sim_scene_node.h">
+      <Filter>Header Files\render\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_octree.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_polygon.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\vm\sim_squirrel.h">
+      <Filter>Header Files\vm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\io\sim_file_system.h">
+      <Filter>Header Files\core\io</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_mesh.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_frame_buffer.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\TODO.txt" />
+  </ItemGroup>
+</Project>

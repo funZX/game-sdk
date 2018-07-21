@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{3d2a2d38-b2e6-406b-a684-cc1432653c87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\nvcore">
+      <UniqueIdentifier>{14e4e4fc-7baa-4a0b-8dbe-b85636ab23b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\nvimage">
+      <UniqueIdentifier>{d5308102-8c17-487c-b9af-650cb0f7eb6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\nvmath">
+      <UniqueIdentifier>{e1fae763-2acc-427e-a38e-e9f24b158a17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\poshlib">
+      <UniqueIdentifier>{f56e3f9d-d6d9-41b5-b716-3482745a9db8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nvcore">
+      <UniqueIdentifier>{ad67b44b-6b24-4f8a-8678-f3267da600fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nvimage">
+      <UniqueIdentifier>{379cd185-6659-406a-bf4c-4e60902a6a8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\nvmath">
+      <UniqueIdentifier>{5ef9fa31-8f5d-47a8-835f-6bc3b6aecc4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\poshlib">
+      <UniqueIdentifier>{3000220e-7144-4f05-9a27-5cb6eb02ea42}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\nvcore\Array.h">
+      <Filter>Header Files\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvcore\Debug.h">
+      <Filter>Header Files\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvcore\DefsGnucDarwin.h">
+      <Filter>Header Files\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvcore\DefsGnucLinux.h">
+      <Filter>Header Files\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvcore\DefsGnucWin32.h">
+      <Filter>Header Files\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvcore\DefsVcWin32.h">
+      <Filter>Header Files\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvcore\ForEach.h">
+      <Filter>Header Files\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvcore\Memory.h">
+      <Filter>Header Files\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvcore\nvcore.h">
+      <Filter>Header Files\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvcore\Ptr.h">
+      <Filter>Header Files\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvcore\RefCounted.h">
+      <Filter>Header Files\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvcore\StdStream.h">
+      <Filter>Header Files\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvcore\Stream.h">
+      <Filter>Header Files\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvcore\StrLib.h">
+      <Filter>Header Files\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvcore\Utils.h">
+      <Filter>Header Files\nvcore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvimage\BlockDXT.h">
+      <Filter>Header Files\nvimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvimage\ColorBlock.h">
+      <Filter>Header Files\nvimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvimage\DirectDrawSurface.h">
+      <Filter>Header Files\nvimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvimage\Filter.h">
+      <Filter>Header Files\nvimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvimage\FloatImage.h">
+      <Filter>Header Files\nvimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvimage\Image.h">
+      <Filter>Header Files\nvimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvimage\ImageIO.h">
+      <Filter>Header Files\nvimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvimage\NormalMap.h">
+      <Filter>Header Files\nvimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvimage\nvimage.h">
+      <Filter>Header Files\nvimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvimage\PixelFormat.h">
+      <Filter>Header Files\nvimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvimage\PsdFile.h">
+      <Filter>Header Files\nvimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvimage\Quantize.h">
+      <Filter>Header Files\nvimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvimage\TgaFile.h">
+      <Filter>Header Files\nvimage</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvmath\Color.h">
+      <Filter>Header Files\nvmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvmath\Half.h">
+      <Filter>Header Files\nvmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvmath\matrix.h">
+      <Filter>Header Files\nvmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvmath\nvmath.h">
+      <Filter>Header Files\nvmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvmath\Vector.h">
+      <Filter>Header Files\nvmath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\poshlib\posh.h">
+      <Filter>Header Files\poshlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\MipImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\nvconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\defs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\sources\nvcore\Debug.cpp">
+      <Filter>Source Files\nvcore</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\nvcore\Memory.cpp">
+      <Filter>Source Files\nvcore</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\nvcore\StrLib.cpp">
+      <Filter>Source Files\nvcore</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\nvimage\BlockDXT.cpp">
+      <Filter>Source Files\nvimage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\nvimage\ColorBlock.cpp">
+      <Filter>Source Files\nvimage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\nvimage\DirectDrawSurface.cpp">
+      <Filter>Source Files\nvimage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\nvimage\Filter.cpp">
+      <Filter>Source Files\nvimage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\nvimage\FloatImage.cpp">
+      <Filter>Source Files\nvimage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\nvimage\Image.cpp">
+      <Filter>Source Files\nvimage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\nvimage\ImageIO.cpp">
+      <Filter>Source Files\nvimage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\nvimage\NormalMap.cpp">
+      <Filter>Source Files\nvimage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\nvimage\Quantize.cpp">
+      <Filter>Source Files\nvimage</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\nvmath\Half.cpp">
+      <Filter>Source Files\nvmath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\poshlib\posh.c">
+      <Filter>Source Files\poshlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\MipImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\mipper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

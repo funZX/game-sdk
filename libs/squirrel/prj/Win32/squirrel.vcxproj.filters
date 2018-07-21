@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{7ff1ee26-d18c-48cd-bcb0-1058e676326b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\sqrat">
+      <UniqueIdentifier>{13d1fedb-dbf4-4acf-bdac-977d0775fd1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sqstdlib">
+      <UniqueIdentifier>{b0b1e875-b8bb-4fc4-a43b-09468abe9d45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="squirrel">
+      <UniqueIdentifier>{ee0f3306-d919-4d62-b8cc-b2bc7ed605b6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\sources\sqstdlib\sqstdblobimpl.h">
+      <Filter>sqstdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\sqstdlib\sqstdstream.h">
+      <Filter>sqstdlib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\sqarray.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\sqclass.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\sqclosure.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\sqcompiler.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\sqfuncproto.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\sqfuncstate.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\sqlexer.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\sqobject.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\sqopcodes.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\sqpcheader.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\sqstate.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\sqstring.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\sqtable.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\squserdata.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\squtils.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\squirrel\sqvm.h">
+      <Filter>squirrel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqstdaux.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqstdblob.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqstdio.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqstdmath.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqstdstring.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqstdsystem.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\squirrel.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqmodule.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqratimport.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat\sqratAllocator.h">
+      <Filter>include\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat\sqratArray.h">
+      <Filter>include\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat\sqratClass.h">
+      <Filter>include\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat\sqratClassType.h">
+      <Filter>include\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat\sqratConst.h">
+      <Filter>include\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat\sqratFunction.h">
+      <Filter>include\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat\sqratGlobalMethods.h">
+      <Filter>include\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat\sqratMemberMethods.h">
+      <Filter>include\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat\sqratObject.h">
+      <Filter>include\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat\sqratOverloadMethods.h">
+      <Filter>include\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat\sqratScript.h">
+      <Filter>include\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat\sqratTable.h">
+      <Filter>include\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat\sqratTypes.h">
+      <Filter>include\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat\sqratUtil.h">
+      <Filter>include\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrat\sqratVM.h">
+      <Filter>include\sqrat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqdbgserver.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\sqrdbg.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\sources\sqstdlib\sqstdaux.cpp">
+      <Filter>sqstdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\sqstdlib\sqstdblob.cpp">
+      <Filter>sqstdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\sqstdlib\sqstdio.cpp">
+      <Filter>sqstdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\sqstdlib\sqstdmath.cpp">
+      <Filter>sqstdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\sqstdlib\sqstdrex.cpp">
+      <Filter>sqstdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\sqstdlib\sqstdstream.cpp">
+      <Filter>sqstdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\sqstdlib\sqstdstring.cpp">
+      <Filter>sqstdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\sqstdlib\sqstdsystem.cpp">
+      <Filter>sqstdlib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\squirrel\sqapi.cpp">
+      <Filter>squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\squirrel\sqbaselib.cpp">
+      <Filter>squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\squirrel\sqclass.cpp">
+      <Filter>squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\squirrel\sqcompiler.cpp">
+      <Filter>squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\squirrel\sqdebug.cpp">
+      <Filter>squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\squirrel\sqfuncstate.cpp">
+      <Filter>squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\squirrel\sqlexer.cpp">
+      <Filter>squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\squirrel\sqmem.cpp">
+      <Filter>squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\squirrel\sqobject.cpp">
+      <Filter>squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\squirrel\sqstate.cpp">
+      <Filter>squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\squirrel\sqtable.cpp">
+      <Filter>squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\squirrel\sqvm.cpp">
+      <Filter>squirrel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\sqratimport.cpp" />
+    <ClCompile Include="..\..\sources\sqdbgserver.cpp" />
+    <ClCompile Include="..\..\sources\sqrdbg.cpp" />
+  </ItemGroup>
+</Project>

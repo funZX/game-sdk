@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\sources\Debug\Debug.cpp" />
+    <ClCompile Include="..\..\sources\Game.cpp" />
+    <ClCompile Include="..\..\sources\GameState\State_AppInit.cpp" />
+    <ClCompile Include="..\..\sources\GameState\State_AppLoad.cpp" />
+    <ClCompile Include="..\..\sources\GameState\State_Game.cpp" />
+    <ClCompile Include="..\..\sources\GameState\State_MenuMain.cpp" />
+    <ClCompile Include="..\..\sources\Options.cpp" />
+    <ClCompile Include="..\..\sources\World\World.cpp" />
+    <ClCompile Include="base\main.cpp" />
+    <ClCompile Include="base\simulator\SimulatorWindow.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\sources\Debug\Debug.h" />
+    <ClInclude Include="..\..\sources\Game.h" />
+    <ClInclude Include="..\..\sources\GameState\State_AppInit.h" />
+    <ClInclude Include="..\..\sources\GameState\State_AppLoad.h" />
+    <ClInclude Include="..\..\sources\GameState\State_Game.h" />
+    <ClInclude Include="..\..\sources\GameState\State_MenuMain.h" />
+    <ClInclude Include="..\..\sources\Options.h" />
+    <ClInclude Include="..\..\sources\World\World.h" />
+    <ClInclude Include="base\simulator.h" />
+    <ClInclude Include="base\simulator\SimulatorWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\..\libs\TODO.txt" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{DB534BF3-2A50-5376-E65B-552D41D6C3D4}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>../../bin/Win32/$(Configuration)\</OutDir>
+    <IntDir>../../build/Win32/$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>../../bin/Win32/$(Configuration)\</OutDir>
+    <IntDir>../../build/Win32/$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>HAVE_STRUCT_TIMESPEC;WIN32;_DEBUG;_CONSOLE;SIM_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\..\libs\dirent\include;..\..\..\libs\freetype\include;..\..\..\libs\jansson\include;..\..\..\libs\openal\include;..\..\..\libs\opengles\include;..\..\..\libs\pthread\include;..\..\..\libs\simarian\include;..\..\..\libs\squirrel\include;..\..\..\libs\expat\include;..\..\..\libs\bullet\sources;..\..\..\libs\lzma\include;..\..\..\libs\detour\include;..\..\..\libs\recast\include;..\..\..\libs\agg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>winmm.lib;../../../libs/freetype/bin/Win32/Debug/freetype.lib;../../../libs/jansson/bin/Win32/Debug/jansson.lib;../../../libs/simarian/bin/Win32/Debug/simarian.lib;../../../libs/squirrel/bin/Win32/Debug/squirrel.lib;../../../libs/expat/bin/Win32/Debug/expat.lib;../../../libs/bullet/bin/Win32/Debug/bullet.lib;../../../libs/box2D/bin/Win32/Debug/box2D.lib;../../../libs/lzma/bin/Win32/Debug/lzma.lib;../../../libs/detour/bin/Win32/Debug/detour.lib;../../../libs/recast/bin/Win32/Debug/recast.lib;../../../libs/agg/bin/Win32/Debug/agg.lib;../../../libs/openal/bin/OpenAL32.lib;../../../libs/opengles/bin/libEGL.lib;../../../libs/opengles/bin/libGLESv2.lib;../../../libs/pthread/bin/pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>HAVE_STRUCT_TIMESPEC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>..\..\..\libs\dirent\include;..\..\..\libs\freetype\include;..\..\..\libs\jansson\include;..\..\..\libs\openal\include;..\..\..\libs\opengles\include;..\..\..\libs\pthread\include;..\..\..\libs\simarian\include;..\..\..\libs\squirrel\include;..\..\..\libs\expat\include;..\..\..\libs\bullet\sources;..\..\..\libs\lzma\include;..\..\..\libs\detour\include;..\..\..\libs\recast\include;..\..\..\libs\agg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>winmm.lib;../../../libs/freetype/bin/Win32/Release/freetype.lib;../../../libs/jansson/bin/Win32/Release/jansson.lib;../../../libs/simarian/bin/Win32/Release/simarian.lib;../../../libs/squirrel/bin/Win32/Release/squirrel.lib;../../../libs/expat/bin/Win32/Release/expat.lib;../../../libs/bullet/bin/Win32/Release/bullet.lib;../../../libs/box2D/bin/Win32/Release/box2D.lib;../../../libs/lzma/bin/Win32/Release/lzma.lib;../../../libs/detour/bin/Win32/Release/detour.lib;../../../libs/recast/bin/Win32/Release/recast.lib;../../../libs/agg/bin/Win32/Release/agg.lib;../../../libs/openal/bin/OpenAL32.lib;../../../libs/opengles/bin/libEGL.lib;../../../libs/opengles/bin/libGLESv2.lib;../../../libs/pthread/bin/pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\sources\7zAlloc.c" />
+    <ClCompile Include="..\..\sources\7zBuf.c" />
+    <ClCompile Include="..\..\sources\7zBuf2.c" />
+    <ClCompile Include="..\..\sources\7zCrc.c" />
+    <ClCompile Include="..\..\sources\7zCrcOpt.c" />
+    <ClCompile Include="..\..\sources\7zDec.c" />
+    <ClCompile Include="..\..\sources\7zFile.c" />
+    <ClCompile Include="..\..\sources\7zIn.c" />
+    <ClCompile Include="..\..\sources\7zStream.c" />
+    <ClCompile Include="..\..\sources\Alloc.c" />
+    <ClCompile Include="..\..\sources\Bcj2.c" />
+    <ClCompile Include="..\..\sources\Bra.c" />
+    <ClCompile Include="..\..\sources\Bra86.c" />
+    <ClCompile Include="..\..\sources\BraIA64.c" />
+    <ClCompile Include="..\..\sources\CpuArch.c" />
+    <ClCompile Include="..\..\sources\Delta.c" />
+    <ClCompile Include="..\..\sources\LzFind.c" />
+    <ClCompile Include="..\..\sources\LzFindMt.c" />
+    <ClCompile Include="..\..\sources\Lzma2Dec.c" />
+    <ClCompile Include="..\..\sources\Lzma2Enc.c" />
+    <ClCompile Include="..\..\sources\Lzma86Dec.c" />
+    <ClCompile Include="..\..\sources\Lzma86Enc.c" />
+    <ClCompile Include="..\..\sources\LzmaDec.c" />
+    <ClCompile Include="..\..\sources\LzmaEnc.c" />
+    <ClCompile Include="..\..\sources\LzmaLib.c" />
+    <ClCompile Include="..\..\sources\MtCoder.c" />
+    <ClCompile Include="..\..\sources\Ppmd7.c" />
+    <ClCompile Include="..\..\sources\Ppmd7Dec.c" />
+    <ClCompile Include="..\..\sources\Ppmd7Enc.c" />
+    <ClCompile Include="..\..\sources\Sha256.c" />
+    <ClCompile Include="..\..\sources\Threads.c" />
+    <ClCompile Include="..\..\sources\Xz.c" />
+    <ClCompile Include="..\..\sources\XzCrc64.c" />
+    <ClCompile Include="..\..\sources\XzDec.c" />
+    <ClCompile Include="..\..\sources\XzEnc.c" />
+    <ClCompile Include="..\..\sources\XzIn.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\7z.h" />
+    <ClInclude Include="..\..\include\7zAlloc.h" />
+    <ClInclude Include="..\..\include\7zBuf.h" />
+    <ClInclude Include="..\..\include\7zCrc.h" />
+    <ClInclude Include="..\..\include\7zFile.h" />
+    <ClInclude Include="..\..\include\7zVersion.h" />
+    <ClInclude Include="..\..\include\Alloc.h" />
+    <ClInclude Include="..\..\include\Bcj2.h" />
+    <ClInclude Include="..\..\include\Bra.h" />
+    <ClInclude Include="..\..\include\CpuArch.h" />
+    <ClInclude Include="..\..\include\Delta.h" />
+    <ClInclude Include="..\..\include\LzFind.h" />
+    <ClInclude Include="..\..\include\LzFindMt.h" />
+    <ClInclude Include="..\..\include\LzHash.h" />
+    <ClInclude Include="..\..\include\Lzma2Dec.h" />
+    <ClInclude Include="..\..\include\Lzma2Enc.h" />
+    <ClInclude Include="..\..\include\Lzma86.h" />
+    <ClInclude Include="..\..\include\LzmaDec.h" />
+    <ClInclude Include="..\..\include\LzmaEnc.h" />
+    <ClInclude Include="..\..\include\LzmaLib.h" />
+    <ClInclude Include="..\..\include\MtCoder.h" />
+    <ClInclude Include="..\..\include\Ppmd.h" />
+    <ClInclude Include="..\..\include\Ppmd7.h" />
+    <ClInclude Include="..\..\include\RotateDefs.h" />
+    <ClInclude Include="..\..\include\Sha256.h" />
+    <ClInclude Include="..\..\include\Threads.h" />
+    <ClInclude Include="..\..\include\Types.h" />
+    <ClInclude Include="..\..\include\Xz.h" />
+    <ClInclude Include="..\..\include\XzCrc64.h" />
+    <ClInclude Include="..\..\include\XzEnc.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E7AD0F35-2DDA-4CF9-A4A9-50F3456DE62C}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>lzma</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>../../bin/Win32/$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IntDir>../../build/Win32/$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>../../bin/Win32/$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IntDir>../../build/Win32/$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

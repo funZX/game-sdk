@@ -1,0 +1,38 @@
+precision highp float;
+
+uniform sampler2D u_Sampler_Tex_0;
+
+uniform vec4 u_Material_Ambient;
+uniform vec4 u_Material_Diffuse;
+uniform vec4 u_Material_Specular;
+uniform float u_Material_Shininess;
+
+uniform vec4 u_Light_Ambient_0;
+uniform vec4 u_Light_Diffuse_0;
+uniform vec4 u_Light_Specular_0;
+uniform float u_Light_Intensity_0;
+
+varying vec2 v_Tex0;
+varying vec3 v_ToEyeDirV;
+varying vec3 v_ToLightDirV;
+varying vec3 v_NormalW;
+
+
+void main()
+{
+	vec3 norW 		= normalize( v_NormalW );
+	vec3 toEyeV 	= normalize( v_ToEyeDirV );
+	vec3 toLightV 	= normalize( v_ToLightDirV );
+	
+	float specI 	= pow( max( dot( reflect( -toLightV, norW ), toEyeV ), 0.0 ), u_Material_Shininess );
+	float diffI 	= max( dot( toLightV, norW ), 0.0 );
+	
+    vec3 spec 	 	= specI * ( u_Material_Specular * u_Light_Specular_0 ).rgb;
+    vec3 diffuse 	= diffI * ( u_Material_Diffuse * u_Light_Diffuse_0 ).rgb;
+    vec3 ambient 	= 		  ( u_Material_Ambient * u_Light_Ambient_0 ).rgb;
+
+	vec4 col 		= vec4( ambient + diffuse + spec, u_Light_Diffuse_0.a );
+	vec4 tex0 		= texture2D( u_Sampler_Tex_0, v_Tex0.xy );
+	
+	gl_FragColor 	= mix( tex0, col, u_Light_Intensity_0 );
+}
