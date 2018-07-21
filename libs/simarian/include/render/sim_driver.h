@@ -194,7 +194,8 @@ public:
 	// ------------------------------------------------------------------//
 	void						Initialize();
 	// ------------------------------------------------------------------//
-	void						Swap(CEffect* effect);
+	void						Clear();
+	void						Swap(CMaterial* material);
 	void						Flush2D();
 	// ------------------------------------------------------------------//
 
@@ -336,7 +337,6 @@ public:
 	void						UpdateUniforms( CEffect *effect );
 	void						SetUniform( CShader::TUniform* uni );
 	// ------------------------------------------------------------------//
-	void						Clear();
 	void						Render( CVertexGroup* vertexGroup );
 	// ------------------------------------------------------------------//
 	void						Log( const char *fmt, ... );
@@ -367,6 +367,7 @@ protected:
 	// ------------------------------------------------------------------//
 	TUniformInfo				m_uniformInfo[ CShader::k_Uniform_Count ];
 	// ------------------------------------------------------------------//
+	CFrameBuffer*				m_framebuffer;
 
 	CBatch2D*					m_batch2D;
 	K_SELECT_BATCH				m_batchSelect;

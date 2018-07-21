@@ -200,6 +200,7 @@ GLboolean  SimulatorCreateWindow ( TSimulator *sim, const char* title, GLint wid
 		EGL_STENCIL_SIZE, 8,
 		EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
 		EGL_SAMPLE_BUFFERS, 0,
+		EGL_SURFACE_TYPE, EGL_PBUFFER_BIT,
 		EGL_NONE
 	};
 

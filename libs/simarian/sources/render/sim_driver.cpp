@@ -40,6 +40,7 @@ extern const char *defaultFSH;
 
 CDriver::CDriver()
 {
+	m_framebuffer = SIM_NEW CFrameBuffer("Driver");
 	m_batch2D	= SIM_NEW CBatch2D( "Driver", this );
 
 	Matrix4StackClear( &m_worldStack );
@@ -166,27 +167,7 @@ void CDriver::Initialize()
 CDriver::~CDriver()
 {
 	SIM_SAFE_DELETE( m_batch2D );
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::Swap(CEffect* effect)
-{
-	if (m_crtFrameBuffer == NULL)
-		return;
-
-	static const float fbCoords[] = { 0, 0, 0, 1, 1, 0, 1, 1 };
-
-	CMaterial m("Swap");
-	CRect2D r("Swap");
-
-	m.SetEffect(effect);
-	m.SetTexture(m_crtFrameBuffer, 0);
-
-	r.Bound(0.0f, 0.0f, m_screenWidth, m_screenHeight);
-	r.SetMaterial(&m);
-
-	r.Render(this, fbCoords, NULL);
+	SIM_SAFE_DELETE(m_framebuffer);
 }
 
 // ----------------------------------------------------------------------//
@@ -723,6 +704,8 @@ void CDriver::MatrixScaleZ( const f32 scale )
 
 void CDriver::Clear()
 {
+	BindFrameBuffer(m_framebuffer);
+
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_crtEffect			= 0;
@@ -732,10 +715,34 @@ void CDriver::Clear()
 
 // ----------------------------------------------------------------------//
 
+void CDriver::Swap(CMaterial* material)
+{
+	CRect2D r("Swap");
+	CRect2D texRect(0, 0, 1, 1);
+
+	CTexture* tex = material->GetTexture(0);
+
+	BindFrameBuffer(0);
+
+	material->SetTexture(m_framebuffer, 0);
+
+	r.Bound(0.0f, 0.0f, m_screenWidth, m_screenHeight);
+	r.SetMaterial(material);
+
+	r.Render(this, &texRect, NULL);
+
+	material->SetTexture(tex, 0);
+}
+// ----------------------------------------------------------------------//
+
 void CDriver::SetScreenSize( u32 width, u32 height )
 {
+	// Should be called only once.
+
 	m_screenWidth = width;
 	m_screenHeight = height;
+
+	m_framebuffer->Generate(width, height);
 }
 
 // ----------------------------------------------------------------------//

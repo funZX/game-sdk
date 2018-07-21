@@ -36,15 +36,17 @@ CSprite::CSprite()
 
 void CSprite::AddModule( s32 modId, s32 x, s32 y, s32 w, s32 h  )
 {
-	TModule m;
+	CRect2D m;
 
 	f32 rw = 1.0f / GetWidth();
 	f32 rh = 1.0f / GetHeight();
 
-	m.m_texCoords[ 0 ] = ( x + 0 ) * rw;		m.m_texCoords[ 1 ] = ( y + 0 ) * rh;
-	m.m_texCoords[ 2 ] = ( x + w ) * rw;		m.m_texCoords[ 3 ] = ( y + 0 ) * rh;
-	m.m_texCoords[ 4 ] = ( x + 0 ) * rw;		m.m_texCoords[ 5 ] = ( y + h ) * rh;
-	m.m_texCoords[ 6 ] = ( x + w ) * rw;		m.m_texCoords[ 7 ] = ( y + h ) * rh;
+	m.Bound(
+		x * rw,
+		y * rw,
+		w * rw,
+		h * rh
+	);
 
 	m_modules[ modId ] = m;
 }
@@ -53,14 +55,14 @@ void CSprite::AddModule( s32 modId, s32 x, s32 y, s32 w, s32 h  )
 
 void CSprite::RenderModule( CDriver *driver, CWidget *widget, s32 modId )
 {
-	std::map<s32, TModule>::iterator m = m_modules.find( modId );
+	std::map<s32, CRect2D>::iterator m = m_modules.find( modId );
 
 	if( m != m_modules.end() )
 	{
 	    CRect2D *rect2D = ( CRect2D* ) widget;
 
 		rect2D->SetMaterial( m_material );
-		rect2D->Render( driver, (f32*) &m->second, NULL );
+		rect2D->Render( driver, &m->second, NULL );
 	}
 }
 

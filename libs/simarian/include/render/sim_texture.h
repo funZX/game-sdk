@@ -75,8 +75,9 @@ public:
 		k_Type_TGA,
 		k_Type_PVR,
 		k_Type_MIP,
+		k_Type_RGB,
 		
-		k_Type_Default = k_Type_TGA,
+		k_Type_Default = k_Type_RGB,
 
 	} K_TYPE;
 	// ------------------------------------------------------------------//

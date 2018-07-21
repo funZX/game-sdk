@@ -29,6 +29,7 @@
 #include <render/font/sim_font_atlas.h>
 
 #include <render/sim_batch_2d.h>
+#include <render/sim_material.h>
 #include <render/sim_effect.h>
 #include <render/sim_frame_buffer.h>
 #include <render/sim_driver.h>
@@ -50,8 +51,8 @@ CSimarian::CSimarian()
 	static const char* defaultName = "Simarian";
 
 	m_fontAtlas			= SIM_NEW CFontAtlas( defaultName );
+	m_material			= SIM_NEW CMaterial(defaultName);
 	m_effect			= SIM_NEW CEffect( defaultName );
-	m_framebuffer		= SIM_NEW CFrameBuffer(defaultName);
 	m_canvas			= SIM_NEW CCanvas( defaultName );
 	m_camera			= SIM_NEW rnr::CCamera( defaultName );
 
@@ -81,7 +82,7 @@ CSimarian::~CSimarian()
 	SIM_SAFE_DELETE( m_camera );
 	SIM_SAFE_DELETE( m_canvas );
 	SIM_SAFE_DELETE( m_effect );
-	SIM_SAFE_DELETE( m_framebuffer );
+	SIM_SAFE_DELETE( m_material );
 
 	SIM_SAFE_DELETE( m_sm );
 	SIM_SAFE_DELETE( m_vm );
@@ -153,6 +154,8 @@ const char *defaultFSH =
 	m_effect->m_technique.blendfunc.src		= GL_SRC_ALPHA;
 	m_effect->m_technique.blendfunc.dst		= GL_ONE_MINUS_SRC_ALPHA;
 
+	m_material->SetEffect( m_effect );
+
 	const char* szLetters = 
 		" ~`!@#$%^&*()-_=+0123456789:;'\"\\|<>?,./?{}[]@ABCDEFGHI"
 		"JKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÁáÉéÍíÑñÓóÚú";
@@ -189,10 +192,7 @@ void CSimarian::InitOpenAL()
 
 void CSimarian::Start( int width, int height )
 {
-	m_framebuffer->Generate(width, height);
-
 	m_driver->SetScreenSize( width, height );
-	//m_driver->BindFrameBuffer(m_framebuffer);
 
 	m_canvas->Resize( width, height );	
 
@@ -320,7 +320,7 @@ void CSimarian::Render( CDriver *driver )
 	}
 	Off2D();
 
-	driver->Swap(m_effect);
+	driver->Swap( m_material );
 }
 
 // ----------------------------------------------------------------------//

@@ -20,6 +20,7 @@
 #define __SIM_FONT_CHAR_H
 
 #include <render/sim_render.h>
+#include <render/sim_rect_2d.h>
 
 struct FT_GlyphRec_;
 
@@ -66,7 +67,7 @@ public:
 	void					ReleaseGlyph();
 	void					InitTexCoords(s32 texWidth, s32 texHeight);
 
-	void					Draw( CDriver* driver, CMaterial* material, s32 x, s32 y ) const;
+	void					Draw( CDriver* driver, CMaterial* material, s32 x, s32 y );
 	// ------------------------------------------------------------------//
 	const std::string&		GetName()		{ return m_name; }
 	// ------------------------------------------------------------------//
@@ -83,7 +84,8 @@ protected:
 	s32						m_offsetX;
 	s32						m_offsetY;
 	s32						m_advanceX;
-	f32					    m_texCoords[8 ];
+
+	CRect2D					m_texRect;
 
 	struct FT_GlyphRec_*	m_glyph;
 	// ------------------------------------------------------------------//

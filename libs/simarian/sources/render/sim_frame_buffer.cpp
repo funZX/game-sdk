@@ -30,16 +30,26 @@ CFrameBuffer::CFrameBuffer( const std::string &name )
 {
 	m_name			= name;
 	
-	m_depthBuffer	= 0;
+	m_type			= k_Type_RGB;
+	m_format		= k_Format_RGBA;
+	m_filter		= k_Filter_Nearest;
+	m_wrap			= k_Wrap_Clamp;
+
+	m_renderiD		= 0;
 	m_bufferiD		= 0;
+	m_depthiD		= 0;
 }
 
 // ----------------------------------------------------------------------//
 
 CFrameBuffer::~CFrameBuffer()
 {
-	if(m_depthBuffer) {
-		glDeleteRenderbuffers( 1, &m_depthBuffer);
+	if (m_depthiD) {
+		glDeleteRenderbuffers(1, &m_depthiD);
+	}
+
+	if(m_renderiD) {
+		glDeleteRenderbuffers( 1, &m_renderiD);
 	}
 
 	if (m_bufferiD) {
@@ -57,30 +67,43 @@ void CFrameBuffer::Generate( u32 width, u32 height )
 	m_height	= height;
 
 	glGenTextures( 1, &m_iD );
-	glActiveTexture(GL_TEXTURE0);
+
+	CTexture::ApplyFilter(this, m_filter);
+
 	glBindTexture( GL_TEXTURE_2D, m_iD);
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0 );
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0 );
 	glBindTexture( GL_TEXTURE_2D, 0 );
 
-	glGenRenderbuffers( 1, &m_depthBuffer);
-	glBindRenderbuffer( GL_RENDERBUFFER, m_depthBuffer );
-	glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height );
+	glGenRenderbuffers( 1, &m_renderiD);
+	glBindRenderbuffer( GL_RENDERBUFFER, m_renderiD);
+	glRenderbufferStorage( GL_RENDERBUFFER, GL_RGB565, width, height );
 	glBindRenderbuffer( GL_RENDERBUFFER, 0 );
+
+	glGenRenderbuffers(1, &m_depthiD);
+	glBindRenderbuffer(GL_RENDERBUFFER, m_depthiD);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
 	glGenFramebuffers( 1, &m_bufferiD );
 	glBindFramebuffer( GL_FRAMEBUFFER, m_bufferiD);
 	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_iD, 0 );
-	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuffer);
+	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, m_renderiD);
+	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthiD );
 
-	SIM_ASSERT( GL_FRAMEBUFFER_COMPLETE == glCheckFramebufferStatus( GL_FRAMEBUFFER ) );
+#if SIM_DEBUG
+	GLint format = 0, type = 0;
+	glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_FORMAT, &format);
+	SIM_ASSERT(format == GL_RGB);
 
+	glGetIntegerv(GL_IMPLEMENTATION_COLOR_READ_TYPE, &type);
+	SIM_ASSERT(type == GL_UNSIGNED_BYTE);
+
+	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	SIM_ASSERT( status == GL_FRAMEBUFFER_COMPLETE);
+#endif // SIM_DEBUG
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	SIM_CHECK_OPENGL();
-
-	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 }
 
 // ----------------------------------------------------------------------//

@@ -35,7 +35,7 @@ CDebug::CDebug( CFileSystem* fs )
 	m_fs			= fs;
 
 	m_framebuffer	= SIM_NEW CFrameBuffer("Debug_FrameBuffer");
-	m_framebuffer->Generate( 1024, 1024 );
+	m_framebuffer->Generate( 300, 300 );
 }
 
 CDebug::~CDebug()
@@ -66,22 +66,22 @@ void CDebug::Render( CDriver *driver )
 	}
 	driver->MatrixPop();
 
-	//driver->MatrixPush();
-	//{
-	//	driver->MatrixTranslateZ(-2.0f);
-	//	CFrameBuffer* fb = 0;
-	//	
-	//	fb = driver->BindFrameBuffer(m_framebuffer);
-	//	mesh->Render(driver);
-	//	driver->BindFrameBuffer(fb);
-	//}
-	//driver->MatrixPop();
+	driver->MatrixPush();
+	{
+		driver->MatrixTranslateZ(-2.0f);
+		CFrameBuffer* fb = 0;
+
+		fb = driver->BindFrameBuffer(m_framebuffer);
+		mesh->Render(driver);
+		driver->BindFrameBuffer(fb);
+	}
+	driver->MatrixPop();
 }
 
 void CDebug::Render2D(CDriver *driver)
 {
 	static CEffect* effect = m_fs->GetEffect("basic_texture_color");
-	static const float texCoords[] = { 0, 0, 0, 1, 1, 0, 1, 1 };
+	static CRect2D texRect(0, 0, 1, 1);
 
 	CMaterial m("");
 	CRect2D r("");
@@ -95,7 +95,7 @@ void CDebug::Render2D(CDriver *driver)
 	CDriver::K_SELECT_BATCH batchSelect =
 		driver->SelectBatch(CDriver::k_Select_Batch_None);
 
-	r.Render(driver, texCoords, NULL);
+	r.Render(driver, &texRect, NULL);
 
 	driver->SelectBatch(batchSelect);
 }
