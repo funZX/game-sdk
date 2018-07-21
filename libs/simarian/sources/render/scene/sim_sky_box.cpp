@@ -67,7 +67,6 @@ CSkyBox::CSkyBox( const std::string &name )
 	m_effect->SetTechnique( &technique);
 
 	m_material			= SIM_NEW CMaterial( name );
-	m_material->SetTexture( m_texture, CDriver::k_Select_Texture_4 );
 	m_material->SetEffect( m_effect );
 
 	m_vertexGroup		= SIM_NEW CVertexGroup();
@@ -165,22 +164,13 @@ void CSkyBox::Render( CDriver *driver )
 	driver->SetMaterialSpecular( m_material->GetSpecular() );
 	driver->SetMaterialEmissive( m_material->GetEmissive() );
 
-	CDriver::K_SELECT_TEXTURE texSelect = 
-	driver->SelectTexture( CDriver::k_Select_Texture_4 );
-	
+	driver->SelectTexture( CDriver::k_Select_Texture_4 );	
 	glBindTexture( GL_TEXTURE_CUBE_MAP, m_texture->GetID() );
+	driver->Render(m_vertexGroup);
 	
-	m_effect->Use( driver, m_vertexGroup->GetVertexSource() );
-	glDrawElements( GL_TRIANGLES, m_vertexGroup->GetVboSize(), GL_UNSIGNED_SHORT, m_vertexGroup->GetVboData() );
-
 	SIM_CHECK_OPENGL();
 
-	driver->SetCrtMaterial( m_material );
-	driver->SetCrtEffect( m_effect );
-	driver->SetCrtVertexSource( m_vertexGroup->GetVertexSource() );
-
 	driver->SetDepthRange( 0.0f, 1.0f );
-	driver->SelectTexture( texSelect );
 }
 
 // ----------------------------------------------------------------------//

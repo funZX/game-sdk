@@ -196,6 +196,7 @@ protected:
 	rnr::CCamera*					m_activeCamera;
 	rnr::CCamera*					m_camera;
 	rnr::CEffect*					m_effect;
+	rnr::CFrameBuffer*				m_framebuffer;
 	rnr::CCanvas*					m_canvas;
 
 	rnr::CFontAtlas*				m_fontAtlas;

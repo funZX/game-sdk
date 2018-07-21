@@ -35,7 +35,7 @@ CDebug::CDebug( CFileSystem* fs )
 	m_fs			= fs;
 
 	m_framebuffer	= SIM_NEW CFrameBuffer("Debug_FrameBuffer");
-	m_framebuffer->Generate( 512, 512 );
+	m_framebuffer->Generate( 1024, 1024 );
 }
 
 CDebug::~CDebug()
@@ -60,34 +60,37 @@ void CDebug::Render( CDriver *driver )
 
 	driver->MatrixPush();
 	{
-		driver->MatrixTranslateZ(-1.5f);
-		m_framebuffer->Bind(driver);
-		mesh->Render(driver);
-		m_framebuffer->UnBind(driver);
-
+		driver->MatrixTranslateZ(-2.0f);
+		driver->MatrixTranslateX(0.3f);
 		mesh->Render(driver);
 	}
 	driver->MatrixPop();
+
+	//driver->MatrixPush();
+	//{
+	//	driver->MatrixTranslateZ(-2.0f);
+	//	CFrameBuffer* fb = 0;
+	//	
+	//	fb = driver->BindFrameBuffer(m_framebuffer);
+	//	mesh->Render(driver);
+	//	driver->BindFrameBuffer(fb);
+	//}
+	//driver->MatrixPop();
 }
 
 void CDebug::Render2D(CDriver *driver)
 {
-	return;
-	static CMesh* mesh = m_fs->GetMesh("melonman/melonman");
+	static CEffect* effect = m_fs->GetEffect("basic_texture_color");
 	static const float texCoords[] = { 0, 0, 0, 1, 1, 0, 1, 1 };
 
+	CMaterial m("");
 	CRect2D r("");
 
-	CMaterial *m = mesh->m_vertexGroup->GetMaterial();
+	m.SetEffect(effect);
+	m.SetTexture(m_framebuffer, 0);
 
-	sim::u32 xx = m->m_textures[0]->m_iD;
-	m->m_textures[0]->m_iD = m_framebuffer->GetColorID();
-
-	driver->SetCrtMaterial(NULL);
-	driver->SetCrtEffect(NULL);
-
-	r.Bound(20.0f, 20.0f, 200.0f, 200.0f);
-	r.SetMaterial(mesh->m_vertexGroup->GetMaterial());
+	r.Bound(50.0f, 50.0f, 300.0f, 300.0f);
+	r.SetMaterial(&m);
 
 	CDriver::K_SELECT_BATCH batchSelect =
 		driver->SelectBatch(CDriver::k_Select_Batch_None);
@@ -95,8 +98,6 @@ void CDebug::Render2D(CDriver *driver)
 	r.Render(driver, texCoords, NULL);
 
 	driver->SelectBatch(batchSelect);
-
-	m->m_textures[0]->m_iD = xx;
 }
 
  void CDebug::drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor)

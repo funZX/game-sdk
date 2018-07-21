@@ -98,9 +98,6 @@ void CEffect::ApplyTechnique( CDriver* driver )
 
 void CEffect::ApplyTextures( CDriver* driver )
 {
-	CDriver::K_SELECT_TEXTURE texSelect =
-	driver->SelectTexture( CDriver::k_Select_Texture_4 );
-
 	for( u32 i = 0; i < CDriver::k_Select_Texture_Count; i++ )
 	{
 		if ( m_textures[ i ] != NULL )
@@ -109,8 +106,6 @@ void CEffect::ApplyTextures( CDriver* driver )
 			driver->BindTexture( m_textures[ i ]->GetID() );
 		}
 	}
-
-	driver->SelectTexture( texSelect );
 }
 
 // ----------------------------------------------------------------------//

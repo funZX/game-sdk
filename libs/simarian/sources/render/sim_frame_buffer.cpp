@@ -26,15 +26,12 @@ namespace rnr
 // ----------------------------------------------------------------------//
 
 CFrameBuffer::CFrameBuffer( const std::string &name )
+	: CTexture(name)
 {
 	m_name			= name;
 	
-	m_iD			= 0;
 	m_depthBuffer	= 0;
-	m_texID			= 0;
-
-	m_width			= 0;
-	m_height		= 0;
+	m_bufferiD		= 0;
 }
 
 // ----------------------------------------------------------------------//
@@ -45,12 +42,8 @@ CFrameBuffer::~CFrameBuffer()
 		glDeleteRenderbuffers( 1, &m_depthBuffer);
 	}
 
-	if (m_texID) {
-		glDeleteTextures(1, &m_texID);
-	}
-
-	if ( m_iD ) {
-		glDeleteFramebuffers(1, &m_iD);
+	if (m_bufferiD) {
+		glDeleteFramebuffers(1, &m_bufferiD);
 	}
 
 	SIM_CHECK_OPENGL();
@@ -63,9 +56,9 @@ void CFrameBuffer::Generate( u32 width, u32 height )
 	m_width		= width;
 	m_height	= height;
 
-	glGenTextures( 1, &m_texID );
+	glGenTextures( 1, &m_iD );
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture( GL_TEXTURE_2D, m_texID );
+	glBindTexture( GL_TEXTURE_2D, m_iD);
 	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
@@ -78,9 +71,9 @@ void CFrameBuffer::Generate( u32 width, u32 height )
 	glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height );
 	glBindRenderbuffer( GL_RENDERBUFFER, 0 );
 
-	glGenFramebuffers( 1, &m_iD );
-	glBindFramebuffer( GL_FRAMEBUFFER, m_iD );
-	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texID, 0 );
+	glGenFramebuffers( 1, &m_bufferiD );
+	glBindFramebuffer( GL_FRAMEBUFFER, m_bufferiD);
+	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_iD, 0 );
 	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuffer);
 
 	SIM_ASSERT( GL_FRAMEBUFFER_COMPLETE == glCheckFramebufferStatus( GL_FRAMEBUFFER ) );
@@ -88,20 +81,6 @@ void CFrameBuffer::Generate( u32 width, u32 height )
 	SIM_CHECK_OPENGL();
 
 	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
-}
-
-// ----------------------------------------------------------------------//
-
-void CFrameBuffer::Bind( CDriver* driver )
-{
-	driver->BindFrameBuffer( this );
-}
-
-// ----------------------------------------------------------------------//
-
-void CFrameBuffer::UnBind( CDriver* driver )
-{
-	driver->BindFrameBuffer( NULL );
 }
 
 // ----------------------------------------------------------------------//

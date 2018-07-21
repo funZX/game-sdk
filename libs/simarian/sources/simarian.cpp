@@ -30,6 +30,7 @@
 
 #include <render/sim_batch_2d.h>
 #include <render/sim_effect.h>
+#include <render/sim_frame_buffer.h>
 #include <render/sim_driver.h>
 #include <render/sim_canvas.h>
 
@@ -50,6 +51,7 @@ CSimarian::CSimarian()
 
 	m_fontAtlas			= SIM_NEW CFontAtlas( defaultName );
 	m_effect			= SIM_NEW CEffect( defaultName );
+	m_framebuffer		= SIM_NEW CFrameBuffer(defaultName);
 	m_canvas			= SIM_NEW CCanvas( defaultName );
 	m_camera			= SIM_NEW rnr::CCamera( defaultName );
 
@@ -79,6 +81,7 @@ CSimarian::~CSimarian()
 	SIM_SAFE_DELETE( m_camera );
 	SIM_SAFE_DELETE( m_canvas );
 	SIM_SAFE_DELETE( m_effect );
+	SIM_SAFE_DELETE( m_framebuffer );
 
 	SIM_SAFE_DELETE( m_sm );
 	SIM_SAFE_DELETE( m_vm );
@@ -186,7 +189,11 @@ void CSimarian::InitOpenAL()
 
 void CSimarian::Start( int width, int height )
 {
+	m_framebuffer->Generate(width, height);
+
 	m_driver->SetScreenSize( width, height );
+	//m_driver->BindFrameBuffer(m_framebuffer);
+
 	m_canvas->Resize( width, height );	
 
 	m_camera->SetFieldOfView( 60.0f );
@@ -292,7 +299,7 @@ void CSimarian::Update( f32 dt, void *userData )
 
 void CSimarian::Render( CDriver *driver )
 {
-	driver->Prepare();
+	driver->Clear();
 
 	// 3D rendering
 	On3D();
@@ -304,19 +311,16 @@ void CSimarian::Render( CDriver *driver )
 	// 2D rendering
 	On2D();
 	{
-		CDriver::K_SELECT_BATCH batchSelect =
-		driver->SelectBatch( CDriver::k_Select_Batch_2D );
-
 		m_canvas->Render( driver );
 		m_sm->Render2D( driver );
 
 #if SIM_DEBUG
 		ShowStats( m_driver );
 #endif
-
-		driver->SelectBatch( batchSelect );
 	}
 	Off2D();
+
+	driver->Swap(m_effect);
 }
 
 // ----------------------------------------------------------------------//

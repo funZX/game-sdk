@@ -194,6 +194,7 @@ public:
 	// ------------------------------------------------------------------//
 	void						Initialize();
 	// ------------------------------------------------------------------//
+	void						Swap(CEffect* effect);
 	void						Flush2D();
 	// ------------------------------------------------------------------//
 
@@ -260,7 +261,6 @@ public:
 	inline const TMatrix4*		GetProjectionMatrix()					{ return m_projectionStack.topmatrix; }
 	inline const TMatrix4*		GetTextureMatrix( K_SELECT_TEXTURE e )	{ return m_textureStack[ e ].topmatrix; }
 
-	void						Prepare();
 	void						SetScreenSize(u32 width, u32 height);
 	void						SetViewport( u32 width, u32 height );
 
@@ -333,14 +333,10 @@ public:
     void                        EnableVertexAttribute( CShader::TAttrib* attrib );
     void                        DisableVertexAttribute( CShader::TAttrib* attrib );
 	// ------------------------------------------------------------------//
-	void						SetCrtEffect( CEffect* effect )						{ m_crtEffect = effect; }
-	void						SetCrtMaterial( CMaterial* material)				{ m_crtMaterial = material; }
-	void						SetCrtVertexSource( CVertexSource* vertexSource)	{ m_crtVertexSource = vertexSource; }
-	void						SetCrtFrameBuffer( CFrameBuffer* frameBuffer )		{ m_crtFrameBuffer = frameBuffer; }
-	// ------------------------------------------------------------------//
 	void						UpdateUniforms( CEffect *effect );
 	void						SetUniform( CShader::TUniform* uni );
 	// ------------------------------------------------------------------//
+	void						Clear();
 	void						Render( CVertexGroup* vertexGroup );
 	// ------------------------------------------------------------------//
 	void						Log( const char *fmt, ... );

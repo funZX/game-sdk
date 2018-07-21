@@ -400,7 +400,7 @@ void CRect2D::Render( CDriver* driver, const f32 *texCoords, TMatrix4 *transform
 	vg.SetMaterial( m_material );
 	vg.SetVertexSource( &vs );
 
-	driver->Render( &vg );
+	driver->Render(&vg);
 
 	vs.m_vboData = NULL;
 	vg.m_vboData = NULL;

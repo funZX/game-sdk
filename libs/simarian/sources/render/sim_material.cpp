@@ -67,9 +67,6 @@ void CMaterial::Render( CDriver *driver )
 	driver->SetMaterialSpecular( &m_specular );
 	driver->SetMaterialEmissive( &m_emissive );
 
-	CDriver::K_SELECT_TEXTURE texSelect =
-	driver->SelectTexture( CDriver::k_Select_Texture_4 );
-
 	for( u32 i = 0; i < CDriver::k_Select_Texture_Count; i++ )
 	{
 		if ( m_textures[ i ] != NULL )
@@ -79,8 +76,6 @@ void CMaterial::Render( CDriver *driver )
 			driver->BindTexture( m_textures[ i ]->GetID() );
 		}
 	}
-
-	driver->SelectTexture( texSelect );
 
 	SIM_CHECK_OPENGL();
 }

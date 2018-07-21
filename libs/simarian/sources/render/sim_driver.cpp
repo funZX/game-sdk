@@ -21,6 +21,8 @@
 #include <render/sim_render.h>
 
 #include <render/sim_driver.h>
+#include <render/sim_frame_buffer.h>
+#include <render/sim_rect_2d.h>
 #include <render/sim_batch_2d.h>
 #include <render/sim_effect.h>
 #include <render/sim_material.h>
@@ -168,6 +170,27 @@ CDriver::~CDriver()
 
 // ----------------------------------------------------------------------//
 
+void CDriver::Swap(CEffect* effect)
+{
+	if (m_crtFrameBuffer == NULL)
+		return;
+
+	static const float fbCoords[] = { 0, 0, 0, 1, 1, 0, 1, 1 };
+
+	CMaterial m("Swap");
+	CRect2D r("Swap");
+
+	m.SetEffect(effect);
+	m.SetTexture(m_crtFrameBuffer, 0);
+
+	r.Bound(0.0f, 0.0f, m_screenWidth, m_screenHeight);
+	r.SetMaterial(&m);
+
+	r.Render(this, fbCoords, NULL);
+}
+
+// ----------------------------------------------------------------------//
+
 void CDriver::Flush2D()
 {
 	m_batch2D->Render( this );
@@ -299,21 +322,25 @@ CFrameBuffer* CDriver::BindFrameBuffer( CFrameBuffer* framebuffer )
 {
 	CFrameBuffer* old = m_crtFrameBuffer;
 
-	if ( framebuffer != m_crtFrameBuffer )
-	{
-		m_crtFrameBuffer = framebuffer;
+	if (framebuffer == m_crtFrameBuffer)
+		return m_crtFrameBuffer;
 
-		if ( framebuffer )
-		{
-			glBindFramebuffer( GL_FRAMEBUFFER, framebuffer->GetID() );
-			SetViewport( framebuffer->GetWidth(), framebuffer->GetHeight() );
-		}
-		else
-		{
-			glBindFramebuffer( GL_FRAMEBUFFER, 0 );
-			SetViewport( m_screenWidth, m_screenHeight );
-		}
+	if (framebuffer != NULL)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->GetBufferID());
+		glBindRenderbuffer(GL_RENDERBUFFER, framebuffer->GetDepthID());
+		
+		SetViewport(framebuffer->GetWidth(), framebuffer->GetHeight());
 	}
+	else
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+		SetViewport(m_screenWidth, m_screenHeight);
+	}
+
+	m_crtFrameBuffer = framebuffer;
 
 	return old;
 }
@@ -694,11 +721,13 @@ void CDriver::MatrixScaleZ( const f32 scale )
 
 // ----------------------------------------------------------------------//
 
-void CDriver::Prepare()
+void CDriver::Clear()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	SetViewport( m_screenWidth, m_screenHeight );
+	m_crtEffect			= 0;
+	m_crtMaterial		= 0;
+	m_crtVertexSource	= 0;
 }
 
 // ----------------------------------------------------------------------//
@@ -1014,7 +1043,7 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 	{
 	case k_Select_Batch_None:
 		{
-			const K_RENDER_TYPE primitives [] = {
+			static const K_RENDER_TYPE primitives [] = {
 				k_Render_Type_Lines,
 				k_Render_Type_LineStrip,
 				k_Render_Type_Points,
