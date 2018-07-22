@@ -168,6 +168,8 @@ public:
 	void							GoNext( IState* state );
 	void							GoBack();
 
+	void							SetCamera( CCamera *camera );
+
 protected:
 	void							Initialize();
 	void							InitOpenGL();

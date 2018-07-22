@@ -34,8 +34,8 @@ CDebug::CDebug( CFileSystem* fs )
 
 	m_fs			= fs;
 
-	//m_framebuffer	= SIM_NEW CFrameBuffer("Debug_FrameBuffer");
-	//m_framebuffer->Generate( 256, 256 );
+	m_framebuffer	= SIM_NEW CFrameBuffer("Debug_FrameBuffer");
+	m_framebuffer->Generate( 256, 256 );
 }
 
 CDebug::~CDebug()
@@ -66,38 +66,48 @@ void CDebug::Render( CDriver *driver )
 	}
 	driver->MatrixPop();
 
-	//driver->MatrixPush();
-	//{
-	//	driver->MatrixTranslateZ(-2.0f);
-	//	CFrameBuffer* fb = 0;
+	driver->MatrixPush();
+	{
+		driver->MatrixTranslateZ(-2.0f);
+		CFrameBuffer* fb = 0;
 
-	//	fb = driver->BindFrameBuffer(m_framebuffer);
-	//	mesh->Render(driver);
-	//	driver->BindFrameBuffer(fb);
-	//}
-	//driver->MatrixPop();
+		CCamera cam("");
+		CRect2D r;
+
+		r.Bound(0, 0, m_framebuffer->GetWidth(), m_framebuffer->GetHeight());
+		cam.SetPerspective(&r);
+
+		O.game->SetCamera( &cam );
+
+		fb = driver->BindFrameBuffer(m_framebuffer);
+		mesh->Render(driver);
+		driver->BindFrameBuffer(fb);
+
+		O.game->SetCamera(0);
+	}
+	driver->MatrixPop();
 }
 
 void CDebug::Render2D(CDriver *driver)
 {
-	//static CEffect* effect = m_fs->GetEffect("basic_texture_color");
-	//static CRect2D texRect(0, 0, 1, 1);
+	static CEffect* effect = m_fs->GetEffect("color/fill_color_texture_color");
+	static CRect2D texRect(0, 0, 1, 1);
 
-	//CMaterial m("");
-	//CRect2D r("");
+	CMaterial m("");
+	CRect2D r("");
 
-	//m.SetEffect(effect);
-	//m.SetTexture(m_framebuffer, 0);
+	m.SetEffect(effect);
+	m.SetTexture(m_framebuffer, 0);
 
-	//r.Bound(50.0f, 50.0f, 300.0f, 300.0f);
-	//r.SetMaterial(&m);
+	r.Bound(50.0f, 50.0f, 300.0f, 300.0f);
+	r.SetMaterial(&m);
 
-	//CDriver::K_SELECT_BATCH batchSelect =
-	//	driver->SelectBatch(CDriver::k_Select_Batch_None);
+	CDriver::K_SELECT_BATCH batchSelect =
+		driver->SelectBatch(CDriver::k_Select_Batch_None);
 
-	//r.Render(driver, &texRect, NULL);
+	r.Render(driver, &texRect, NULL);
 
-	//driver->SelectBatch(batchSelect);
+	driver->SelectBatch(batchSelect);
 }
 
  void CDebug::drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor)

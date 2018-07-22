@@ -41,11 +41,9 @@ public:
 	void					Generate( u32 width, u32 height );
 
 	inline u32				GetBufferID() { return m_bufferiD; }
-	inline u32				GetDepthID() { return m_depthiD; }
 
 protected:
 	u32			            m_bufferiD;
-	u32			            m_depthiD;
 	// ------------------------------------------------------------------//
 };
 

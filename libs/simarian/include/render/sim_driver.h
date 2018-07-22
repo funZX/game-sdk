@@ -195,7 +195,6 @@ public:
 	void						Initialize();
 	// ------------------------------------------------------------------//
 	void						Clear();
-	void						Swap(CMaterial* material);
 	void						Flush2D();
 	// ------------------------------------------------------------------//
 
@@ -367,7 +366,6 @@ protected:
 	// ------------------------------------------------------------------//
 	TUniformInfo				m_uniformInfo[ CShader::k_Uniform_Count ];
 	// ------------------------------------------------------------------//
-	CFrameBuffer*				m_framebuffer;
 
 	CBatch2D*					m_batch2D;
 	K_SELECT_BATCH				m_batchSelect;

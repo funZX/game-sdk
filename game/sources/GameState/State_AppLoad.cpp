@@ -31,7 +31,7 @@ void CState_AppLoad::Render2D( CDriver *driver )
 {
 	O.game->Print( driver,
 		0, 
-		O.canvas->GetHeight() - 2 * O.font.simarian->GetHeight(), 
+		O.canvas->Height() - 2 * O.font.simarian->GetHeight(), 
 		O.world->GetFs()->GetLoadMessage() );
 }
 

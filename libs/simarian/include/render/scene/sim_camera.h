@@ -34,7 +34,7 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CCanvas;
+class CRect2D;
 class CDriver;
 class CShader;
 
@@ -45,8 +45,8 @@ public:
 	CCamera( const std::string &name );
 	virtual ~CCamera();
 	// ------------------------------------------------------------------//
-	void							SetPerspective( CCanvas *canvas );
-	void							SetOrthographic( CCanvas *canvas );
+	void							SetPerspective( CRect2D *canvas );
+	void							SetOrthographic( CRect2D *canvas );
 
 	inline TMatrix4*				GetPerspectiveMatrix() { return &m_perspectiveMatrix; }
 	inline TMatrix4*				GetOrthographicMatrix() { return &m_orthographicMatrix; }

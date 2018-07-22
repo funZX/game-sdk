@@ -238,7 +238,7 @@ void SimulatorWinLoop ( TSimulator *sim )
 			sim->OnRender();
 		
 		ValidateRect( sim->hWnd, NULL );
-			
+
 		eglSwapBuffers ( sim->eglDisplay, sim->eglSurface );
 	}
 

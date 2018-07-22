@@ -22,7 +22,7 @@
 
 #include <render/scene/sim_camera.h>
 
-#include <render/sim_canvas.h>
+#include <render/sim_rect_2d.h>
 #include <render/sim_driver.h>
 
 namespace sim
@@ -62,22 +62,22 @@ CCamera::~CCamera()
 
 // ----------------------------------------------------------------------//
 
-void CCamera::SetPerspective( CCanvas *canvas )
+void CCamera::SetPerspective( CRect2D *rect )
 {
 	TVec2 size;
-	size.x = ( f32 ) canvas->GetWidth();
-	size.y = ( f32 ) canvas->GetHeight();
+	size.x = ( f32 ) rect->Width();
+	size.y = ( f32 ) rect->Height();
 
 	Matrix4FromPerspective( &m_perspectiveMatrix, m_fieldOfView, size.x / size.y, m_nearPlane, m_farPlane );
 }
 
 // ----------------------------------------------------------------------//
 
-void CCamera::SetOrthographic( CCanvas *canvas  )
+void CCamera::SetOrthographic( CRect2D *rect)
 {
 	TVec2 size;
-	size.x = ( f32 ) canvas->GetWidth();
-	size.y = ( f32 ) canvas->GetHeight();
+	size.x = ( f32 ) rect->Width();
+	size.y = ( f32 ) rect->Height();
 
 	Matrix4FromOrtho( &m_orthographicMatrix, 0.0f, size.x, size.y, 0.0f, -1.0f, 1.0f );
 }
