@@ -40,7 +40,7 @@ CFrameBuffer::CFrameBuffer( const std::string &name )
 
 CFrameBuffer::~CFrameBuffer()
 {
-if (m_bufferiD) {
+	if (m_bufferiD) {
 		glDeleteFramebuffers(1, &m_bufferiD);
 	}
 
@@ -51,8 +51,8 @@ if (m_bufferiD) {
 
 void CFrameBuffer::Generate( u32 width, u32 height )
 {
-	m_width		= mat::nextPowerOfTwo(width * 3 / 4);
-	m_height	= mat::nextPowerOfTwo(height * 3 / 4);
+	m_width		= mat::nextPowerOfTwo( width );
+	m_height	= mat::nextPowerOfTwo( height );
 
 	glGenFramebuffers(1, &m_bufferiD);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_bufferiD);

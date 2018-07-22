@@ -35,7 +35,7 @@ CDebug::CDebug( CFileSystem* fs )
 	m_fs			= fs;
 
 	m_framebuffer	= SIM_NEW CFrameBuffer("Debug_FrameBuffer");
-	m_framebuffer->Generate( 256, 256 );
+	m_framebuffer->Generate( 400, 300 );
 }
 
 CDebug::~CDebug()
@@ -60,32 +60,30 @@ void CDebug::Render( CDriver *driver )
 
 	driver->MatrixPush();
 	{
-		driver->MatrixTranslateZ(-2.0f);
+		driver->MatrixTranslateZ(-4.0f);
 		driver->MatrixTranslateX(0.3f);
 		mesh->Render(driver);
 	}
 	driver->MatrixPop();
 
-	driver->MatrixPush();
+
+	CFrameBuffer* fb = 0;
+
+	CCamera cam("");
+	CRect2D r;
+
+	r.Bound(0, 0, m_framebuffer->GetWidth(), m_framebuffer->GetHeight());
+	cam.SetPerspective(&r);
+
+	O.game->SetCamera(&cam);
 	{
 		driver->MatrixTranslateZ(-2.0f);
-		CFrameBuffer* fb = 0;
-
-		CCamera cam("");
-		CRect2D r;
-
-		r.Bound(0, 0, m_framebuffer->GetWidth(), m_framebuffer->GetHeight());
-		cam.SetPerspective(&r);
-
-		O.game->SetCamera( &cam );
-
+		driver->MatrixRotateY(dr * 10.0f);
 		fb = driver->BindFrameBuffer(m_framebuffer);
 		mesh->Render(driver);
 		driver->BindFrameBuffer(fb);
-
-		O.game->SetCamera(0);
 	}
-	driver->MatrixPop();
+	O.game->SetCamera(0);
 }
 
 void CDebug::Render2D(CDriver *driver)

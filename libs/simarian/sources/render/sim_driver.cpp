@@ -130,7 +130,6 @@ CDriver::CDriver()
 
 	InitUniform();
 
-	m_crtEffect				= NULL;
 	m_crtMaterial			= NULL;
 	m_crtVertexSource		= NULL;
 	m_crtFrameBuffer		= NULL;
@@ -308,6 +307,8 @@ CFrameBuffer* CDriver::BindFrameBuffer( CFrameBuffer* framebuffer )
 		SIM_CHECK_OPENGL();
 
 		SetViewport(framebuffer->GetWidth(), framebuffer->GetHeight());
+
+		glClear(GL_COLOR_BUFFER_BIT);
 	}
 	else
 	{
@@ -702,9 +703,9 @@ void CDriver::MatrixScaleZ( const f32 scale )
 
 void CDriver::Clear()
 {
-	m_crtEffect			= 0;
 	m_crtMaterial		= 0;
 	m_crtVertexSource	= 0;
+	m_crtFrameBuffer	= 0;
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -1046,11 +1047,12 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 				m_crtMaterial = material;
 			}
 
-			if ( vertexSource != m_crtVertexSource || effect != m_crtEffect )
-			{
-				effect->Use( this, vertexSource );
+			effect->Render( this );
 
-				m_crtEffect			= effect;
+			if ( vertexSource != m_crtVertexSource )
+			{
+				effect->Bind( this, vertexSource );
+
 				m_crtVertexSource	= vertexSource;
 			}
 
