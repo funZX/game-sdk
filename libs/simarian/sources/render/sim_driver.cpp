@@ -132,7 +132,7 @@ CDriver::CDriver()
 
 	m_crtMaterial			= NULL;
 	m_crtVertexSource		= NULL;
-	m_crtFrameBuffer		= NULL;
+	m_crtRenderTexture		= NULL;
 
 	m_drawCallCount			= 0;
 	m_vertexCount			= 0;
@@ -705,7 +705,7 @@ void CDriver::Clear()
 {
 	m_crtMaterial		= 0;
 	m_crtVertexSource	= 0;
-	m_crtFrameBuffer	= 0;
+	m_crtRenderTexture	= 0;
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
