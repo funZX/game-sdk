@@ -32,8 +32,6 @@ CWidget::CWidget( const std::string& name )
 	m_isFocused = false;
 	m_isEnabled = true;
 	m_isVisible = true;
-
-	m_iD		= -1;
 }
 
 // ----------------------------------------------------------------------//
@@ -49,7 +47,7 @@ void CWidget::SetParent( CWidget* parent )
 {
 	if( m_parent != parent )
 	{
-		m_parent->RemoveChild( m_iD );
+		m_parent->RemoveChild( this );
 		m_parent = parent;
 	}
 }
@@ -60,13 +58,11 @@ void CWidget::AddChild( CWidget *child )
 {
 	if( child != NULL )
 	{
-		s32 wID = child->GetID();
-
-		std::map< s32, CWidget* >::iterator c = m_childs.find( wID );
+		std::map< CWidget*, CWidget* >::iterator c = m_childs.find(child);
 
 		if( c != m_childs.end() )
 		{
-			m_childs[ wID ] = child;
+			m_childs[ child ] = child;
 
 			child->SetParent( this );
 		}
@@ -75,9 +71,9 @@ void CWidget::AddChild( CWidget *child )
 
 // ----------------------------------------------------------------------//
 
-void CWidget::RemoveChild( s32 wID )
+void CWidget::RemoveChild( CWidget *child )
 {
-	std::map< s32, CWidget* >::iterator c = m_childs.find( wID );
+	std::map< CWidget*, CWidget* >::iterator c = m_childs.find(child);
 
 	if( c != m_childs.end() )
 	{
@@ -89,9 +85,9 @@ void CWidget::RemoveChild( s32 wID )
 
 // ----------------------------------------------------------------------//
 
-void CWidget::DeleteChild( s32 wID )
+void CWidget::DeleteChild( CWidget *child )
 {
-	std::map< s32, CWidget* >::iterator c = m_childs.find( wID );
+	std::map< CWidget*, CWidget* >::iterator c = m_childs.find( child );
 
 	if( c != m_childs.end() )
 	{
@@ -105,7 +101,7 @@ void CWidget::DeleteChild( s32 wID )
 
 void CWidget::DeleteAllChilds( void )
 {
-	std::map< s32, CWidget* >::iterator c = m_childs.begin();
+	std::map< CWidget*, CWidget* >::iterator c = m_childs.begin();
 
 	while( c != m_childs.end() )
 	{
@@ -157,17 +153,12 @@ void CWidget::PointerUp( u32 x, u32 y )
 	p.m_hiParam = y;
 }
 
-void CWidget::Render( CDriver *driver, TMatrix4* tranform )
+void CWidget::Render( CDriver *driver, TMatrix4* transform)
 {
-	std::map< s32, CWidget* >::iterator c = m_childs.begin();
+	std::map< CWidget*, CWidget* >::iterator c = m_childs.begin();
 
 	while( c != m_childs.end() )
-	{
-		driver->MatrixPush();
-		driver->MatrixMultiply( &m_transform );
-		c->second->Render( driver, tranform );
-		driver->MatrixPop();
-	}
+		c->second->Render( driver, transform);
 }
 
 // ----------------------------------------------------------------------//

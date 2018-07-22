@@ -77,9 +77,8 @@ void CWidgetLabel::PointerDown( u32 x, u32 y )
 	f32 px = (f32) x;
 	f32 py = (f32) y;
 
-	if( IsInside( px, py ) ) {
+	if( IsInside( px, py ) ) 
 		CWidget::PointerDown( x, y );
-	}
 }
 
 // ----------------------------------------------------------------------//
@@ -89,9 +88,8 @@ void CWidgetLabel::PointerUp( u32 x, u32 y )
 	f32 px = (f32) x;
 	f32 py = (f32) y;
 
-	if( IsInside( px, py ) ) {
+	if( IsInside( px, py ) )
 		CWidget::PointerUp( x, y );
-	}
 }
 
 // ----------------------------------------------------------------------//
@@ -101,9 +99,8 @@ void CWidgetLabel::PointerDrag( u32 x, u32 y )
 	f32 px = (f32) x;
 	f32 py = (f32) y;
 
-	if( IsInside( px, py ) ) {
+	if( IsInside( px, py ) )
 		CWidget::PointerDrag( x, y );
-	}
 }
 
 // ----------------------------------------------------------------------//

@@ -40,9 +40,7 @@
     <ClCompile Include="..\..\sources\render\font\sim_font_char.cpp" />
     <ClCompile Include="..\..\sources\render\font\sim_font_node.cpp" />
     <ClCompile Include="..\..\sources\render\gui\sim_widget_button.cpp" />
-    <ClCompile Include="..\..\sources\render\gui\sim_widget_checkbox.cpp" />
     <ClCompile Include="..\..\sources\render\gui\sim_widget_label.cpp" />
-    <ClCompile Include="..\..\sources\render\gui\sim_widget_slider.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_actor.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_camera.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_light.cpp" />
@@ -119,9 +117,7 @@
     <ClInclude Include="..\..\include\render\font\sim_font_char.h" />
     <ClInclude Include="..\..\include\render\font\sim_font_node.h" />
     <ClInclude Include="..\..\include\render\gui\sim_widget_button.h" />
-    <ClInclude Include="..\..\include\render\gui\sim_widget_checkbox.h" />
     <ClInclude Include="..\..\include\render\gui\sim_widget_label.h" />
-    <ClInclude Include="..\..\include\render\gui\sim_widget_slider.h" />
     <ClInclude Include="..\..\include\render\scene\sim_actor.h" />
     <ClInclude Include="..\..\include\render\scene\sim_camera.h" />
     <ClInclude Include="..\..\include\render\scene\sim_light.h" />

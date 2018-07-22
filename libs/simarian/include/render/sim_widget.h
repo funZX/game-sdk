@@ -47,9 +47,6 @@ public:
 	} TPointerParam;
 	// ------------------------------------------------------------------//
 
-	void						SetID( s32 wID ) { m_iD = wID; }
-	s32							GetID() { return m_iD; }
-
 	void						SetParent( CWidget* parent );
 	CWidget*					GetParent() { return m_parent; }
 
@@ -62,17 +59,14 @@ public:
 	void						SetVisible(bool visible) {m_isVisible = visible;}
 	bool						IsVisible() {return m_isVisible;}
 
-	inline TMatrix4*			GetTransform() { return &m_transform; }
-	inline void					SetTransform( TMatrix4* m) { Matrix4Copy(&m_transform, m ); }
-
 	void						AddChild( CWidget *child );
-	void						RemoveChild( s32 wID );
-	void						DeleteChild( s32 wiD );
+	void						RemoveChild( CWidget *child );
+	void						DeleteChild( CWidget *child );
 
 	void						RemoveAllChilds( void );
 	void						DeleteAllChilds( void );
 
-    virtual void				Render( CDriver *driver, TMatrix4* tranform );
+    virtual void				Render( CDriver *driver, TMatrix4* transform );
 
 	virtual void				PointerDown( u32 x, u32 y ) = 0;
 	virtual void				PointerDrag( u32 x, u32 y ) = 0;
@@ -83,16 +77,12 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	CWidget*					m_parent;
-	std::map< s32, CWidget* > 	m_childs;
+	CWidget*						m_parent;
+	std::map< CWidget*, CWidget* > 	m_childs;
 
-	s32							m_iD;
-
-	bool						m_isFocused;
-	bool						m_isEnabled;
-	bool						m_isVisible;
-
-	TMatrix4					m_transform;
+	bool							m_isFocused;
+	bool							m_isEnabled;
+	bool							m_isVisible;
 
 	// ------------------------------------------------------------------//
 };

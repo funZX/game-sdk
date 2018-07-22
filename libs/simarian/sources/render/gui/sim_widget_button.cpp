@@ -41,8 +41,6 @@ CWidgetButton::CWidgetButton( const std::string& name )
 	m_font		= NULL;
 
 	m_isPressed = false;
-
-	Matrix4ToIdentity(&m_transform);
 }
 
 // ----------------------------------------------------------------------//
@@ -91,9 +89,8 @@ void CWidgetButton::PointerDown( u32 x, u32 y)
 	f32 px = (f32) x;
 	f32 py = (f32) y;
 
-	if( IsInside( px, py ) ) {
+	if( IsInside( px, py ) )
 		CWidget::PointerDown( x, y );
-	}
 }
 
 // ----------------------------------------------------------------------//
@@ -106,9 +103,8 @@ void CWidgetButton::PointerUp( u32 x, u32 y )
 	f32 px = (f32) x;
 	f32 py = (f32) y;
 
-	if( IsInside( px, py ) ) {
+	if( IsInside( px, py ) )
 		CWidget::PointerUp( x, y );
-	}
 }
 
 // ----------------------------------------------------------------------//
@@ -118,9 +114,8 @@ void CWidgetButton::PointerDrag( u32 x, u32 y )
 	f32 px = (f32) x;
 	f32 py = (f32) y;
 
-	if( IsInside( px, py ) ) {
+	if( IsInside( px, py ) )
 		CWidget::PointerDrag( x, y );
-	}
 }
 
 // ----------------------------------------------------------------------//
