@@ -239,21 +239,25 @@ void CEffect::Load( CShader *vsh, CShader *fsh )
 
 // ----------------------------------------------------------------------//
 
-void CEffect::Use( CDriver *driver, CVertexSource *vertexSource )
+void CEffect::Render(CDriver *driver)
 {
-	glUseProgram( m_iD );
+	glUseProgram(m_iD);
 
-	ApplyTextures( driver );
-	ApplyTechnique( driver );
+	driver->UpdateUniforms(this);
 
-	// Uniforms
-	driver->UpdateUniforms( this );
-
-	for( s32 k = 0; k < m_numUniforms; k++ )
+	for (s32 k = 0; k < m_numUniforms; k++)
 	{
-		CShader::TUniform *crtUniform = &m_uniforms[ k ];
+		CShader::TUniform *crtUniform = &m_uniforms[k];
 		driver->SetUniform(crtUniform);
 	}
+}
+
+// ----------------------------------------------------------------------//
+
+void CEffect::Bind( CDriver *driver, CVertexSource *vertexSource )
+{
+	ApplyTextures( driver );
+	ApplyTechnique( driver );
 
 	// Attributes
 	void *vboData	   = vertexSource->GetVboData();

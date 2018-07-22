@@ -19,6 +19,8 @@
 #ifndef __SIM_EFFECT_H
 #define __SIM_EFFECT_H
 
+#include <core/sim_interfaces.h>
+
 #include <render/sim_render.h>
 #include <render/sim_driver.h>
 
@@ -30,7 +32,7 @@ namespace rnr
 class CTexture;
 class CShader;
 
-class CEffect
+class CEffect: public IRenderable
 {
 	friend class CDriver;
 
@@ -53,9 +55,10 @@ public:
 	CEffect( std::string name );
 	virtual ~CEffect( );
 	// ------------------------------------------------------------------//
+	virtual void				Render(CDriver *driver);
+	void						Bind(CDriver *driver, CVertexSource *vertexSource);
 
 	void						Load( CShader *vsh, CShader *fsh );
-	void						Use( CDriver *driver, CVertexSource *vertexSource );
 
 	const std::string&			GetName()		{ return m_name; }
 

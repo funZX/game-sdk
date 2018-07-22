@@ -456,7 +456,6 @@ protected:
 	u32							m_viewportWidth;
 	u32							m_viewportHeight;
 	// ------------------------------------------------------------------//
-	CEffect*					m_crtEffect;
 	CMaterial*					m_crtMaterial;
 	CVertexSource*				m_crtVertexSource;
 	CFrameBuffer*				m_crtFrameBuffer;
