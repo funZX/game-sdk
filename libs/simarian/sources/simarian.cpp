@@ -97,7 +97,7 @@ void CSimarian::Initialize()
 	InitOpenAL();
 
 // ----------------------------------------------------------------------//
-const char *defaultVSH = 
+	static const char *defaultVSH =
 		"attribute vec4 a_PositionL;"
 		"attribute vec2 a_TexCoord_0;"
 
@@ -118,7 +118,7 @@ const char *defaultVSH =
 
 // ----------------------------------------------------------------------//
 
-const char *defaultFSH = 
+	static const char *defaultFSH =
 		"precision mediump float;"
 
 		"uniform sampler2D	u_Sampler_Tex_0;"
@@ -134,13 +134,35 @@ const char *defaultFSH =
 		"	gl_FragColor = col;"
 		"}";
 
-	
+	CShader vsh("vsh", CShader::k_Type_Vertex);
+	CShader fsh("fsh", CShader::k_Type_Fragment);
 
-	CShader vsh( "vsh", CShader::k_Type_Vertex );
-	CShader fsh( "fsh", CShader::k_Type_Fragment );
+	vsh.Load(defaultVSH);
+	fsh.Load(defaultFSH);
 
-	vsh.Load( defaultVSH );
-	fsh.Load( defaultFSH );
+	static const char* attributes[] =
+	{
+		"a_PositionL",
+		"a_TexCoord_0"
+	};
+
+	u32 nAttrib = 2;
+	m_effect->InitAttributes(nAttrib);
+	for (u32 k = 0; k < nAttrib; k++)
+		m_effect->AddAttribute(attributes[k], k);
+
+	static const char* uniforms[] =
+	{
+		"u_Matrix_WorldViewProjection",
+		"u_Color",
+		"u_Material_Diffuse",
+		"u_Sampler_Tex_0"
+	};
+
+	u32 nUniform = 4;
+	m_effect->InitUniforms(nUniform);
+	for (u32 k = 0; k < nUniform; k++)
+		m_effect->AddUniform(uniforms[k], k);
 
 	m_effect->Load( &vsh, &fsh );
 

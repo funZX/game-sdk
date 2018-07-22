@@ -146,9 +146,9 @@ public:
 	// ------------------------------------------------------------------//
 	struct TUniform
 	{
-		K_UNIFORM				m_ID;
-		const char*				m_name;
-		s32						m_location;
+		K_UNIFORM									m_ID;
+		const char*									m_name;
+		s32											m_location;
 	};
 	// ------------------------------------------------------------------//
 	struct TAttrib
@@ -182,6 +182,9 @@ public:
 	// ------------------------------------------------------------------//
 	void						Load( const s8 *source );
 	inline u32 		            GetID() { return m_iD; }
+
+	static const TAttrib*		FindAttrib( const std::string& name );
+	static const TUniform*		FindUniform( const std::string& name );
 
 protected:
 

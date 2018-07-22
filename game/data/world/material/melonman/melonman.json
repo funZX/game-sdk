@@ -5,9 +5,9 @@
 	"emissive"	: [ 1.0, 1.0, 1.0, 1.0 ],
 	"reflectivity" : 0.0,
 	"shininess" : 0.05,
-	"effect": "lighting_phong",
+	"effect": "lit/lit_phong",
 	
 	"texture" 	: [ 
-		{ "channel" : 0, "name" : "melonman.tga" }
+		{ "channel" : 0, "name" : "melonman/melonman.tga" }
 	]
 }

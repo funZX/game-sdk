@@ -170,5 +170,31 @@ void CShader::Load( const s8 *source )
 }
 
 // ----------------------------------------------------------------------//
+
+const CShader::TAttrib* CShader::FindAttrib(const std::string& name)
+{
+	for (s32 k = 0; k < k_Attribute_Count; k++)
+	{
+		if ( !strcmp( name.c_str(), Attributes[k].m_name ) )
+			return &Attributes[ k ];
+	}
+
+	return NULL;
+}
+
+// ----------------------------------------------------------------------//
+
+const CShader::TUniform* CShader::FindUniform(const std::string& name)
+{
+	for (s32 k = 0; k < k_Uniform_Count; k++)
+	{
+		if ( !strcmp( name.c_str(), Uniforms[k].m_name ) )
+			return &Uniforms[k];
+	}
+
+	return NULL;
+}
+
+// ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

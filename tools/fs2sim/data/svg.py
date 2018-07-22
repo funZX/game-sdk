@@ -49,7 +49,7 @@ def main(dirlist):
 
 			utils.updateFile(src_dir + '/' + file, dst_dir + '/' + file)
 			
-			name = n.split('.svg', 1)[0]
+			name = file.split('.svg', 1)[0]
 			
 			svgs.append({'name' : name, 'file': ('svg/' + file)});
 				

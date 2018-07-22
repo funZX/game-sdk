@@ -48,7 +48,7 @@ def main(dirlist):
 			
 			utils.updateFile(src_dir + '/' + file, dst_dir + '/' + file)
 			
-			name = n.split('.json', 1)[0]
+			name = file.split('.json', 1)[0]
 			materials.append({'name' : name, 'file': ('material/' + file)});
 
 		if materials:

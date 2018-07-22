@@ -39,32 +39,9 @@ CSkyBox::CSkyBox( const std::string &name )
 {
 	m_name				= name;
 
+	InitEffect();
+
 	m_texture			= SIM_NEW CCubeTexture( name );
-
-	CShader vsh( "", CShader::k_Type_Vertex );
-	CShader fsh( "", CShader::k_Type_Fragment );
-
-	vsh.Load( skyboxVSH );
-	fsh.Load( skyboxFSH );
-
-	m_effect			= SIM_NEW CEffect( name );
-	m_effect->Load( &vsh, &fsh );
-
-	CEffect::TTechnique technique;
-
-	technique.depthtest = false;
-	technique.depthmask = false;
-	technique.cullface  = true;
-	technique.blending  = false;
-	technique.alphatest = false;
-
-	technique.blendfunc.equation = GL_FUNC_ADD;
-	technique.blendfunc.src = GL_SRC_ALPHA;
-	technique.blendfunc.dst = GL_ONE_MINUS_SRC_ALPHA;
-
-	technique.depthfunc.equation = GL_ALWAYS;
-
-	m_effect->SetTechnique( &technique);
 
 	m_material			= SIM_NEW CMaterial( name );
 	m_material->SetEffect( m_effect );
@@ -174,50 +151,101 @@ void CSkyBox::Render( CDriver *driver )
 }
 
 // ----------------------------------------------------------------------//
+void CSkyBox::InitEffect()
+{
+	const char *skyboxVSH =
+		"attribute vec4 a_PositionL;"
 
-const char *skyboxVSH = 
-	"attribute vec4 a_PositionL;"
+		"uniform mat4 u_Matrix_WorldViewProjection;"
+		"uniform vec4 u_Material_Diffuse;"
 
-	"uniform mat4 u_Matrix_WorldViewProjection;"
-	"uniform vec4 u_Material_Diffuse;"
+		"uniform vec4 u_Color;"
+		"uniform vec3 u_Eye_Position;"
 
-	"uniform vec4 u_Color;"
-	"uniform vec3 u_Eye_Position;"
+		"varying vec4 v_Color;"
+		"varying vec3 v_EyeDirL;"
 
-	"varying vec4 v_Color;"
-	"varying vec3 v_EyeDirL;"
+		"void main()"
+		"{"
+		"	vec4 p;"
 
-	"void main()"
-	"{"
-	"	vec4 p;"
+		"	p.xyz			= a_PositionL.xyz + u_Eye_Position.xyz; "
+		"	p.w				= 1.0;"
 
-	"	p.xyz			= a_PositionL.xyz + u_Eye_Position.xyz; "
-	"	p.w				= 1.0;"
+		"	v_EyeDirL		= -a_PositionL.xyz;"
+		"	v_Color			= u_Color * u_Material_Diffuse;"
 
-	"	v_EyeDirL		= -a_PositionL.xyz;"
-	"	v_Color			= u_Color * u_Material_Diffuse;"
+		"	gl_Position		= u_Matrix_WorldViewProjection * p;"
+		"}";
 
-	"	gl_Position		= u_Matrix_WorldViewProjection * p;"
-	"}";
+	// ----------------------------------------------------------------------//
 
-// ----------------------------------------------------------------------//
+	const char *skyboxFSH =
+		"precision mediump float;"
 
-const char *skyboxFSH = 
-	"precision mediump float;"
+		"uniform samplerCube u_Sampler_Cube;"
 
-	"uniform samplerCube u_Sampler_Cube;"
+		"varying vec4 v_Color;"
+		"varying vec3 v_EyeDirL;"
 
-	"varying vec4 v_Color;"
-	"varying vec3 v_EyeDirL;"
+		"void main ()"
+		"{"
+		"	vec4 tex = textureCube( u_Sampler_Cube, v_EyeDirL );"
+		"	vec4 col = tex * v_Color;"
 
-	"void main ()"
-	"{"
-	"	vec4 tex = textureCube( u_Sampler_Cube, v_EyeDirL );"
-	"	vec4 col = tex * v_Color;"
+		"	gl_FragColor = col;"
+		"}";
 
-	"	gl_FragColor = col;"
-	"}";
+	static const char* attributes[] =
+	{
+		"a_PositionL"
+	};
 
+	CShader vsh("", CShader::k_Type_Vertex);
+	CShader fsh("", CShader::k_Type_Fragment);
+
+	vsh.Load(skyboxVSH);
+	fsh.Load(skyboxFSH);
+
+	m_effect = SIM_NEW CEffect(m_name);
+
+	u32 nAttrib = 1;
+	m_effect->InitAttributes(nAttrib);
+	for (u32 k = 0; k < nAttrib; k++)
+		m_effect->AddAttribute(attributes[k], k);
+
+	static const char* uniforms[] =
+	{
+		"u_Matrix_WorldViewProjection",
+		"u_Material_Diffuse",
+		"u_Color",
+		"u_Eye_Position",
+		"u_Sampler_Cube"
+	};
+
+	u32 nUniform = 5;
+	m_effect->InitUniforms(nUniform);
+	for (u32 k = 0; k < nUniform; k++)
+		m_effect->AddUniform(uniforms[k], k);
+
+	m_effect->Load( &vsh, &fsh );
+
+	CEffect::TTechnique technique;
+
+	technique.depthtest = false;
+	technique.depthmask = false;
+	technique.cullface = true;
+	technique.blending = false;
+	technique.alphatest = false;
+
+	technique.blendfunc.equation = GL_FUNC_ADD;
+	technique.blendfunc.src = GL_SRC_ALPHA;
+	technique.blendfunc.dst = GL_ONE_MINUS_SRC_ALPHA;
+
+	technique.depthfunc.equation = GL_ALWAYS;
+
+	m_effect->SetTechnique(&technique);
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

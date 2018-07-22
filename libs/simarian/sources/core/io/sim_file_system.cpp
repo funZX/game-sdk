@@ -476,6 +476,32 @@ bool CFileSystem::LoadEffect(const json_t* jsonRoot, s32 index)
 	SIM_ASSERT( fShader != NULL );
 
 	CEffect* effect = SIM_NEW CEffect( name );
+	
+	json_t*  jsonAttributes = json_object_get(jsonValue, "attributes");
+	SIM_ASSERT(json_is_array(jsonAttributes));
+
+	u32 nAttrib = json_array_size(jsonAttributes);
+	effect->InitAttributes( nAttrib );
+	for (s32 k = 0; k < (s32)nAttrib; k++)
+	{
+		std::string attribute = json_string_value( json_array_get(jsonAttributes, k));
+
+		effect->AddAttribute( attribute, k );
+	}
+
+	json_t*  jsonUniforms = json_object_get(jsonValue, "uniforms");
+	SIM_ASSERT(json_is_array(jsonUniforms));
+
+	u32 nUniforms = json_array_size(jsonUniforms);
+	effect->InitUniforms(nUniforms);
+	for (s32 k = 0; k < (s32)nUniforms; k++)
+	{
+		std::string uniform = json_string_value(json_array_get(jsonUniforms, k));
+
+		effect->AddUniform(uniform, k);
+	}
+
+
 	effect->Load( vShader, fShader );
 
 	CEffect::TTechnique technique;
@@ -559,7 +585,7 @@ bool CFileSystem::LoadEffect(const json_t* jsonRoot, s32 index)
 
 	effect->SetTechnique( &technique );
 
-	json_t* jsonTex =  json_object_get( jsonValue, "tex" );
+	json_t* jsonTex =  json_object_get( jsonValue, "textures" );
 	SIM_ASSERT( json_is_array( jsonTex ) );
 
 	for ( s32 k = 0; k < (s32)json_array_size( jsonTex ); k++ )
