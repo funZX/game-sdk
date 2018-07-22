@@ -27,7 +27,7 @@
 
 #include <render/sim_vertex_source.h>
 #include <render/sim_vertex_group.h>
-#include <render/sim_frame_buffer.h>
+#include <render/sim_render_texture.h>
 #include <render/sim_shader.h>
 
 using namespace sim::mat;
@@ -205,7 +205,7 @@ public:
 	K_SELECT_BATCH				SelectBatch( K_SELECT_BATCH batchSelect );
 
 	u32							BindTexture ( u32 tex );
-	CFrameBuffer*				BindFrameBuffer( CFrameBuffer* framebuffer );
+	CRenderTexture*				BindRenderTexture( CRenderTexture* framebuffer );
 
 	bool						EnableCulling( bool val );
 	bool						EnableBlending( bool val );
@@ -458,7 +458,7 @@ protected:
 	// ------------------------------------------------------------------//
 	CMaterial*					m_crtMaterial;
 	CVertexSource*				m_crtVertexSource;
-	CFrameBuffer*				m_crtFrameBuffer;
+	CRenderTexture*				m_crtRenderTexture;
 	// ------------------------------------------------------------------//
 	u32							m_drawCallCount;
 	u32							m_vertexCount;

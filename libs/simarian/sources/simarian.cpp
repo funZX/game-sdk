@@ -31,7 +31,7 @@
 #include <render/sim_batch_2d.h>
 #include <render/sim_material.h>
 #include <render/sim_effect.h>
-#include <render/sim_frame_buffer.h>
+#include <render/sim_render_texture.h>
 #include <render/sim_driver.h>
 #include <render/sim_canvas.h>
 

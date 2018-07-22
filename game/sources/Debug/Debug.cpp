@@ -8,7 +8,7 @@
 #include <render/scene/sim_camera.h>
 
 #include <render/sim_canvas.h>
-#include <render/sim_frame_buffer.h>
+#include <render/sim_render_texture.h>
 #include <render/sim_texture.h>
 #include <render/sim_material.h>
 #include <render/sim_shader.h>
@@ -34,7 +34,7 @@ CDebug::CDebug( CFileSystem* fs )
 
 	m_fs			= fs;
 
-	m_framebuffer	= SIM_NEW CFrameBuffer("Debug_FrameBuffer");
+	m_framebuffer	= SIM_NEW CRenderTexture("Debug_FrameBuffer");
 	m_framebuffer->Generate( 400, 300 );
 }
 
@@ -67,7 +67,7 @@ void CDebug::Render( CDriver *driver )
 	driver->MatrixPop();
 
 
-	CFrameBuffer* fb = 0;
+	CRenderTexture* fb = 0;
 
 	CCamera cam("");
 	CRect2D r;
@@ -79,10 +79,12 @@ void CDebug::Render( CDriver *driver )
 	{
 		driver->MatrixTranslateY(-0.5f);
 		driver->MatrixTranslateZ(-2.0f);
-		driver->MatrixRotateY(dr * 10.0f);
-		fb = driver->BindFrameBuffer(m_framebuffer);
+		driver->MatrixRotateY(dr * 50.0f);
+		
+		fb = 
+		driver->BindRenderTexture(m_framebuffer);
 		mesh->Render(driver);
-		driver->BindFrameBuffer(fb);
+		driver->BindRenderTexture(fb);
 	}
 	O.game->SetCamera(0);
 }

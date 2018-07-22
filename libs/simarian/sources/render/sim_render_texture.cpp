@@ -16,7 +16,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <render/sim_frame_buffer.h>
+#include <render/sim_render_texture.h>
 #include <render/sim_driver.h>
 
 namespace sim
@@ -25,7 +25,7 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CFrameBuffer::CFrameBuffer( const std::string &name )
+CRenderTexture::CRenderTexture( const std::string &name )
 	: CTexture( name )
 {
 	m_name			= name;
@@ -38,7 +38,7 @@ CFrameBuffer::CFrameBuffer( const std::string &name )
 
 // ----------------------------------------------------------------------//
 
-CFrameBuffer::~CFrameBuffer()
+CRenderTexture::~CRenderTexture()
 {
 	if (m_bufferiD) {
 		glDeleteFramebuffers(1, &m_bufferiD);
@@ -49,7 +49,7 @@ CFrameBuffer::~CFrameBuffer()
 
 // ----------------------------------------------------------------------//
 
-void CFrameBuffer::Generate( u32 width, u32 height )
+void CRenderTexture::Generate( u32 width, u32 height )
 {
 	m_width		= mat::nextPowerOfTwo( width );
 	m_height	= mat::nextPowerOfTwo( height );

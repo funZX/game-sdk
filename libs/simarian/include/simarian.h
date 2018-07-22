@@ -68,7 +68,7 @@ namespace sim
 		class CWidget;
 		class CCanvas;
 		class CTexture;
-		class CFrameBuffer;
+		class CRenderTexture;
 		class CVertexSource;
 		class Material;
 		class CVertexGroup;

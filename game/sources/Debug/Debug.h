@@ -55,7 +55,7 @@ public:
 	CLight*						m_debugLight;
 
 	CFileSystem*				m_fs;
-	CFrameBuffer*				m_framebuffer;
+	CRenderTexture*				m_framebuffer;
 };
 
 #endif // __WINDOW_H

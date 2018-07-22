@@ -31,12 +31,12 @@ namespace rnr
 
 class CDriver;
 
-class CFrameBuffer : public CTexture
+class CRenderTexture : public CTexture
 {
 public:
 	// ------------------------------------------------------------------//
-	CFrameBuffer( const std::string &name );
-	virtual ~CFrameBuffer();
+	CRenderTexture( const std::string &name );
+	virtual ~CRenderTexture();
 
 	void					Generate( u32 width, u32 height );
 

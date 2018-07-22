@@ -21,7 +21,7 @@
 #include <render/sim_render.h>
 
 #include <render/sim_driver.h>
-#include <render/sim_frame_buffer.h>
+#include <render/sim_render_texture.h>
 #include <render/sim_rect_2d.h>
 #include <render/sim_batch_2d.h>
 #include <render/sim_effect.h>
@@ -296,17 +296,17 @@ u32  CDriver::BindTexture( u32 tex )
 
 // ----------------------------------------------------------------------//
 
-CFrameBuffer* CDriver::BindFrameBuffer( CFrameBuffer* framebuffer )
+CRenderTexture* CDriver::BindRenderTexture( CRenderTexture* texture )
 {
-	if (framebuffer == m_crtFrameBuffer)
-		return m_crtFrameBuffer;
+	if (texture == m_crtRenderTexture)
+		return m_crtRenderTexture;
 
-	if (framebuffer != NULL)
+	if (texture != NULL)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->GetBufferID());
+		glBindFramebuffer(GL_FRAMEBUFFER, texture->GetBufferID());
 		SIM_CHECK_OPENGL();
 
-		SetViewport(framebuffer->GetWidth(), framebuffer->GetHeight());
+		SetViewport(texture->GetWidth(), texture->GetHeight());
 
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
@@ -319,8 +319,8 @@ CFrameBuffer* CDriver::BindFrameBuffer( CFrameBuffer* framebuffer )
 	}
 
 
-	CFrameBuffer* old = m_crtFrameBuffer;
-	m_crtFrameBuffer = framebuffer;
+	CRenderTexture* old = m_crtRenderTexture;
+	m_crtRenderTexture = texture;
 
 	return old;
 }

@@ -1,5 +1,3 @@
-- uniform & attributes locations in effect
-- framebuffer
 - svg vector graphics
 - octree
 - scene manager

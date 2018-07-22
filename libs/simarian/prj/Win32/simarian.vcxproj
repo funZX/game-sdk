@@ -54,7 +54,7 @@
     <ClCompile Include="..\..\sources\render\sim_color.cpp" />
     <ClCompile Include="..\..\sources\render\sim_driver.cpp" />
     <ClCompile Include="..\..\sources\render\sim_effect.cpp" />
-    <ClCompile Include="..\..\sources\render\sim_frame_buffer.cpp" />
+    <ClCompile Include="..\..\sources\render\sim_render_texture.cpp" />
     <ClCompile Include="..\..\sources\render\sim_glaux.cpp" />
     <ClCompile Include="..\..\sources\render\sim_material.cpp" />
     <ClCompile Include="..\..\sources\render\sim_mesh.cpp" />
@@ -133,7 +133,7 @@
     <ClInclude Include="..\..\include\render\sim_color.h" />
     <ClInclude Include="..\..\include\render\sim_driver.h" />
     <ClInclude Include="..\..\include\render\sim_effect.h" />
-    <ClInclude Include="..\..\include\render\sim_frame_buffer.h" />
+    <ClInclude Include="..\..\include\render\sim_render_texture.h" />
     <ClInclude Include="..\..\include\render\sim_glaux.h" />
     <ClInclude Include="..\..\include\render\sim_material.h" />
     <ClInclude Include="..\..\include\render\sim_mesh.h" />
