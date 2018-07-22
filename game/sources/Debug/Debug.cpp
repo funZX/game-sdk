@@ -101,7 +101,7 @@ void CDebug::Render2D(CDriver *driver)
 	m.SetTexture(m_framebuffer, 0);
 
 	r.Bound(10.0f, 30.0f, 150.0f, 150.0f);
-	r.Flip();
+	r.Transform( CRect2D::k_Transform_FlipVer || CRect2D::k_Transform_FlipHor );
 	r.SetMaterial(&m);
 
 	CDriver::K_SELECT_BATCH batchSelect =

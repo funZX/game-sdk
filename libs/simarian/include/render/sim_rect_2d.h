@@ -100,8 +100,6 @@ public:
 	bool						IsInside( TVec2 *pos );
 	bool						IsInside( f32 x, f32 y );
 
-	void						Flip();
-
 	void						Bound( f32, f32, f32, f32);
 	void						Bound( CRect2D * );
 

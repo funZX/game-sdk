@@ -96,17 +96,6 @@ f32 CRect2D::Height( void )
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::Flip()
-{
-	m_position.x += m_size.x;
-	m_position.y += m_size.y;
-
-	m_size.x = -m_size.x;
-	m_size.y = -m_size.y;
-}
-
-// ----------------------------------------------------------------------//
-
 void CRect2D::Bound( f32 x, f32 y, f32 width, f32 height )
 {
 	m_position.x	= x;
