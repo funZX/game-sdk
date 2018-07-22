@@ -75,8 +75,9 @@ public:
 		k_Type_TGA,
 		k_Type_PVR,
 		k_Type_MIP,
+		k_Type_RGB,
 		
-		k_Type_Default = k_Type_TGA,
+		k_Type_Default = k_Type_RGB,
 
 	} K_TYPE;
 	// ------------------------------------------------------------------//
@@ -98,6 +99,7 @@ public:
 	inline std::string&		GetName() { return m_name; }
 
 	static void				ApplyFilter( CTexture *tex, K_FILTER filter );
+	static void				ApplyWrap(CTexture *tex, K_WRAP wrap);
 	// ------------------------------------------------------------------//
 
 public:

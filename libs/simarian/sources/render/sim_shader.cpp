@@ -155,7 +155,7 @@ void CShader::Load( const s8 *source )
 	glGetShaderiv( m_iD, GL_COMPILE_STATUS, &status );
 	glGetShaderiv( m_iD, GL_INFO_LOG_LENGTH, &infologLength );
 
-	if( infologLength > 0 )
+	if(!status && infologLength > 0 )
 	{
 		infoLog = SIM_NEW char[ infologLength ];
 
@@ -167,6 +167,32 @@ void CShader::Load( const s8 *source )
 
 	SIM_ASSERT( status == GL_TRUE );
 #endif // SIM_DEBUG
+}
+
+// ----------------------------------------------------------------------//
+
+const CShader::TAttrib* CShader::FindAttrib(const std::string& name)
+{
+	for (s32 k = 0; k < k_Attribute_Count; k++)
+	{
+		if ( !strcmp( name.c_str(), Attributes[k].m_name ) )
+			return &Attributes[ k ];
+	}
+
+	return NULL;
+}
+
+// ----------------------------------------------------------------------//
+
+const CShader::TUniform* CShader::FindUniform(const std::string& name)
+{
+	for (s32 k = 0; k < k_Uniform_Count; k++)
+	{
+		if ( !strcmp( name.c_str(), Uniforms[k].m_name ) )
+			return &Uniforms[k];
+	}
+
+	return NULL;
 }
 
 // ----------------------------------------------------------------------//

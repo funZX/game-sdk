@@ -54,27 +54,17 @@ CFontChar::~CFontChar()
 
 void CFontChar::InitTexCoords( s32 texWidth, s32 texHeight )
 {
-	f32 x1 = (f32)m_x / (f32)texWidth;
-	f32 y1 = (f32)m_y / (f32)texHeight;
-	f32 x2 = (f32)( m_x + m_width  ) / (f32)texWidth;
-	f32 y2 = (f32)( m_y + m_height ) / (f32)texHeight;
-
-	m_texCoords[ 0 ] = x1;
-	m_texCoords[ 1 ] = y1;
-
-	m_texCoords[ 2 ] = x2;
-	m_texCoords[ 3 ] = y1;
-
-	m_texCoords[ 4 ] = x1;
-	m_texCoords[ 5 ] = y2;
-
-	m_texCoords[ 6 ] = x2;
-	m_texCoords[ 7 ] = y2;
+	m_texRect.Bound(
+		(f32)m_x / (f32)texWidth,
+		(f32)m_y / (f32)texHeight,
+		(f32)m_width / (f32)texWidth,
+		(f32)m_height / (f32)texHeight
+	);
 }
 
 // ----------------------------------------------------------------------//
 
-void CFontChar::Draw( CDriver *driver, CMaterial* material, s32 x, s32 y ) const
+void CFontChar::Draw( CDriver *driver, CMaterial* material, s32 x, s32 y )
 {
 	if( IsEmpty() )
 		return;
@@ -84,7 +74,7 @@ void CFontChar::Draw( CDriver *driver, CMaterial* material, s32 x, s32 y ) const
 	r.Move( (f32)m_offsetX, (f32)m_offsetY );
 	r.SetMaterial( material );
 
-	r.Render( driver, &m_texCoords[ 0 ], NULL );
+	r.Render( driver, &m_texRect, NULL );
 }
 
 // ----------------------------------------------------------------------//

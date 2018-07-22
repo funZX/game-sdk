@@ -324,29 +324,36 @@ void CTexture::GenerateMipmapsMIP( u8 *buf, u32 maxLevel )
 
 // ----------------------------------------------------------------------//
 
+void CTexture::ApplyWrap(CTexture *tex, K_WRAP wrap)
+{
+	tex->m_wrap = wrap;
+
+	glBindTexture(GL_TEXTURE_2D, tex->m_iD);
+
+	if (tex->m_wrap == k_Wrap_Clamp)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	}
+	else
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	}
+}
+// ----------------------------------------------------------------------//
+
 void CTexture::ApplyFilter( CTexture *tex, K_FILTER filter )
 {
 	tex->m_filter = filter;
 
 	glBindTexture( GL_TEXTURE_2D, tex->m_iD );
 
-	if( tex->m_wrap == k_Wrap_Clamp )
-	{
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-	}
-	else
-	{
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	}
-
-
 	switch( tex->m_filter )
 	{
 	case k_Filter_Nearest:
 		{
-			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 			break;
 		}
@@ -378,8 +385,6 @@ void CTexture::ApplyFilter( CTexture *tex, K_FILTER filter )
 			break;
 		}
 	}
-
-	glBindTexture( GL_TEXTURE_2D, 0 );
 }
 
 // ----------------------------------------------------------------------//
@@ -399,10 +404,9 @@ u32 CTexture::Generate(   u8 *buf,
 	m_height	= height;
 
 	glGenTextures( 1, &m_iD );
-
-	CTexture::ApplyFilter( this, filter );
-
 	glBindTexture( GL_TEXTURE_2D, m_iD );
+	CTexture::ApplyWrap(this, wrap);
+	CTexture::ApplyFilter(this, filter);
 
 	if( m_format != k_Format_Compressed2Bpp && m_format != k_Format_Compressed4Bpp )
 	{

@@ -195,6 +195,7 @@ protected:
 
 	rnr::CCamera*					m_activeCamera;
 	rnr::CCamera*					m_camera;
+	rnr::CMaterial*					m_material;
 	rnr::CEffect*					m_effect;
 	rnr::CCanvas*					m_canvas;
 

@@ -236,9 +236,17 @@ void CFontAtlas::Create()
 	}
 
 	m_texture = SIM_NEW CTexture( m_name );
-	m_texture->Generate( data, texWidth, texHeight, CTexture::k_Type_TGA, CTexture::k_Wrap_Clamp, CTexture::k_Filter_Quadlinear, CTexture::k_Format_Alpha );
+	m_texture->Generate( data
+		, texWidth
+		, texHeight
+		, CTexture::k_Type_TGA
+		, CTexture::k_Wrap_Clamp
+		, CTexture::k_Filter_Nearest
+		, CTexture::k_Format_Alpha
+	);
 	
-	CreateMaterial();
+	InitEffect();
+	InitMaterial();
 
 	// clean up memory
 	SIM_SAFE_DELETE_ARRAY( data );
@@ -261,17 +269,17 @@ bool CFontAtlas::BinPack( s32 texWidth, s32 texHeight )
 	return true;
 }
 
-void CFontAtlas::CreateMaterial()
-{
-// ----------------------------------------------------------------------//
 
-const char *defaultVSH = 
+// ----------------------------------------------------------------------//
+void CFontAtlas::InitEffect()
+{
+	static const char *defaultVSH =
 		"attribute vec4 a_PositionL;"
 		"attribute vec2 a_TexCoord_0;"
 
 		"uniform mat4 u_Matrix_WorldViewProjection;"
-		"uniform vec4 u_Color;"
 		"uniform vec4 u_Material_Diffuse;"
+		"uniform vec4 u_Color;"
 
 		"varying vec2 v_Tex0;"
 		"varying vec4 v_Color;"
@@ -284,9 +292,9 @@ const char *defaultVSH =
 		"	gl_Position		= a_PositionL * u_Matrix_WorldViewProjection;"
 		"}";
 
-// ----------------------------------------------------------------------//
+	// ----------------------------------------------------------------------//
 
-const char *defaultFSH = 
+	static const char *defaultFSH =
 		"precision mediump float;"
 
 		"uniform sampler2D	u_Sampler_Tex_0;"
@@ -303,28 +311,55 @@ const char *defaultFSH =
 		"	gl_FragColor = col;"
 		"}";
 
-// ----------------------------------------------------------------------//
+	static const char* attributes[] =
+	{
+		"a_PositionL",
+		"a_TexCoord_0"
+	};
 
-	m_effect = SIM_NEW CEffect( "CDriver::m_effect" );
 
-	CShader vsh( "CFontAtlas::m_effect->m_vsh", CShader::k_Type_Vertex );
-	CShader fsh( "CFontAtlas::m_effect->m_fsh", CShader::k_Type_Fragment );
+	CShader vsh("FontAtlas", CShader::k_Type_Vertex);
+	CShader fsh("FontAtlas", CShader::k_Type_Fragment);
 
-	vsh.Load( defaultVSH );
-	fsh.Load( defaultFSH );
+	vsh.Load(defaultVSH);
+	fsh.Load(defaultFSH);
 
-	m_effect->Load( &vsh, &fsh );
+	m_effect = SIM_NEW CEffect( m_name );
 
-	m_effect->m_technique.depthtest	= true;
-	m_effect->m_technique.depthmask	= true;
-	m_effect->m_technique.cullface	= true;
-	m_effect->m_technique.alphatest	= false;
+	u32 nAttrib = 2;
+	m_effect->InitAttributes(nAttrib);
+	for (u32 k = 0; k < nAttrib; k++)
+		m_effect->AddAttribute(attributes[k], k);
 
-	m_effect->m_technique.blending	= true;
+	static const char* uniforms[] =
+	{
+		"u_Matrix_WorldViewProjection",
+		"u_Sampler_Tex_0",
+		"u_Material_Diffuse",
+		"u_Color"
+	};
+
+	u32 nUniform = 4;
+	m_effect->InitUniforms(nUniform);
+	for (u32 k = 0; k < nUniform; k++)
+		m_effect->AddUniform(uniforms[k], k);
+
+	m_effect->Load(&vsh, &fsh);
+
+	m_effect->m_technique.depthtest = true;
+	m_effect->m_technique.depthmask = true;
+	m_effect->m_technique.cullface = true;
+	m_effect->m_technique.alphatest = false;
+
+	m_effect->m_technique.blending = true;
 	m_effect->m_technique.blendfunc.equation = GL_FUNC_ADD;
-	m_effect->m_technique.blendfunc.src		= GL_SRC_ALPHA;
-	m_effect->m_technique.blendfunc.dst		= GL_ONE_MINUS_SRC_ALPHA;
+	m_effect->m_technique.blendfunc.src = GL_SRC_ALPHA;
+	m_effect->m_technique.blendfunc.dst = GL_ONE_MINUS_SRC_ALPHA;
+}
 
+void CFontAtlas::InitMaterial()
+{
+// ----------------------------------------------------------------------//
 	m_material = SIM_NEW CMaterial( m_name );
 	m_material->SetTexture( m_texture, 0 );
 	m_material->SetDiffuse( &col::Green );

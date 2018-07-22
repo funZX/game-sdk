@@ -48,21 +48,21 @@ public:
 	void							SetPerspective( CCanvas *canvas );
 	void							SetOrthographic( CCanvas *canvas );
 
-	inline TMatrix4*			GetPerspectiveMatrix() { return &m_perspectiveMatrix; }
-	inline TMatrix4*			GetOrthographicMatrix() { return &m_orthographicMatrix; }
+	inline TMatrix4*				GetPerspectiveMatrix() { return &m_perspectiveMatrix; }
+	inline TMatrix4*				GetOrthographicMatrix() { return &m_orthographicMatrix; }
 
-	inline TMatrix4*			GetOrientationMatrix() { return &m_orientationMatrix; }
-	inline TMatrix4*			GetViewMatrix() { return &m_viewMatrix; }
+	inline TMatrix4*				GetOrientationMatrix() { return &m_orientationMatrix; }
+	inline TMatrix4*				GetViewMatrix() { return &m_viewMatrix; }
 
 	inline void						SetDirection( TVec3 *dir )
 									{  m_direction.x = dir->x; m_direction.y = dir->y; m_direction.z = dir->z; };
 
-	inline TVec3*				GetDirection() { return &m_direction; };
+	inline TVec3*					GetDirection() { return &m_direction; };
 
 	inline void						SetPosition( TVec3 *pos )
 									{  m_position.x = pos->x; m_position.y = pos->y; m_position.z = pos->z; };
 
-	inline TVec3*				GetPosition()	{ return &m_position; };
+	inline TVec3*					GetPosition()	{ return &m_position; };
 
 	inline void						SetFieldOfView( f32 fov ) { m_fieldOfView = fov ; }
 	inline f32						GetFieldOfView()		{ return m_fieldOfView; }

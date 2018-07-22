@@ -4,6 +4,7 @@ import sys
 import os
 import time
 import glob
+import json
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
@@ -19,23 +20,70 @@ def main(dirlist):
 	content = {}
 	
 	for dir in dirlist:
-		src_file = dir['src'] + '/effect/content.json'
-		dst_file = dir['dst'] + '/effect/content.json'
-	
-		if os.path.exists(src_file):
+		shaders = []
+		src_dir = dir['src'] + '/effect'
+		dst_dir = dir['dst'] + '/effect'
+		
+		files 		= []
+
+		if os.path.exists(src_dir):
+		
+			files = utils.getListOfFiles(src_dir, 'fsh')	
 			
-			effects_dir = dir['dst'] + '/effect'
+			if files and not os.path.exists(dst_dir):
+				os.makedirs(dst_dir)		
+		
+		for file in files:
+			d	= file['dir']
+			n 	= file['file']
 			
-			if not os.path.exists(effects_dir):
-				os.makedirs(effects_dir)	
+			src_subdir = d.split(src_dir, 1)[1]
+			dst_subdir = dst_dir + src_subdir
 			
-			utils.updateFile(src_file, dst_file)
-	
+			if not os.path.exists(dst_subdir):
+				os.makedirs(dst_subdir)
+
+			file = (d.split(src_dir, 1)[1])
+			file = (file.split('/', 1)[1] + '/' + n)
+
+			utils.updateFile(src_dir + '/' + file, dst_dir + '/' + file)
+			shaders.append({'name' : file, 'file': ('effect/' + file)});
+				
+		if os.path.exists(src_dir):
+		
+			files = utils.getListOfFiles(src_dir, 'vsh')	
+			
+			if files and not os.path.exists(dst_dir):
+				os.makedirs(dst_dir)		
+		
+		for file in files:
+			d	= file['dir']
+			n 	= file['file']
+			
+			src_subdir = d.split(src_dir, 1)[1]
+			dst_subdir = dst_dir + src_subdir
+			
+			if not os.path.exists(dst_subdir):
+				os.makedirs(dst_subdir)
+
+			file = (d.split(src_dir, 1)[1])
+			file = (file.split('/', 1)[1] + '/' + n)
+
+			utils.updateFile(src_dir + '/' + file, dst_dir + '/' + file)
+			shaders.append({'name' : file, 'file': ('effect/' + file)});
+			
+		if shaders:
+			fs = dst_dir + '/content.json'
+			with open(fs, 'wb') as f:
+				json.dump(shaders, f)
+			
 			content['id'] 	= dir['id']
-			content['name'] = 'effect'
+			content['name'] = 'shader'
 			content['file'] = 'effect/content.json'
-	
-	ElapsedTime = time.clock() - StartTime
+
+			utils.updateFile(dir['src'] + '/effect/effects.json', dir['dst'] + '/effect/effects.json')
+
+	ElapsedTime = time.clock() - StartTime	
 	print '\nElapsed Time: %0.3fs' % (ElapsedTime)
 	
 	return content
@@ -44,8 +92,7 @@ def main(dirlist):
 
 if __name__ == "__main__":
 
-	dirlist = utils.cloneTree(config.DATA_DIR, config.TEMP_DIR)
-	
+	dirlist = config.clonedDataDir();	
 	ret = main(dirlist)
 	
 	for dir in dirlist:	

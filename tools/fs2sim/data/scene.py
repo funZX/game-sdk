@@ -15,7 +15,6 @@ def main(dirlist):
 
 	StartTime = time.clock()
 	
-	
 	content = {}
 	
 	
@@ -28,8 +27,7 @@ def main(dirlist):
 
 if __name__ == "__main__":
 
-	dirlist = utils.cloneTree(config.DATA_DIR, config.TEMP_DIR)
-	
+	dirlist = config.clonedDataDir();	
 	ret = main(dirlist)
 	
 	for dir in dirlist:	

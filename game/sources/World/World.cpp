@@ -52,7 +52,7 @@ void CWorld::Update( f32 dt, void *userData )
 
 	static CScript* script = m_fs->GetScript("dt/deltatime");
 
-	script->Run();
+	//script->Run();
 
 	//O.game->GetVM()->DebuggerStart();
 }

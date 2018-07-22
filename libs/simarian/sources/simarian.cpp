@@ -29,7 +29,9 @@
 #include <render/font/sim_font_atlas.h>
 
 #include <render/sim_batch_2d.h>
+#include <render/sim_material.h>
 #include <render/sim_effect.h>
+#include <render/sim_frame_buffer.h>
 #include <render/sim_driver.h>
 #include <render/sim_canvas.h>
 
@@ -49,6 +51,7 @@ CSimarian::CSimarian()
 	static const char* defaultName = "Simarian";
 
 	m_fontAtlas			= SIM_NEW CFontAtlas( defaultName );
+	m_material			= SIM_NEW CMaterial(defaultName);
 	m_effect			= SIM_NEW CEffect( defaultName );
 	m_canvas			= SIM_NEW CCanvas( defaultName );
 	m_camera			= SIM_NEW rnr::CCamera( defaultName );
@@ -79,6 +82,7 @@ CSimarian::~CSimarian()
 	SIM_SAFE_DELETE( m_camera );
 	SIM_SAFE_DELETE( m_canvas );
 	SIM_SAFE_DELETE( m_effect );
+	SIM_SAFE_DELETE( m_material );
 
 	SIM_SAFE_DELETE( m_sm );
 	SIM_SAFE_DELETE( m_vm );
@@ -93,7 +97,7 @@ void CSimarian::Initialize()
 	InitOpenAL();
 
 // ----------------------------------------------------------------------//
-const char *defaultVSH = 
+	static const char *defaultVSH =
 		"attribute vec4 a_PositionL;"
 		"attribute vec2 a_TexCoord_0;"
 
@@ -114,7 +118,7 @@ const char *defaultVSH =
 
 // ----------------------------------------------------------------------//
 
-const char *defaultFSH = 
+	static const char *defaultFSH =
 		"precision mediump float;"
 
 		"uniform sampler2D	u_Sampler_Tex_0;"
@@ -130,13 +134,35 @@ const char *defaultFSH =
 		"	gl_FragColor = col;"
 		"}";
 
-	
+	CShader vsh("vsh", CShader::k_Type_Vertex);
+	CShader fsh("fsh", CShader::k_Type_Fragment);
 
-	CShader vsh( "vsh", CShader::k_Type_Vertex );
-	CShader fsh( "fsh", CShader::k_Type_Fragment );
+	vsh.Load(defaultVSH);
+	fsh.Load(defaultFSH);
 
-	vsh.Load( defaultVSH );
-	fsh.Load( defaultFSH );
+	static const char* attributes[] =
+	{
+		"a_PositionL",
+		"a_TexCoord_0"
+	};
+
+	u32 nAttrib = 2;
+	m_effect->InitAttributes(nAttrib);
+	for (u32 k = 0; k < nAttrib; k++)
+		m_effect->AddAttribute(attributes[k], k);
+
+	static const char* uniforms[] =
+	{
+		"u_Matrix_WorldViewProjection",
+		"u_Color",
+		"u_Material_Diffuse",
+		"u_Sampler_Tex_0"
+	};
+
+	u32 nUniform = 4;
+	m_effect->InitUniforms(nUniform);
+	for (u32 k = 0; k < nUniform; k++)
+		m_effect->AddUniform(uniforms[k], k);
 
 	m_effect->Load( &vsh, &fsh );
 
@@ -149,6 +175,8 @@ const char *defaultFSH =
 	m_effect->m_technique.blendfunc.equation = GL_FUNC_ADD;
 	m_effect->m_technique.blendfunc.src		= GL_SRC_ALPHA;
 	m_effect->m_technique.blendfunc.dst		= GL_ONE_MINUS_SRC_ALPHA;
+
+	m_material->SetEffect( m_effect );
 
 	const char* szLetters = 
 		" ~`!@#$%^&*()-_=+0123456789:;'\"\\|<>?,./?{}[]@ABCDEFGHI"
@@ -187,6 +215,7 @@ void CSimarian::InitOpenAL()
 void CSimarian::Start( int width, int height )
 {
 	m_driver->SetScreenSize( width, height );
+
 	m_canvas->Resize( width, height );	
 
 	m_camera->SetFieldOfView( 60.0f );
@@ -241,6 +270,8 @@ f32 CSimarian::Smooth( f32 deltaTime )
 
 void CSimarian::Run( void )
 {
+	//SIM_CHECK_OPENGL();
+
 	u64 begin		= ::GetTimeMicro();
 
 	m_currentTime	= begin;
@@ -292,7 +323,7 @@ void CSimarian::Update( f32 dt, void *userData )
 
 void CSimarian::Render( CDriver *driver )
 {
-	driver->Prepare();
+	driver->Clear();
 
 	// 3D rendering
 	On3D();
@@ -304,19 +335,16 @@ void CSimarian::Render( CDriver *driver )
 	// 2D rendering
 	On2D();
 	{
-		CDriver::K_SELECT_BATCH batchSelect =
-		driver->SelectBatch( CDriver::k_Select_Batch_2D );
-
 		m_canvas->Render( driver );
 		m_sm->Render2D( driver );
 
 #if SIM_DEBUG
 		ShowStats( m_driver );
 #endif
-
-		driver->SelectBatch( batchSelect );
 	}
 	Off2D();
+
+	driver->Swap(m_material);
 }
 
 // ----------------------------------------------------------------------//
@@ -353,12 +381,16 @@ void CSimarian::On2D()
 
 	m_driver->SelectMatrix( CDriver::k_Select_Matrix_World );
 	m_driver->MatrixLoadIdentity();
+
+	m_driver->SelectBatch(rnr::CDriver::k_Select_Batch_2D);
 }
 
 // ----------------------------------------------------------------------//
 
 void CSimarian::Off2D()
 {
+	m_driver->SelectBatch(rnr::CDriver::k_Select_Batch_None);
+
 	m_driver->EnableDepthTest( true );
 	m_driver->EnableBlending( false );
 
@@ -379,12 +411,15 @@ void CSimarian::On3D()
 	m_driver->MatrixLoadIdentity();
 
 	m_camera->Render( m_driver );
+
+	m_driver->SelectBatch(rnr::CDriver::k_Select_Batch_3D);
 }
 
 // ----------------------------------------------------------------------//
 
 void CSimarian::Off3D()
 {
+	m_driver->SelectBatch(rnr::CDriver::k_Select_Batch_None);
 }
 
 // ----------------------------------------------------------------------//

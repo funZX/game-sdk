@@ -1,0 +1,453 @@
+[
+	{
+		"name": "color/fill_color",
+		"vsh": "color/fill_color.vsh",
+		"fsh": "color/fill_color.fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"
+		},
+		
+		"uniforms":[
+			"u_Matrix_WorldViewProjection",
+			"u_Color"
+		],
+		
+		"attributes":[
+			"a_PositionL"
+		],
+		
+		"textures": []
+	},
+	{
+		"name": "color/fill_color_texture_color",
+		"vsh": "color/fill_color_texture_color.vsh",
+		"fsh": "color/fill_color_texture_color.fsh",		
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"			
+		},
+		
+		"uniforms":[
+			"u_Matrix_WorldViewProjection",
+			"u_Color",
+			"u_Sampler_Tex_0"
+		],
+		
+		"attributes":[
+			"a_PositionL",
+			"a_TexCoord_0"
+		],
+		
+		"textures": []
+	},	
+	{
+		"name": "color/fill_color_vertex_color",
+		"vsh": "color/fill_color_vertex_color.vsh",
+		"fsh": "color/fill_color_vertex_color.fsh",		
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"			
+		},
+		
+		"uniforms":[
+			"u_Matrix_WorldViewProjection",
+			"u_Color"
+		],
+		
+		"attributes":[
+			"a_PositionL",
+			"a_Color"
+		],
+		
+		"textures": []
+	},
+	{
+		"name": "color/fill_color_vertex_color_texture_color",
+		"vsh": "color/fill_color_vertex_color_texture_color.vsh",
+		"fsh": "color/fill_color_vertex_color_texture_color.fsh",			
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"			
+		},
+		
+		"uniforms":[
+			"u_Matrix_WorldViewProjection",
+			"u_Color",
+			"u_Sampler_Tex_0"
+		],
+		
+		"attributes":[
+			"a_PositionL",
+			"a_TexCoord_0",
+			"a_Color"
+		],
+		
+		"textures": []
+	},
+	{
+		"name": "color/texture_color",
+		"vsh": "color/texture_color.vsh",
+		"fsh": "color/texture_color.fsh",	
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"			
+		},
+		
+		"uniforms":[
+			"u_Matrix_WorldViewProjection",
+			"u_Sampler_Tex_0"
+		],
+		
+		"attributes":[
+			"a_PositionL",
+			"a_TexCoord_0"
+		],
+		
+		"textures": []
+	},	
+	{
+		"name": "color/vertex_color",
+		"vsh": "color/vertex_color.vsh",
+		"fsh": "color/vertex_color.fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"		
+		},
+		
+		"uniforms":[
+			"u_Matrix_WorldViewProjection"
+		],
+		
+		"attributes":[
+			"a_PositionL",
+			"a_Color"
+		],
+		
+		"textures": []
+	},	
+	{
+		"name": "color/vertex_color_texture_color",
+		"vsh": "color/vertex_color_texture_color.vsh",
+		"fsh": "color/vertex_color_texture_color.fsh",		
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"		
+		},
+		
+		"uniforms":[
+			"u_Matrix_WorldViewProjection",
+			"u_Sampler_Tex_0"
+		],
+		
+		"attributes":[
+			"a_PositionL",
+			"a_TexCoord_0",
+			"a_Color"
+		],
+		
+		"textures": []
+	},	
+	{
+		"name": "debug/debug_normals",
+		"vsh": "debug/debug_normals.vsh",
+		"fsh": "debug/debug_normals.fsh",		
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"		
+		},
+		
+		"uniforms":[
+			"u_Matrix_WorldViewProjection",
+			"u_Color"
+		],
+		
+			"attributes":[
+			"a_PositionL",
+			"a_NormalL"
+		],
+		
+		"textures": []
+	},
+	{
+		"name": "lit/lit_bumpmap",
+		"vsh": "lit/lit_bumpmap.vsh",
+		"fsh": "lit/lit_bumpmap.fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"			
+		},
+		
+		"uniforms":[
+			"u_Matrix_WorldViewProjection",
+			"u_Sampler_Tex_0",
+			"u_Sampler_Tex_1",
+			"u_Light_Position_0"
+		],
+		
+		"attributes":[
+			"a_PositionL",
+			"a_TexCoord_0",
+			"a_NormalL",
+			"a_TangentL",
+			"a_BinormalL"
+		],
+		
+		"textures": []
+	},	
+	{
+		"name": "lit/lit_parallax",
+		"vsh": "lit/lit_parallax.vsh",
+		"fsh": "lit/lit_parallax.fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"			
+		},
+		
+		"uniforms":["u_Matrix_WorldView","u_Matrix_Normal","u_Matrix_WorldViewProjection","u_Light_Position_0","u_Sampler_Tex_0","u_Sampler_Tex_1","u_Sampler_Tex_2"],
+		"attributes":["a_PositionL","a_TexCoord_0","a_NormalL","a_TangentL","a_BinormalL"],
+		"textures": []
+	},	
+	{
+		"name": "lit/lit_phong",
+		"vsh": "lit/lit_phong.vsh",
+		"fsh": "lit/lit_phong.fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"		
+		},
+		
+		"uniforms":[
+			"u_Matrix_Projection",
+			"u_Matrix_WorldView",
+			"u_Matrix_View",
+			"u_Matrix_Normal",
+			"u_Sampler_Tex_0",
+			"u_Light_Position_0",
+			"u_Material_Ambient",
+			"u_Material_Diffuse",
+			"u_Material_Specular",
+			"u_Material_Shininess",
+			"u_Light_Ambient_0",
+			"u_Light_Diffuse_0",
+			"u_Light_Specular_0",
+			"u_Light_Intensity_0"
+		],
+		
+		"attributes":[
+			"a_PositionL",
+			"a_TexCoord_0",
+			"a_NormalL"
+		],
+		
+		"textures": []
+	},	
+	{
+		"name": "lit/lit_reflection",
+		"vsh": "lit/lit_reflection.vsh",
+		"fsh": "lit/lit_reflection.fsh",
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"			
+		},
+		
+		"uniforms":[
+			"u_Matrix_Projection",
+			"u_Matrix_WorldView",
+			"u_Matrix_Normal",
+			"u_Sampler_Tex_0",
+			"u_Sampler_Cube",
+			"u_Material_Reflectivity"
+		],
+		
+		"attributes":[
+			"a_PositionL",
+			"a_TexCoord_0",
+			"a_NormalL"
+		],
+		
+		"textures": []
+	},
+	{
+		"name": "particle/particle_sprite",
+		"vsh": "particle/particle_sprite.vsh",
+		"fsh": "particle/particle_sprite.fsh",		
+		
+		"technique":
+		{
+			"depthtest" 		: true,
+			"depthmask" 		: true,
+			"cullface"  		: true,
+			"alphatest"			: false,
+			
+			"blending"			: false,
+			"blendfunc"			: 
+			{
+				"equation"		: "FUNC_ADD",
+				"src"			: "SRC_ALPHA", 
+				"dst"			: "ONE_MINUS_SRC_ALPHA"
+			},
+			"depthfunc"			: "GL_LESS"		
+		},
+		
+		"uniforms":["u_Matrix_WorldViewProjection","u_Color","u_Sampler_Tex_0","u_Material_Diffuse","u_Point_Size"],
+		"attributes":["a_PositionL","a_TexCoord_0"],
+		"textures": []
+	}
+]

@@ -20,6 +20,7 @@
 #define __SIM_FRAME_BUFFER_H
 
 #include <render/sim_render.h>
+#include <render/sim_texture.h>
 #include <core/io/sim_mem_stream.h>
 
 namespace sim
@@ -30,7 +31,7 @@ namespace rnr
 
 class CDriver;
 
-class CFrameBuffer
+class CFrameBuffer : public CTexture
 {
 public:
 	// ------------------------------------------------------------------//
@@ -39,25 +40,12 @@ public:
 
 	void					Generate( u32 width, u32 height );
 
-	void					Bind( CDriver* driver );
-	void					UnBind( CDriver* driver );
-
-	inline u32				GetID() { return m_iD; }
-	inline u32				GetColorID() { return m_texID; }
-	inline u32				GetDepthID() { return m_depthBuffer; }
-
-	inline u32				GetWidth() { return m_width; }
-	inline u32				GetHeight() { return m_height; }
+	inline u32				GetBufferID() { return m_bufferiD; }
+	inline u32				GetDepthID() { return m_depthiD; }
 
 protected:
-	std::string				m_name;
-
-	u32			            m_width;
-	u32			            m_height;
-
-	u32			            m_iD;
-	u32			            m_depthBuffer;
-	u32						m_texID;
+	u32			            m_bufferiD;
+	u32			            m_depthiD;
 	// ------------------------------------------------------------------//
 };
 

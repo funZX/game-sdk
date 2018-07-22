@@ -21,6 +21,8 @@
 #include <render/sim_render.h>
 
 #include <render/sim_driver.h>
+#include <render/sim_frame_buffer.h>
+#include <render/sim_rect_2d.h>
 #include <render/sim_batch_2d.h>
 #include <render/sim_effect.h>
 #include <render/sim_material.h>
@@ -38,6 +40,7 @@ extern const char *defaultFSH;
 
 CDriver::CDriver()
 {
+	m_framebuffer = SIM_NEW CFrameBuffer("Driver");
 	m_batch2D	= SIM_NEW CBatch2D( "Driver", this );
 
 	Matrix4StackClear( &m_worldStack );
@@ -164,6 +167,7 @@ void CDriver::Initialize()
 CDriver::~CDriver()
 {
 	SIM_SAFE_DELETE( m_batch2D );
+	SIM_SAFE_DELETE(m_framebuffer);
 }
 
 // ----------------------------------------------------------------------//
@@ -297,23 +301,27 @@ u32  CDriver::BindTexture( u32 tex )
 
 CFrameBuffer* CDriver::BindFrameBuffer( CFrameBuffer* framebuffer )
 {
-	CFrameBuffer* old = m_crtFrameBuffer;
+	if (framebuffer == m_crtFrameBuffer)
+		return m_crtFrameBuffer;
 
-	if ( framebuffer != m_crtFrameBuffer )
+	if (framebuffer != NULL)
 	{
-		m_crtFrameBuffer = framebuffer;
+		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer->GetBufferID());
+		SIM_CHECK_OPENGL();
 
-		if ( framebuffer )
-		{
-			glBindFramebuffer( GL_FRAMEBUFFER, framebuffer->GetID() );
-			SetViewport( framebuffer->GetWidth(), framebuffer->GetHeight() );
-		}
-		else
-		{
-			glBindFramebuffer( GL_FRAMEBUFFER, 0 );
-			SetViewport( m_screenWidth, m_screenHeight );
-		}
+		SetViewport(framebuffer->GetWidth(), framebuffer->GetHeight());
 	}
+	else
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		SIM_CHECK_OPENGL();
+
+		SetViewport(m_screenWidth, m_screenHeight);
+	}
+
+
+	CFrameBuffer* old = m_crtFrameBuffer;
+	m_crtFrameBuffer = framebuffer;
 
 	return old;
 }
@@ -694,27 +702,66 @@ void CDriver::MatrixScaleZ( const f32 scale )
 
 // ----------------------------------------------------------------------//
 
-void CDriver::Prepare()
+void CDriver::Clear()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	m_crtEffect			= 0;
+	m_crtMaterial		= 0;
+	m_crtVertexSource	= 0;
 
-	SetViewport( m_screenWidth, m_screenHeight );
+#if 0
+	BindFrameBuffer(m_framebuffer);
+#endif
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 // ----------------------------------------------------------------------//
 
+void CDriver::Swap(CMaterial* material)
+{
+#if 0
+	CRect2D r("Swap");
+	CRect2D texRect(0, 0, 1, 1);
+
+	BindFrameBuffer(0);
+
+	CTexture* tex = material->GetTexture(0);
+	material->SetTexture( m_framebuffer, 0 );
+
+	r.Bound(0.0f, 0.0f, m_screenWidth, m_screenHeight);
+	r.SetMaterial(material);
+
+	r.Render(this, &texRect, NULL);
+
+	material->SetTexture( tex, 0 );
+
+	BindTexture(0);
+#endif
+}
+// ----------------------------------------------------------------------//
+
 void CDriver::SetScreenSize( u32 width, u32 height )
 {
+	// Should be called only once.
+
 	m_screenWidth = width;
 	m_screenHeight = height;
+
+	m_framebuffer->Generate( width, height );
 }
 
 // ----------------------------------------------------------------------//
 
 void CDriver::SetViewport( u32 width, u32 height )
 {
-	glViewport( 0, 0, width, height );
-	glScissor( 0, 0, width, height );
+	if (width != m_viewportWidth || height != m_viewportHeight)
+	{
+		glViewport(0, 0, width, height);
+		glScissor(0, 0, width, height);
+
+		m_viewportWidth = width;
+		m_viewportHeight = height;
+	}
 }
 
 // ----------------------------------------------------------------------//
@@ -1013,8 +1060,9 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 	switch ( m_batchSelect )
 	{
 	case k_Select_Batch_None:
+	case k_Select_Batch_3D: // not yet implemented
 		{
-			const K_RENDER_TYPE primitives [] = {
+			static const K_RENDER_TYPE primitives [] = {
 				k_Render_Type_Lines,
 				k_Render_Type_LineStrip,
 				k_Render_Type_Points,
@@ -1066,12 +1114,6 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 					&vboData[ qOff + vtxSize * 3 ] );
 			}
 			
-			break;
-		}
-
-	case k_Select_Batch_3D:
-		{
-		
 			break;
 		}
 	}

@@ -17,10 +17,9 @@ def main(dirlist):
 	StartTime = time.clock()
 	
 	content = {}
-	materials = []
-	
-	for dir in dirlist:
 
+	for dir in dirlist:
+		materials = []
 		src_dir = dir['src'] + '/material'
 		dst_dir = dir['dst'] + '/material'
 		
@@ -49,10 +48,10 @@ def main(dirlist):
 			
 			utils.updateFile(src_dir + '/' + file, dst_dir + '/' + file)
 			
-			name = n.split('.json', 1)[0]
+			name = file.split('.json', 1)[0]
 			materials.append({'name' : name, 'file': ('material/' + file)});
 
-		if files:
+		if materials:
 			with open(dst_dir + '/content.json', 'wb') as f:
 				json.dump(materials, f)
 				
@@ -70,8 +69,7 @@ def main(dirlist):
 
 if __name__ == "__main__":
 
-	dirlist = utils.cloneTree(config.DATA_DIR, config.TEMP_DIR)
-	
+	dirlist = config.clonedDataDir();	
 	ret = main(dirlist)
 	
 	for dir in dirlist:	

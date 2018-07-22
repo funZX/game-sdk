@@ -22,6 +22,7 @@
 #include <render/sim_render.h>
 #include <render/sim_material.h>
 #include <render/sim_texture.h>
+#include <render/sim_rect_2d.h>
 
 namespace sim
 {
@@ -35,13 +36,8 @@ class CDriver;
 class CSprite
 {
 public:
-								CSprite();
 	// ------------------------------------------------------------------//
-	typedef struct
-	{
-		f32		                m_texCoords[ 8 ];
-
-	} TModule;
+								CSprite();
 	// ------------------------------------------------------------------//
 	void						SetMaterial( CMaterial *mtl ) { m_material = mtl; }
 	CMaterial*					GetMaterial() { return m_material; }
@@ -59,7 +55,7 @@ protected:
 
 	// ------------------------------------------------------------------//
 	CMaterial*					m_material;
-	std::map<s32, TModule>		m_modules;
+	std::map<s32, CRect2D>		m_modules;
 	// ------------------------------------------------------------------//
 };
 

@@ -17,10 +17,9 @@ def main(dirlist):
 	StartTime = time.clock()
 	
 	content = {}
-	scripts = []
 	
 	for dir in dirlist:
-
+		scripts = []
 		src_dir = dir['src'] + '/script'
 		dst_dir = dir['dst'] + '/script'
 		
@@ -59,7 +58,7 @@ def main(dirlist):
 
 			scripts.append({'name' : name, 'file': ('script/' + temp)});
 				
-		if files:
+		if scripts:
 			with open(dst_dir + '/content.json', 'wb') as f:
 				json.dump(scripts, f)
 				
@@ -78,8 +77,7 @@ def main(dirlist):
 
 if __name__ == "__main__":
 
-	dirlist = utils.cloneTree(config.DATA_DIR, config.TEMP_DIR)
-	
+	dirlist = config.clonedDataDir();	
 	ret = main(dirlist)
 	
 	for dir in dirlist:	

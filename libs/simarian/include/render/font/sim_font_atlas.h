@@ -55,7 +55,8 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	void								CreateMaterial();
+	void								InitEffect();
+	void								InitMaterial();
 	bool								BinPack( s32 width, s32 height );
 	void								ReleaseLibrary();
 	// ------------------------------------------------------------------//

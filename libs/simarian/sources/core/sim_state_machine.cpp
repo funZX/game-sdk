@@ -17,6 +17,7 @@
 */
 
 #include <core/sim_state_machine.h>
+#include <render/sim_driver.h>
 
 namespace sim
 {

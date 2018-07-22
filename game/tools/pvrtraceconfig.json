@@ -1,0 +1,65 @@
+{
+	"*": {
+		"Enabled": false,
+		"Tracing": {
+			"RecordData": true,
+			"StartFrame": 0,
+			"AppendTraceVersion": true,
+			"EndFrame": 100,
+			"OptimizeRS": false,
+			"ExitOnLastFrame": true,
+			"ClientBufferRecordFrequency": 1,
+			"SaveFrameBuffer": true,
+			"UseCompression": false
+		},
+
+		"Debug": {
+			"Level": 1
+		},
+
+		"Network": {
+			"Enabled": true,
+			"Wait": true,
+			"BufferSize": 256
+		},
+
+		"Host": {
+			"EglLibraryPath": "D:/Work/game-sdk/libs/opengles/bin/libEGL.dll",
+			"Es2LibraryPath": "D:/Work/game-sdk/libs/opengles/bin/libGLESv2.dll"
+		},
+
+		"Profiling": {
+			"Enabled": false,
+			"FunctionTimelineLevel": 1,
+			"RenderstateOverride": true,
+			"SoftwareCounters": true,
+			"Overrides": {
+				"CullingMode": 0,
+				"DisableStencilTest": false,
+				"DisableAlphaTest": false,
+				"ForceFlatColourFrag": false,
+				"DisableDrawCalls": false,
+				"DisableDepthTest": false,
+				"DisableBlending": false,
+				"Force2x2Textures": false,
+				"DisableTextureModifications": false,
+				"DisableScissorTest": false,
+				"DisableFBAccess": false,
+				"ForceViewport": false,
+				"DisableFlushNFinish": false,
+				"DisableTextureFiltering": false
+			},
+
+			"SwapInterval": 0
+		}
+	},
+	"com.simarian.game": {
+		"Enabled": true,
+		"Tracing": {
+			"StartFrame": 100,
+			"EndFrame": 200,
+			"SaveFrameBuffer": true,
+			"UseCompression": true
+		}
+	}
+}

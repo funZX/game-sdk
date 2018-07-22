@@ -26,31 +26,27 @@ namespace rnr
 // ----------------------------------------------------------------------//
 
 CFrameBuffer::CFrameBuffer( const std::string &name )
+	: CTexture( name )
 {
 	m_name			= name;
 	
-	m_iD			= 0;
-	m_depthBuffer	= 0;
-	m_texID			= 0;
+	m_type			= k_Type_RGB;
+	m_format		= k_Format_RGB;
 
-	m_width			= 0;
-	m_height		= 0;
+	m_bufferiD		= 0;
+	m_depthiD		= 0;
 }
 
 // ----------------------------------------------------------------------//
 
 CFrameBuffer::~CFrameBuffer()
 {
-	if(m_depthBuffer) {
-		glDeleteRenderbuffers( 1, &m_depthBuffer);
+	if (m_depthiD) {
+		glDeleteRenderbuffers(1, &m_depthiD);
 	}
 
-	if (m_texID) {
-		glDeleteTextures(1, &m_texID);
-	}
-
-	if ( m_iD ) {
-		glDeleteFramebuffers(1, &m_iD);
+	if (m_bufferiD) {
+		glDeleteFramebuffers(1, &m_bufferiD);
 	}
 
 	SIM_CHECK_OPENGL();
@@ -60,48 +56,34 @@ CFrameBuffer::~CFrameBuffer()
 
 void CFrameBuffer::Generate( u32 width, u32 height )
 {
-	m_width		= width;
-	m_height	= height;
+	m_width		= mat::nextPowerOfTwo(width * 3 / 4);
+	m_height	= mat::nextPowerOfTwo(height * 3 / 4);
 
-	glGenTextures( 1, &m_texID );
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture( GL_TEXTURE_2D, m_texID );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-	glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0 );
-	glBindTexture( GL_TEXTURE_2D, 0 );
+	glGenFramebuffers(1, &m_bufferiD);
+	glBindFramebuffer(GL_FRAMEBUFFER, m_bufferiD);
 
-	glGenRenderbuffers( 1, &m_depthBuffer);
-	glBindRenderbuffer( GL_RENDERBUFFER, m_depthBuffer );
-	glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, width, height );
-	glBindRenderbuffer( GL_RENDERBUFFER, 0 );
+	glGenTextures( 1, &m_iD );
+	CTexture::ApplyWrap(this, CTexture::k_Wrap_Clamp);
+	CTexture::ApplyFilter(this, CTexture::k_Filter_Nearest);
+	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0 );
 
-	glGenFramebuffers( 1, &m_iD );
-	glBindFramebuffer( GL_FRAMEBUFFER, m_iD );
-	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texID, 0 );
-	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthBuffer);
+	glGenRenderbuffers(1, &m_depthiD);
+	glBindRenderbuffer(GL_RENDERBUFFER, m_depthiD);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, m_width, m_height);
 
-	SIM_ASSERT( GL_FRAMEBUFFER_COMPLETE == glCheckFramebufferStatus( GL_FRAMEBUFFER ) );
+	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_iD, 0 );
+	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthiD );
+
+#if SIM_DEBUG
+	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	SIM_ASSERT( status == GL_FRAMEBUFFER_COMPLETE);
+#endif // SIM_DEBUG
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	SIM_CHECK_OPENGL();
-
-	glBindFramebuffer( GL_FRAMEBUFFER, 0 );
-}
-
-// ----------------------------------------------------------------------//
-
-void CFrameBuffer::Bind( CDriver* driver )
-{
-	driver->BindFrameBuffer( this );
-}
-
-// ----------------------------------------------------------------------//
-
-void CFrameBuffer::UnBind( CDriver* driver )
-{
-	driver->BindFrameBuffer( NULL );
 }
 
 // ----------------------------------------------------------------------//

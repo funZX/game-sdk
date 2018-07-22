@@ -18,12 +18,10 @@ def main(dirlist):
 	StartTime = time.clock()
 	
 	
-	
 	content = {}
-	svgs 	= []
 	
 	for dir in dirlist:
-
+		svgs 	= []
 		src_dir = dir['src'] + '/svg'
 		dst_dir = dir['dst'] + '/svg'
 		
@@ -51,11 +49,11 @@ def main(dirlist):
 
 			utils.updateFile(src_dir + '/' + file, dst_dir + '/' + file)
 			
-			name = n.split('.svg', 1)[0]
+			name = file.split('.svg', 1)[0]
 			
 			svgs.append({'name' : name, 'file': ('svg/' + file)});
 				
-		if files:
+		if svgs:
 			fs = dst_dir + '/content.json'
 			with open(fs, 'wb') as f:
 				json.dump(svgs, f)
@@ -75,8 +73,7 @@ def main(dirlist):
 
 if __name__ == "__main__":
 
-	dirlist = utils.cloneTree(config.DATA_DIR, config.TEMP_DIR)
-	
+	dirlist = config.clonedDataDir();	
 	ret = main(dirlist)
 	
 	for dir in dirlist:	

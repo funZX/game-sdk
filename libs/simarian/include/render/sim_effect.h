@@ -66,14 +66,20 @@ public:
 	inline TTechnique*			GetTechnique() { return &m_technique; }
 	inline void					SetTechnique( const TTechnique* technique ) { SIM_MEMCPY( &m_technique, technique, sizeof(m_technique)); }
 
+	void						InitAttributes( unsigned int numAttrib );
+	void						InitUniforms( unsigned int numUniform );
+
+	void						AddAttribute( const std::string& name, int index );
+	void						AddUniform( const std::string& name, int index);
+	
 	// ------------------------------------------------------------------//
 protected:
-	void						BindAllAttributes();
-	void						GetAllUniformLocations();
-
 	// ------------------------------------------------------------------//
 	void						ApplyTechnique( CDriver* driver );
 	void						ApplyTextures( CDriver* driver );
+
+	void						SetAttributes();
+	void						SetUniforms();
 	// ------------------------------------------------------------------//
 protected:
 
@@ -93,7 +99,11 @@ protected:
 	bool				m_isUsingWorldViewProjectionMatrix;
 
 	s32					m_numUniforms;
-	CShader::TUniform	m_uniforms[ CShader::k_Uniform_Count ];
+	CShader::TUniform*	m_uniforms;
+
+	s32					m_numAttrib;
+	CShader::TAttrib*	m_attributes;
+
 
 public:
 	TTechnique			m_technique;

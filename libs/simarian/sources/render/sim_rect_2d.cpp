@@ -28,17 +28,30 @@ namespace sim
 namespace rnr
 {
 // ----------------------------------------------------------------------//
+CRect2D::CRect2D()
+{
+	Vec2ToZero(&m_position);
+	Vec2ToZero(&m_size);
+
+	m_material = NULL;
+}
+// ----------------------------------------------------------------------//
 
 CRect2D::CRect2D( const std::string& name )
+	: CRect2D()
 {
 	m_name		= name;
-
-	Vec2ToZero( &m_position );
-	Vec2ToZero( &m_size );
-
-	m_material	= NULL;
 }
+// ----------------------------------------------------------------------//
 
+CRect2D::CRect2D(f32 x, f32 y, f32 width, f32 height)
+{
+	m_position.x = x;
+	m_position.y = y;
+
+	m_size.x = width;
+	m_size.y = height;
+}
 // ----------------------------------------------------------------------//
 
 f32	CRect2D::Left( void )
@@ -338,33 +351,33 @@ bool CRect2D::IsInside( TVec2 *v )
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::Render( CDriver* driver, const f32 *texCoords, TMatrix4 *transform )
+void CRect2D::Render( CDriver* driver, CRect2D *texRect, TMatrix4 *transform )
 {
 	static f32 v[ 20 ];
 
 	v[  0 ] = m_position.x;
 	v[  1 ] = m_position.y;
 	v[  2 ] = 1.0f;
-	v[  3 ] = texCoords[ 0 ];
-	v[  4 ] = texCoords[ 1 ];
+	v[  3 ] = texRect->Left();
+	v[  4 ] = texRect->Top();
 
 	v[  5 ] = m_position.x + m_size.x;
 	v[  6 ] = m_position.y;
 	v[  7 ] = 1.0f;
-	v[  8 ] = texCoords[ 2 ];
-	v[  9 ] = texCoords[ 3 ];
+	v[  8 ] = texRect->Right();
+	v[  9 ] = texRect->Top();
 
 	v[ 10 ] = m_position.x;
 	v[ 11 ] = m_position.y + m_size.y;
 	v[ 12 ] = 0.0f;
-	v[ 13 ] = texCoords[ 4 ];
-	v[ 14 ] = texCoords[ 5 ];
+	v[ 13 ] = texRect->Left();
+	v[ 14 ] = texRect->Bottom();
 
 	v[ 15 ] = m_position.x + m_size.x;
 	v[ 16 ] = m_position.y + m_size.y;
 	v[ 17 ] = 1.0f;
-	v[ 18 ] = texCoords[ 6 ];
-	v[ 19 ] = texCoords[ 7 ];
+	v[ 18 ] = texRect->Right();
+	v[ 19 ] = texRect->Bottom();
 
 	if( transform != NULL )
 	{
@@ -400,7 +413,7 @@ void CRect2D::Render( CDriver* driver, const f32 *texCoords, TMatrix4 *transform
 	vg.SetMaterial( m_material );
 	vg.SetVertexSource( &vs );
 
-	driver->Render( &vg );
+	driver->Render(&vg);
 
 	vs.m_vboData = NULL;
 	vg.m_vboData = NULL;

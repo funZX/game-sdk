@@ -32,7 +32,11 @@ CEffect::CEffect( std::string name )
 	m_name				= name;
 	m_iD				= glCreateProgram();
 
+	m_uniforms			= NULL;
 	m_numUniforms       = 0;
+
+	m_attributes		= NULL;
+	m_numAttrib			= 0;
 
 	m_isUsingWorldInverseMatrix			= false;
 	m_isUsingWorldInverseTMatrix		= false;
@@ -43,7 +47,6 @@ CEffect::CEffect( std::string name )
 	m_isUsingViewProjectionMatrix		= false;
 	m_isUsingWorldViewProjectionMatrix	= false;
 
-	SIM_MEMSET( m_uniforms, 0, sizeof( m_uniforms ) );
 	SIM_MEMSET( m_textures, 0, sizeof( m_textures ) );
 
 	m_technique.depthtest				= true;
@@ -64,16 +67,50 @@ CEffect::CEffect( std::string name )
 
 CEffect::~CEffect()
 {
+	SIM_SAFE_DELETE_ARRAY(m_uniforms);
+	SIM_SAFE_DELETE_ARRAY(m_attributes);
+
 	glDeleteProgram( m_iD );
 }
 
 // ----------------------------------------------------------------------//
 
-void CEffect::BindAllAttributes()
+void CEffect::InitAttributes(unsigned int numAttrib)
 {
-    for( s32 k = 0; k < CShader::k_Attribute_Count; k++ )
+	m_numAttrib = numAttrib;
+	m_attributes = SIM_NEW CShader::TAttrib[numAttrib];
+
+	SIM_MEMSET(m_attributes, 0, numAttrib * sizeof(CShader::TAttrib));
+}
+
+// ----------------------------------------------------------------------//
+
+void CEffect::InitUniforms(unsigned int numUniform)
+{
+	m_numUniforms = numUniform;
+	m_uniforms = SIM_NEW CShader::TUniform[numUniform];
+
+	SIM_MEMSET(m_uniforms, 0, numUniform * sizeof(CShader::TUniform));
+}
+
+// ----------------------------------------------------------------------//
+
+void CEffect::AddAttribute(const std::string& name, int index)
+{
+	const CShader::TAttrib* attrib = CShader::FindAttrib( name );
+
+	SIM_ASSERT( attrib != NULL );
+
+	SIM_MEMCPY( &m_attributes[index], attrib, sizeof(CShader::TAttrib) );
+}
+
+// ----------------------------------------------------------------------//
+
+void CEffect::SetAttributes()
+{
+    for( s32 k = 0; k < m_numAttrib; k++ )
     {
-		CShader::TAttrib *curAttrib = &CShader::Attributes[ k ];
+		CShader::TAttrib *curAttrib = &m_attributes[ k ];
 		
 		glBindAttribLocation( m_iD, k, curAttrib->m_name );
 		curAttrib->m_location = k;
@@ -98,9 +135,6 @@ void CEffect::ApplyTechnique( CDriver* driver )
 
 void CEffect::ApplyTextures( CDriver* driver )
 {
-	CDriver::K_SELECT_TEXTURE texSelect =
-	driver->SelectTexture( CDriver::k_Select_Texture_4 );
-
 	for( u32 i = 0; i < CDriver::k_Select_Texture_Count; i++ )
 	{
 		if ( m_textures[ i ] != NULL )
@@ -109,17 +143,26 @@ void CEffect::ApplyTextures( CDriver* driver )
 			driver->BindTexture( m_textures[ i ]->GetID() );
 		}
 	}
-
-	driver->SelectTexture( texSelect );
 }
 
 // ----------------------------------------------------------------------//
 
-void CEffect::GetAllUniformLocations()
+void CEffect::AddUniform(const std::string& name, int index)
 {
-    for( s32 k = 0; k < CShader::k_Uniform_Count; k++ )
+	const CShader::TUniform* uni = CShader::FindUniform(name);
+
+	SIM_ASSERT( uni != NULL );
+
+	SIM_MEMCPY( &m_uniforms[index], uni, sizeof(CShader::TUniform) );
+}
+
+// ----------------------------------------------------------------------//
+
+void CEffect::SetUniforms()
+{
+    for( s32 k = 0; k < m_numUniforms; k++ )
     {
-		CShader::TUniform *curUni = &CShader::Uniforms[ k ];
+		CShader::TUniform *curUni = &m_uniforms[ k ];
 
 		s32 loc = glGetUniformLocation( m_iD, curUni->m_name );
 
@@ -154,8 +197,6 @@ void CEffect::GetAllUniformLocations()
 				m_isUsingWorldViewProjectionMatrix = true;
 				break;
 			}
-
-			SIM_MEMCPY( &m_uniforms[ m_numUniforms++ ], curUni, sizeof( CShader::TUniform ) );
         }
 
 		SIM_CHECK_OPENGL();
@@ -169,7 +210,7 @@ void CEffect::Load( CShader *vsh, CShader *fsh )
 	glAttachShader( m_iD, vsh->GetID() );
 	glAttachShader( m_iD, fsh->GetID() );
 
-	BindAllAttributes();
+	SetAttributes();
 
 	glLinkProgram( m_iD );
 
@@ -193,7 +234,7 @@ void CEffect::Load( CShader *vsh, CShader *fsh )
 	SIM_ASSERT( status == GL_TRUE );
 #endif // SIM_DEBUG
 
-	GetAllUniformLocations();
+	SetUniforms();
 }
 
 // ----------------------------------------------------------------------//
@@ -210,8 +251,8 @@ void CEffect::Use( CDriver *driver, CVertexSource *vertexSource )
 
 	for( s32 k = 0; k < m_numUniforms; k++ )
 	{
-		CShader::TUniform *uni = &m_uniforms[ k ];
-		driver->SetUniform( uni );
+		CShader::TUniform *crtUniform = &m_uniforms[ k ];
+		driver->SetUniform(crtUniform);
 	}
 
 	// Attributes
@@ -220,20 +261,21 @@ void CEffect::Use( CDriver *driver, CVertexSource *vertexSource )
 	u32 vertexStride   = vertexSource->GetVertexStride();
 	s32 vboOff         = 0;
 
-	for( s32 k = 0; k < CShader::k_Attribute_Count; k++ )
+	for( s32 k = 0; k < m_numAttrib; k++ )
 	{
-		CShader::TAttrib *crtAttrib	= &CShader::Attributes[ k ];
+		CShader::TAttrib *crtAttrib	= &m_attributes[ k ];
 
 		CVertexSource::K_VERTEX_ATTRIBUTE_OFFSET attribOff		= crtAttrib->m_compOff;
 		CVertexSource::K_VERTEX_ATTRIBUTE_FORMAT attribFormat	= crtAttrib->m_compFormat;
 		CVertexSource::K_VERTEX_ATTRIBUTE_SIZE attribSize		= crtAttrib->m_compSize;
 		CVertexSource::K_VERTEX_ATTRIBUTE_TYPE attribType		= crtAttrib->m_compType;
 
+#if 0
 		s32 loc = glGetAttribLocation( m_iD, crtAttrib->m_name );
+		SIM_ASSERT( loc == -1 || loc == crtAttrib->m_location);
+#endif
 
-		SIM_ASSERT( loc == -1 || loc == k );
-
-		if( loc != -1 && 0 != ( vertexFormat & attribFormat )  )
+		if( crtAttrib->m_location != -1 && 0 != ( vertexFormat & attribFormat )  )
 		{
 			void *vertexData = (void*) ( ( size_t ) vboData + vboOff );
 
