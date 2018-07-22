@@ -100,6 +100,8 @@ public:
 	bool						IsInside( TVec2 *pos );
 	bool						IsInside( f32 x, f32 y );
 
+	void						Flip();
+
 	void						Bound( f32, f32, f32, f32);
 	void						Bound( CRect2D * );
 
@@ -109,7 +111,7 @@ public:
 	void						SetMaterial( CMaterial *material ) { m_material = material; }
 	CMaterial*					GetMaterial() { return m_material; }
 
-	virtual void				Render( CDriver *driver, CRect2D *texRect, TMatrix4 *transform );
+	virtual void				Render( CDriver *driver, CRect2D *texRect );
 	// ------------------------------------------------------------------//
 
 protected:

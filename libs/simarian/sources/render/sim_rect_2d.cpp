@@ -96,6 +96,17 @@ f32 CRect2D::Height( void )
 
 // ----------------------------------------------------------------------//
 
+void CRect2D::Flip()
+{
+	m_position.x += m_size.x;
+	m_position.y += m_size.y;
+
+	m_size.x = -m_size.x;
+	m_size.y = -m_size.y;
+}
+
+// ----------------------------------------------------------------------//
+
 void CRect2D::Bound( f32 x, f32 y, f32 width, f32 height )
 {
 	m_position.x	= x;
@@ -351,7 +362,7 @@ bool CRect2D::IsInside( TVec2 *v )
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::Render( CDriver* driver, CRect2D *texRect, TMatrix4 *transform )
+void CRect2D::Render( CDriver* driver, CRect2D *texRect )
 {
 	static f32 v[ 20 ];
 
@@ -369,7 +380,7 @@ void CRect2D::Render( CDriver* driver, CRect2D *texRect, TMatrix4 *transform )
 
 	v[ 10 ] = m_position.x;
 	v[ 11 ] = m_position.y + m_size.y;
-	v[ 12 ] = 0.0f;
+	v[ 12 ] = 1.0f;
 	v[ 13 ] = texRect->Left();
 	v[ 14 ] = texRect->Bottom();
 
@@ -378,21 +389,6 @@ void CRect2D::Render( CDriver* driver, CRect2D *texRect, TMatrix4 *transform )
 	v[ 17 ] = 1.0f;
 	v[ 18 ] = texRect->Right();
 	v[ 19 ] = texRect->Bottom();
-
-	if( transform != NULL )
-	{
-		const f32 *vertices[] = { &v[ 0 ], &v[ 5 ] , &v[ 10 ], &v[ 15 ] };
-		TVec3 w;
-
-		for( s32 k = 0; k < 4; k++ )
-		{
-			Matrix4Transform( transform , (TVec3*) vertices[ k ], &w );
-
-			v[ 5 * k + 0 ] = w.x;
-			v[ 5 * k + 1 ] = w.y;
-			v[ 5 * k + 2 ] = w.z;
-		}
-	}
 
 	CVertexSource	vs;
 	vs.m_type			= CVertexSource::k_Type_Triangle;

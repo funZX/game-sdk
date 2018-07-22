@@ -62,7 +62,7 @@ void CSprite::RenderModule( CDriver *driver, CWidget *widget, s32 modId )
 	    CRect2D *rect2D = ( CRect2D* ) widget;
 
 		rect2D->SetMaterial( m_material );
-		rect2D->Render( driver, &m->second, NULL );
+		rect2D->Render( driver, &m->second );
 	}
 }
 

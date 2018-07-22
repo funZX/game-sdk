@@ -18,6 +18,8 @@
 *.opendb
 *.pvrtrace
 
+PVRTraceGUI.exe
+
 bin/
 build/
 .vs/

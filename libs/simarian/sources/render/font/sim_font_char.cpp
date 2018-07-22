@@ -74,7 +74,7 @@ void CFontChar::Draw( CDriver *driver, CMaterial* material, s32 x, s32 y )
 	r.Move( (f32)m_offsetX, (f32)m_offsetY );
 	r.SetMaterial( material );
 
-	r.Render( driver, &m_texRect, NULL );
+	r.Render( driver, &m_texRect );
 }
 
 // ----------------------------------------------------------------------//

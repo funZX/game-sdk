@@ -77,6 +77,7 @@ void CDebug::Render( CDriver *driver )
 
 	O.game->SetCamera(&cam);
 	{
+		driver->MatrixTranslateY(-0.5f);
 		driver->MatrixTranslateZ(-2.0f);
 		driver->MatrixRotateY(dr * 10.0f);
 		fb = driver->BindFrameBuffer(m_framebuffer);
@@ -97,13 +98,14 @@ void CDebug::Render2D(CDriver *driver)
 	m.SetEffect(effect);
 	m.SetTexture(m_framebuffer, 0);
 
-	r.Bound(50.0f, 50.0f, 300.0f, 300.0f);
+	r.Bound(10.0f, 30.0f, 150.0f, 150.0f);
+	r.Flip();
 	r.SetMaterial(&m);
 
 	CDriver::K_SELECT_BATCH batchSelect =
 		driver->SelectBatch(CDriver::k_Select_Batch_None);
 
-	r.Render(driver, &texRect, NULL);
+	r.Render( driver, &texRect );
 
 	driver->SelectBatch(batchSelect);
 }
