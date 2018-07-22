@@ -79,7 +79,7 @@ def main(dirlist):
 			
 			content['id'] 	= dir['id']
 			content['name'] = 'shader'
-			content['file'] = 'shader/content.json'
+			content['file'] = 'effect/content.json'
 
 			utils.updateFile(dir['src'] + '/effect/effects.json', dir['dst'] + '/effect/effects.json')
 

@@ -155,7 +155,7 @@ void CShader::Load( const s8 *source )
 	glGetShaderiv( m_iD, GL_COMPILE_STATUS, &status );
 	glGetShaderiv( m_iD, GL_INFO_LOG_LENGTH, &infologLength );
 
-	if( infologLength > 0 )
+	if(!status && infologLength > 0 )
 	{
 		infoLog = SIM_NEW char[ infologLength ];
 

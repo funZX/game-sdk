@@ -83,6 +83,9 @@ def main(argv):
 		for c in content:
 			if c and c['id'] == dir['id']:
 				dir_content.append({'name':c['name'], 'file':c['file']})
+				if c['name'] == 'shader':
+				    dir_content.append({'name':'effect', 'file':'effect/effects.json'})
+
 
 		if dir_content:
 			with open(dst_dir + '/content.json', 'wb') as f:
