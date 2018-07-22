@@ -40,7 +40,6 @@ extern const char *defaultFSH;
 
 CDriver::CDriver()
 {
-	m_framebuffer = SIM_NEW CFrameBuffer("Driver");
 	m_batch2D	= SIM_NEW CBatch2D( "Driver", this );
 
 	Matrix4StackClear( &m_worldStack );
@@ -167,7 +166,6 @@ void CDriver::Initialize()
 CDriver::~CDriver()
 {
 	SIM_SAFE_DELETE( m_batch2D );
-	SIM_SAFE_DELETE(m_framebuffer);
 }
 
 // ----------------------------------------------------------------------//
@@ -708,36 +706,9 @@ void CDriver::Clear()
 	m_crtMaterial		= 0;
 	m_crtVertexSource	= 0;
 
-#if 1
-	BindFrameBuffer(m_framebuffer);
-#endif
-
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-// ----------------------------------------------------------------------//
-
-void CDriver::Swap(CMaterial* material)
-{
-#if 1
-	CRect2D r("Swap");
-	CRect2D texRect(0, 0, 1, 1);
-
-	BindFrameBuffer(0);
-
-	CTexture* tex = material->GetTexture(0);
-	material->SetTexture( m_framebuffer, 0 );
-
-	r.Bound(0.0f, 0.0f, m_screenWidth, m_screenHeight);
-	r.SetMaterial(material);
-
-	r.Render(this, &texRect, NULL);
-
-	material->SetTexture( tex, 0 );
-
-	BindTexture(0);
-#endif
-}
 // ----------------------------------------------------------------------//
 
 void CDriver::SetScreenSize( u32 width, u32 height )
@@ -746,8 +717,6 @@ void CDriver::SetScreenSize( u32 width, u32 height )
 
 	m_screenWidth = width;
 	m_screenHeight = height;
-
-	m_framebuffer->Generate( width, height );
 }
 
 // ----------------------------------------------------------------------//
@@ -757,7 +726,6 @@ void CDriver::SetViewport( u32 width, u32 height )
 	if (width != m_viewportWidth || height != m_viewportHeight)
 	{
 		glViewport(0, 0, width, height);
-		glScissor(0, 0, width, height);
 
 		m_viewportWidth = width;
 		m_viewportHeight = height;

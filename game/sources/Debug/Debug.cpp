@@ -71,9 +71,19 @@ void CDebug::Render( CDriver *driver )
 		driver->MatrixTranslateZ(-2.0f);
 		CFrameBuffer* fb = 0;
 
+		CCamera cam("");
+		CRect2D r;
+
+		r.Bound(0, 0, m_framebuffer->GetWidth(), m_framebuffer->GetHeight());
+		cam.SetPerspective(&r);
+
+		O.game->SetCamera( &cam );
+
 		fb = driver->BindFrameBuffer(m_framebuffer);
 		mesh->Render(driver);
 		driver->BindFrameBuffer(fb);
+
+		O.game->SetCamera(0);
 	}
 	driver->MatrixPop();
 }

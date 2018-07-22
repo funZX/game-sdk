@@ -42,12 +42,9 @@ public:
 	CCanvas( const std::string& name );
 	virtual ~CCanvas();
 	// ------------------------------------------------------------------//
-	void				Resize( s32 width, s32 height );
+	void				Resize( f32 width, f32 height );
 	void				Update( f32 dt, void *userData );
 	void				Render( CDriver* driver );
-
-	inline s32			GetWidth() { return m_width; }
-	inline s32			GetHeight() { return m_height; }
 
 	virtual void		PointerDown( u32 x, u32 y );
 	virtual void		PointerDrag( u32 x, u32 y );
@@ -61,9 +58,6 @@ protected:
 
 	// ------------------------------------------------------------------//
 	std::string			m_name;
-
-	u32					m_width;
-	u32					m_height;
 	// ------------------------------------------------------------------//
 };
 

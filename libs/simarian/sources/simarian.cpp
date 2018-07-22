@@ -216,7 +216,7 @@ void CSimarian::Start( int width, int height )
 {
 	m_driver->SetScreenSize( width, height );
 
-	m_canvas->Resize( width, height );	
+	m_canvas->Resize( (f32)width, (f32)height );	
 
 	m_camera->SetFieldOfView( 60.0f );
 	m_camera->SetNearPlane( 1.0f );
@@ -343,8 +343,6 @@ void CSimarian::Render( CDriver *driver )
 #endif
 	}
 	Off2D();
-
-	driver->Swap(m_material);
 }
 
 // ----------------------------------------------------------------------//
@@ -367,14 +365,45 @@ void CSimarian::GoBack()
 
 // ----------------------------------------------------------------------//
 
+void CSimarian::SetCamera( CCamera *camera )
+{
+	if ( camera != NULL )
+	{
+		m_activeCamera = camera;
+		
+		m_driver->SelectMatrix(CDriver::k_Select_Matrix_Projection);
+		m_driver->MatrixPush();
+		m_driver->MatrixLoad(m_activeCamera->GetPerspectiveMatrix());
+
+		m_driver->SelectMatrix(CDriver::k_Select_Matrix_View);
+		m_driver->MatrixPush();
+		m_driver->MatrixLoad(m_activeCamera->GetViewMatrix());
+
+		m_driver->SelectMatrix(CDriver::k_Select_Matrix_World);
+		m_driver->MatrixPush();
+		m_driver->MatrixLoadIdentity();
+	}
+	else
+	{
+		m_driver->SelectMatrix(CDriver::k_Select_Matrix_Projection);
+		m_driver->MatrixPop();
+
+		m_driver->SelectMatrix(CDriver::k_Select_Matrix_View);
+		m_driver->MatrixPop();
+
+		m_driver->SelectMatrix(CDriver::k_Select_Matrix_World);
+		m_driver->MatrixPop();
+
+		m_activeCamera = m_camera;
+	}
+}
+
+// ----------------------------------------------------------------------//
+
 void CSimarian::On2D()
 {
-	m_driver->EnableDepthTest( false );
-	m_driver->EnableBlending( true );
-	m_driver->EnableBlendFunc( GL_FUNC_ADD, GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-
 	m_driver->SelectMatrix( CDriver::k_Select_Matrix_Projection );
-	m_driver->MatrixLoad( m_camera->GetOrthographicMatrix() );
+	m_driver->MatrixLoad( m_activeCamera->GetOrthographicMatrix() );
 
 	m_driver->SelectMatrix( CDriver::k_Select_Matrix_View );
 	m_driver->MatrixLoadIdentity();
@@ -390,10 +419,6 @@ void CSimarian::On2D()
 void CSimarian::Off2D()
 {
 	m_driver->SelectBatch(rnr::CDriver::k_Select_Batch_None);
-
-	m_driver->EnableDepthTest( true );
-	m_driver->EnableBlending( false );
-
 	m_driver->Flush2D();
 }
 
@@ -402,10 +427,10 @@ void CSimarian::Off2D()
 void CSimarian::On3D()
 {
 	m_driver->SelectMatrix( CDriver::k_Select_Matrix_Projection );
-	m_driver->MatrixLoad( m_camera->GetPerspectiveMatrix() );
+	m_driver->MatrixLoad( m_activeCamera->GetPerspectiveMatrix() );
 
 	m_driver->SelectMatrix( CDriver::k_Select_Matrix_View );
-	m_driver->MatrixLoad( m_camera->GetViewMatrix() );
+	m_driver->MatrixLoad( m_activeCamera->GetViewMatrix() );
 
 	m_driver->SelectMatrix( CDriver::k_Select_Matrix_World );
 	m_driver->MatrixLoadIdentity();

@@ -39,12 +39,9 @@ CCanvas::~CCanvas()
 
 // ----------------------------------------------------------------------//
 
-void CCanvas::Resize( s32 w, s32 h )
+void CCanvas::Resize( f32 w, f32 h )
 {
-	m_width     = w;
-	m_height    = h;
-
-	Bound( 0, 0, (f32) w, (f32) h );
+	Bound( 0, 0, w, h );
 }
 
 // ----------------------------------------------------------------------//
@@ -79,7 +76,7 @@ void CCanvas::ClearEvents()
 
 void CCanvas::Render( CDriver* driver )
 {
-	driver->SetViewport( m_width, m_height );
+	driver->SetViewport( (u32) m_size.x, (u32) m_size.y );
 }
 
 // ----------------------------------------------------------------------//
