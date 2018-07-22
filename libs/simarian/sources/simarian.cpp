@@ -48,13 +48,11 @@ CSimarian::CSimarian()
 	m_vm				= SIM_NEW CSquirrel();
 	m_sm				= SIM_NEW CStateMachine();	
 
-	static const char* defaultName = "Simarian";
-
-	m_fontAtlas			= SIM_NEW CFontAtlas( defaultName );
-	m_material			= SIM_NEW CMaterial(defaultName);
-	m_effect			= SIM_NEW CEffect( defaultName );
-	m_canvas			= SIM_NEW CCanvas( defaultName );
-	m_camera			= SIM_NEW rnr::CCamera( defaultName );
+	m_fontAtlas			= SIM_NEW CFontAtlas( "Driver Atlas" );
+	m_material			= SIM_NEW CMaterial( "Driver Material" );
+	m_effect			= SIM_NEW CEffect( "Driver Effect" );
+	m_canvas			= SIM_NEW CCanvas( "Driver Canvas" );
+	m_camera			= SIM_NEW rnr::CCamera( "Driver Camera" );
 
 	m_activeCamera		= NULL;
 

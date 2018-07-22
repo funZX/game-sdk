@@ -65,16 +65,18 @@ CBatch2D::~CBatch2D()
 
 void CBatch2D::AddQuad( CMaterial *material, const f32* v0, const f32* v1, const f32* v2, const f32* v3 )
 {
-	if( material !=	m_vertexGroup->GetMaterial() || m_numQuads	>=	MaxQuads )
+	CMaterial* crtMaterial = m_vertexGroup->GetMaterial();
+
+	if (material != crtMaterial || m_numQuads >= MaxQuads)
 	{
 		CDriver::K_SELECT_BATCH batchSelect =
 
-		m_driver->SelectBatch( CDriver::k_Select_Batch_None );
-		Render( m_driver );
-		m_driver->SelectBatch( batchSelect );
-	}
+		m_driver->SelectBatch(CDriver::k_Select_Batch_None);
+		Render(m_driver);
+		m_driver->SelectBatch(batchSelect);
 
-	m_vertexGroup->SetMaterial( material );
+		m_vertexGroup->SetMaterial(material);
+	}
 
 	s32 vtxSize		= m_vertexGroup->m_vertexSource->m_vertexStride / sizeof( f32 );
 	s32 currIndex	= 4 * vtxSize * m_numQuads;

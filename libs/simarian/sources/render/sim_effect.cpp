@@ -250,15 +250,15 @@ void CEffect::Render(CDriver *driver)
 		CShader::TUniform *crtUniform = &m_uniforms[k];
 		driver->SetUniform(crtUniform);
 	}
+
+	ApplyTextures(driver);
+	ApplyTechnique(driver);
 }
 
 // ----------------------------------------------------------------------//
 
 void CEffect::Bind( CDriver *driver, CVertexSource *vertexSource )
 {
-	ApplyTextures( driver );
-	ApplyTechnique( driver );
-
 	// Attributes
 	void *vboData	   = vertexSource->GetVboData();
 	u32 vertexFormat   = vertexSource->GetVertexFormat();

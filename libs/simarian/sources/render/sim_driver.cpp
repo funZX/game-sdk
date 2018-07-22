@@ -130,7 +130,6 @@ CDriver::CDriver()
 
 	InitUniform();
 
-	m_crtMaterial			= NULL;
 	m_crtVertexSource		= NULL;
 	m_crtRenderTexture		= NULL;
 
@@ -703,7 +702,6 @@ void CDriver::MatrixScaleZ( const f32 scale )
 
 void CDriver::Clear()
 {
-	m_crtMaterial		= 0;
 	m_crtVertexSource	= 0;
 	m_crtRenderTexture	= 0;
 
@@ -1041,12 +1039,7 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 
 			SIM_ASSERT( vertexSource != NULL );
 
-			if ( material != m_crtMaterial )
-			{
-				material->Render( this );
-				m_crtMaterial = material;
-			}
-
+			material->Render( this );
 			effect->Render( this );
 
 			if ( vertexSource != m_crtVertexSource )

@@ -77,13 +77,29 @@ void CDebug::Render( CDriver *driver )
 
 	O.game->SetCamera(&cam);
 	{
+		driver->MatrixPush();
 		driver->MatrixTranslateY(-0.5f);
 		driver->MatrixTranslateZ(-2.0f);
-		driver->MatrixRotateY(dr * 50.0f);
+		driver->MatrixRotateY(dr * 60.0f);
 		
 		fb = 
 		driver->BindRenderTexture(m_framebuffer);
 		mesh->Render(driver);
+		driver->MatrixPop();
+
+		driver->MatrixPush();
+		driver->MatrixTranslate(-0.4f, -0.2f, -1.5f);
+		driver->MatrixRotateY(dr * 20.0f);
+		mesh->Render(driver);
+		driver->MatrixPop();
+
+		driver->MatrixPush();
+		driver->MatrixTranslate(0.4f,-0.2f, -1.5f);
+		driver->MatrixScale(0.5f, 0.5f, 0.5f);
+		driver->MatrixRotateY(dr * 40.0f);
+		mesh->Render(driver);
+		driver->MatrixPop();
+
 		driver->BindRenderTexture(fb);
 	}
 	O.game->SetCamera(0);
@@ -91,25 +107,33 @@ void CDebug::Render( CDriver *driver )
 
 void CDebug::Render2D(CDriver *driver)
 {
+	static CEffect* fill = m_fs->GetEffect("color/fill_color");
 	static CEffect* effect = m_fs->GetEffect("color/fill_color_texture_color");
 	static CRect2D texRect(0, 0, 1, 1);
 
-	CMaterial m("");
+	static CMaterial m("");
 	CRect2D r("");
 
-	m.SetEffect(effect);
-	m.SetTexture(m_framebuffer, 0);
-
-	r.Bound(10.0f, 30.0f, 150.0f, 150.0f);
-	r.Transform( CRect2D::k_Transform_FlipVer || CRect2D::k_Transform_FlipHor );
 	r.SetMaterial(&m);
 
 	CDriver::K_SELECT_BATCH batchSelect =
 		driver->SelectBatch(CDriver::k_Select_Batch_None);
 
-	r.Render( driver, &texRect );
+	m.SetEffect(effect);
+	m.SetTexture(m_framebuffer, 0);
+
+	r.Bound(10.0f, 30.0f, 150.0f, 150.0f);
+	r.Transform(CRect2D::k_Transform_FlipVer || CRect2D::k_Transform_FlipHor);
+	r.Render(driver, &texRect);
 
 	driver->SelectBatch(batchSelect);
+
+	m.SetEffect(fill);
+	m.SetTexture(0, 0);
+	
+	r.Transform(CRect2D::k_Transform_FlipVer || CRect2D::k_Transform_FlipHor);
+	r.Zoom(6.0f, 6.0f);
+	//r.Render(driver, &texRect);
 }
 
  void CDebug::drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor)

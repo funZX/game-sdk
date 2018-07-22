@@ -4,7 +4,6 @@ attribute vec3		a_NormalL;
 attribute vec3		a_TangentL;
 attribute vec3		a_BinormalL;
 
-uniform mat4		u_Matrix_WorldView;
 uniform mat4		u_Matrix_WorldViewProjection;
 uniform mat3		u_Matrix_Normal;
 uniform vec3		u_Light_Position_0;
