@@ -37,14 +37,13 @@
     <Compile Include="config.py" />
     <Compile Include="data\actor.py" />
     <Compile Include="data\camera.py" />
-    <Compile Include="data\effect.py" />
     <Compile Include="data\font.py" />
     <Compile Include="data\light.py" />
     <Compile Include="data\material.py" />
     <Compile Include="data\mesh.py" />
     <Compile Include="data\scene.py" />
     <Compile Include="data\script.py" />
-    <Compile Include="data\shader.py" />
+    <Compile Include="data\effect.py" />
     <Compile Include="data\skybox.py" />
     <Compile Include="data\sound.py" />
     <Compile Include="data\sprite.py" />

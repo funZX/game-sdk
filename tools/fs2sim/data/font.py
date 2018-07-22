@@ -20,10 +20,9 @@ def main(dirlist):
 	
 	
 	content = {}
-	fonts 	= []
 	
 	for dir in dirlist:
-
+		fonts 	= []
 		src_dir = dir['src'] + '/font'
 		dst_dir = dir['dst'] + '/font'
 		
@@ -57,7 +56,7 @@ def main(dirlist):
 				
 				fonts.append({'name' : name, 'file': ('font/' + file), 'size' : size});
 				
-		if files:
+		if fonts:
 			fs = dst_dir + '/content.json'
 			with open(fs, 'wb') as f:
 				json.dump(fonts, f)
@@ -77,8 +76,7 @@ def main(dirlist):
 
 if __name__ == "__main__":
 
-	dirlist = utils.cloneTree(config.DATA_DIR, config.TEMP_DIR)
-	
+	dirlist = config.clonedDataDir();	
 	ret = main(dirlist)
 	
 	for dir in dirlist:	

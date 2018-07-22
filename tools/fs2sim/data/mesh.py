@@ -17,22 +17,15 @@ def main(dirlist):
 	StartTime = time.clock()
 	
 	content = {}
-	meshes = []
 	
 	for dir in dirlist:
-
+		meshes = []
+		lods = []
 		src_dir = dir['src'] + '/mesh'
 		dst_dir = dir['dst'] + '/mesh'
 		
 		files 		= []
-		lods        = []
-
-		lodsfile     = src_dir + '/lods.txt'
-
-		if os.path.exists(lodsfile):
-			with open(lodsfile) as lods_data: 
-				lods = json.load(lods_data)
-
+		
 		if os.path.exists(src_dir):
 
 			files = utils.getListOfFiles(src_dir, 'json')			
@@ -52,8 +45,15 @@ def main(dirlist):
 				os.makedirs(dst_subdir)
 
 			file = (d.split(src_dir, 1)[1])
+
+			lodsfile = d + file + '.lods'
+
+			if os.path.exists(lodsfile):
+			    with open(lodsfile) as lods_data: 
+			        lods = json.load(lods_data)
+
 			file = (file.split('/', 1)[1] + '/' + n)
-			
+
 			name 		= file.split('.json', 1)[0]
 			temp  		= name + '.sim'
 			temp2       = name + '.lod.sim'
@@ -77,7 +77,7 @@ def main(dirlist):
 
 			meshes.append({'name' : name, 'file': ('mesh/' + temp)});
 				
-		if files:
+		if meshes:
 			with open(dst_dir + '/content.json', 'wb') as f:
 				json.dump(meshes, f)
 				
@@ -95,8 +95,7 @@ def main(dirlist):
 
 if __name__ == "__main__":
 
-	dirlist = utils.cloneTree(config.DATA_DIR, config.TEMP_DIR)
-	
+	dirlist = config.clonedDataDir();	
 	ret = main(dirlist)
 	
 	for dir in dirlist:	

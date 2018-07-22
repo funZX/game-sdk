@@ -18,10 +18,8 @@ def main(dirlist):
 
 	content = {}
 	
-	textures = []
-	
 	for dir in dirlist:
-
+		textures = []
 		src_dir = dir['src'] + '/texture'
 		dst_dir = dir['dst'] + '/texture'
 		
@@ -55,7 +53,7 @@ def main(dirlist):
 			name = n.split('.json', 1)[0]
 			textures.append({'name' : name, 'file': ('texture/' + file), 'wrap' : 'clamp', 'filter' : 'linear'});
 
-		if files:
+		if textures:
 			with open(dst_dir + '/content.json', 'wb') as f:
 				json.dump(textures, f)
 				
@@ -72,8 +70,7 @@ def main(dirlist):
 
 if __name__ == "__main__":
 
-	dirlist = utils.cloneTree(config.DATA_DIR, config.TEMP_DIR)
-	
+	dirlist = config.clonedDataDir();	
 	ret = main(dirlist)
 	
 	for dir in dirlist:	

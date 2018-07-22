@@ -14,7 +14,6 @@ import font
 import texture
 import svg
 import skybox
-import shader
 import effect
 import material
 import mesh
@@ -31,12 +30,8 @@ import scene
 def main(argv):
 
 	StartTime = time.clock()
-	if not os.path.exists(config.BLOB_DIR):
-		shutil.os.mkdir(config.BLOB_DIR)
-	if not os.path.exists(config.TEMP_DIR):
-		shutil.os.mkdir(config.TEMP_DIR)
-	dirlist = utils.cloneTree(config.DATA_DIR, config.TEMP_DIR)
-	
+
+	dirlist = config.clonedDataDir();	
 	content = []
 	
 	print('\n--------- FONTS -----\n')
@@ -50,9 +45,6 @@ def main(argv):
 	
 	print('\n--------- SKYBOXES -----\n')
 	content.append(skybox.main(dirlist))
-
-	print('\n--------- SHADERS -----\n')
-	content.append(shader.main(dirlist))
 	
 	print('\n--------- EFFECTS -----\n')
 	content.append(effect.main(dirlist))

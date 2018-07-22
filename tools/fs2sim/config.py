@@ -1,6 +1,8 @@
 #! /bin/python
 
 import os
+import shutil
+import utils
 
 #---------------------------------------------------------------------------------------
 
@@ -20,4 +22,11 @@ EXE_SQ2SIM					=	os.path.abspath(TOOL_DIR + '/sq2sim.exe')
 EXE_SIM2MIP					= 	os.path.abspath(TOOL_DIR + '/sim2mip.exe')
 EXE_SIM2LOD				    =	os.path.abspath(TOOL_DIR + '/sim2lod.exe')
 
+def clonedDataDir():
+	if not os.path.exists(BLOB_DIR):
+		shutil.os.mkdir(BLOB_DIR)
+	if not os.path.exists(TEMP_DIR):
+		shutil.os.mkdir(TEMP_DIR)
+
+	return utils.cloneTree(DATA_DIR, TEMP_DIR)
 #---------------------------------------------------------------------------------------
