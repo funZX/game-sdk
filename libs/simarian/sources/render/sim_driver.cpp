@@ -708,7 +708,7 @@ void CDriver::Clear()
 	m_crtMaterial		= 0;
 	m_crtVertexSource	= 0;
 
-#if 0
+#if 1
 	BindFrameBuffer(m_framebuffer);
 #endif
 
@@ -719,7 +719,7 @@ void CDriver::Clear()
 
 void CDriver::Swap(CMaterial* material)
 {
-#if 0
+#if 1
 	CRect2D r("Swap");
 	CRect2D texRect(0, 0, 1, 1);
 

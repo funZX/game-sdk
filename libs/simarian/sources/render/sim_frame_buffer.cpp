@@ -34,18 +34,13 @@ CFrameBuffer::CFrameBuffer( const std::string &name )
 	m_format		= k_Format_RGB;
 
 	m_bufferiD		= 0;
-	m_depthiD		= 0;
 }
 
 // ----------------------------------------------------------------------//
 
 CFrameBuffer::~CFrameBuffer()
 {
-	if (m_depthiD) {
-		glDeleteRenderbuffers(1, &m_depthiD);
-	}
-
-	if (m_bufferiD) {
+if (m_bufferiD) {
 		glDeleteFramebuffers(1, &m_bufferiD);
 	}
 
@@ -67,12 +62,7 @@ void CFrameBuffer::Generate( u32 width, u32 height )
 	CTexture::ApplyFilter(this, CTexture::k_Filter_Nearest);
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0 );
 
-	glGenRenderbuffers(1, &m_depthiD);
-	glBindRenderbuffer(GL_RENDERBUFFER, m_depthiD);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT16, m_width, m_height);
-
 	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_iD, 0 );
-	glFramebufferRenderbuffer( GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_depthiD );
 
 #if SIM_DEBUG
 	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -80,7 +70,6 @@ void CFrameBuffer::Generate( u32 width, u32 height )
 #endif // SIM_DEBUG
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	SIM_CHECK_OPENGL();
