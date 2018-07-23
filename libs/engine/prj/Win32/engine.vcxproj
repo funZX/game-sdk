@@ -65,7 +65,7 @@
     <ClCompile Include="..\..\sources\render\sim_vertex_group.cpp" />
     <ClCompile Include="..\..\sources\render\sim_vertex_source.cpp" />
     <ClCompile Include="..\..\sources\render\sim_widget.cpp" />
-    <ClCompile Include="..\..\sources\simarian.cpp" />
+    <ClCompile Include="..\..\sources\engine.cpp" />
     <ClCompile Include="..\..\sources\sound\sim_sound.cpp" />
     <ClCompile Include="..\..\sources\sound\sim_sound_data.cpp" />
     <ClCompile Include="..\..\sources\sound\sim_sound_source.cpp" />
@@ -142,7 +142,7 @@
     <ClInclude Include="..\..\include\render\sim_vertex_group.h" />
     <ClInclude Include="..\..\include\render\sim_vertex_source.h" />
     <ClInclude Include="..\..\include\render\sim_widget.h" />
-    <ClInclude Include="..\..\include\simarian.h" />
+    <ClInclude Include="..\..\include\engine.h" />
     <ClInclude Include="..\..\include\sound\sim_sound.h" />
     <ClInclude Include="..\..\include\sound\sim_sound_data.h" />
     <ClInclude Include="..\..\include\sound\sim_sound_source.h" />
@@ -155,7 +155,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CED2AAC1-80AE-427E-BDAB-D920211C9F8B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>simarian</RootNamespace>
+    <RootNamespace>engine</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

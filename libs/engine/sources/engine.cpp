@@ -16,7 +16,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <simarian.h>
+#include <engine.h>
 
 #include <core/sys/sim_thread.h>
 #include <core/sim_state_machine.h>
@@ -42,7 +42,7 @@ namespace sim
 extern const unsigned int BlobFont[];
 // ----------------------------------------------------------------------//
 
-CSimarian::CSimarian()
+CEngine::CEngine()
 {
 	m_driver			= SIM_NEW CDriver();
 	m_vm				= SIM_NEW CSquirrel();
@@ -72,7 +72,7 @@ CSimarian::CSimarian()
 
 // ----------------------------------------------------------------------//
 
-CSimarian::~CSimarian()
+CEngine::~CEngine()
 {
 	SIM_SAFE_DELETE( m_fontAtlas );
 	SIM_SAFE_DELETE( m_font );
@@ -89,7 +89,7 @@ CSimarian::~CSimarian()
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::Initialize()
+void CEngine::Initialize()
 {
 	InitOpenGL();
 	InitOpenAL();
@@ -190,14 +190,14 @@ void CSimarian::Initialize()
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::InitOpenGL( void )
+void CEngine::InitOpenGL( void )
 {
 	m_driver->Initialize();
 }
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::InitOpenAL()
+void CEngine::InitOpenAL()
 {
 	m_ALDevice = alcOpenDevice( NULL );
 
@@ -210,7 +210,7 @@ void CSimarian::InitOpenAL()
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::Start( int width, int height )
+void CEngine::Start( int width, int height )
 {
 	m_driver->SetScreenSize( width, height );
 
@@ -227,7 +227,7 @@ void CSimarian::Start( int width, int height )
 
 // ----------------------------------------------------------------------//
 
-f32 CSimarian::Smooth( f32 deltaTime )
+f32 CEngine::Smooth( f32 deltaTime )
 {
 	f32 sum		= 0.0f;
 	f32 min1, min2, max1, max2;
@@ -266,7 +266,7 @@ f32 CSimarian::Smooth( f32 deltaTime )
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::Run( void )
+void CEngine::Run( void )
 {
 	//SIM_CHECK_OPENGL();
 
@@ -293,7 +293,7 @@ void CSimarian::Run( void )
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::Quit( void )
+void CEngine::Quit( void )
 {
 	alcMakeContextCurrent( NULL );
 	
@@ -307,7 +307,7 @@ void CSimarian::Quit( void )
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::Update( f32 dt, void *userData )
+void CEngine::Update( f32 dt, void *userData )
 {
 	m_driver->Tick( dt );
 
@@ -319,7 +319,7 @@ void CSimarian::Update( f32 dt, void *userData )
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::Render( CDriver *driver )
+void CEngine::Render( CDriver *driver )
 {
 	driver->Clear();
 
@@ -345,7 +345,7 @@ void CSimarian::Render( CDriver *driver )
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::GoNext( IState* state )
+void CEngine::GoNext( IState* state )
 {
 	m_canvas->ClearEvents();
 	
@@ -354,7 +354,7 @@ void CSimarian::GoNext( IState* state )
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::GoBack()
+void CEngine::GoBack()
 {
 	m_canvas->ClearEvents();
 
@@ -363,7 +363,7 @@ void CSimarian::GoBack()
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::SetCamera( CCamera *camera )
+void CEngine::SetCamera( CCamera *camera )
 {
 	if ( camera != NULL )
 	{
@@ -398,7 +398,7 @@ void CSimarian::SetCamera( CCamera *camera )
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::On2D()
+void CEngine::On2D()
 {
 	m_driver->SelectMatrix( CDriver::k_Select_Matrix_Projection );
 	m_driver->MatrixLoad( m_activeCamera->GetOrthographicMatrix() );
@@ -414,14 +414,14 @@ void CSimarian::On2D()
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::Off2D()
+void CEngine::Off2D()
 {
 	m_driver->EnableBatch2D( false );
 }
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::On3D()
+void CEngine::On3D()
 {
 	m_driver->SelectMatrix( CDriver::k_Select_Matrix_Projection );
 	m_driver->MatrixLoad( m_activeCamera->GetPerspectiveMatrix() );
@@ -437,20 +437,20 @@ void CSimarian::On3D()
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::Off3D()
+void CEngine::Off3D()
 {
 }
 
 // ----------------------------------------------------------------------//
 
-void  CSimarian::Print( CDriver* driver, s32 x, s32 y, const std::string &text )
+void  CEngine::Print( CDriver* driver, s32 x, s32 y, const std::string &text )
 {
 	m_font->DrawString( driver, x, y, text );	
 }
 
 // ----------------------------------------------------------------------//
 
-void  CSimarian::Print( CDriver* driver, s32 x, s32 y, char *format, ... )
+void  CEngine::Print( CDriver* driver, s32 x, s32 y, char *format, ... )
 {
 	static char buf[ CBatch2D::MaxQuads ];
 	
@@ -465,7 +465,7 @@ void  CSimarian::Print( CDriver* driver, s32 x, s32 y, char *format, ... )
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::ShowStats( CDriver* driver )
+void CEngine::ShowStats( CDriver* driver )
 {
 	static u64 lastTime = GetTime();
 	static u64 frameSum = 0;
@@ -507,14 +507,14 @@ void CSimarian::ShowStats( CDriver* driver )
 
 // ----------------------------------------------------------------------//
 
-void CSimarian::ToSquirrel()
+void CEngine::ToSquirrel()
 {
-	Sqrat::Class<CSimarian> CSimarian( m_vm->GetVM(), "CSimarian" );
+	Sqrat::Class<CEngine> CEngine( m_vm->GetVM(), "CEngine" );
 
-	CSimarian.Func("GetTime",			&CSimarian::GetTime);
-	CSimarian.Func("GetDeltaTime",		&CSimarian::GetDeltaTime);
+	CEngine.Func("GetTime",			&CEngine::GetTime);
+	CEngine.Func("GetDeltaTime",	&CEngine::GetDeltaTime);
 
-	m_vm->GetRootTable().SetInstance("simarian", this);
+	m_vm->GetRootTable().SetInstance("engine", this);
 }
 
 // ----------------------------------------------------------------------//

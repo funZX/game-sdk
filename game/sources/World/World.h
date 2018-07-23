@@ -1,7 +1,7 @@
 #ifndef __WORLD_H
 #define __WORLD_H
 
-#include <simarian.h>
+#include <engine.h>
 
 class CDebug;
 

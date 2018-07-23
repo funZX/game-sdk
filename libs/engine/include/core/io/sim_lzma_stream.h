@@ -19,7 +19,7 @@
 #ifndef __SIM_LZMA_STREAM_H
 #define __SIM_LZMA_STREAM_H
 
-#include <simarian.h>
+#include <engine.h>
 
 extern "C"
 {

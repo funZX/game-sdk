@@ -1,12 +1,12 @@
 #ifndef __GAME_H
 #define __GAME_H
 
-#include <simarian.h>
+#include <engine.h>
 
 class CWorld;
 class CWindow;
 
-class CGame : public CSimarian, public sim::stl::CSingleton<CGame>
+class CGame : public CEngine, public sim::stl::CSingleton<CGame>
 {
 	typedef std::map<std::string, rnr::CFont*>					TFontList;
 	typedef std::map<std::string, rnr::CFont*>::iterator		TFontListIter;

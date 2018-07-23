@@ -141,11 +141,11 @@ using namespace sim::mat;
 namespace sim
 {
 // ----------------------------------------------------------------------//
-class CSimarian : public sim::IUpdatable, public sim::IRenderable
+class CEngine : public sim::IUpdatable, public sim::IRenderable
 {
 public:
-	CSimarian();
-	virtual ~CSimarian();
+	CEngine();
+	virtual ~CEngine();
 	
 	inline CDriver*					GetDriver()		{ return m_driver; }
 	inline CSquirrel*				GetVM()			{ return m_vm; }

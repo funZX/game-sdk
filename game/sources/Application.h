@@ -1,7 +1,7 @@
 #ifndef __APPLICATION_H
 #define __APPLICATION_H
 
-#include <simarian.h>
+#include <engine.h>
 
 class CGame;
 
@@ -11,7 +11,7 @@ protected:
 	static const u32		MaxFps	= 60;
 	static const u32		MinDt	= 1000 / MaxFps;
 
-	CSimarian*				m_simarian;
+	CEngine*				m_engine;
 	CGame*					m_Game;
 
 	ALCdevice*				m_ALDevice;

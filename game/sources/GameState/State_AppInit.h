@@ -1,7 +1,7 @@
 #ifndef __STATE_APP_INIT_H
 #define __STATE_APP_INIT_H
 
-#include <simarian.h>
+#include <engine.h>
 
 class CState_AppInit : public IState
 {

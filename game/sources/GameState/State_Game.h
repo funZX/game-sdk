@@ -1,7 +1,7 @@
 #ifndef __STATE_GAME_H
 #define __STATE_GAME_H
 
-#include <simarian.h>
+#include <engine.h>
 
 class CState_Game : public IState
 {

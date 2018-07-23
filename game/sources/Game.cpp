@@ -21,12 +21,12 @@
 #include "Options.h"
 #include "Game.h"
 
-#include <simarian.h>
+#include <engine.h>
 
 TGlobal		O = {0};
 
 CGame::CGame( const std::string& fsDir )
-	: CSimarian()
+	: CEngine()
 {
 	m_fsDir				= fsDir;
 
@@ -64,7 +64,7 @@ const std::string CGame::GetFsLocation( const std::string& fs)
 
 void CGame::Update( f32 dt, void *userData )
 {
-	CSimarian::Update( dt, userData );
+	CEngine::Update( dt, userData );
 }
 
 void CGame::PointerDown( u32 x, u32 y )

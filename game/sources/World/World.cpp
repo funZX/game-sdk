@@ -52,7 +52,7 @@ void CWorld::Update( f32 dt, void *userData )
 
 	static CScript* script = m_fs->GetScript("dt/deltatime");
 
-	//script->Run();
+	script->Run();
 
 	//O.game->GetVM()->DebuggerStart();
 }
@@ -74,9 +74,9 @@ void CWorld::Render( CDriver *driver )
 
 void CWorld::Render2D(CDriver *driver)
 {
-#if SIM_DEBUG
+	#if SIM_DEBUG
 	m_debug->Render2D(driver);
-#endif
+	#endif
 }
 
 bool CWorld::Load()

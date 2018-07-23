@@ -19,7 +19,7 @@
 #ifndef __SIM_FILESYSTEM_H
 #define __SIM_FILESYSTEM_H
 
-#include <simarian.h>
+#include <engine.h>
 #include <jansson.h>
 
 namespace sim
@@ -100,7 +100,7 @@ class CFileSystem
 
 public:
 
-	CFileSystem( const std::string &filename, CSimarian* simarian );
+	CFileSystem( const std::string &filename, CEngine* simarian );
 	virtual ~CFileSystem();
 
 	// ------------------------------------------------------------------//

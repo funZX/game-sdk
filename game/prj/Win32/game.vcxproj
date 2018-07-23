@@ -82,13 +82,13 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\libs\dirent\include;..\..\..\libs\freetype\include;..\..\..\libs\jansson\include;..\..\..\libs\openal\include;..\..\..\libs\opengles\include;..\..\..\libs\pthread\include;..\..\..\libs\simarian\include;..\..\..\libs\squirrel\include;..\..\..\libs\expat\include;..\..\..\libs\bullet\sources;..\..\..\libs\lzma\include;..\..\..\libs\detour\include;..\..\..\libs\recast\include;..\..\..\libs\agg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\libs\dirent\include;..\..\..\libs\freetype\include;..\..\..\libs\jansson\include;..\..\..\libs\openal\include;..\..\..\libs\opengles\include;..\..\..\libs\pthread\include;..\..\..\libs\engine\include;..\..\..\libs\squirrel\include;..\..\..\libs\expat\include;..\..\..\libs\bullet\sources;..\..\..\libs\lzma\include;..\..\..\libs\detour\include;..\..\..\libs\recast\include;..\..\..\libs\agg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>winmm.lib;../../../libs/freetype/bin/Win32/Debug/freetype.lib;../../../libs/jansson/bin/Win32/Debug/jansson.lib;../../../libs/simarian/bin/Win32/Debug/simarian.lib;../../../libs/squirrel/bin/Win32/Debug/squirrel.lib;../../../libs/expat/bin/Win32/Debug/expat.lib;../../../libs/bullet/bin/Win32/Debug/bullet.lib;../../../libs/box2D/bin/Win32/Debug/box2D.lib;../../../libs/lzma/bin/Win32/Debug/lzma.lib;../../../libs/detour/bin/Win32/Debug/detour.lib;../../../libs/recast/bin/Win32/Debug/recast.lib;../../../libs/agg/bin/Win32/Debug/agg.lib;../../../libs/openal/bin/OpenAL32.lib;../../../libs/opengles/bin/libEGL.lib;../../../libs/opengles/bin/libGLESv2.lib;../../../libs/pthread/bin/pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;../../../libs/freetype/bin/Win32/Debug/freetype.lib;../../../libs/jansson/bin/Win32/Debug/jansson.lib;../../../libs/engine/bin/Win32/Debug/engine.lib;../../../libs/squirrel/bin/Win32/Debug/squirrel.lib;../../../libs/expat/bin/Win32/Debug/expat.lib;../../../libs/bullet/bin/Win32/Debug/bullet.lib;../../../libs/box2D/bin/Win32/Debug/box2D.lib;../../../libs/lzma/bin/Win32/Debug/lzma.lib;../../../libs/detour/bin/Win32/Debug/detour.lib;../../../libs/recast/bin/Win32/Debug/recast.lib;../../../libs/agg/bin/Win32/Debug/agg.lib;../../../libs/openal/bin/OpenAL32.lib;../../../libs/opengles/bin/libEGL.lib;../../../libs/opengles/bin/libGLESv2.lib;../../../libs/pthread/bin/pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -97,7 +97,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>..\..\..\libs\dirent\include;..\..\..\libs\freetype\include;..\..\..\libs\jansson\include;..\..\..\libs\openal\include;..\..\..\libs\opengles\include;..\..\..\libs\pthread\include;..\..\..\libs\simarian\include;..\..\..\libs\squirrel\include;..\..\..\libs\expat\include;..\..\..\libs\bullet\sources;..\..\..\libs\lzma\include;..\..\..\libs\detour\include;..\..\..\libs\recast\include;..\..\..\libs\agg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\libs\dirent\include;..\..\..\libs\freetype\include;..\..\..\libs\jansson\include;..\..\..\libs\openal\include;..\..\..\libs\opengles\include;..\..\..\libs\pthread\include;..\..\..\libs\engine\include;..\..\..\libs\squirrel\include;..\..\..\libs\expat\include;..\..\..\libs\bullet\sources;..\..\..\libs\lzma\include;..\..\..\libs\detour\include;..\..\..\libs\recast\include;..\..\..\libs\agg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <TargetMachine>MachineX86</TargetMachine>
@@ -105,7 +105,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>winmm.lib;../../../libs/freetype/bin/Win32/Release/freetype.lib;../../../libs/jansson/bin/Win32/Release/jansson.lib;../../../libs/simarian/bin/Win32/Release/simarian.lib;../../../libs/squirrel/bin/Win32/Release/squirrel.lib;../../../libs/expat/bin/Win32/Release/expat.lib;../../../libs/bullet/bin/Win32/Release/bullet.lib;../../../libs/box2D/bin/Win32/Release/box2D.lib;../../../libs/lzma/bin/Win32/Release/lzma.lib;../../../libs/detour/bin/Win32/Release/detour.lib;../../../libs/recast/bin/Win32/Release/recast.lib;../../../libs/agg/bin/Win32/Release/agg.lib;../../../libs/openal/bin/OpenAL32.lib;../../../libs/opengles/bin/libEGL.lib;../../../libs/opengles/bin/libGLESv2.lib;../../../libs/pthread/bin/pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;../../../libs/freetype/bin/Win32/Release/freetype.lib;../../../libs/jansson/bin/Win32/Release/jansson.lib;../../../libs/engine/bin/Win32/Release/engine.lib;../../../libs/squirrel/bin/Win32/Release/squirrel.lib;../../../libs/expat/bin/Win32/Release/expat.lib;../../../libs/bullet/bin/Win32/Release/bullet.lib;../../../libs/box2D/bin/Win32/Release/box2D.lib;../../../libs/lzma/bin/Win32/Release/lzma.lib;../../../libs/detour/bin/Win32/Release/detour.lib;../../../libs/recast/bin/Win32/Release/recast.lib;../../../libs/agg/bin/Win32/Release/agg.lib;../../../libs/openal/bin/OpenAL32.lib;../../../libs/opengles/bin/libEGL.lib;../../../libs/opengles/bin/libGLESv2.lib;../../../libs/pthread/bin/pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

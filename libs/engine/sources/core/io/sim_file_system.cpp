@@ -47,7 +47,7 @@ namespace io
 {
 // ----------------------------------------------------------------------//
 
-CFileSystem::CFileSystem( const std::string &filename, CSimarian* simarian )
+CFileSystem::CFileSystem( const std::string &filename, CEngine* simarian )
 {
 	m_filename		= filename;
 

@@ -1,7 +1,7 @@
 #ifndef __SIM2OPT_TRIANGLE_H
 #define __SIM2OPT_TRIANGLE_H
 
-#include <simarian.h>
+#include <engine.h>
 
 class Vertex;
 
