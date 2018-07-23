@@ -37,7 +37,7 @@ CGame::CGame( const std::string& fsDir )
 	O.canvas			= m_canvas;
 	O.camera			= m_camera;
 	
-	O.font.simarian		= m_font;
+	O.font.engine		= m_font;
 
 	m_world				= SIM_NEW CWorld();
 	m_world->SetVisible( false );

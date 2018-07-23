@@ -47,12 +47,12 @@ namespace io
 {
 // ----------------------------------------------------------------------//
 
-CFileSystem::CFileSystem( const std::string &filename, CEngine* simarian )
+CFileSystem::CFileSystem( const std::string &filename, CEngine* engine )
 {
 	m_filename		= filename;
 
-	m_driver		= simarian->GetDriver();
-	m_squirrel		= simarian->GetVM();
+	m_driver		= engine->GetDriver();
+	m_squirrel		= engine->GetVM();
 
 	m_lzmaStream	= SIM_NEW io::CLzmaStream(filename);
 	m_fontAtlas		= SIM_NEW CFontAtlas(m_filename);

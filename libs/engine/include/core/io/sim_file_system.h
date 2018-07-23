@@ -100,7 +100,7 @@ class CFileSystem
 
 public:
 
-	CFileSystem( const std::string &filename, CEngine* simarian );
+	CFileSystem( const std::string &filename, CEngine* engine );
 	virtual ~CFileSystem();
 
 	// ------------------------------------------------------------------//

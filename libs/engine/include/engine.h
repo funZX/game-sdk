@@ -16,8 +16,8 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SIM_SIMARIAN_H
-#define __SIM_SIMARIAN_H
+#ifndef __SIM_ENGINE_H
+#define __SIM_ENGINE_H
 
 //////////////////////////////////////////////////
 namespace sim
@@ -222,4 +222,4 @@ protected:
 // ----------------------------------------------------------------------//
 }; // namespace sim
 
-#endif // __SIM_SIMARIAN_H
+#endif // __SIM_ENGINE_H

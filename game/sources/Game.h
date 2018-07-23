@@ -46,7 +46,7 @@ typedef struct
 
 	struct
 	{
-		CFont*		simarian;
+		CFont*					engine;
 	} font;
 
 } TGlobal;

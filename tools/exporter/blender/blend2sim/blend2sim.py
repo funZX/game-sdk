@@ -11,9 +11,9 @@ if DEBUG:
 	import pydevd
 
 class Blend2Sim(bpy.types.Operator):
-    """Export selected objects to simarian engine format."""
-    bl_idname   = "object.export_simarian"
-    bl_label    = "Simarian"
+    """Export selected objects to SimEngine format."""
+    bl_idname   = "object.export_simengine"
+    bl_label    = "SimEngine"
     bl_options  = {'REGISTER'}
 
     directory   = StringProperty(name='Directory')
