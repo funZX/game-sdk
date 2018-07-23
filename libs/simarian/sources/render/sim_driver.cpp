@@ -80,11 +80,12 @@ CDriver::CDriver()
 	m_isNormalMatrixDirty	= true;
 	m_isActiveStackAlteringNormalMatrix = true;
 
+	m_isEnabledBatch2D = false;
+
     SIM_MEMSET( m_vertexAttributeInfo, 0, sizeof( m_vertexAttributeInfo ) );
 	SIM_MEMSET( m_lightParameters, 0, sizeof( m_lightParameters ) );
 
 	m_matrixSelect			= k_Select_Matrix_None;
-	m_batchSelect			= k_Select_Batch_None;
 	m_textureSelect         = k_Select_Texture_0;
 	m_lightSelect           = k_Select_Light_None;
 	m_faceSelect            = k_Select_Face_None;
@@ -553,17 +554,19 @@ CDriver::K_SELECT_MATRIX CDriver::SelectMatrix( K_SELECT_MATRIX matrixSelect )
 }
 
 // ----------------------------------------------------------------------//
-
-CDriver::K_SELECT_BATCH CDriver::SelectBatch( K_SELECT_BATCH batchSelect )
+bool CDriver::EnableBatch2D( bool isEnabled )
 {
-	K_SELECT_BATCH old = m_batchSelect;
+	bool wasBatchEnabled = m_isEnabledBatch2D;
 
-	if ( m_batchSelect != batchSelect )
+	if ( m_isEnabledBatch2D != isEnabled )
 	{
-		m_batchSelect = batchSelect;
+		m_isEnabledBatch2D = isEnabled;
+
+		if ( wasBatchEnabled )
+			Flush2D();
 	}
 
-	return old;
+	return wasBatchEnabled;
 }
 
 // ----------------------------------------------------------------------//
@@ -1024,61 +1027,53 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 	CMaterial* material			= vertexGroup->GetMaterial();
 	CVertexSource* vertexSource = vertexGroup->GetVertexSource();
 
-	switch ( m_batchSelect )
+	if ( m_isEnabledBatch2D )
 	{
-	case k_Select_Batch_None:
-	case k_Select_Batch_3D: // not yet implemented
+		s32 vboSize = vertexSource->GetVboSize();
+		f32* vboData = (f32*)vertexSource->GetVboData();
+		u32 vboStride = vertexSource->GetVertexStride();
+		u32 vtxSize = vboStride / sizeof(f32);
+
+		for (s32 q = 0; q < vboSize >> 2; q++)
 		{
-			static const K_RENDER_TYPE primitives [] = {
-				k_Render_Type_Lines,
-				k_Render_Type_LineStrip,
-				k_Render_Type_Points,
-				k_Render_Type_Triangles,
-				k_Render_Type_TriangleStrips
-			};
+			s32 qOff = (q << 2) * vtxSize;
 
-			SIM_ASSERT( vertexSource != NULL );
+			m_batch2D->AddQuad(
+				material,
+				&vboData[qOff + vtxSize * 0],
+				&vboData[qOff + vtxSize * 1],
+				&vboData[qOff + vtxSize * 2],
+				&vboData[qOff + vtxSize * 3]);
+		}
+	}
+	else
+	{
+		static const K_RENDER_TYPE primitives[] = {
+			k_Render_Type_Lines,
+			k_Render_Type_LineStrip,
+			k_Render_Type_Points,
+			k_Render_Type_Triangles,
+			k_Render_Type_TriangleStrips
+		};
 
-			material->Render( this );
-			effect->Render( this );
+		SIM_ASSERT(vertexSource != NULL);
 
-			if ( vertexSource != m_crtVertexSource )
-			{
-				effect->Bind( this, vertexSource );
+		material->Render(this);
+		effect->Render(this);
 
-				m_crtVertexSource	= vertexSource;
-			}
+		if (vertexSource != m_crtVertexSource)
+		{
+			effect->Bind(this, vertexSource);
 
-			m_drawCallCount += 1;
-			m_vertexCount	+= vertexGroup->GetVboSize();
-
-			K_RENDER_TYPE rt = primitives[ vertexSource->GetType() ];
-
-			glDrawElements( rt, vertexGroup->GetVboSize(), GL_UNSIGNED_SHORT, vertexGroup->GetVboData() );
-			break;
+			m_crtVertexSource = vertexSource;
 		}
 
-	case k_Select_Batch_2D:
-		{
-			s32 vboSize				= vertexSource->GetVboSize();
-			f32* vboData			= (f32*)vertexSource->GetVboData();
-			u32 vboStride			= vertexSource->GetVertexStride();
-			u32 vtxSize				= vboStride / sizeof( f32 );
+		m_drawCallCount += 1;
+		m_vertexCount += vertexGroup->GetVboSize();
 
-			for (s32 q = 0; q < vboSize >> 2; q++ )
-			{
-				s32 qOff = (q << 2) * vtxSize;
+		K_RENDER_TYPE rt = primitives[vertexSource->GetType()];
 
-				m_batch2D->AddQuad(
-					material,
-					&vboData[ qOff + vtxSize * 0 ],
-					&vboData[ qOff + vtxSize * 1 ],
-					&vboData[ qOff + vtxSize * 2 ],
-					&vboData[ qOff + vtxSize * 3 ] );
-			}
-			
-			break;
-		}
+		glDrawElements(rt, vertexGroup->GetVboSize(), GL_UNSIGNED_SHORT, vertexGroup->GetVboData());
 	}
 }
 

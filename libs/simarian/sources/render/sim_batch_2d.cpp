@@ -67,13 +67,14 @@ void CBatch2D::AddQuad( CMaterial *material, const f32* v0, const f32* v1, const
 {
 	CMaterial* crtMaterial = m_vertexGroup->GetMaterial();
 
-	if (material != crtMaterial || m_numQuads >= MaxQuads)
+	if ( material != crtMaterial || m_numQuads >= MaxQuads )
 	{
-		CDriver::K_SELECT_BATCH batchSelect =
-
-		m_driver->SelectBatch(CDriver::k_Select_Batch_None);
-		Render(m_driver);
-		m_driver->SelectBatch(batchSelect);
+		if ( m_numQuads > 0 )
+		{
+			m_driver->EnableBatch2D(false);
+			Render(m_driver);
+			m_driver->EnableBatch2D(true);
+		}
 
 		m_vertexGroup->SetMaterial(material);
 	}

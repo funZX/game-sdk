@@ -274,7 +274,7 @@ void CEffect::Bind( CDriver *driver, CVertexSource *vertexSource )
 		CVertexSource::K_VERTEX_ATTRIBUTE_SIZE attribSize		= crtAttrib->m_compSize;
 		CVertexSource::K_VERTEX_ATTRIBUTE_TYPE attribType		= crtAttrib->m_compType;
 
-#if 0
+#if SIM_DEBUG
 		s32 loc = glGetAttribLocation( m_iD, crtAttrib->m_name );
 		SIM_ASSERT( loc == -1 || loc == crtAttrib->m_location);
 #endif

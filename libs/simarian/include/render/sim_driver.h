@@ -109,17 +109,6 @@ public:
 
 	} K_SELECT_FOG;
 	// ------------------------------------------------------------------//
-	typedef enum
-	{
-		k_Select_Batch_None = -1,
-
-		k_Select_Batch_2D,
-		k_Select_Batch_3D,
-
-		k_Select_Batch_Count
-
-	} K_SELECT_BATCH;
-	// ------------------------------------------------------------------//
 	
 	typedef enum
 	{
@@ -202,8 +191,7 @@ public:
 	K_SELECT_LIGHT				SelectLight( K_SELECT_LIGHT lightSelect );
 	K_SELECT_FACE				SelectFace( K_SELECT_FACE faceSelect );
 	K_SELECT_MATRIX				SelectMatrix( K_SELECT_MATRIX matrixSelect );
-	K_SELECT_BATCH				SelectBatch( K_SELECT_BATCH batchSelect );
-
+	
 	u32							BindTexture ( u32 tex );
 	CRenderTexture*				BindRenderTexture( CRenderTexture* framebuffer );
 
@@ -215,6 +203,7 @@ public:
 	void						EnableBlendFunc( u32 equation, u32 src, u32 dst );
 	void						EnableDepthFunc(const TDepthFunc* blendfunc);
 	void						EnableDepthFunc(u32 equation);
+	bool						EnableBatch2D( bool isEnabled);
 
 	void						Tick( const f32 dt );
 	inline f32				    GetTimer()		{ return m_timer; }
@@ -368,7 +357,7 @@ protected:
 	// ------------------------------------------------------------------//
 
 	CBatch2D*					m_batch2D;
-	K_SELECT_BATCH				m_batchSelect;
+	bool						m_isEnabledBatch2D;
 
 	TMatrix4Stack				m_worldStack;
 	TMatrix4Stack				m_viewStack;

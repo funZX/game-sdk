@@ -66,6 +66,7 @@ public:
 	inline CTexture*			GetTexture( u32 channel )	{ return m_textures[ channel ]; }
 	inline void					SetTexture( CTexture *tex, u32 channel ) { m_textures[ channel ] = tex; }
 
+	inline void					CopyTechnique( TTechnique* technique ) { SIM_MEMCPY(technique, &m_technique, sizeof(m_technique)); }
 	inline TTechnique*			GetTechnique() { return &m_technique; }
 	inline void					SetTechnique( const TTechnique* technique ) { SIM_MEMCPY( &m_technique, technique, sizeof(m_technique)); }
 

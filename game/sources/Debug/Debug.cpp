@@ -34,13 +34,13 @@ CDebug::CDebug( CFileSystem* fs )
 
 	m_fs			= fs;
 
-	m_framebuffer	= SIM_NEW CRenderTexture("Debug_FrameBuffer");
-	m_framebuffer->Generate( 400, 300 );
+	m_rendertexture = SIM_NEW CRenderTexture("Debug_FrameBuffer");
+	m_rendertexture->Generate( 400, 300 );
 }
 
 CDebug::~CDebug()
 {
-	SIM_SAFE_DELETE( m_framebuffer );
+	SIM_SAFE_DELETE(m_rendertexture);
 	SIM_SAFE_DELETE( m_debugLight );
 
 	m_debugSphere	= gluDelSphere( m_debugSphere );
@@ -72,7 +72,7 @@ void CDebug::Render( CDriver *driver )
 	CCamera cam("");
 	CRect2D r;
 
-	r.Bound(0, 0, m_framebuffer->GetWidth(), m_framebuffer->GetHeight());
+	r.Bound(0, 0, m_rendertexture->GetWidth(), m_rendertexture->GetHeight());
 	cam.SetPerspective(&r);
 
 	O.game->SetCamera(&cam);
@@ -83,7 +83,7 @@ void CDebug::Render( CDriver *driver )
 		driver->MatrixRotateY(dr * 60.0f);
 		
 		fb = 
-		driver->BindRenderTexture(m_framebuffer);
+		driver->BindRenderTexture(m_rendertexture);
 		mesh->Render(driver);
 		driver->MatrixPop();
 
@@ -111,29 +111,33 @@ void CDebug::Render2D(CDriver *driver)
 	static CEffect* effect = m_fs->GetEffect("color/fill_color_texture_color");
 	static CRect2D texRect(0, 0, 1, 1);
 
-	static CMaterial m("");
+	CMaterial m("");
 	CRect2D r("");
 
 	r.SetMaterial(&m);
 
-	CDriver::K_SELECT_BATCH batchSelect =
-		driver->SelectBatch(CDriver::k_Select_Batch_None);
-
-	m.SetEffect(effect);
-	m.SetTexture(m_framebuffer, 0);
-
-	r.Bound(10.0f, 30.0f, 150.0f, 150.0f);
-	r.Transform(CRect2D::k_Transform_FlipVer || CRect2D::k_Transform_FlipHor);
-	r.Render(driver, &texRect);
-
-	driver->SelectBatch(batchSelect);
-
 	m.SetEffect(fill);
 	m.SetTexture(0, 0);
 	
-	r.Transform(CRect2D::k_Transform_FlipVer || CRect2D::k_Transform_FlipHor);
-	r.Zoom(6.0f, 6.0f);
-	//r.Render(driver, &texRect);
+	r.Bound(10.0f, 30.0f, 150.0f, 150.0f);
+	r.Render(driver, &texRect);
+
+	bool isBatchEnabled =
+	driver->EnableBatch2D(false);
+
+	CEffect::TTechnique techique;
+	effect->CopyTechnique( &techique );
+	effect->m_technique.depthtest = false;
+
+	m.SetEffect(effect);
+	m.SetTexture(m_rendertexture, 0);
+	r.Zoom(-6.0f, -6.0f);
+	
+	r.Transform(CRect2D::k_Transform_Flip);
+	r.Render(driver, &texRect);
+
+	effect->SetTechnique(&techique);
+	driver->EnableBatch2D(isBatchEnabled);
 }
 
  void CDebug::drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor)
