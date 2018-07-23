@@ -51,6 +51,7 @@ class CMesh: public IRenderable
 {
 public:
 	CMesh( const std::string &name );
+	CMesh(const std::string &name, io::CFileSystem* fs);
 	virtual ~CMesh();
 
 	// ------------------------------------------------------------------//
@@ -72,7 +73,8 @@ public:
 	void							Load( io::CMemStream* ms );
 	void							Save( io::CMemStream* ms );
 
-	void							BindMaterial( io::CFileSystem* fs );
+	void							BindMaterial();
+	CMaterial*						BindMaterial( CMaterial* material );
 	// ------------------------------------------------------------------//
 
 public:
@@ -89,6 +91,8 @@ protected:
 	TVec3							m_box;
 	TVec3							m_center;
 	f32					            m_radius;
+
+	io::CFileSystem*				m_fs;
 	// ------------------------------------------------------------------//
 };
 

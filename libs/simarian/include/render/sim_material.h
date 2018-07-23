@@ -36,6 +36,7 @@ class CEffect;
 class CMaterial : public IUpdatable, public IRenderable
 {
 public:
+	CMaterial();
 	CMaterial( const std::string &name );
 	virtual ~CMaterial();
 

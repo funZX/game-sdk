@@ -26,10 +26,8 @@ namespace sim
 {
 // ----------------------------------------------------------------------//
 
-CMaterial::CMaterial( const std::string &name )
+CMaterial::CMaterial()
 {
-	m_name = name;
-
 	Vec4ToOne( &m_ambient );
 	Vec4ToOne( &m_diffuse );
 	Vec4ToOne( &m_specular );
@@ -40,7 +38,13 @@ CMaterial::CMaterial( const std::string &name )
 
 	SIM_MEMSET( m_textures, 0, sizeof( m_textures ) );
 }
+// ----------------------------------------------------------------------//
 
+CMaterial::CMaterial( const std::string &name )
+	: CMaterial()
+{
+	m_name = name;
+}
 // ----------------------------------------------------------------------//
 
 CMaterial::~CMaterial()

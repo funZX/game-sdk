@@ -49,19 +49,13 @@ CDebug::~CDebug()
 
 void CDebug::Render( CDriver *driver )
 {
-	static CMesh* mesh = m_fs->GetMesh( "melonman/melonman" );
-	static CLight light("static_light");
-
-	TVec3 pos;
-	Vec3Set(&pos, 0.0f, 2.0f, -0.f);
-	light.SetPosition(&pos);
-
+	static CMesh* mesh = m_fs->GetMesh("melonman/melonman");
 	f32 dr = driver->GetTimerRot();
 
 	driver->MatrixPush();
 	{
+		driver->MatrixTranslateX( 0.3f );
 		driver->MatrixTranslateZ(-4.0f);
-		driver->MatrixTranslateX(0.3f);
 		mesh->Render(driver);
 	}
 	driver->MatrixPop();

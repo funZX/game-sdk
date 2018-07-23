@@ -152,13 +152,20 @@ void CWidget::PointerUp( u32 x, u32 y )
 	p.m_loParam = x;
 	p.m_hiParam = y;
 }
+// ----------------------------------------------------------------------//
 
-void CWidget::Render( CDriver *driver, TMatrix4* transform)
+void CWidget::Update( f32 dt, void *userData )
+{
+}
+
+// ----------------------------------------------------------------------//
+
+void CWidget::Render( CDriver *driver )
 {
 	std::map< CWidget*, CWidget* >::iterator c = m_childs.begin();
 
 	while( c != m_childs.end() )
-		c->second->Render( driver, transform);
+		c->second->Render( driver );
 }
 
 // ----------------------------------------------------------------------//

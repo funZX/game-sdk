@@ -724,7 +724,7 @@ bool CFileSystem::LoadMesh(const json_t* jsonRoot, s32 index)
 	std::string name	= json_string_value( json_object_get( jsonValue, "name" ) );
 	std::string file	= json_string_value( json_object_get( jsonValue, "file" ) );
 
-	CMesh* mesh			= SIM_NEW CMesh( name );
+	CMesh* mesh			= SIM_NEW CMesh( name, this );
 
 	u32 offset = 0;
 	m_lzmaStream->OpenFile( file, &m_buffer, &offset, &m_bufferSize );
@@ -732,7 +732,7 @@ bool CFileSystem::LoadMesh(const json_t* jsonRoot, s32 index)
 	CMemStream ms( &m_buffer[ offset ], m_bufferSize );
 	
 	mesh->Load( &ms );
-	mesh->BindMaterial( this );
+	mesh->BindMaterial();
 
 	m_lzmaStream->CloseFile( &m_buffer );
 

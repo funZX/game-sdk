@@ -42,6 +42,16 @@ CMesh::CMesh( const std::string &name )
 	Vec3ToZero( &m_box );
 	Vec3ToZero( &m_center );
 	m_radius			= 1.0f;
+
+	m_fs				= NULL;
+}
+
+// ----------------------------------------------------------------------//
+
+CMesh::CMesh(const std::string &name, io::CFileSystem* fs)
+	: CMesh( name )
+{
+	m_fs = fs;
 }
 
 // ----------------------------------------------------------------------//
@@ -141,9 +151,20 @@ void CMesh::Save( io::CMemStream* ms )
 
 // ----------------------------------------------------------------------//
 
-void CMesh::BindMaterial( io::CFileSystem* fs )
+void CMesh::BindMaterial()
 {
-	m_vertexGroup->SetMaterial( fs->GetMaterial( m_material ) );
+	m_vertexGroup->SetMaterial( m_fs->GetMaterial( m_material ) );
+}
+
+// ----------------------------------------------------------------------//
+
+CMaterial* CMesh::BindMaterial( CMaterial* material )
+{
+	CMaterial* oldMaterial = m_vertexGroup->GetMaterial();
+
+	m_vertexGroup->SetMaterial( material );
+
+	return oldMaterial;
 }
 
 // ----------------------------------------------------------------------//

@@ -19,6 +19,7 @@
 #ifndef __SIM_WIDGET_H
 #define __SIM_WIDGET_H
 
+#include <core/sim_interfaces.h>
 #include <render/sim_render.h>
 #include <render/sim_rect_2d.h>
 
@@ -28,7 +29,7 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CWidget : public CRect2D
+class CWidget : public CRect2D, IRenderable, IUpdatable
 {
 public:
 	CWidget( const std::string& name );
@@ -66,7 +67,8 @@ public:
 	void						RemoveAllChilds( void );
 	void						DeleteAllChilds( void );
 
-    virtual void				Render( CDriver *driver, TMatrix4* transform );
+	virtual void				Update(f32 dt, void *userData);
+    virtual void				Render( CDriver *driver );
 
 	virtual void				PointerDown( u32 x, u32 y ) = 0;
 	virtual void				PointerDrag( u32 x, u32 y ) = 0;

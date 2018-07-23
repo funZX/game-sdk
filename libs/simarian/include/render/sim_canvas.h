@@ -36,15 +36,15 @@ namespace rnr
 
 class CCamera;
 
-class CCanvas : public CWidget, IRenderable, IUpdatable
+class CCanvas : public CWidget
 {
 public:
 	CCanvas( const std::string& name );
 	virtual ~CCanvas();
 	// ------------------------------------------------------------------//
 	void				Resize( f32 width, f32 height );
-	void				Update( f32 dt, void *userData );
-	void				Render( CDriver* driver );
+	virtual void		Update( f32 dt, void *userData );
+	virtual void		Render( CDriver* driver );
 
 	virtual void		PointerDown( u32 x, u32 y );
 	virtual void		PointerDrag( u32 x, u32 y );
