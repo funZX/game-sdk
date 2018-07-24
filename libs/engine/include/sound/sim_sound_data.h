@@ -21,32 +21,32 @@
 
 #include <OpenAL/al.h>
 
+#include <core/sim_interfaces.h>
 #include <core/sim_core.h>
 
 namespace sim
 {
+namespace io { class CMemStream; }
 namespace snd
 {
 // ----------------------------------------------------------------------//
 
-class CSoundData
+class CSoundData : public IEngineItem
 {
 protected:	
-	std::string		m_name;
 	ALuint			m_ID;
 	
 public:
+	CSoundData();
 	CSoundData( const std::string &name );
 	virtual		~CSoundData();
 
-	static u8*	            LoadWAV( const std::string &fileName, ALenum *format, u32 *size, u32 *rate );
+	static u8*	            LoadWAV( io::CMemStream*, ALenum *format, u32 *size, u32 *rate );
 
 	u32						Generate( u8 *buf, ALenum format, u32 size, u32 rate );
-	u32						Generate();
+	u32						Generate( io::CMemStream* );
 	
 	ALuint					GetID() { return m_ID; }
-
-	const std::string&		GetName() { return m_name; }	
 };
 
 // ----------------------------------------------------------------------//

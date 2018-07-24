@@ -16,6 +16,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <core/io/sim_mem_stream.h>
 #include <render/sim_texture.h>
 
 namespace sim
@@ -24,9 +25,8 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CTexture::CTexture( const std::string &name )
+CTexture::CTexture()
 {
-	m_name		= name;
 	m_iD		= 0;
 
 	m_wrap		= k_Wrap_Default;
@@ -37,6 +37,14 @@ CTexture::CTexture( const std::string &name )
 	m_bits		= 0;
 	m_width		= 0;
 	m_height	= 0;
+}
+
+// ----------------------------------------------------------------------//
+
+CTexture::CTexture( const std::string &name )
+	: CTexture()
+{
+	m_name = name;
 }
 
 // ----------------------------------------------------------------------//

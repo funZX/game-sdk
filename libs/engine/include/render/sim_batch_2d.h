@@ -37,11 +37,12 @@ class CDriver;
 class CVertexSource;
 class CVertexGroup;
 
-class CBatch2D : public IRenderable
+class CBatch2D : public IRenderable, public IEngineItem
 {
 	friend class CVertexGroup;
 
 public:
+	CBatch2D( CDriver *driver );
 	CBatch2D( const std::string& name, CDriver *driver );
 	virtual ~CBatch2D();
 
@@ -52,8 +53,6 @@ public:
 
 	CVertexGroup*				GetVertexGroup()	{ return m_vertexGroup; }
 	// ------------------------------------------------------------------//
-	const std::string&			GetName()			{ return m_name; }
-	// ------------------------------------------------------------------//
 	static const int			MaxQuads = 4096;
 
 protected:
@@ -61,8 +60,6 @@ protected:
 	// ------------------------------------------------------------------//
 	void 						AllocateQuads( s32 numQuads );
 	// ------------------------------------------------------------------//
-
-	std::string					m_name;
 
 	CVertexGroup*				m_vertexGroup;
 	s32 						m_numQuads;

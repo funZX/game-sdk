@@ -42,17 +42,15 @@ class CTexture;
 class CVertexSource;
 class CVertexGroup;
 
-class CSkyBox : public IRenderable
+class CSkyBox : public IRenderable, public IEngineItem
 {
 public:
 	// ------------------------------------------------------------------//
-
+	CSkyBox();
 	CSkyBox( const std::string &name );
 	virtual ~CSkyBox();
 
 	// ------------------------------------------------------------------//
-	inline const std::string&			GetName()			{ return m_name; }
-
 	virtual void						Render( CDriver *driver );
 
 	void								Generate( f32 size, 
@@ -67,8 +65,6 @@ protected:
 	// ------------------------------------------------------------------//
 	void								InitEffect();
 	// ------------------------------------------------------------------//
-	std::string							m_name;
-
 	CVertexGroup*						m_vertexGroup;
 	CMaterial*							m_material;
 	CCubeTexture*						m_texture;

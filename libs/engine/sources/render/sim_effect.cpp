@@ -27,9 +27,8 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CEffect::CEffect( std::string name )
+CEffect::CEffect()
 {
-	m_name				= name;
 	m_iD				= glCreateProgram();
 
 	m_uniforms			= NULL;
@@ -61,6 +60,14 @@ CEffect::CEffect( std::string name )
 	m_technique.blendfunc.dst			= GL_ONE_MINUS_SRC_ALPHA;
 
 	m_technique.depthfunc.equation		= GL_LESS;
+}
+
+// ----------------------------------------------------------------------//
+
+CEffect::CEffect( std::string name )
+	: CEffect()
+{
+	m_name = name;
 }
 
 // ----------------------------------------------------------------------//

@@ -29,16 +29,21 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CBoneAnimation::CBoneAnimation( const std::string &name )
+CBoneAnimation::CBoneAnimation()
 {
-	m_name			= name;
-
 	m_hierarchy		= NULL;
 
 	m_nFrames		= 0;
 	m_frames		= NULL;
 
 	m_fps			= 25;
+}
+// ----------------------------------------------------------------------//
+
+CBoneAnimation::CBoneAnimation( const std::string &name )
+	: CBoneAnimation()
+{
+	m_name = name;
 }
 
 // ----------------------------------------------------------------------//

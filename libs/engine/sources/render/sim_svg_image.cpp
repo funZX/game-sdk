@@ -16,17 +16,10 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SIM_CANVAS_H
-#define __SIM_CANVAS_H
+#include <core/io/sim_mem_stream.h>
 
-#include <core/sim_singleton.h>
-#include <core/sim_interfaces.h>
-
-#include <render/sim_render.h>
-#include <render/sim_widget.h>
-
-#include <math/sim_vec2.h>
-#include <math/sim_vec3.h>
+#include <render/sim_svg_image.h>
+#include <render/sim_driver.h>
 
 namespace sim
 {
@@ -34,32 +27,33 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CCamera;
-
-class CCanvas : public CWidget
+CSvgImage::CSvgImage()
 {
-public:
-	CCanvas();
-	CCanvas( const std::string& name );
-	virtual ~CCanvas();
-	// ------------------------------------------------------------------//
-	void				Resize( f32 width, f32 height );
-	virtual void		Update( f32 dt, void *userData );
-	virtual void		Render( CDriver* driver );
 
-	virtual void		PointerDown( u32 x, u32 y );
-	virtual void		PointerDrag( u32 x, u32 y );
-	virtual void		PointerUp( u32 x, u32 y );
+}
 
-	virtual void		ClearEvents();
-	// ------------------------------------------------------------------//
-protected:
+// ----------------------------------------------------------------------//
 
-	// ------------------------------------------------------------------//
-};
+CSvgImage::CSvgImage( const std::string &name )
+	: CSvgImage()
+{
+	m_name = name;
+}
+
+// ----------------------------------------------------------------------//
+
+CSvgImage::~CSvgImage()
+{
+
+}
+
+// ----------------------------------------------------------------------//
+
+void CSvgImage::Load( io::CMemStream* ms )
+{
+
+}
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
-#endif // __SIM_CANVAS_H
-

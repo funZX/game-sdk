@@ -31,8 +31,7 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CWidgetLabel::CWidgetLabel( const std::string& name )
-	:CWidget( name )
+CWidgetLabel::CWidgetLabel()
 {
 	m_font			= NULL;
 	m_sprite		= NULL;
@@ -40,16 +39,15 @@ CWidgetLabel::CWidgetLabel( const std::string& name )
 
 	SetEnabled( false );
 }
+// ----------------------------------------------------------------------//
 
+CWidgetLabel::CWidgetLabel(const std::string& name)
+	:CWidget(name)
+{
+}
 // ----------------------------------------------------------------------//
 
 CWidgetLabel::~CWidgetLabel()
-{
-}
-
-// ----------------------------------------------------------------------//
-
-void CWidgetLabel::Update( u32 dt, void *userData )
 {
 }
 
@@ -68,39 +66,6 @@ void CWidgetLabel::Render( CDriver *driver )
 
 		m_font->DrawString( driver, x, y, m_string );
 	}
-}
-
-// ----------------------------------------------------------------------//
-
-void CWidgetLabel::PointerDown( u32 x, u32 y )
-{
-	f32 px = (f32) x;
-	f32 py = (f32) y;
-
-	if( IsInside( px, py ) ) 
-		CWidget::PointerDown( x, y );
-}
-
-// ----------------------------------------------------------------------//
-
-void CWidgetLabel::PointerUp( u32 x, u32 y )
-{
-	f32 px = (f32) x;
-	f32 py = (f32) y;
-
-	if( IsInside( px, py ) )
-		CWidget::PointerUp( x, y );
-}
-
-// ----------------------------------------------------------------------//
-
-void CWidgetLabel::PointerDrag( u32 x, u32 y )
-{
-	f32 px = (f32) x;
-	f32 py = (f32) y;
-
-	if( IsInside( px, py ) )
-		CWidget::PointerDrag( x, y );
 }
 
 // ----------------------------------------------------------------------//

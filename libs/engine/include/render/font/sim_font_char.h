@@ -37,7 +37,7 @@ class CDriver;
 class CFontChar
 {
 public:
-	CFontChar( const std::string& name );
+	CFontChar();
 	virtual ~CFontChar();
 	// ------------------------------------------------------------------//
 	inline void 			SetXY(s32 x, s32 y)
@@ -69,14 +69,10 @@ public:
 
 	void					Draw( CDriver* driver, CMaterial* material, s32 x, s32 y );
 	// ------------------------------------------------------------------//
-	const std::string&		GetName()		{ return m_name; }
-	// ------------------------------------------------------------------//
 
 protected:
 
 	// ------------------------------------------------------------------//
-	std::string				m_name;
-
 	s32						m_x;
 	s32						m_y;
 	s32						m_width;

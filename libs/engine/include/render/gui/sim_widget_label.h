@@ -34,20 +34,15 @@ class CFont;
 class CWidgetLabel: public CWidget
 {
 public:
-
+	CWidgetLabel();
 	CWidgetLabel( const std::string& name );
 	virtual ~CWidgetLabel();
 	// ------------------------------------------------------------------//
-	void				Update( u32 dt, void *userData );
 	void				Render( CDriver *driver );
 
 	void				SetString( std::string str ) { m_string.clear(); m_string = str; }
 	void				SetFont( CFont *font ) { m_font = font; }
 	void				SetSprite( CSprite *sprite, s32 frame ) { m_sprite = sprite; m_frame = frame; }
-
-	virtual void		PointerDown( u32 x, u32 y );
-	virtual void		PointerDrag( u32 x, u32 y );
-	virtual void		PointerUp( u32 x, u32 y );
 	// ------------------------------------------------------------------//
 
 protected:

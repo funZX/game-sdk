@@ -41,10 +41,8 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CFontAtlas::CFontAtlas( const std::string &name )
+CFontAtlas::CFontAtlas()
 {
-	m_name			= name;
-
 	m_useKerning 	= false;
 	m_library 		= NULL;
 
@@ -53,6 +51,13 @@ CFontAtlas::CFontAtlas( const std::string &name )
 	m_texture		= NULL;
 }
 
+// ----------------------------------------------------------------------//
+
+CFontAtlas::CFontAtlas( const std::string &name ) 
+	: CFontAtlas()
+{
+	m_name = name;
+}
 // ----------------------------------------------------------------------//
 
 CFontAtlas::~CFontAtlas()
@@ -141,7 +146,7 @@ CFont* CFontAtlas::AddFont( const std::string &name, u8* memfile, s32 memsize, s
 
 				s8 n[2]; n[ 0 ] = c; n[ 1 ] = '\0';
 				std::string name( ( char* ) &n[0] );
-				fontChar = SIM_NEW CFontChar( name );
+				fontChar = SIM_NEW CFontChar();
 
 				// all metrics dimensions are multiplied by 64, so we have to divide by 64
 				height = face->glyph->metrics.height >> 6;

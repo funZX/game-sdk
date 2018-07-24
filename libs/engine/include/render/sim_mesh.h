@@ -47,16 +47,15 @@ class CVertexGroup;
 class CFileStream;
 class CVertexSource;
 
-class CMesh: public IRenderable
+class CMesh: public IRenderable, public IEngineItem
 {
 public:
+	CMesh();
 	CMesh( const std::string &name );
 	CMesh(const std::string &name, io::CFileSystem* fs);
 	virtual ~CMesh();
 
 	// ------------------------------------------------------------------//
-
-	inline const std::string&		GetName()	const { return m_name; }
 
 	inline void						SetBox( const TVec3* box)					{ Vec3Copy( &m_box, box ); }
 	inline const TVec3*				GetBox() const								{ return &m_box; }
@@ -86,8 +85,6 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	std::string						m_name;
-
 	TVec3							m_box;
 	TVec3							m_center;
 	f32					            m_radius;

@@ -26,11 +26,17 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CCanvas::CCanvas( const std::string& name) 
-	: CWidget( name )
+CCanvas::CCanvas() 
+	: CWidget()
 {
 }
 
+// ----------------------------------------------------------------------//
+
+CCanvas::CCanvas( const std::string& name )
+	: CWidget(name)
+{
+}
 // ----------------------------------------------------------------------//
 
 CCanvas::~CCanvas()

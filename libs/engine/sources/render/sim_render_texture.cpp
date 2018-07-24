@@ -25,15 +25,21 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CRenderTexture::CRenderTexture( const std::string &name )
-	: CTexture( name )
+CRenderTexture::CRenderTexture()
+	: CTexture()
 {
-	m_name			= name;
-	
 	m_type			= k_Type_RGB;
 	m_format		= k_Format_RGB;
 
 	m_bufferiD		= 0;
+}
+
+// ----------------------------------------------------------------------//
+
+CRenderTexture::CRenderTexture( const std::string &name )
+	: CTexture( name )
+{
+
 }
 
 // ----------------------------------------------------------------------//

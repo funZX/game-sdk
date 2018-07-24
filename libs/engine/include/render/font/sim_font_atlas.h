@@ -19,6 +19,7 @@
 #ifndef __SIM_FONT_ATLAS_H
 #define __SIM_FONT_ATLAS_H
 
+#include <core/sim_interfaces.h>
 #include <render/sim_render.h>
 
 struct FT_LibraryRec_;
@@ -37,12 +38,13 @@ class CTexture;
 class CEffect;
 class CBatch2D;
 
-class CFontAtlas
+class CFontAtlas : public IEngineItem
 {
 public:
+	CFontAtlas();
 	CFontAtlas( const std::string &name );
 	virtual ~CFontAtlas();
-	// ------------------------------------------------------------------//
+	// ---------------------------------------------------m---------------//
 	CFont*								AddFont( const std::string &name, u8* memfile, s32 memsize, s32 size, const char* szLetters );
 	void								Create();
 
@@ -60,8 +62,6 @@ protected:
 	bool								BinPack( s32 width, s32 height );
 	void								ReleaseLibrary();
 	// ------------------------------------------------------------------//
-
-	std::string							m_name;
 
 	CMaterial*							m_material;
 	CEffect*							m_effect;

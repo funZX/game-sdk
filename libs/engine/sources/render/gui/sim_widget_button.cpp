@@ -31,8 +31,8 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CWidgetButton::CWidgetButton( const std::string& name )
-	: CWidget( name )
+CWidgetButton::CWidgetButton()
+	: CWidget()
 {
 	m_sprite	= NULL;
 	m_frameUp	= -1;
@@ -41,6 +41,13 @@ CWidgetButton::CWidgetButton( const std::string& name )
 	m_font		= NULL;
 
 	m_isPressed = false;
+}
+
+// ----------------------------------------------------------------------//
+
+CWidgetButton::CWidgetButton( const std::string& name )
+	: CWidget( name )
+{
 }
 
 // ----------------------------------------------------------------------//

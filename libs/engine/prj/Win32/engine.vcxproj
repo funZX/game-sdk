@@ -41,6 +41,7 @@
     <ClCompile Include="..\..\sources\render\font\sim_font_node.cpp" />
     <ClCompile Include="..\..\sources\render\gui\sim_widget_button.cpp" />
     <ClCompile Include="..\..\sources\render\gui\sim_widget_label.cpp" />
+    <ClCompile Include="..\..\sources\render\gui\sim_widget_svg.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_actor.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_camera.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_light.cpp" />
@@ -61,6 +62,7 @@
     <ClCompile Include="..\..\sources\render\sim_shader.cpp" />
     <ClCompile Include="..\..\sources\render\sim_cube_texture.cpp" />
     <ClCompile Include="..\..\sources\render\sim_sprite.cpp" />
+    <ClCompile Include="..\..\sources\render\sim_svg_image.cpp" />
     <ClCompile Include="..\..\sources\render\sim_texture.cpp" />
     <ClCompile Include="..\..\sources\render\sim_vertex_group.cpp" />
     <ClCompile Include="..\..\sources\render\sim_vertex_source.cpp" />
@@ -118,6 +120,7 @@
     <ClInclude Include="..\..\include\render\font\sim_font_node.h" />
     <ClInclude Include="..\..\include\render\gui\sim_widget_button.h" />
     <ClInclude Include="..\..\include\render\gui\sim_widget_label.h" />
+    <ClInclude Include="..\..\include\render\gui\sim_widget_svg.h" />
     <ClInclude Include="..\..\include\render\scene\sim_actor.h" />
     <ClInclude Include="..\..\include\render\scene\sim_camera.h" />
     <ClInclude Include="..\..\include\render\scene\sim_light.h" />
@@ -138,6 +141,7 @@
     <ClInclude Include="..\..\include\render\sim_shader.h" />
     <ClInclude Include="..\..\include\render\sim_cube_texture.h" />
     <ClInclude Include="..\..\include\render\sim_sprite.h" />
+    <ClInclude Include="..\..\include\render\sim_svg_image.h" />
     <ClInclude Include="..\..\include\render\sim_texture.h" />
     <ClInclude Include="..\..\include\render\sim_vertex_group.h" />
     <ClInclude Include="..\..\include\render\sim_vertex_source.h" />

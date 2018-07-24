@@ -38,6 +38,14 @@ CSoundSource::CSoundSource()
 
 // ----------------------------------------------------------------------//
 
+CSoundSource::CSoundSource( const std::string& name )
+	: CSoundSource()
+{
+	m_name = name;
+}
+
+// ----------------------------------------------------------------------//
+
 CSoundSource::~CSoundSource()
 {
 	alSourceStop( m_ID );

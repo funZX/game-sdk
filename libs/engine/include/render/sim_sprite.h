@@ -19,6 +19,8 @@
 #ifndef __SIM_SPRITE_H
 #define __SIM_SPRITE_H
 
+#include <core/sim_interfaces.h>
+
 #include <render/sim_render.h>
 #include <render/sim_material.h>
 #include <render/sim_texture.h>
@@ -33,11 +35,12 @@ namespace rnr
 class CWidget;
 class CDriver;
 
-class CSprite
+class CSprite : public IEngineItem
 {
 public:
 	// ------------------------------------------------------------------//
-								CSprite();
+	CSprite();
+	CSprite( const std::string& name );
 	// ------------------------------------------------------------------//
 	void						SetMaterial( CMaterial *mtl ) { m_material = mtl; }
 	CMaterial*					GetMaterial() { return m_material; }

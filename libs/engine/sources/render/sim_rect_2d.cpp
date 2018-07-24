@@ -28,6 +28,11 @@ namespace sim
 namespace rnr
 {
 // ----------------------------------------------------------------------//
+CRect2D				OneSizeRectStatic( 0.0f, 0.0f, 1.0f, 1.0f );
+CRect2D				OneSizeRectFlipStatic( 1.0f, 1.0f, -1.0f, -1.0f );
+const CRect2D*		CRect2D::OneSizeRect		= &OneSizeRectStatic;
+const CRect2D*		CRect2D::OneSizeRectFlip	= &OneSizeRectFlipStatic;
+// ----------------------------------------------------------------------//
 CRect2D::CRect2D()
 {
 	Vec2ToZero(&m_position);
@@ -40,7 +45,7 @@ CRect2D::CRect2D()
 CRect2D::CRect2D( const std::string& name )
 	: CRect2D()
 {
-	m_name		= name;
+	m_name = name;
 }
 // ----------------------------------------------------------------------//
 
@@ -54,42 +59,42 @@ CRect2D::CRect2D(f32 x, f32 y, f32 width, f32 height)
 }
 // ----------------------------------------------------------------------//
 
-f32	CRect2D::Left( void )
+f32	CRect2D::Left( void ) const
 {
 	return m_position.x;
 }
 
 // ----------------------------------------------------------------------//
 
-f32 CRect2D::Right( void )
+f32 CRect2D::Right( void ) const
 {
 	return ( m_position.x + m_size.x );
 }
 
 // ----------------------------------------------------------------------//
 
-f32 CRect2D::Top( void )
+f32 CRect2D::Top( void ) const
 {
 	return m_position.y;
 }
 
 // ----------------------------------------------------------------------//
 
-f32 CRect2D::Bottom( void )
+f32 CRect2D::Bottom( void ) const
 {
 	return ( m_position.y + m_size.y );
 }
 
 // ----------------------------------------------------------------------//
 
-f32 CRect2D::Width( void )
+f32 CRect2D::Width( void ) const
 {
 	return m_size.x;
 }
 
 // ----------------------------------------------------------------------//
 
-f32 CRect2D::Height( void )
+f32 CRect2D::Height( void ) const
 {
 	return m_size.y;
 }
@@ -102,6 +107,8 @@ void CRect2D::Bound( f32 x, f32 y, f32 width, f32 height )
 	m_position.y	= y;
 	m_size.x		= width;
 	m_size.y		= height;
+
+	OnResize();
 }
 
 // ----------------------------------------------------------------------//
@@ -112,6 +119,8 @@ void CRect2D::Bound( CRect2D *r )
 	m_position.y		= r->m_position.y;
 	m_size.x			= r->m_size.x;
 	m_size.y			= r->m_size.y;
+
+	OnResize();
 }
 
 // ----------------------------------------------------------------------//
@@ -120,6 +129,8 @@ void CRect2D::Move( TVec2 *d )
 {
 	m_position.x += d->x;
 	m_position.y += d->y;
+
+	OnMove();
 }
 
 // ----------------------------------------------------------------------//
@@ -128,6 +139,8 @@ void CRect2D::Move( f32 dx, f32 dy )
 {
 	m_position.x += dx;
 	m_position.y += dy;
+
+	OnMove();
 }
 
 // ----------------------------------------------------------------------//
@@ -136,6 +149,8 @@ void CRect2D::MoveTo( f32 x, f32 y )
 {
 	m_position.x = x;
 	m_position.y = y;
+
+	OnMove();
 }
 
 // ----------------------------------------------------------------------//
@@ -144,6 +159,8 @@ void CRect2D::MoveTo( TVec2 *pos )
 {
 	m_position.x = pos->x;
 	m_position.y = pos->y;
+
+	OnMove();
 }
 
 // ----------------------------------------------------------------------//
@@ -152,6 +169,8 @@ void CRect2D::Inflate( f32 dw, f32 dh )
 {
 	m_size.x += dw;
 	m_size.y += dh;
+
+	OnResize();
 }
 
 // ----------------------------------------------------------------------//
@@ -162,6 +181,8 @@ void CRect2D::Zoom( f32 dw, f32 dh )
 	m_size.y += dh;
 	m_position.x -= ( dw * 0.5f );
 	m_position.y -= ( dh * 0.5f );
+
+	OnResize();
 }
 
 // ----------------------------------------------------------------------//
@@ -170,6 +191,8 @@ void CRect2D::Resize( f32 w, f32 h )
 {
 	m_size.x = w;
 	m_size.y = h;
+
+	OnResize();
 }
 
 // ----------------------------------------------------------------------//
@@ -178,6 +201,8 @@ void CRect2D::Scale( f32 kw, f32 kh )
 {
 	m_size.x *= kw;
 	m_size.y *= kh;
+
+	OnResize();
 }
 
 // ----------------------------------------------------------------------//
@@ -212,6 +237,8 @@ void CRect2D::SetCenter( TVec2 *loc )
 {
 	m_position.x = loc->x - ( m_size.x * 0.5f );
 	m_position.y = loc->y - ( m_size.y * 0.5f );
+
+	OnMove();
 }
 
 // ----------------------------------------------------------------------//
@@ -224,83 +251,94 @@ void CRect2D::GetCenter( TVec2 *loc )
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::Align( CRect2D *c, u32 align )
+void CRect2D::Align( CRect2D *c, K_ALIGN align )
 {
-	if( !align ) align = k_Align_Default;
-
-	if( BitGet( align, k_Align_Right ) )
+	switch (align)
 	{
-		if( BitGet( align, k_Align_OutSide ) ) {
-			m_position.x = c->Right();
-		}
-		else {
-			m_position.x = c->Right() - m_size.x;
-		}
+	case k_Align_RightIn:
+		m_position.x = c->Right() - m_size.x;
+		break;
+
+	case k_Align_RightOut:
+		m_position.x = c->Right();
+		break;
+
+	case k_Align_LeftIn:
+		m_position.x = c->m_position.x;
+		break;
+
+	case k_Align_LeftOut:
+		m_position.x = c->m_position.x - m_size.x;
+		break;
+
+	case k_Align_BottomIn:
+		m_position.y = c->Bottom() - m_size.y;
+		break;
+
+	case k_Align_BottomOut:
+		m_position.y = c->Bottom();
+		break;
+
+	case k_Align_TopIn:
+		m_position.y = c->Top();
+		break;
+
+	case k_Align_TopOut:
+		m_position.y = c->Top() - Height();
+		break;
+
+	case k_Align_HorCenter:
+		m_position.x = c->m_position.x + ( ( c->m_size.x - m_size.x ) * 0.5f );
+		break;
+
+	case k_Align_VerCenter:
+		m_position.y = c->m_position.y + ( ( c->m_size.y - m_size.y ) * 0.5f );
+		break;
+
+	case k_Align_Center:
+		m_position.x = c->m_position.x + ( ( c->m_size.x - m_size.x ) * 0.5f );
+		m_position.y = c->m_position.y + ( ( c->m_size.y - m_size.y ) * 0.5f );
+		break;
 	}
 
-	if( BitGet( align, k_Align_Left ) )
-	{
-		if( BitGet( align, k_Align_OutSide ) ) {
-			m_position.x = c->m_position.x - m_size.x;
-		}
-		else {
-			m_position.x = c->m_position.x;
-		}
-	}
-
-	if( BitGet( align, k_Align_Bottom ) )
-	{
-		if( BitGet( align, k_Align_OutSide ) ) {
-			m_position.y = c->Bottom();
-		}
-		else {
-			m_position.y = c->Bottom() - m_size.y;
-		}
-	}
-
-	if( BitGet( align, k_Align_Top ) )
-	{
-		if( BitGet( align, k_Align_OutSide ) ) {
-			m_position.y = c->Top() - Height();
-		}
-		else {
-			m_position.y = c->Top();
-		}
-	}
-
-	if( BitGet( align, k_Align_HorCenter ) ) {
-		m_position.x = c->m_position.x + ( ( c->m_size.x - m_size.x )* 0.5f );
-	}
-
-	if( BitGet( align, k_Align_VerCenter ) ) {
-		m_position.y = c->m_position.y + ( ( c->m_size.y - m_size.y )* 0.5f );
-	}
+	OnMove();
 }
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::Transform( u32 trans )
+void CRect2D::Transform( K_TRANSFORM transform )
 {
-	if( trans == k_Transform_Default ) return;
-
-	if( BitGet( trans, k_Transform_FlipHor ) )
+	switch (transform)
+	{
+	case k_Transform_FlipHor:
 	{
 		m_position.x = Right();
-		m_size.x	 = -m_size.x;
+		m_size.x = -m_size.x;
 	}
+	break;
 
-	if( BitGet( trans, k_Transform_FlipVer ) )
+	case k_Transform_FlipVer:
 	{
 		m_position.y = Bottom();
-		m_size.y	 = -m_size.y;
+		m_size.y = -m_size.y;
 	}
+	break;
 
-	if( BitGet( trans, k_Transform_Rot90 ) )
+	case k_Transform_Flip:
+	{
+		m_position.x = Right();
+		m_position.y = Bottom();
+		m_size.x = -m_size.x;
+		m_size.y = -m_size.y;
+	}
+	break;
+
+	case k_Transform_Rot90:
 	{
 		f32 f;
 		TVec2 center;
 
-		GetCenter( &center );
+		GetCenter(&center);
 
 		m_position.x = center.x + Height() * 0.5f;
 		m_position.y = center.y + Width() * 0.5f;
@@ -309,8 +347,9 @@ void CRect2D::Transform( u32 trans )
 		m_size.x = -m_size.y;
 		m_size.y = -f;
 	}
+	break;
 
-	if( BitGet( trans, k_Transform_Rot180 ) )
+	case k_Transform_Rot180:
 	{
 		m_position.x = Right();
 		m_position.y = Bottom();
@@ -318,13 +357,14 @@ void CRect2D::Transform( u32 trans )
 		m_size.x = -m_size.x;
 		m_size.y = -m_size.y;
 	}
+	break;
 
-	if( BitGet( trans, k_Transform_Rot270 ) )
+	case k_Transform_Rot270:
 	{
 		f32 f;
 		TVec2 center;
 
-		GetCenter( &center );
+		GetCenter(&center);
 
 		m_position.x = center.x + Height() * 0.5f;
 		m_position.y = center.y - Width() * 0.5f;
@@ -333,6 +373,10 @@ void CRect2D::Transform( u32 trans )
 		m_size.x = -m_size.y;
 		m_size.y = +f;
 	}
+	break;
+	}
+
+	OnTransform();
 }
 
 
@@ -350,8 +394,40 @@ bool CRect2D::IsInside( TVec2 *v )
 }
 
 // ----------------------------------------------------------------------//
+void CRect2D::OnResize()
+{
 
-void CRect2D::Render( CDriver* driver, CRect2D *texRect )
+}
+
+// ----------------------------------------------------------------------//
+void CRect2D::OnMove()
+{
+
+}
+
+// ----------------------------------------------------------------------//
+void CRect2D::OnTransform()
+{
+
+}
+
+// ----------------------------------------------------------------------//
+
+void CRect2D::Render( CDriver* driver )
+{
+	Render( driver, CRect2D::OneSizeRect );
+}
+
+// ----------------------------------------------------------------------//
+
+void CRect2D::Update( f32 dt, void *userData )
+{
+
+}
+
+// ----------------------------------------------------------------------//
+
+void CRect2D::Render( CDriver* driver, const CRect2D *texRect )
 {
 	static f32 v[ 20 ];
 

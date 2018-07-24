@@ -30,10 +30,8 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CFontChar::CFontChar( const std::string& name )
+CFontChar::CFontChar()
 {
-	m_name			= name;
-
 	m_x 			= 0;
 	m_y 			= 0;
 	m_width 		= 0;
@@ -69,7 +67,7 @@ void CFontChar::Draw( CDriver *driver, CMaterial* material, s32 x, s32 y )
 	if( IsEmpty() )
 		return;
 
-	CRect2D r( m_name );
+	CRect2D r;
 	r.Bound( (f32)x, (f32)y, (f32)m_width, (f32)m_height );
 	r.Move( (f32)m_offsetX, (f32)m_offsetY );
 	r.SetMaterial( material );

@@ -16,17 +16,10 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SIM_CANVAS_H
-#define __SIM_CANVAS_H
+#include <render/sim_svg_image.h>
+#include <render/sim_driver.h>
 
-#include <core/sim_singleton.h>
-#include <core/sim_interfaces.h>
-
-#include <render/sim_render.h>
-#include <render/sim_widget.h>
-
-#include <math/sim_vec2.h>
-#include <math/sim_vec3.h>
+#include <render/gui/sim_widget_svg.h>
 
 namespace sim
 {
@@ -34,32 +27,40 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CCamera;
-
-class CCanvas : public CWidget
+CWidgetSvg::CWidgetSvg()
+	:CWidget()
 {
-public:
-	CCanvas();
-	CCanvas( const std::string& name );
-	virtual ~CCanvas();
-	// ------------------------------------------------------------------//
-	void				Resize( f32 width, f32 height );
-	virtual void		Update( f32 dt, void *userData );
-	virtual void		Render( CDriver* driver );
+	m_svgimage = NULL;
+}
 
-	virtual void		PointerDown( u32 x, u32 y );
-	virtual void		PointerDrag( u32 x, u32 y );
-	virtual void		PointerUp( u32 x, u32 y );
+// ----------------------------------------------------------------------//
 
-	virtual void		ClearEvents();
-	// ------------------------------------------------------------------//
-protected:
+CWidgetSvg::CWidgetSvg(const std::string& name)
+	:CWidget(name)
+{
+}
+// ----------------------------------------------------------------------//
 
-	// ------------------------------------------------------------------//
-};
+CWidgetSvg::~CWidgetSvg()
+{
+	SIM_SAFE_DELETE( m_svgimage );
+}
+
+// ----------------------------------------------------------------------//
+
+void CWidgetSvg::OnResize()
+{
+
+}
+
+// ----------------------------------------------------------------------//
+
+void CWidgetSvg::Render( CDriver *driver )
+{
+	if ( m_svgimage == NULL )
+		return;
+}
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
-#endif // __SIM_CANVAS_H
-

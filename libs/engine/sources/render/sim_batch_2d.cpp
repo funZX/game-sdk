@@ -30,11 +30,9 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CBatch2D::CBatch2D( const std::string& name, CDriver *driver )
+CBatch2D::CBatch2D( CDriver *driver )
 {
 	SIM_ASSERT( driver != NULL );
-
-	m_name								= name;
 
 	m_driver			                = driver;
 
@@ -48,6 +46,14 @@ CBatch2D::CBatch2D( const std::string& name, CDriver *driver )
 	m_vertexGroup->m_vertexSource->m_vertexStride	= CVertexSource::k_Vertex_Attribute_Offset_Position + CVertexSource::k_Vertex_Attribute_Offset_TexCoord_0;
 
 	AllocateQuads( CBatch2D::MaxQuads );
+}
+
+// ----------------------------------------------------------------------//
+
+CBatch2D::CBatch2D( const std::string& name, CDriver *driver )
+	: CBatch2D( driver )
+{
+	m_name = name;
 }
 
 // ----------------------------------------------------------------------//

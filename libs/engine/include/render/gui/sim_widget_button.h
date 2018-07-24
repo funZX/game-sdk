@@ -35,8 +35,9 @@ class CDriver;
 class CWidgetButton: public CWidget
 {
 public:
-						 CWidgetButton( const std::string& name );
-	virtual				~CWidgetButton();
+	CWidgetButton();
+	CWidgetButton( const std::string& name );
+	~CWidgetButton();
 	// ------------------------------------------------------------------//
 	bool				IsPressed() { return m_isPressed; }
 

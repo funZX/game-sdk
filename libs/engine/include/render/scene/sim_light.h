@@ -38,6 +38,7 @@ class CDriver;
 class CLight : public CSceneNode
 {
 public:
+	CLight();
 	CLight( const std::string &name );
 	virtual ~CLight();
 

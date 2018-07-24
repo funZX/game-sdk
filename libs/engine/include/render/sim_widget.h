@@ -29,9 +29,10 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CWidget : public CRect2D, IRenderable, IUpdatable
+class CWidget : public CRect2D
 {
 public:
+	CWidget();
 	CWidget( const std::string& name );
 	virtual	~CWidget();
 
@@ -67,7 +68,6 @@ public:
 	void						RemoveAllChilds( void );
 	void						DeleteAllChilds( void );
 
-	virtual void				Update(f32 dt, void *userData);
     virtual void				Render( CDriver *driver );
 
 	virtual void				PointerDown( u32 x, u32 y ) = 0;

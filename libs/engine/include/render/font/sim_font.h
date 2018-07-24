@@ -19,6 +19,7 @@
 #ifndef __SIM_FONT_H_
 #define __SIM_FONT_H_
 
+#include <core/sim_interfaces.h>
 #include <render/sim_render.h>
 
 struct FT_FaceRec_;
@@ -34,10 +35,11 @@ class CFontAtlas;
 class CEffect;
 class CDriver;
 
-class CFont
+class CFont : public IEngineItem
 {
 public:
-	CFont(const std::string& name, CFontAtlas* pFontAtlas);
+	CFont( CFontAtlas* pFontAtlas );
+	CFont( const std::string& name, CFontAtlas* pFontAtlas );
 	virtual ~CFont();
 	// ------------------------------------------------------------------//
 	void						Load(const std::string& fileName);
@@ -58,8 +60,6 @@ public:
 	void						SetFTFace( struct FT_FaceRec_* ftFace ) { m_ftFace = ftFace; }
 	void						FinishCreating();
 	CFontChar*					GetChar(s32 charCode);
-
-	const std::string&			GetName() { return m_name; }
 	// ------------------------------------------------------------------//
 
 protected:
@@ -71,8 +71,6 @@ protected:
 	std::map<s32, CFontChar*>	m_mapBitmapChar;
 	CFontAtlas*					m_fontAtlas;
 	struct FT_FaceRec_*			m_ftFace;
-
-	std::string					m_name;
 	// ------------------------------------------------------------------//
 };
 

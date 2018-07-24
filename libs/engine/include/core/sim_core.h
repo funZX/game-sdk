@@ -61,6 +61,12 @@ namespace sim
 	namespace hash
 	{
 		u32							Get( const std::string& str );
+		u32							Get( const s8* buffer, u32 len );
+	};
+
+	namespace id
+	{
+		u32							Get();
 	};
 
 }; // namespace sim

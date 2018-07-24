@@ -19,6 +19,7 @@
 #ifndef __SIM_BONE_ANIMATION_H
 #define __SIM_BONE_ANIMATION_H
 
+#include <core/sim_interfaces.h>
 #include <render/sim_render.h>
 
 namespace sim
@@ -32,14 +33,13 @@ namespace rnr
 class CBoneHierarchy;
 class CAnimationFrame;
 // ----------------------------------------------------------------------//
-class CBoneAnimation
+class CBoneAnimation : public IEngineItem
 {
 public:
+	CBoneAnimation();
 	CBoneAnimation( const std::string &name );
 	virtual ~CBoneAnimation();
 	// ------------------------------------------------------------------//
-	inline const std::string&		GetName()				{ return m_name; }
-	
 	inline u32						GetNumFrames()			{ return m_nFrames; }
 	inline f32						GetFPS()				{ return m_fps; }
 	inline CAnimationFrame*			GetFrame( u32 index )	{ return &m_frames[ index ]; }
@@ -50,8 +50,6 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	std::string						m_name;
-
 	CBoneHierarchy*					m_hierarchy;
 	
 	CAnimationFrame*				m_frames;

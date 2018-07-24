@@ -21,10 +21,10 @@
 
 #include <render/sim_render.h>
 #include <render/sim_texture.h>
-#include <core/io/sim_mem_stream.h>
 
 namespace sim
 {
+namespace io { class CMemStream; }
 namespace rnr
 {
 // ----------------------------------------------------------------------//
@@ -32,6 +32,7 @@ namespace rnr
 class CCubeTexture : public CTexture
 {
 public:
+	CCubeTexture();
 	CCubeTexture(  const std::string &name );
 	virtual ~CCubeTexture();
 

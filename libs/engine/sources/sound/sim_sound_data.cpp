@@ -16,7 +16,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <core/io/sim_file_stream.h>
+#include <core/io/sim_mem_stream.h>
 #include <core/sim_core.h>
 #include <sound/sim_sound_data.h>
 
@@ -26,12 +26,18 @@ namespace snd
 {
 // ----------------------------------------------------------------------//
 
-CSoundData::CSoundData( const std::string &name )
+CSoundData::CSoundData()
 {
-	m_name		= name;
 	m_ID		= 0;
 }
 
+// ----------------------------------------------------------------------//
+
+CSoundData::CSoundData(const std::string &name)
+	: CSoundData()
+{
+	m_name = name;
+}
 // ----------------------------------------------------------------------//
 
 CSoundData::~CSoundData()
@@ -42,7 +48,7 @@ CSoundData::~CSoundData()
 
 // ----------------------------------------------------------------------//
 
-u8* CSoundData::LoadWAV( const std::string &fileName, ALenum *format, u32 *size, u32 *rate )
+u8* CSoundData::LoadWAV( io::CMemStream* ms, ALenum *format, u32 *size, u32 *rate )
 {
 	typedef struct
 	{
@@ -67,12 +73,7 @@ u8* CSoundData::LoadWAV( const std::string &fileName, ALenum *format, u32 *size,
 	TWAVHeader		header;
 	int header_size = sizeof( TWAVHeader );
 
-	io::CFileStream stream( fileName );
-
-	if( !stream.Open() ) 
-		return NULL;
-
-	SIM_MEMCPY( &header, stream.Read( header_size ), header_size );
+	SIM_MEMCPY( &header, ms->Read( header_size ), header_size );
 	
 	if (header.chunkID != 0x46464952)		//RIFF
 		return NULL;
@@ -87,8 +88,7 @@ u8* CSoundData::LoadWAV( const std::string &fileName, ALenum *format, u32 *size,
 		return NULL;
 	
 	unsigned char *buf = SIM_NEW unsigned char[ header.subchunk2Size ];
-	SIM_MEMCPY( buf, stream.Read( header.subchunk2Size ), header.subchunk2Size );	
-	stream.Close();
+	SIM_MEMCPY( buf, ms->Read( header.subchunk2Size ), header.subchunk2Size );	
 
 	if ( header.numChannels == 1 )
 	{
@@ -123,13 +123,13 @@ u32 CSoundData::Generate( u8 *buf, ALenum format, u32 size, u32 rate )
 
 // ----------------------------------------------------------------------//
 
-u32 CSoundData::Generate()
+u32 CSoundData::Generate( io::CMemStream* ms )
 {
 	ALenum format;
 	u32 size;
 	u32 rate;
 
-	u8 *buf = LoadWAV( m_name, &format, &size, &rate );
+	u8 *buf = LoadWAV( ms, &format, &size, &rate );
 
 	if( buf != NULL ) {
 		Generate( buf, format, size, rate );

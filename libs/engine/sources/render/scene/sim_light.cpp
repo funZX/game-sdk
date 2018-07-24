@@ -25,8 +25,8 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CLight::CLight( const std::string &name )
-	: CSceneNode( name )
+CLight::CLight()
+	: CSceneNode()
 {
 	m_channel	= CDriver::k_Select_Light_0;
 
@@ -40,6 +40,13 @@ CLight::CLight( const std::string &name )
 	Vec3ToRDirZ( &m_direction );
 
 	m_isVisible			= true;
+}
+
+// ----------------------------------------------------------------------//
+
+CLight::CLight( const std::string &name )
+	: CSceneNode( name )
+{
 }
 
 // ----------------------------------------------------------------------//

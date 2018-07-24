@@ -34,6 +34,14 @@ CSprite::CSprite()
 
 // ----------------------------------------------------------------------//
 
+CSprite::CSprite( const std::string& name )
+	: CSprite()
+{
+	m_name = name;
+}
+
+// ----------------------------------------------------------------------//
+
 void CSprite::AddModule( s32 modId, s32 x, s32 y, s32 w, s32 h  )
 {
 	CRect2D m;

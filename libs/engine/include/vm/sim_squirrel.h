@@ -36,6 +36,7 @@
 #include <sqdbgserver.h>
 
 #include <core/sim_core.h>
+#include <core/sim_singleton.h>
 #include <core/sys/sim_mutex.h>
 
 namespace sim
@@ -46,7 +47,7 @@ namespace vm
 class CScript;
 // ----------------------------------------------------------------------//
 
-class CSquirrel
+class CSquirrel : public stl::CSingleton<CSquirrel>
 {
 public:
     typedef enum 

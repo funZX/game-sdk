@@ -20,6 +20,7 @@
 
 #include <core/io/sim_lzma_stream.h>
 #include <core/io/sim_json_stream.h>
+#include <core/io/sim_mem_stream.h>
 
 #include <render/scene/sim_camera.h>
 #include <render/scene/sim_sky_box.h>
