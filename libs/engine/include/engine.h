@@ -141,7 +141,7 @@ using namespace sim::mat;
 namespace sim
 {
 // ----------------------------------------------------------------------//
-class CEngine : public sim::IUpdatable, public sim::IRenderable
+class CEngine : public sim::IUpdatable, public sim::IRenderable, public CSingleton<CEngine>
 {
 public:
 	CEngine();
@@ -183,7 +183,7 @@ protected:
 	void							ShowStats( CDriver* driver );
 	f32								Smooth( f32 dt );
 
-	void							ToSquirrel();
+	void							InitVirtualMachine();
 
 protected:
 

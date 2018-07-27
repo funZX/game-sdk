@@ -23,7 +23,7 @@ CState_AppLoad::~CState_AppLoad()
 
 void CState_AppLoad::Update( f32 dt, void *userData )
 {
-	if ( !O.world->Load() )
+	if ( !O.world->GetFs()->LoadStep() )
 		O.game->GoNext(SIM_NEW CState_MenuMain());
 }
 

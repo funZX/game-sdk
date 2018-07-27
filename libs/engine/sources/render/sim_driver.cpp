@@ -134,6 +134,11 @@ CDriver::CDriver()
 	m_crtVertexSource		= NULL;
 	m_crtRenderTexture		= NULL;
 
+	m_viewportWidth			= 0;
+	m_viewportHeight		= 0;
+	m_screenWidth			= 0;
+	m_screenHeight			= 0;
+
 	m_drawCallCount			= 0;
 	m_vertexCount			= 0;
 }
@@ -303,19 +308,19 @@ CRenderTexture* CDriver::BindRenderTexture( CRenderTexture* texture )
 
 	if (texture != NULL)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, texture->GetBufferID());
+		glBindFramebuffer( GL_FRAMEBUFFER, texture->GetBufferID() );
 		SIM_CHECK_OPENGL();
 
-		SetViewport(texture->GetWidth(), texture->GetHeight());
+		SetViewport( texture->GetWidth(), texture->GetHeight() );
 
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear( GL_COLOR_BUFFER_BIT );
 	}
 	else
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 		SIM_CHECK_OPENGL();
 
-		SetViewport(m_screenWidth, m_screenHeight);
+		SetViewport( m_screenWidth, m_screenHeight );
 	}
 
 

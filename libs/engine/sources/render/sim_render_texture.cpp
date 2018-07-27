@@ -37,9 +37,9 @@ CRenderTexture::CRenderTexture()
 // ----------------------------------------------------------------------//
 
 CRenderTexture::CRenderTexture( const std::string &name )
-	: CTexture( name )
+	: CRenderTexture()
 {
-
+	m_name = name;
 }
 
 // ----------------------------------------------------------------------//

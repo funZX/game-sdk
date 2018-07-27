@@ -1,4 +1,6 @@
 
+ILoadable --- shader/effect, texture
+
 - tool: exporter: texture, material, camera, light, actor, scene, animation
 - tool: data builder - tex converter
 

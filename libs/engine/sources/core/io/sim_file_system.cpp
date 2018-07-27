@@ -48,10 +48,11 @@ namespace io
 {
 // ----------------------------------------------------------------------//
 
-CFileSystem::CFileSystem( const std::string &filename, CEngine* engine )
+CFileSystem::CFileSystem( const std::string &filename )
 {
-	m_filename		= filename;
+	CEngine* engine = CEngine::GetSingletonPtr();
 
+	m_filename		= filename;
 	m_driver		= engine->GetDriver();
 	m_squirrel		= engine->GetVM();
 
@@ -159,7 +160,10 @@ void CFileSystem::Close()
 
 	SIM_SAFE_DELETE_ARRAY( m_steps );
 
+	u32 tex =
+	m_driver->BindTexture(0);
 	m_fontAtlas->Create();
+	m_driver->BindTexture(tex);
 }
 
 
@@ -172,7 +176,7 @@ bool CFileSystem::NextStep(const json_t* jsonRoot)
 
 // ----------------------------------------------------------------------//
 
-bool CFileSystem::Load( void )
+bool CFileSystem::LoadStep( void )
 {
 	bool stepDone = true;
 

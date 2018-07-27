@@ -44,7 +44,7 @@ public:
 	CFontAtlas();
 	CFontAtlas( const std::string &name );
 	virtual ~CFontAtlas();
-	// ---------------------------------------------------m---------------//
+	// ------------------------------------------------------------------//
 	CFont*								AddFont( const std::string &name, u8* memfile, s32 memsize, s32 size, const char* szLetters );
 	void								Create();
 

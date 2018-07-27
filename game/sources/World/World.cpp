@@ -22,10 +22,7 @@
 
 CWorld::CWorld()
 {
-	std::string fs = O.fsDir;
-	fs.append("world.7z");
-
-	m_fs				= SIM_NEW CFileSystem( fs, O.game );
+	m_fs				= SIM_NEW CFileSystem( O.game->GetFsPath("world.7z") );
 	m_physic			= SIM_NEW CPhysic();
 	m_scene				= SIM_NEW CScene( "main scene" );
 
@@ -77,11 +74,6 @@ void CWorld::Render2D(CDriver *driver)
 	#if SIM_DEBUG
 	m_debug->Render2D(driver);
 	#endif
-}
-
-bool CWorld::Load()
-{
-	return m_fs->Load();
 }
 
 void CWorld::AddActor( CActor* actor )

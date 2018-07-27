@@ -336,7 +336,7 @@ void CTexture::ApplyWrap(CTexture *tex, K_WRAP wrap)
 {
 	tex->m_wrap = wrap;
 
-	glBindTexture(GL_TEXTURE_2D, tex->m_iD);
+	glBindTexture( GL_TEXTURE_2D, tex->m_iD );
 
 	if (tex->m_wrap == k_Wrap_Clamp)
 	{
@@ -361,7 +361,7 @@ void CTexture::ApplyFilter( CTexture *tex, K_FILTER filter )
 	{
 	case k_Filter_Nearest:
 		{
-			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 			break;
 		}

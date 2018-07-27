@@ -6,7 +6,7 @@
 class CWorld;
 class CWindow;
 
-class CGame : public CEngine, public sim::stl::CSingleton<CGame>
+class CGame : public CEngine
 {
 	typedef std::map<std::string, rnr::CFont*>					TFontList;
 	typedef std::map<std::string, rnr::CFont*>::iterator		TFontListIter;
@@ -23,7 +23,7 @@ public:
 
 	void						KeyPress( u8 key, bool isDown );
 
-	const std::string			GetFsLocation( const std::string& fs);
+	const std::string			GetFsPath( const std::string& fs);
 
 	inline CWorld*				GetWorld()			{ return m_world; }
 

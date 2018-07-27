@@ -24,7 +24,7 @@
 namespace sim
 {
 // ----------------------------------------------------------------------//
-
+namespace io { class CMemStream; };
 namespace rnr { class CDriver; class CCanvas; class CAnimationPose; class CBoneMask; };
 namespace vm  { class CVirtualMachine; };
 
@@ -32,7 +32,7 @@ namespace vm  { class CVirtualMachine; };
 
 struct IScriptable
 {
-	virtual void 				Register( vm::CVirtualMachine *vm ) = 0;
+	virtual void 				BindToVirtualMachine( vm::CVirtualMachine *vm ) = 0;
 };
 
 // ----------------------------------------------------------------------//
@@ -62,6 +62,14 @@ struct ISortable
 {
 public:
 	virtual s32 				Compare( const ISortable *other ) = 0;
+};
+
+// ----------------------------------------------------------------------//
+
+struct ILoadable
+{
+public:
+	virtual bool 				Load( io::CMemStream* ) = 0;
 };
 
 // ----------------------------------------------------------------------//

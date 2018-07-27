@@ -34,7 +34,7 @@ CDebug::CDebug( CFileSystem* fs )
 
 	m_fs			= fs;
 
-	m_rendertexture = SIM_NEW CRenderTexture("Debug_FrameBuffer");
+	m_rendertexture = SIM_NEW CRenderTexture();
 	m_rendertexture->Generate( 400, 300 );
 }
 
@@ -75,8 +75,8 @@ void CDebug::Render( CDriver *driver )
 		driver->MatrixTranslateY(-0.5f);
 		driver->MatrixTranslateZ(-2.0f);
 		driver->MatrixRotateY(dr * 60.0f);
-		
-		fb = 
+
+		fb =
 		driver->BindRenderTexture(m_rendertexture);
 		mesh->Render(driver);
 		driver->MatrixPop();
@@ -88,7 +88,7 @@ void CDebug::Render( CDriver *driver )
 		driver->MatrixPop();
 
 		driver->MatrixPush();
-		driver->MatrixTranslate(0.4f,-0.2f, -1.5f);
+		driver->MatrixTranslate(0.4f, -0.2f, -1.5f);
 		driver->MatrixScale(0.5f, 0.5f, 0.5f);
 		driver->MatrixRotateY(dr * 40.0f);
 		mesh->Render(driver);

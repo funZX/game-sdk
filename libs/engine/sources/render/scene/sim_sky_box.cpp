@@ -143,9 +143,11 @@ void CSkyBox::Render( CDriver *driver )
 	driver->SetMaterialSpecular( m_material->GetSpecular() );
 	driver->SetMaterialEmissive( m_material->GetEmissive() );
 
+	CDriver::K_SELECT_TEXTURE tex =
 	driver->SelectTexture( CDriver::k_Select_Texture_4 );	
 	glBindTexture( GL_TEXTURE_CUBE_MAP, m_texture->GetID() );
-	driver->Render(m_vertexGroup);
+	driver->Render( m_vertexGroup );
+	driver->SelectTexture( tex );
 	
 	SIM_CHECK_OPENGL();
 
