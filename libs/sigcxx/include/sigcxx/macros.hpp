@@ -17,23 +17,9 @@
 #ifndef WIZTK_BASE_DEFINES_HPP_
 #define WIZTK_BASE_DEFINES_HPP_
 
-#ifdef _DEBUG
-
 #include <string.h>
-#define FILE_BASE_NAME (strrchr(__FILE__, '/') ? strrchr(__FILE__, '/') + 1 : __FILE__)
-
 #include <stdio.h>
 #include <cassert>
-#define _ASSERT(expr) \
-  do { \
-    assert(expr); \
-  } while (false)
-
-#else // NOT _DEBUG
-
-#define _ASSERT(expr) ((void)0)
-
-#endif // END _DEBUG
 
 #define WIZTK_DISABLE_COPY_CONSTRUCTOR(CLASS) CLASS(const CLASS&) = delete
 #define WIZTK_DISABLE_COPY_ASSIGNMENT(CLASS) CLASS& operator=(const CLASS&) = delete

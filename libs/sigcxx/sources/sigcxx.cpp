@@ -22,14 +22,14 @@ namespace internal {
 
 TrackableBindingNode::~TrackableBindingNode() {
   if (nullptr != token) {
-    _ASSERT(token->binding == this);
+    assert(token->binding == this);
     token->binding = nullptr;
     delete token;
   }
 }
 
 SignalTokenNode::~SignalTokenNode() {
-  _ASSERT(nullptr == slot_mark_head.previous());
+  assert(nullptr == slot_mark_head.previous());
   Slot::Mark *mark = nullptr;
   while (nullptr != slot_mark_head.next()) {
     mark = static_cast<Slot::Mark *>(slot_mark_head.next());
@@ -39,7 +39,7 @@ SignalTokenNode::~SignalTokenNode() {
   }
 
   if (nullptr != binding) {
-    _ASSERT(binding->token == this);
+    assert(binding->token == this);
     binding->token = nullptr;
     delete binding;
   }

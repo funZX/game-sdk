@@ -411,7 +411,7 @@ class WIZTK_NO_EXPORT InterRelatedDeque {
    */
   void push_back(T *node) {
     // link binding and token before calling this method:
-    _ASSERT(nullptr != node->trackable);
+    assert(nullptr != node->trackable);
     tail_.push_front(node);
   }
 
@@ -421,7 +421,7 @@ class WIZTK_NO_EXPORT InterRelatedDeque {
    */
   void push_front(T *node) {
     // link binding and token before calling this method:
-    _ASSERT(nullptr != node->trackable);
+    assert(nullptr != node->trackable);
     head_.push_back(node);
   }
 
@@ -432,7 +432,7 @@ class WIZTK_NO_EXPORT InterRelatedDeque {
    */
   void insert(T *node, int index = 0) {
     // link binding and token before calling this method:
-    _ASSERT(nullptr != node->trackable);
+    assert(nullptr != node->trackable);
     if (index >= 0) {
       Iterator it = begin();
       while ((it != end()) && (index > 0)) {
@@ -691,21 +691,21 @@ class WIZTK_EXPORT Trackable {
  private:
 
   static inline void Link(internal::SignalTokenNode *token, internal::TrackableBindingNode *binding) {
-    _ASSERT((nullptr == token->binding) && (nullptr == binding->token));
+    assert((nullptr == token->binding) && (nullptr == binding->token));
     token->binding = binding;
     binding->token = token;
   }
 
   static inline void PushFrontBinding(Trackable *trackable,
                                       internal::TrackableBindingNode *binding) {
-    _ASSERT(nullptr == binding->trackable);
+    assert(nullptr == binding->trackable);
     binding->trackable = trackable;
     trackable->bindings_.push_front(binding);
   }
 
   static inline void PushBackBinding(Trackable *trackable,
                                      internal::TrackableBindingNode *binding) {
-    _ASSERT(nullptr == binding->trackable);
+    assert(nullptr == binding->trackable);
     binding->trackable = trackable;
     trackable->bindings_.push_back(binding);
   }
@@ -713,7 +713,7 @@ class WIZTK_EXPORT Trackable {
   static inline void InsertBinding(Trackable *trackable,
                                    internal::TrackableBindingNode *binding,
                                    int index = 0) {
-    _ASSERT(nullptr == binding->trackable);
+    assert(nullptr == binding->trackable);
     binding->trackable = trackable;
     trackable->bindings_.insert(binding, index);
   }

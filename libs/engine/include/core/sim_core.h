@@ -34,6 +34,8 @@
 #	include <sys/time.h>
 #endif
 
+#include <sigcxx/sigcxx.hpp>
+
 namespace sim
 {
 	typedef			 char 			s8;
