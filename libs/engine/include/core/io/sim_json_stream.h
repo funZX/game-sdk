@@ -19,7 +19,7 @@
 #ifndef __SIM_JSON_STREAM_H
 #define __SIM_JSON_STREAM_H
 
-#include <engine.h>
+#include <sim_engine.h>
 #include <jansson.h>
 
 namespace sim

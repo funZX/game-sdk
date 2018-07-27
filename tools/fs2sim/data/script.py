@@ -54,7 +54,7 @@ def main(dirlist):
 				command = config.EXE_SQ2SIM + ' ' + file + ' ' + temp
 				os.chdir(src_dir)
 				utils.spawnProcess(command)
-				utils.moveFile(temp, out_file)
+				utils.updateFile(temp, out_file)
 
 			scripts.append({'name' : name, 'file': ('script/' + temp)});
 				

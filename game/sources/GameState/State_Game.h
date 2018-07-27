@@ -1,7 +1,7 @@
 #ifndef __STATE_GAME_H
 #define __STATE_GAME_H
 
-#include <engine.h>
+#include <sim_engine.h>
 
 class CState_Game : public IState
 {

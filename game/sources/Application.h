@@ -1,7 +1,7 @@
 #ifndef __APPLICATION_H
 #define __APPLICATION_H
 
-#include <engine.h>
+#include <sim_engine.h>
 
 class CGame;
 

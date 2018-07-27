@@ -1,7 +1,7 @@
 #ifndef __GAME_H
 #define __GAME_H
 
-#include <engine.h>
+#include <sim_engine.h>
 
 class CWorld;
 class CWindow;
@@ -20,8 +20,11 @@ public:
 	inline CWorld*				GetWorld()			{ return m_world; }
 
 	void						KeyPress( u8 key, bool isDown );
+	bool						IsKeyDown( u8 key ) { return m_downKeys[ key ]; }
 
 protected:
+	bool						m_downKeys[ 256 ];
+
 	std::string					m_fsDir;
 	CWorld*						m_world;
 };
@@ -32,8 +35,7 @@ typedef struct
 	const char*					fsDir;
 
 	CGame*						game;
-	CDriver*					driver;
-	CEffect*					effect;
+	CDriver*					driver;	
 	CWorld*						world;
 	CCamera*					camera;
 	CCanvas*					canvas;
@@ -41,7 +43,15 @@ typedef struct
 	struct
 	{
 		CFont*					engine;
+
 	} font;
+
+	struct
+	{
+		CEffect*				engine;
+
+	} effect;
+	
 
 } TGlobal;
 

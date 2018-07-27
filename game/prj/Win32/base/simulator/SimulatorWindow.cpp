@@ -52,6 +52,7 @@ LRESULT WINAPI SimulatorWindowProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 			POINT      point;
 
 			GetCursorPos( &point );
+			ScreenToClient( hWnd, &point );
 
 			if( uMsg == WM_LBUTTONDOWN )
 			{

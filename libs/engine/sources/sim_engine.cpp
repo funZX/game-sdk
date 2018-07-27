@@ -16,7 +16,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <engine.h>
+#include <sim_engine.h>
 
 #include <core/sys/sim_thread.h>
 #include <core/sim_state_machine.h>

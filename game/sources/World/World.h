@@ -1,7 +1,7 @@
 #ifndef __WORLD_H
 #define __WORLD_H
 
-#include <engine.h>
+#include <sim_engine.h>
 
 class CDebug;
 

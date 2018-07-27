@@ -1,7 +1,7 @@
 #ifndef __OPTIONS_H
 #define __OPTIONS_H
 
-#include <engine.h>
+#include <sim_engine.h>
 #include <render/sim_texture.h>
 
 namespace Options
