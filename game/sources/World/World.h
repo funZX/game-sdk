@@ -15,8 +15,6 @@ public:
 	void						Render( CDriver *driver );
 	void						Render2D(CDriver *driver);
 
-	bool						Load();
-
 	void						SetFocus( bool focus ) {m_isFocused = focus;}
 	bool						IsFocused() { return m_isFocused; }
 

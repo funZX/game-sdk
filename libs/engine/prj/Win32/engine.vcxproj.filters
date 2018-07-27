@@ -215,9 +215,6 @@
     <ClCompile Include="..\..\sources\render\sim_sprite.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sources\simarian.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\sources\render\scene\sim_actor.cpp">
       <Filter>Source Files\render\scene</Filter>
     </ClCompile>
@@ -274,6 +271,15 @@
     </ClCompile>
     <ClCompile Include="..\..\sources\render\sim_render_texture.cpp">
       <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\engine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_svg_image.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\gui\sim_widget_svg.cpp">
+      <Filter>Source Files\render\gui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -360,9 +366,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\render\sim_effect.h">
       <Filter>Header Files\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\simarian.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\sound\sim_sound.h">
       <Filter>Header Files\sound</Filter>
@@ -501,6 +504,15 @@
     </ClInclude>
     <ClInclude Include="..\..\include\render\sim_render_texture.h">
       <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_svg_image.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\gui\sim_widget_svg.h">
+      <Filter>Header Files\render\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

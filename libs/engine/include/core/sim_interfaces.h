@@ -24,7 +24,7 @@
 namespace sim
 {
 // ----------------------------------------------------------------------//
-
+namespace io { class CMemStream; };
 namespace rnr { class CDriver; class CCanvas; class CAnimationPose; class CBoneMask; };
 namespace vm  { class CVirtualMachine; };
 
@@ -32,7 +32,7 @@ namespace vm  { class CVirtualMachine; };
 
 struct IScriptable
 {
-	virtual void 				Register( vm::CVirtualMachine *vm ) = 0;
+	virtual void 				BindToVirtualMachine( vm::CVirtualMachine *vm ) = 0;
 };
 
 // ----------------------------------------------------------------------//
@@ -66,6 +66,14 @@ public:
 
 // ----------------------------------------------------------------------//
 
+struct ILoadable
+{
+public:
+	virtual bool 				Load( io::CMemStream* ) = 0;
+};
+
+// ----------------------------------------------------------------------//
+
 struct IState : public IUpdatable
 {
 public:
@@ -76,6 +84,19 @@ public:
 	virtual void				OnExit()	= 0;
 };
 
+// ----------------------------------------------------------------------//
+
+class IEngineItem
+{
+public:
+	IEngineItem() {}
+	IEngineItem( const std::string& name ) { m_name = name; }
+
+	const std::string& 			GetName() { return m_name; }
+
+protected:
+	std::string					m_name;
+};
 
 // ----------------------------------------------------------------------//
 }; // namespace sim

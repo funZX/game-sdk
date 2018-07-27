@@ -19,6 +19,7 @@
 #ifndef __SIM_BONE_H
 #define __SIM_BONE_H
 
+#include <core/sim_interfaces.h>
 #include <render/sim_render.h>
 
 #include <math/sim_vec3.h>
@@ -32,7 +33,7 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CBone
+class CBone : public IEngineItem
 {
 	friend class CBoneAnimation;
 
@@ -50,12 +51,11 @@ public:
 	// ------------------------------------------------------------------//
 
 	CBone();
+	CBone( const std::string& name );
+
 	virtual ~CBone();
 
 	// ------------------------------------------------------------------//
-	inline void						SetName( const std::string& name)	{ m_name = name; }
-	inline const std::string&		GetName()							{ return m_name; }
-
 	inline void						SetParent( s32 parent )				{ m_parent = parent; }
 	inline s32						GetParent()							{ return m_parent; }
 	// ------------------------------------------------------------------//
@@ -63,7 +63,6 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	std::string						m_name;
 	s32								m_iD;
 	s32								m_parent;
 };

@@ -32,10 +32,8 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CMesh::CMesh( const std::string &name )
+CMesh::CMesh()
 {
-	m_name				= name;
-
 	m_vertexSource		= NULL;
 	m_vertexGroup		= NULL;
 
@@ -46,6 +44,13 @@ CMesh::CMesh( const std::string &name )
 	m_fs				= NULL;
 }
 
+// ----------------------------------------------------------------------//
+
+CMesh::CMesh( const std::string &name )
+	: CMesh()
+{
+	m_name = name;
+}
 // ----------------------------------------------------------------------//
 
 CMesh::CMesh(const std::string &name, io::CFileSystem* fs)

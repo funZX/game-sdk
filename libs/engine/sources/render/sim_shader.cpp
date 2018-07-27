@@ -128,10 +128,17 @@ CShader::TUniform CShader::Uniforms[] =
 
 // ----------------------------------------------------------------------//
 
-CShader::CShader( std::string name, K_TYPE type )
+CShader::CShader( K_TYPE type )
 {
-	m_name				= name;
-	m_iD				= glCreateShader( type );
+	m_iD = glCreateShader( type );
+}
+
+// ----------------------------------------------------------------------//
+
+CShader::CShader( std::string name, K_TYPE type )
+	: CShader( type )
+{
+	m_name = name;
 }
 
 // ----------------------------------------------------------------------//

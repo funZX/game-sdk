@@ -19,18 +19,20 @@
 #ifndef __SIM_TEXTURE_H
 #define __SIM_TEXTURE_H
 
+#include <core/sim_interfaces.h>
 #include <render/sim_render.h>
-#include <core/io/sim_mem_stream.h>
 
 namespace sim
 {
+namespace io { class CMemStream; }
 namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CTexture
+class CTexture : public IEngineItem
 {
 public:
+	CTexture();
 	CTexture(  const std::string &name );
 	virtual ~CTexture();
 
@@ -96,8 +98,6 @@ public:
 	inline u32              GetWidth() { return m_width; }
 	inline u32              GetHeight() { return m_height; }
 
-	inline std::string&		GetName() { return m_name; }
-
 	static void				ApplyFilter( CTexture *tex, K_FILTER filter );
 	static void				ApplyWrap(CTexture *tex, K_WRAP wrap);
 	// ------------------------------------------------------------------//
@@ -136,8 +136,6 @@ public:
 	} TMIPHeader;
 	// ------------------------------------------------------------------//
 	static const u32		MaxMipmapLevel = 16;
-
-	std::string				m_name;
 
 	u32			            m_width;
 	u32			            m_height;

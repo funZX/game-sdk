@@ -36,7 +36,7 @@ class CEffect;
 class CMaterial;
 class CDriver;
 
-class CRect2D
+class CRect2D : public IRenderable, public IUpdatable, public IEngineItem
 {
 public:
 	// ------------------------------------------------------------------//
@@ -46,40 +46,41 @@ public:
 	// ------------------------------------------------------------------//
 	typedef enum
 	{
-		k_Align_Inside				= ( 1 << 0 ),
-		k_Align_OutSide				= ( 1 << 1 ),
-		k_Align_Left				= ( 1 << 2 ),
-		k_Align_Right				= ( 1 << 3 ),
-		k_Align_Top					= ( 1 << 4 ),
-		k_Align_Bottom				= ( 1 << 5 ),
-		k_Align_HorCenter			= ( 1 << 6 ),
-		k_Align_VerCenter			= ( 1 << 7 ),
-		k_Align_Center				= ( k_Align_HorCenter	| k_Align_VerCenter ),
-		k_Align_Default				= ( k_Align_Inside	| k_Align_Left		| k_Align_Top ),
+		k_Align_LeftIn,
+		k_Align_RightIn,
+		k_Align_TopIn,
+		k_Align_BottomIn,
+
+		k_Align_LeftOut,
+		k_Align_RightOut,
+		k_Align_TopOut,
+		k_Align_BottomOut,
+
+		k_Align_HorCenter,
+		k_Align_VerCenter,
+		k_Align_Center
 
 	} K_ALIGN;
 	// ------------------------------------------------------------------//
 	typedef enum
 	{
-		k_Transform_Rot90			= ( 1 << 0 ),
-		k_Transform_Rot180			= ( 1 << 1 ),
-		k_Transform_Rot270			= ( 1 << 2 ),
+		k_Transform_Rot90,
+		k_Transform_Rot180,
+		k_Transform_Rot270,
 
-		k_Transform_FlipHor			= ( 1 << 3 ),
-		k_Transform_FlipVer			= ( 1 << 4 ),
-		k_Transform_Flip			= ( k_Transform_FlipHor | k_Transform_FlipVer ),
-
-		k_Transform_Default			= (    0    ),
+		k_Transform_FlipHor,
+		k_Transform_FlipVer,
+		k_Transform_Flip,
 
 	} K_TRANSFORM;
 	// ------------------------------------------------------------------//
 
-	f32						    Left( void );
-	f32						    Right( void );
-	f32						    Top( void );
-	f32						    Bottom( void );
-	f32						    Width( void );
-	f32						    Height( void );
+	f32						    Left( void ) const;
+	f32						    Right( void ) const;
+	f32						    Top( void ) const;
+	f32						    Bottom( void ) const;
+	f32						    Width( void ) const;
+	f32						    Height( void ) const;
 
 	void						Move( TVec2 *d );
 	void						Move( f32 x, f32 y );
@@ -94,8 +95,8 @@ public:
 	void						SetCenter( TVec2 *pos );
 	void						GetCenter( TVec2 *pos );
 
-	void						Align( CRect2D *, u32 align );
-	void						Transform( u32 trans );
+	void						Align( CRect2D *, K_ALIGN align );
+	void						Transform( K_TRANSFORM trans );
 
 	bool						IsInside( TVec2 *pos );
 	bool						IsInside( f32 x, f32 y );
@@ -109,13 +110,21 @@ public:
 	void						SetMaterial( CMaterial *material ) { m_material = material; }
 	CMaterial*					GetMaterial() { return m_material; }
 
-	virtual void				Render( CDriver *driver, CRect2D *texRect );
+	virtual void				Render( CDriver *driver );
+	virtual void				Render( CDriver *driver, const CRect2D *texRect );
+
+	virtual void				Update(f32 dt, void *userData);
 	// ------------------------------------------------------------------//
 
+	static const CRect2D*		OneSizeRect;
+	static const CRect2D*		OneSizeRectFlip;
+	// ------------------------------------------------------------------//
 protected:
 	// ------------------------------------------------------------------//
-	std::string					m_name;
-
+	virtual void				OnMove();
+	virtual void				OnResize();
+	virtual void				OnTransform();
+	// ------------------------------------------------------------------//
 	TVec2						m_position;
 	TVec2						m_size;
 

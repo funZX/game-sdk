@@ -24,12 +24,10 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CSceneNode::CSceneNode( const std::string &name )
+CSceneNode::CSceneNode()
 	: stl::COctreeData<CSceneNode*>()
 {
-	m_name		= name;
-
-	m_iD		= hash::Get( name );
+	m_iD		= id::Get();
 
 	m_parent	= NULL;
 	m_children	= SIM_NEW TChildren();
@@ -47,6 +45,13 @@ CSceneNode::CSceneNode( const std::string &name )
 	Matrix4ToIdentity( &m_transform.matrix.world );
 }
 
+// ----------------------------------------------------------------------//
+
+CSceneNode::CSceneNode( const std::string &name )
+	: CSceneNode()
+{
+	m_name = name;
+}
 // ----------------------------------------------------------------------//
 
 CSceneNode::~CSceneNode()

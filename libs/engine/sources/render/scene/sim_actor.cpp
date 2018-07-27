@@ -38,8 +38,8 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CActor::CActor( const std::string &name )
-	: CSceneNode( name )
+CActor::CActor()
+	: CSceneNode()
 {
 	m_mesh			            = NULL;
 
@@ -57,7 +57,13 @@ CActor::CActor( const std::string &name )
 	m_friction					= 0.0f;
 	Vec3ToZero( &m_inertia );
 }
+// ----------------------------------------------------------------------//
 
+CActor::CActor( const std::string &name )
+	: CActor()
+{
+	m_name = name;
+}
 // ----------------------------------------------------------------------//
 
 CActor::~CActor()

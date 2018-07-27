@@ -31,14 +31,18 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CFont::CFont( const std::string& name, CFontAtlas* fontAtlas )
+CFont::CFont( CFontAtlas* fontAtlas )
 {
-	m_name			= name;
-
 	m_fontAtlas 	= fontAtlas;
 	m_ftFace		= NULL;
 }
+// ----------------------------------------------------------------------//
 
+CFont::CFont(const std::string& name, CFontAtlas* fontAtlas) 
+	: CFont( fontAtlas )
+{
+	m_name = name;
+}
 // ----------------------------------------------------------------------//
 
 CFont::~CFont()

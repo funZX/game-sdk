@@ -42,13 +42,13 @@ class CSkyBox;
 class CSceneNode;
 // ----------------------------------------------------------------------//
 
-class CScene : public IUpdatable, public IRenderable
+class CScene : public IUpdatable, public IRenderable, public IEngineItem
 {
 public:
 	// ------------------------------------------------------------------//
 	typedef stl::COctree<CSceneNode*>		TGraph;
 	// ------------------------------------------------------------------//
-
+	CScene();
 	CScene( const std::string &name );
 	virtual ~CScene();
 
@@ -56,7 +56,6 @@ public:
 	void 							Update( f32 dt, void *userData );
 	void 							Render( CDriver *driver );
 
-	inline const std::string&		GetName() { return m_name; }
 	// ------------------------------------------------------------------//
 	void							Add( CSceneNode* node );
 	void							Del( CSceneNode* node );
@@ -65,9 +64,7 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	std::string						m_name;
 	io::CFileSystem*				m_fs;
-
 	TGraph							m_graph;
 	// ------------------------------------------------------------------//
 };

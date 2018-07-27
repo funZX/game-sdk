@@ -16,50 +16,34 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SIM_CANVAS_H
-#define __SIM_CANVAS_H
+#ifndef __SIM_SVG_IMAGE_H
+#define __SIM_SVG_IMAGE_H
 
-#include <core/sim_singleton.h>
 #include <core/sim_interfaces.h>
-
 #include <render/sim_render.h>
-#include <render/sim_widget.h>
-
-#include <math/sim_vec2.h>
-#include <math/sim_vec3.h>
 
 namespace sim
 {
+namespace io { class CMemStream; }
 namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CCamera;
-
-class CCanvas : public CWidget
+class CSvgImage : public IEngineItem
 {
 public:
-	CCanvas();
-	CCanvas( const std::string& name );
-	virtual ~CCanvas();
 	// ------------------------------------------------------------------//
-	void				Resize( f32 width, f32 height );
-	virtual void		Update( f32 dt, void *userData );
-	virtual void		Render( CDriver* driver );
+	CSvgImage();
+	CSvgImage( const std::string &name );
+	virtual ~CSvgImage();
 
-	virtual void		PointerDown( u32 x, u32 y );
-	virtual void		PointerDrag( u32 x, u32 y );
-	virtual void		PointerUp( u32 x, u32 y );
 
-	virtual void		ClearEvents();
-	// ------------------------------------------------------------------//
+	void						Load( io::CMemStream* ms );
 protected:
-
 	// ------------------------------------------------------------------//
 };
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
-#endif // __SIM_CANVAS_H
-
+#endif // __SIM_SVG_IMAGE_H

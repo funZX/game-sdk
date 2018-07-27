@@ -35,7 +35,7 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CSceneNode: public stl::COctreeData<CSceneNode*>, public IUpdatable, public IRenderable
+class CSceneNode: public stl::COctreeData<CSceneNode*>, public IUpdatable, public IRenderable, public IEngineItem
 {
 public:
 	// ------------------------------------------------------------------//
@@ -69,6 +69,7 @@ public:
 	typedef stl::CBinaryTreeNode<u32, CSceneNode*>		TChild;
 	typedef stl::CBalanceTree<u32, CSceneNode*>			TChildren;
 
+	CSceneNode();
 	CSceneNode( const std::string &name );
 	virtual ~CSceneNode();
 
@@ -86,7 +87,6 @@ public:
 
 	CSceneNode*						GetChild( const std::string& name );
 
-	const std::string&				GetName()	{ return m_name; }
 	const u32						GetID()		{ return m_iD; }
 
 	inline void						SetPosition( f32 x, f32 y, f32 z )
@@ -121,7 +121,6 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	std::string						m_name;
 	u32								m_iD;
 
 	CSceneNode*						m_parent;

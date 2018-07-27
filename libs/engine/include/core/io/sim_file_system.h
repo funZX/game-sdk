@@ -100,12 +100,12 @@ class CFileSystem
 
 public:
 
-	CFileSystem( const std::string &filename, CEngine* engine );
+	CFileSystem( const std::string &filename );
 	virtual ~CFileSystem();
 
 	// ------------------------------------------------------------------//
 	void						Open();
-	bool						Load();
+	bool						LoadStep();
 	void						Close();
 
 	rnr::CFont*					GetFont( const std::string &name );

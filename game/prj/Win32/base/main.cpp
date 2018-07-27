@@ -3,6 +3,8 @@
 #include "../../../../Game/sources/Game.h"
 #include "simulator.h"
 
+CGame *game = NULL;
+
 void onQuit()
 {
 #ifdef _DEBUG
@@ -24,14 +26,12 @@ void resizeFromLayer( int width, int height )
 {
 	timeBeginPeriod( 1 );
 
-	CGame *game = new CGame("../../blob/");
+	game = new CGame("../../blob/");
 	game->Start( width, height );
 }
 
 void quit( void )
 {
-	CGame *game = CGame::GetSingletonPtr();
-
 	game->Quit();
 	delete game;
 
@@ -40,31 +40,26 @@ void quit( void )
 
 void key( unsigned char key, bool isDown )
 {
-	static CGame *game = CGame::GetSingletonPtr();
 	game->KeyPress( key, isDown );
 }
 
 void touchesBegan( CGPoint *pos, int tapCount )
 {
-	static CGame *game = CGame::GetSingletonPtr();
 	game->PointerDown( (int)pos->x, (int)pos->y );
 }
 
 void touchesMoved( CGPoint *pos )
 {
-	static CGame *game = CGame::GetSingletonPtr();
 	game->PointerDrag( (int)pos->x, (int)pos->y );
 }
 
 void touchesEnded( CGPoint *pos )
 {
-	static CGame *game = CGame::GetSingletonPtr();
 	game->PointerUp( (int)pos->x, (int)pos->y );
 }
 
 void render ( void )
 {
-	static CGame *game = CGame::GetSingletonPtr();
 	game->Run();
 
 #if SIM_DEBUG

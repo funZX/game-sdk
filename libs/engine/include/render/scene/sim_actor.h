@@ -19,9 +19,8 @@
 #ifndef __SIM_ACTOR_H
 #define __SIM_ACTOR_H
 
-#include <render/scene/sim_scene_node.h>
-
 #include <render/sim_render.h>
+#include <render/scene/sim_scene_node.h>
 
 class btCollisionShape;
 class btRigidBody;
@@ -45,6 +44,7 @@ class CCamera;
 class CActor : public CSceneNode
 {
 public:
+	CActor();
 	CActor( const std::string &name );
 	virtual ~CActor();
 

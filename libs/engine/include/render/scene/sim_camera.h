@@ -42,6 +42,7 @@ class CCamera : public CSceneNode
 {
 public:
 	// ------------------------------------------------------------------//
+	CCamera();
 	CCamera( const std::string &name );
 	virtual ~CCamera();
 	// ------------------------------------------------------------------//

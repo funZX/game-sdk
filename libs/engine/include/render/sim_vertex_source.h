@@ -19,6 +19,8 @@
 #ifndef __SIM_VERTEX_SOURCE_H
 #define __SIM_VERTEX_SOURCE_H
 
+#include <core/sim_interfaces.h>
+
 #include <math/sim_matrix4.h>
 #include <math/sim_vec2.h>
 #include <math/sim_vec3.h>
@@ -41,10 +43,11 @@ class CBatch2D;
 class CBatch3D;
 class CFontChar;
 
-class CVertexSource
+class CVertexSource : public IEngineItem
 {
 public:
 	CVertexSource();
+	CVertexSource( const std::string& name );
 	virtual ~CVertexSource();
 
 	// ------------------------------------------------------------------//

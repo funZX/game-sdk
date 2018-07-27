@@ -29,6 +29,7 @@
 #include <render/sim_vertex_group.h>
 #include <render/sim_render_texture.h>
 #include <render/sim_shader.h>
+#include <core/sim_singleton.h>
 
 using namespace sim::mat;
 
@@ -40,7 +41,7 @@ namespace rnr
 
 class CEffect;
 
-class CDriver
+class CDriver : public stl::CSingleton<CDriver>
 {
 public:
 	CDriver();
@@ -332,7 +333,6 @@ public:
 	inline u32					GetDrawCallCount()	{ return m_drawCallCount; }
 	inline u32					GetVertexCount()	{ return m_vertexCount; }
 
-	const std::string&			GetName()		{ return m_name; }
 	// ------------------------------------------------------------------//
 
 protected:
@@ -350,8 +350,6 @@ protected:
 	void						InitUniform();
 	// ------------------------------------------------------------------//
 protected:
-	// ------------------------------------------------------------------//
-	std::string					m_name;
 	// ------------------------------------------------------------------//
 	TUniformInfo				m_uniformInfo[ CShader::k_Uniform_Count ];
 	// ------------------------------------------------------------------//

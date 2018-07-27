@@ -32,18 +32,13 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-extern const char *skyboxVSH;
-extern const char *skyboxFSH;
-
-CSkyBox::CSkyBox( const std::string &name )
+CSkyBox::CSkyBox()
 {
-	m_name				= name;
-
 	InitEffect();
 
-	m_texture			= SIM_NEW CCubeTexture( name );
+	m_texture			= SIM_NEW CCubeTexture();
 
-	m_material			= SIM_NEW CMaterial( name );
+	m_material			= SIM_NEW CMaterial();
 	m_material->SetEffect( m_effect );
 
 	m_vertexGroup		= SIM_NEW CVertexGroup();
@@ -52,6 +47,13 @@ CSkyBox::CSkyBox( const std::string &name )
 	m_vertexGroup->SetMaterial( m_material );
 }
 
+// ----------------------------------------------------------------------//
+
+CSkyBox::CSkyBox( const std::string &name )
+	: CSkyBox()
+{
+	m_name = name;
+}
 // ----------------------------------------------------------------------//
 
 CSkyBox::~CSkyBox()
@@ -141,9 +143,11 @@ void CSkyBox::Render( CDriver *driver )
 	driver->SetMaterialSpecular( m_material->GetSpecular() );
 	driver->SetMaterialEmissive( m_material->GetEmissive() );
 
+	CDriver::K_SELECT_TEXTURE tex =
 	driver->SelectTexture( CDriver::k_Select_Texture_4 );	
 	glBindTexture( GL_TEXTURE_CUBE_MAP, m_texture->GetID() );
-	driver->Render(m_vertexGroup);
+	driver->Render( m_vertexGroup );
+	driver->SelectTexture( tex );
 	
 	SIM_CHECK_OPENGL();
 

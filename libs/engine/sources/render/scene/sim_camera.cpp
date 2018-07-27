@@ -31,8 +31,8 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CCamera::CCamera( const std::string &name )
-	: CSceneNode( name )
+CCamera::CCamera()
+	: CSceneNode()
 {
 	Matrix4ToIdentity( &m_perspectiveMatrix );
 	Matrix4ToIdentity( &m_orthographicMatrix );
@@ -51,6 +51,14 @@ CCamera::CCamera( const std::string &name )
 	m_fieldOfView	= 60.0f;
 	m_nearPlane		= 0.1f;
 	m_farPlane		= 100.0f;
+}
+
+// ----------------------------------------------------------------------//
+
+CCamera::CCamera( const std::string &name )
+	: CCamera()
+{
+	m_name = name;
 }
 
 // ----------------------------------------------------------------------//

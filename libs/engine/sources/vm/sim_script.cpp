@@ -25,12 +25,20 @@ namespace sim
 {
 namespace vm
 {
-CScript::CScript( const std::string &name, CSquirrel* sq )
+// ----------------------------------------------------------------------//
+	
+CScript::CScript(CSquirrel* sq)
 	:Sqrat::Script( sq->GetVM() )
 {
-	m_name				= name;
 }
 
+// ----------------------------------------------------------------------//
+
+CScript::CScript( const std::string &name, CSquirrel* sq )
+	: CScript(sq)
+{
+	m_name = name;
+}
 // ----------------------------------------------------------------------//
 
 CScript::~CScript()

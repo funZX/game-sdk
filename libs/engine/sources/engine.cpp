@@ -67,7 +67,6 @@ CEngine::CEngine()
 	SIM_MEMSET(&m_filter[0], 0, sizeof(m_filter));
 
 	Initialize();
-	ToSquirrel();
 }
 
 // ----------------------------------------------------------------------//
@@ -93,6 +92,7 @@ void CEngine::Initialize()
 {
 	InitOpenGL();
 	InitOpenAL();
+	InitVirtualMachine();
 
 // ----------------------------------------------------------------------//
 	static const char *defaultVSH =
@@ -507,7 +507,7 @@ void CEngine::ShowStats( CDriver* driver )
 
 // ----------------------------------------------------------------------//
 
-void CEngine::ToSquirrel()
+void CEngine::InitVirtualMachine()
 {
 	Sqrat::Class<CEngine> CEngine( m_vm->GetVM(), "CEngine" );
 

@@ -39,6 +39,13 @@ CVertexSource::CVertexSource()
 }
 // ----------------------------------------------------------------------//
 
+CVertexSource::CVertexSource( const std::string& name )
+	: CVertexSource()
+{
+	m_name = name;
+}
+// ----------------------------------------------------------------------//
+
 CVertexSource::~CVertexSource( void )
 {
 	if( m_iD != 0 )

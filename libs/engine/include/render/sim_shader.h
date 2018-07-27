@@ -19,6 +19,8 @@
 #ifndef __SIM_SHADER_H
 #define __SIM_SHADER_H
 
+#include <core/sim_interfaces.h>
+
 #include <render/sim_render.h>
 #include <render/sim_vertex_source.h>
 
@@ -30,7 +32,7 @@ namespace rnr
 
 class CDriver;
 
-class CShader
+class CShader : public IEngineItem
 {
 	friend class CEffect;
 
@@ -174,7 +176,7 @@ public:
 
 	} K_TYPE;
 	// ------------------------------------------------------------------//
-
+	CShader( K_TYPE type );
 	CShader( std::string name, K_TYPE type );
 	virtual ~CShader( );
 
@@ -189,7 +191,6 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	std::string					m_name;
 	u32							m_iD;
 
 	static TAttrib				Attributes[];

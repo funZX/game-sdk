@@ -19,8 +19,10 @@
 #ifndef __SIM_SCRIPT_H
 #define __SIM_SCRIPT_H
 
+
 #include <core/sim_core.h>
 
+#include <core/sim_interfaces.h>
 #include <squirrel.h>
 #include <sqrat.h>
 
@@ -28,10 +30,7 @@
 namespace sim
 {
 // ----------------------------------------------------------------------//
-namespace io
-{ 
-	class CMemStream;
-};
+namespace io { class CMemStream; };
 // ----------------------------------------------------------------------//
 namespace vm
 {
@@ -39,12 +38,10 @@ namespace vm
 class CSquirrel;
 // ----------------------------------------------------------------------//
 
-class CScript : public Sqrat::Script
+class CScript : public Sqrat::Script, public IEngineItem
 {
 public:
-	inline const std::string&		GetName()	const { return m_name; }
-
-public:
+	CScript( CSquirrel* sq );
     CScript( const std::string &name, CSquirrel* sq );
     ~CScript();
 
@@ -52,10 +49,6 @@ public:
 
 protected:
 	static SQInteger				Read(SQUserPointer pMemObject, SQUserPointer pDest, SQInteger size);
-
-protected:
-	std::string						m_name;
-
 };
 
 // ----------------------------------------------------------------------//

@@ -25,13 +25,21 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CWidget::CWidget( const std::string& name )
-	: CRect2D( name )
+CWidget::CWidget()
+	: CRect2D()
 {
 	m_parent 	= NULL;
 	m_isFocused = false;
 	m_isEnabled = true;
 	m_isVisible = true;
+}
+
+// ----------------------------------------------------------------------//
+
+CWidget::CWidget(const std::string& name)
+	: CWidget()
+{
+	m_name = name;
 }
 
 // ----------------------------------------------------------------------//
@@ -127,8 +135,6 @@ void CWidget::PointerDown( u32 x, u32 y )
 
 	p.m_loParam = x;
 	p.m_hiParam = y;
-
-
 }
 
 // ----------------------------------------------------------------------//
@@ -139,8 +145,6 @@ void CWidget::PointerDrag( u32 x, u32 y )
 
 	p.m_loParam = x;
 	p.m_hiParam = y;
-
-
 }
 
 // ----------------------------------------------------------------------//
@@ -152,12 +156,6 @@ void CWidget::PointerUp( u32 x, u32 y )
 	p.m_loParam = x;
 	p.m_hiParam = y;
 }
-// ----------------------------------------------------------------------//
-
-void CWidget::Update( f32 dt, void *userData )
-{
-}
-
 // ----------------------------------------------------------------------//
 
 void CWidget::Render( CDriver *driver )

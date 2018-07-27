@@ -52,11 +52,11 @@ CGame::~CGame()
 	SIM_SAFE_DELETE( m_world );
 }
 
-const std::string CGame::GetFsLocation( const std::string& fs)
+const std::string CGame::GetFsPath( const std::string& fs)
 {
 	std::string location;
 
-	location.append(m_fsDir);
+	location.append( m_fsDir );
 	location.append( fs );
 
 	return location;

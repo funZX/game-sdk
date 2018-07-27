@@ -16,6 +16,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <core/io/sim_mem_stream.h>
 #include <render/sim_texture.h>
 
 namespace sim
@@ -24,9 +25,8 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CTexture::CTexture( const std::string &name )
+CTexture::CTexture()
 {
-	m_name		= name;
 	m_iD		= 0;
 
 	m_wrap		= k_Wrap_Default;
@@ -37,6 +37,14 @@ CTexture::CTexture( const std::string &name )
 	m_bits		= 0;
 	m_width		= 0;
 	m_height	= 0;
+}
+
+// ----------------------------------------------------------------------//
+
+CTexture::CTexture( const std::string &name )
+	: CTexture()
+{
+	m_name = name;
 }
 
 // ----------------------------------------------------------------------//
@@ -328,7 +336,7 @@ void CTexture::ApplyWrap(CTexture *tex, K_WRAP wrap)
 {
 	tex->m_wrap = wrap;
 
-	glBindTexture(GL_TEXTURE_2D, tex->m_iD);
+	glBindTexture( GL_TEXTURE_2D, tex->m_iD );
 
 	if (tex->m_wrap == k_Wrap_Clamp)
 	{
@@ -353,7 +361,7 @@ void CTexture::ApplyFilter( CTexture *tex, K_FILTER filter )
 	{
 	case k_Filter_Nearest:
 		{
-			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 			break;
 		}

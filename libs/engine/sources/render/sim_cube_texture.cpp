@@ -17,6 +17,8 @@
 */
 
 #include <core/io/sim_file_stream.h>
+#include <core/io/sim_mem_stream.h>
+
 #include <render/sim_cube_texture.h>
 
 namespace sim
@@ -25,10 +27,17 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CCubeTexture::CCubeTexture( const std::string &name )
-	: CTexture( name )
+CCubeTexture::CCubeTexture()
+	: CTexture()
 {
-	
+}
+
+// ----------------------------------------------------------------------//
+
+CCubeTexture::CCubeTexture(const std::string &name)
+	: CCubeTexture()
+{
+	m_name = name;
 }
 // ----------------------------------------------------------------------//
 

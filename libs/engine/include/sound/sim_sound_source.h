@@ -22,6 +22,7 @@
 #include <OpenAL/al.h>
 
 #include <math/sim_vec3.h>
+#include <core/sim_interfaces.h>
 
 using namespace sim::mat;
 
@@ -33,7 +34,7 @@ namespace snd
 
 class CSoundData;
 
-class CSoundSource
+class CSoundSource : public IEngineItem
 {
 public:
 	// ------------------------------------------------------------------//
@@ -55,6 +56,7 @@ public:
 public:
 	// ------------------------------------------------------------------//
 	CSoundSource();
+	CSoundSource( const std::string& name );
 	 ~CSoundSource();
 	// ------------------------------------------------------------------//
 

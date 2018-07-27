@@ -32,7 +32,7 @@ namespace rnr
 class CTexture;
 class CShader;
 
-class CEffect: public IRenderable
+class CEffect: public IRenderable, public IEngineItem
 {
 	friend class CDriver;
 
@@ -52,6 +52,7 @@ public:
 	} TTechnique;
 
 	// ------------------------------------------------------------------//
+	CEffect();
 	CEffect( std::string name );
 	virtual ~CEffect( );
 	// ------------------------------------------------------------------//
@@ -59,8 +60,6 @@ public:
 	void						Bind(CDriver *driver, CVertexSource *vertexSource);
 
 	void						Load( CShader *vsh, CShader *fsh );
-
-	const std::string&			GetName()		{ return m_name; }
 
 	// ------------------------------------------------------------------//
 	inline CTexture*			GetTexture( u32 channel )	{ return m_textures[ channel ]; }
@@ -88,7 +87,6 @@ protected:
 protected:
 
 	// ------------------------------------------------------------------//
-	std::string			m_name;
 	u32					m_iD;
 
 	CTexture*			m_textures[ CDriver::k_Select_Texture_Count ];

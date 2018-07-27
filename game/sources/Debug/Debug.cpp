@@ -34,7 +34,7 @@ CDebug::CDebug( CFileSystem* fs )
 
 	m_fs			= fs;
 
-	m_rendertexture = SIM_NEW CRenderTexture("Debug_FrameBuffer");
+	m_rendertexture = SIM_NEW CRenderTexture();
 	m_rendertexture->Generate( 400, 300 );
 }
 
@@ -75,8 +75,8 @@ void CDebug::Render( CDriver *driver )
 		driver->MatrixTranslateY(-0.5f);
 		driver->MatrixTranslateZ(-2.0f);
 		driver->MatrixRotateY(dr * 60.0f);
-		
-		fb = 
+
+		fb =
 		driver->BindRenderTexture(m_rendertexture);
 		mesh->Render(driver);
 		driver->MatrixPop();
@@ -88,7 +88,7 @@ void CDebug::Render( CDriver *driver )
 		driver->MatrixPop();
 
 		driver->MatrixPush();
-		driver->MatrixTranslate(0.4f,-0.2f, -1.5f);
+		driver->MatrixTranslate(0.4f, -0.2f, -1.5f);
 		driver->MatrixScale(0.5f, 0.5f, 0.5f);
 		driver->MatrixRotateY(dr * 40.0f);
 		mesh->Render(driver);
@@ -103,7 +103,6 @@ void CDebug::Render2D(CDriver *driver)
 {
 	static CEffect* fill = m_fs->GetEffect("color/fill_color");
 	static CEffect* effect = m_fs->GetEffect("color/fill_color_texture_color");
-	static CRect2D texRect(0, 0, 1, 1);
 
 	CMaterial m("");
 	CRect2D r("");
@@ -114,7 +113,7 @@ void CDebug::Render2D(CDriver *driver)
 	m.SetTexture(0, 0);
 	
 	r.Bound(10.0f, 30.0f, 150.0f, 150.0f);
-	r.Render(driver, &texRect);
+	r.Render(driver, CRect2D::OneSizeRect);
 
 	bool isBatchEnabled =
 	driver->EnableBatch2D(false);
@@ -127,8 +126,7 @@ void CDebug::Render2D(CDriver *driver)
 	m.SetTexture(m_rendertexture, 0);
 	r.Zoom(-6.0f, -6.0f);
 	
-	r.Transform(CRect2D::k_Transform_Flip);
-	r.Render(driver, &texRect);
+	r.Render(driver, CRect2D::OneSizeRectFlip);
 
 	effect->SetTechnique(&techique);
 	driver->EnableBatch2D(isBatchEnabled);

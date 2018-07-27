@@ -33,14 +33,12 @@ namespace rnr
 class CTexture;
 class CEffect;
 
-class CMaterial : public IUpdatable, public IRenderable
+class CMaterial : public IUpdatable, public IRenderable, public IEngineItem
 {
 public:
 	CMaterial();
 	CMaterial( const std::string &name );
 	virtual ~CMaterial();
-
-	inline const std::string&		GetName()					{ return m_name; }
 
 	inline CTexture*				GetTexture( u32 channel )	{ return m_textures[ channel ]; }
 	inline void						SetTexture( CTexture *tex, u32 channel ) { m_textures[ channel ] = tex; }
@@ -70,11 +68,9 @@ public:
 	virtual void					Render( CDriver *driver );
 	// ------------------------------------------------------------------//
 
-public:
+protected:
 
 	// ------------------------------------------------------------------//
-	std::string						m_name;
-
 	TVec4							m_ambient;
 	TVec4							m_diffuse;
 	TVec4							m_specular;
