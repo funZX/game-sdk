@@ -70,10 +70,10 @@ void CWidgetButton::Render( CDriver *driver )
 	if( m_sprite != NULL )
 	{
 		if (m_isPressed) {
-			m_sprite->RenderModule( driver, this, m_frameDn );
+			m_sprite->RenderFrame( driver, this, m_frameDn );
 		}
 		else {
-			m_sprite->RenderModule( driver, this, m_frameUp );
+			m_sprite->RenderFrame( driver, this, m_frameUp );
 		}
 	}
 

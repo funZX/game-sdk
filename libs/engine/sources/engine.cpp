@@ -367,19 +367,19 @@ void CEngine::SetCamera( CCamera *camera )
 {
 	if ( camera != NULL )
 	{
-		m_activeCamera = camera;
-		
 		m_driver->SelectMatrix(CDriver::k_Select_Matrix_Projection);
 		m_driver->MatrixPush();
-		m_driver->MatrixLoad(m_activeCamera->GetPerspectiveMatrix());
+		m_driver->MatrixLoad(camera->GetPerspectiveMatrix());
 
 		m_driver->SelectMatrix(CDriver::k_Select_Matrix_View);
 		m_driver->MatrixPush();
-		m_driver->MatrixLoad(m_activeCamera->GetViewMatrix());
+		m_driver->MatrixLoad(camera->GetViewMatrix());
 
 		m_driver->SelectMatrix(CDriver::k_Select_Matrix_World);
 		m_driver->MatrixPush();
 		m_driver->MatrixLoadIdentity();
+
+		m_activeCamera = camera;
 	}
 	else
 	{
@@ -461,6 +461,26 @@ void  CEngine::Print( CDriver* driver, s32 x, s32 y, char *format, ... )
 	va_end( args );
 
 	m_font->DrawString( driver, x, y, buf );	
+}
+// ----------------------------------------------------------------------//
+
+void CEngine::PointerDown( u32 x, u32 y )
+{
+	m_canvas->PointerDown( x, y );
+}
+
+// ----------------------------------------------------------------------//
+
+void CEngine::PointerDrag( u32 x, u32 y )
+{
+	m_canvas->PointerDrag( x, y );
+}
+
+// ----------------------------------------------------------------------//
+
+void CEngine::PointerUp( u32 x, u32 y )
+{
+	m_canvas->PointerUp( x, y );
 }
 
 // ----------------------------------------------------------------------//

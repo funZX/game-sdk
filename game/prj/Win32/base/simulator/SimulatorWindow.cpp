@@ -8,6 +8,8 @@ static TSimulator SIM;
 
 LRESULT WINAPI SimulatorWindowProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam ) 
 {
+	TSimulator *sim = (TSimulator*)(LONG_PTR)GetWindowLongPtr(hWnd, GWL_USERDATA);
+
 	LRESULT  lRet = 1; 
 
 	switch (uMsg) 
@@ -17,14 +19,12 @@ LRESULT WINAPI SimulatorWindowProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 
 	case WM_CLOSE:
 	case WM_DESTROY:
-		SIM.active = false;          
+		sim->active = false;          
 		break;
 
 	case WM_KEYDOWN:
 	case WM_KEYUP:
 		{
-			TSimulator *sim = (TSimulator*)(LONG_PTR) GetWindowLongPtr ( hWnd, GWL_USERDATA );
-
 			if( sim->OnKey )
 				sim->OnKey( (unsigned char) wParam, uMsg == WM_KEYDOWN );
 		}
@@ -35,15 +35,13 @@ LRESULT WINAPI SimulatorWindowProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 			POINT		point;
 			CGPoint		p;
 
-			TSimulator *sim = (TSimulator*)(LONG_PTR) GetWindowLongPtr ( hWnd, GWL_USERDATA );
-
 			GetCursorPos( &point );
 			ScreenToClient( hWnd, &point );
 
 			p.x = (float) point.x;
 			p.y = (float) point.y;
 
-			if ( sim && sim->OnTouchMove )
+			if ( sim && sim->touchBegan && sim->OnTouchMove )
 				sim->OnTouchMove( &p );
 		}
 		break;
@@ -52,10 +50,8 @@ LRESULT WINAPI SimulatorWindowProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 	case WM_LBUTTONUP:
 		{
 			POINT      point;
-			TSimulator *sim = (TSimulator*)(LONG_PTR) GetWindowLongPtr ( hWnd, GWL_USERDATA );
 
 			GetCursorPos( &point );
-
 
 			if( uMsg == WM_LBUTTONDOWN )
 			{
@@ -66,6 +62,7 @@ LRESULT WINAPI SimulatorWindowProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 					p.x = (float) point.x;
 					p.y = (float) point.y;
 
+					sim->touchBegan = true;
 					sim->OnTouchBegan( &p, 1 );
 				}
 			}
@@ -78,6 +75,7 @@ LRESULT WINAPI SimulatorWindowProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 					p.x = (float) point.x;
 					p.y = (float) point.y;
 
+					sim->touchBegan = false;
 					sim->OnTouchEnd( &p );
 				}
 			}
@@ -120,6 +118,8 @@ GLboolean SimulatorWinCreate ( TSimulator *sim, const char *title )
 
 	AdjustWindowRect ( &windowRect, wStyle, FALSE );
 
+
+	sim->touchBegan = false;
 	sim->hWnd = CreateWindow(
 		WINDOW_CLASS,
 		title,

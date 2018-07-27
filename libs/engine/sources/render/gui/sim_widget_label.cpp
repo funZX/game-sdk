@@ -57,7 +57,7 @@ CWidgetLabel::~CWidgetLabel()
 void CWidgetLabel::Render( CDriver *driver )
 {
 	if( m_sprite != NULL ) {
-		m_sprite->RenderModule( driver, this, m_frame );
+		m_sprite->RenderFrame( driver, this, m_frame );
 	}
 
 	if( !m_string.empty() && m_font != NULL )
