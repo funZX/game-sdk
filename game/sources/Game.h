@@ -1,7 +1,7 @@
 #ifndef __GAME_H
 #define __GAME_H
 
-#include <engine.h>
+#include <sim_engine.h>
 
 class CWorld;
 class CWindow;
@@ -35,8 +35,7 @@ typedef struct
 	const char*					fsDir;
 
 	CGame*						game;
-	CDriver*					driver;
-	CEffect*					effect;
+	CDriver*					driver;	
 	CWorld*						world;
 	CCamera*					camera;
 	CCanvas*					canvas;
@@ -44,7 +43,15 @@ typedef struct
 	struct
 	{
 		CFont*					engine;
+
 	} font;
+
+	struct
+	{
+		CEffect*				engine;
+
+	} effect;
+	
 
 } TGlobal;
 

@@ -12,9 +12,6 @@
 
 #include <physic/sim_physic.h>
 
-#include <vm/sim_script.h>
-#include <vm/sim_squirrel.h>
-
 #include "../Debug/Debug.h"
 #include "../Options.h"
 #include "../Game.h"
@@ -46,12 +43,6 @@ void CWorld::Update( f32 dt, void *userData )
 {
 	m_physic->Update( dt, userData );
 	m_scene->Update( dt, userData );
-
-	static CScript* script = m_fs->GetScript("dt/deltatime");
-
-	//script->Run();
-
-	//O.game->GetVM()->DebuggerStart();
 }
 
 void CWorld::Render( CDriver *driver )

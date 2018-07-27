@@ -19,8 +19,8 @@
 #ifndef __SIM_FILESYSTEM_H
 #define __SIM_FILESYSTEM_H
 
-#include <engine.h>
 #include <jansson.h>
+#include <sim_engine.h>
 
 namespace sim
 {

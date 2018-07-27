@@ -2,7 +2,7 @@
 #define __DEBUG_H
 
 #include <LinearMath/btIDebugDraw.h>
-#include <engine.h>
+#include <sim_engine.h>
 
 class CGame;
 

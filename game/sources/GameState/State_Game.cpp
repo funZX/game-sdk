@@ -6,6 +6,9 @@
 
 #include <core/sim_state_machine.h>
 
+#include <vm/sim_script.h>
+#include <vm/sim_squirrel.h>
+
 #include "../Game.h"
 
 #include "../World/World.h"
@@ -14,7 +17,10 @@
 
 CState_Game::CState_Game()
 {
+	//O.game->GetVM()->DebuggerStart();
 
+	static CScript* script = O.world->GetFs()->GetScript("dt/deltatime");
+	script->Run();
 }
 
 CState_Game::~CState_Game()

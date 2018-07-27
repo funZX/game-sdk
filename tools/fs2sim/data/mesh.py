@@ -73,7 +73,7 @@ def main(dirlist):
 					temp        = temp2
 					out_file    = out_file2
 
-				utils.moveFile(temp, out_file)
+				utils.updateFile(temp, out_file)
 
 			meshes.append({'name' : name, 'file': ('mesh/' + temp)});
 				

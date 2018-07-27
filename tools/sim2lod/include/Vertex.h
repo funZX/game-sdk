@@ -1,7 +1,7 @@
 #ifndef __SIM2OPT_VERTEX_H
 #define __SIM2OPT_VERTEX_H
 
-#include <engine.h>
+#include <sim_engine.h>
 #include <core/sim_list.h>
 
 class Triangle;
