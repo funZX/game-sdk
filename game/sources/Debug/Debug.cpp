@@ -102,7 +102,7 @@ void CDebug::Render( CDriver *driver )
 void CDebug::Render2D(CDriver *driver)
 {
 	static CEffect* fill = m_fs->GetEffect("color/fill_color");
-	static CEffect* effect = m_fs->GetEffect("color/fill_color_texture_color");
+	static CEffect* filltex = m_fs->GetEffect("color/fill_color_texture_color");
 
 	CMaterial m("");
 	CRect2D r("");
@@ -119,16 +119,16 @@ void CDebug::Render2D(CDriver *driver)
 	driver->EnableBatch2D(false);
 
 	CEffect::TTechnique techique;
-	effect->CopyTechnique( &techique );
-	effect->m_technique.depthtest = false;
+	filltex->CopyTechnique( &techique );
+	filltex->m_technique.depthtest = false;
 
-	m.SetEffect(effect);
+	m.SetEffect(filltex);
 	m.SetTexture(m_rendertexture, 0);
 	r.Zoom(-6.0f, -6.0f);
 	
 	r.Render(driver, CRect2D::OneSizeRectFlip);
 
-	effect->SetTechnique(&techique);
+	filltex->SetTechnique(&techique);
 	driver->EnableBatch2D(isBatchEnabled);
 }
 

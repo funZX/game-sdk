@@ -48,8 +48,8 @@ public:
 	s32							GetWidth() { return m_material->GetTexture( 0 )->GetWidth(); }
 	s32							GetHeight() { return m_material->GetTexture( 0 )->GetHeight(); }
 
-	void						AddModule( s32 modId, s32 x, s32 y, s32 w, s32 h );
-	void						RenderModule( CDriver *driver, CWidget *widget, s32 modId );
+	void						AddFrame( s32 modId, s32 x, s32 y, s32 w, s32 h );
+	void						RenderFrame( CDriver *driver, CWidget *widget, s32 modId );
 
 	void						Load( const std::string &file );
 	// ------------------------------------------------------------------//
@@ -58,7 +58,7 @@ protected:
 
 	// ------------------------------------------------------------------//
 	CMaterial*					m_material;
-	std::map<s32, CRect2D>		m_modules;
+	std::map<s32, CRect2D>		m_frames;
 	// ------------------------------------------------------------------//
 };
 

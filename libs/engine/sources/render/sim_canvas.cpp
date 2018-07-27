@@ -55,21 +55,21 @@ void CCanvas::Resize( f32 w, f32 h )
 
 void CCanvas::PointerDown( u32 x, u32 y )
 {
-
+	std::cout << "PointerDown: " << x << ", " << y << std::endl;
 }
 
 // ----------------------------------------------------------------------//
 
 void CCanvas::PointerDrag( u32 x, u32 y )
 {
-
+	std::cout << "PointerDrag: " << x << ", " << y << std::endl;
 }
 
 // ----------------------------------------------------------------------//
 
 void CCanvas::PointerUp( u32 x, u32 y )
 {
-
+	std::cout << "PointerUp: " << x << ", " << y << std::endl;
 }
 
 // ----------------------------------------------------------------------//

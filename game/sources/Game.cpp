@@ -23,7 +23,9 @@
 
 #include <engine.h>
 
+// ----------------------------------------------------------------------//
 TGlobal		O = {0};
+// ----------------------------------------------------------------------//
 
 CGame::CGame( const std::string& fsDir )
 	: CEngine()
@@ -52,6 +54,8 @@ CGame::~CGame()
 	SIM_SAFE_DELETE( m_world );
 }
 
+// ----------------------------------------------------------------------//
+
 const std::string CGame::GetFsPath( const std::string& fs)
 {
 	std::string location;
@@ -62,24 +66,19 @@ const std::string CGame::GetFsPath( const std::string& fs)
 	return location;
 }
 
+// ----------------------------------------------------------------------//
+
+
 void CGame::Update( f32 dt, void *userData )
 {
 	CEngine::Update( dt, userData );
 }
 
-void CGame::PointerDown( u32 x, u32 y )
+// ----------------------------------------------------------------------//
+
+void CGame::KeyPress(u8 key, bool isDown)
 {
+	std::cout << "KeyPress: " << key << ", " << isDown << std::endl;
 }
 
-void CGame::PointerDrag( u32 x, u32 y )
-{
-}
-
-void CGame::PointerUp( u32 x, u32 y )
-{
-}
-
-void CGame::KeyPress( u8 key, bool isDown )
-{
-}
-
+// ----------------------------------------------------------------------//

@@ -66,14 +66,6 @@ public:
 
 // ----------------------------------------------------------------------//
 
-struct ILoadable
-{
-public:
-	virtual bool 				Load( io::CMemStream* ) = 0;
-};
-
-// ----------------------------------------------------------------------//
-
 struct IState : public IUpdatable
 {
 public:

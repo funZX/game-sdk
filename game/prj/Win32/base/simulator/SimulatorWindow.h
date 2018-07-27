@@ -21,6 +21,8 @@ typedef struct
 	EGLContext				eglContext;
 	EGLSurface				eglSurface;
 
+	bool					touchBegan;
+
 	OnTouchBeganCallback	*OnTouchBegan;
 	OnTouchMoveCallback		*OnTouchMove;
 	OnTouchEndCallback		*OnTouchEnd;

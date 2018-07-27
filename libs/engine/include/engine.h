@@ -155,9 +155,9 @@ public:
 	virtual void					Run( void );
 	virtual void					Quit( void );
 
-	inline u64						GetTime()			{ return m_currentTime; }
-	inline u64						GetFrameTime()		{ return m_frameTime; }
-	inline f32						GetDeltaTime()		{ return m_deltaTime; }
+	u64								GetTime()			{ return m_currentTime; }
+	u64								GetFrameTime()		{ return m_frameTime; }
+	f32								GetDeltaTime()		{ return m_deltaTime; }
 
 	virtual void					Update( f32 dt, void *userData );
 	virtual void					Render( CDriver *driver );
@@ -169,6 +169,11 @@ public:
 	void							GoBack();
 
 	void							SetCamera( CCamera *camera );
+
+	void							PointerDown( u32 x, u32 y );
+	void							PointerDrag( u32 x, u32 y );
+	void							PointerUp( u32 x, u32 y );
+
 
 protected:
 	void							Initialize();

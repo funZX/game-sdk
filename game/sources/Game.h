@@ -16,16 +16,10 @@ public:
 	~CGame();
 
 	void						Update( f32 dt, void *userData );
-
-	void						PointerDown( u32 x, u32 y );
-	void						PointerDrag( u32 x, u32 y );
-	void						PointerUp( u32 x, u32 y );
+	const std::string			GetFsPath( const std::string& fs);
+	inline CWorld*				GetWorld()			{ return m_world; }
 
 	void						KeyPress( u8 key, bool isDown );
-
-	const std::string			GetFsPath( const std::string& fs);
-
-	inline CWorld*				GetWorld()			{ return m_world; }
 
 protected:
 	std::string					m_fsDir;

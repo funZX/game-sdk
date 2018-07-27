@@ -42,7 +42,7 @@ CSprite::CSprite( const std::string& name )
 
 // ----------------------------------------------------------------------//
 
-void CSprite::AddModule( s32 modId, s32 x, s32 y, s32 w, s32 h  )
+void CSprite::AddFrame( s32 modId, s32 x, s32 y, s32 w, s32 h  )
 {
 	CRect2D m;
 
@@ -56,16 +56,16 @@ void CSprite::AddModule( s32 modId, s32 x, s32 y, s32 w, s32 h  )
 		h * rh
 	);
 
-	m_modules[ modId ] = m;
+	m_frames[ modId ] = m;
 }
 
 // ----------------------------------------------------------------------//
 
-void CSprite::RenderModule( CDriver *driver, CWidget *widget, s32 modId )
+void CSprite::RenderFrame( CDriver *driver, CWidget *widget, s32 modId )
 {
-	std::map<s32, CRect2D>::iterator m = m_modules.find( modId );
+	std::map<s32, CRect2D>::iterator m = m_frames.find( modId );
 
-	if( m != m_modules.end() )
+	if( m != m_frames.end() )
 	{
 	    CRect2D *rect2D = ( CRect2D* ) widget;
 
