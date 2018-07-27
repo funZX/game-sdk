@@ -30,6 +30,8 @@ TGlobal		O = {0};
 CGame::CGame( const std::string& fsDir )
 	: CEngine()
 {
+	SIM_MEMSET( &m_downKeys, 0, sizeof( m_downKeys ) );
+
 	m_fsDir				= fsDir;
 
 	O.game				= this;
@@ -76,8 +78,10 @@ void CGame::Update( f32 dt, void *userData )
 
 // ----------------------------------------------------------------------//
 
-void CGame::KeyPress(u8 key, bool isDown)
+void CGame::KeyPress( u8 key, bool isDown )
 {
+	m_downKeys[ key ] = isDown;
+
 	std::cout << "KeyPress: " << key << ", " << isDown << std::endl;
 }
 
