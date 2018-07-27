@@ -36,8 +36,9 @@ CWidgetSvg::CWidgetSvg()
 // ----------------------------------------------------------------------//
 
 CWidgetSvg::CWidgetSvg(const std::string& name)
-	:CWidget(name)
+	:CWidgetSvg()
 {
+	m_name = name;
 }
 // ----------------------------------------------------------------------//
 

@@ -42,8 +42,9 @@ CWidgetLabel::CWidgetLabel()
 // ----------------------------------------------------------------------//
 
 CWidgetLabel::CWidgetLabel(const std::string& name)
-	:CWidget(name)
+	:CWidgetLabel()
 {
+	m_name = name;
 }
 // ----------------------------------------------------------------------//
 

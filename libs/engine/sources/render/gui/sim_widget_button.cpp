@@ -46,8 +46,9 @@ CWidgetButton::CWidgetButton()
 // ----------------------------------------------------------------------//
 
 CWidgetButton::CWidgetButton( const std::string& name )
-	: CWidget( name )
+	: CWidgetButton()
 {
+	m_name = name;
 }
 
 // ----------------------------------------------------------------------//

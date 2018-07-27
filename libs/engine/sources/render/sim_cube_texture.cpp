@@ -35,8 +35,9 @@ CCubeTexture::CCubeTexture()
 // ----------------------------------------------------------------------//
 
 CCubeTexture::CCubeTexture(const std::string &name)
-	: CTexture(name)
+	: CCubeTexture()
 {
+	m_name = name;
 }
 // ----------------------------------------------------------------------//
 
