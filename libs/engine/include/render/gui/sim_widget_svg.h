@@ -19,6 +19,9 @@
 #ifndef __SIM_WIDGET_SVG_H
 #define __SIM_WIDGET_SVG_H
 
+#include <agg_basics.h>
+#include <agg_rendering_buffer.h>
+
 #include <render/sim_render.h>
 #include <render/gui/sim_widget.h>
 
@@ -37,16 +40,19 @@ public:
 	CWidgetSvg( const std::string& name );
 	virtual ~CWidgetSvg();
 	// ------------------------------------------------------------------//
-	void				Render( CDriver *driver );
+	void						Render( CDriver *driver );
 	
-	inline void			SetImage( CSvgImage * svgimage ) { m_svgimage = svgimage; }
+	inline void					SetImage( CSvgImage * svgimage ) { m_svgimage = svgimage; }
 	// ------------------------------------------------------------------//
 
 protected:
 	// ------------------------------------------------------------------//
-	virtual void		OnResize();
+	virtual void				OnResize();
 	// ------------------------------------------------------------------//
-	CSvgImage*			m_svgimage;
+	CSvgImage*					m_svgimage;
+	agg::rendering_buffer		m_renderbuffer;
+
+	CTexture*					m_texture;
 	// ------------------------------------------------------------------//
 };
 

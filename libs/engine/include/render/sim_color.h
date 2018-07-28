@@ -32,13 +32,18 @@ namespace col
 
 extern TVec4 White;
 extern TVec4 Black;
+
 extern TVec4 Red;
 extern TVec4 Green;
 extern TVec4 Blue;
-extern TVec4 Orange;
+
 extern TVec4 Cyan;
 extern TVec4 Magenta;
 extern TVec4 Yellow;
+
+extern TVec4 Orange;
+extern TVec4 Blueish;
+
 
 struct TColor
 {

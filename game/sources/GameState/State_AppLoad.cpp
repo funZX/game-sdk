@@ -12,19 +12,20 @@
 #include "State_MenuMain.h"
 #include "State_AppLoad.h"
 
+// ----------------------------------------------------------------------//
 CState_AppLoad::CState_AppLoad()
 {
 	m_fsui = SIM_NEW CFileSystem( O.game->GetFsPath("ui.7z") );
 	m_fsworld = O.world->GetFs();
 	m_fsCrt = m_fsui;
 }
-
+// ----------------------------------------------------------------------//
 CState_AppLoad::~CState_AppLoad()
 {
 	SIM_SAFE_DELETE( m_fsui );
 	SIM_PRINT("~CState_AppLoad");
 }
-
+// ----------------------------------------------------------------------//
 void CState_AppLoad::Update( f32 dt, void *userData )
 {
 	if (!m_fsCrt->LoadStep())
@@ -33,29 +34,29 @@ void CState_AppLoad::Update( f32 dt, void *userData )
 	if (m_fsCrt == NULL)
 		O.game->GoNext(SIM_NEW CState_MenuMain());
 }
-
+// ----------------------------------------------------------------------//
 void CState_AppLoad::Render2D( CDriver *driver )
 {
 	if (m_fsCrt != NULL)
 	{
 		O.game->Print(driver,
 			0,
-			O.canvas->Height() - 2 * O.font.engine->GetHeight(),
+			O.canvas->Height() - 2 * O.font->GetHeight(),
 			m_fsCrt->GetLoadMessage());
 	}
 }
-
+// ----------------------------------------------------------------------//
 void CState_AppLoad::Render3D( CDriver *driver )
 {
 
 }
-
+// ----------------------------------------------------------------------//
 void CState_AppLoad::OnEnter()
 {
 	m_fsui->Open();
 	m_fsworld->Open();
-};
-
+}
+// ----------------------------------------------------------------------//
 void CState_AppLoad::OnExit()
 {
 	m_fsworld->Close();
@@ -63,4 +64,5 @@ void CState_AppLoad::OnExit()
 
 	O.world->SetEnabled( true );
 	O.world->SetVisible( true );
-};
+}
+// ----------------------------------------------------------------------//

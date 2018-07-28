@@ -32,6 +32,8 @@ namespace rnr
 CWidgetDrawable::CWidgetDrawable()
 	:CWidget()
 {
+	Vec4Copy( &m_fillcolor, &col::Black );
+
 	m_rendertexture = NULL;
 	m_camera = new CCamera();
 }
@@ -58,10 +60,10 @@ void CWidgetDrawable::OnResize()
 	SIM_SAFE_DELETE( m_rendertexture );
 
 	m_rendertexture = SIM_NEW CRenderTexture();
-	m_rendertexture->Generate( m_size.x, m_size.y );
+	m_rendertexture->Generate( (u32)m_size.x, (u32)m_size.y );
 
 	CRect2D r;
-	r.Resize( m_rendertexture->GetWidth(), m_rendertexture->GetHeight() );
+	r.Resize( (u32)m_rendertexture->GetWidth(), (u32)m_rendertexture->GetHeight() );
 	m_camera->SetPerspective( &r );
 }
 
@@ -76,7 +78,7 @@ void CWidgetDrawable::Draw( CDriver *driver )
 
 	CRenderTexture* fb =
 	driver->BindRenderTexture(m_rendertexture);
-	driver->ClearColor();
+	driver->ClearColor( &m_fillcolor);
 
 	engine->SetCamera( m_camera );
 
@@ -87,6 +89,12 @@ void CWidgetDrawable::Draw( CDriver *driver )
 	driver->BindRenderTexture( 0 );
 }
 
+// ----------------------------------------------------------------------//
+void CWidgetDrawable::Render( CDriver *driver )
+{
+	CRect2D::Render( driver, CRect2D::OneSizeRectFlip );
+	CWidget::Render( driver );
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

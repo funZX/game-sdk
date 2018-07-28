@@ -292,12 +292,8 @@ namespace agg
     // redefined in agg_config.h
     // In real applications you can use both, depending on your needs
     //------------------------------------------------------------------------
-#ifdef AGG_RENDERING_BUFFER
-    typedef AGG_RENDERING_BUFFER rendering_buffer;
-#else
-//  typedef row_ptr_cache<int8u> rendering_buffer;
+
     typedef row_accessor<int8u> rendering_buffer;
-#endif
 
 }
 

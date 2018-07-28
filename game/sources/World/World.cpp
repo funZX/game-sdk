@@ -27,7 +27,7 @@ CWorld::CWorld()
 	m_isVisible			= true;
 
 #if SIM_DEBUG
-	m_debug				= NULL;
+	m_debug				= SIM_NEW CDebug();
 #endif
 }
 
@@ -46,11 +46,6 @@ void CWorld::Update( f32 dt, void *userData )
 {
 	if (!m_isEnabled)
 		return;
-
-#if SIM_DEBUG
-	if ( !m_debug )
-		m_debug = SIM_NEW CDebug( m_fs );
-#endif 
 
 	m_physic->Update( dt, userData );
 	m_scene->Update( dt, userData );

@@ -39,7 +39,7 @@ namespace rnr
 	class CActor;
 	class CLight;
 	class CCamera;
-	class CSprite;
+	class CSpriteTexture;
 	class CSvgImage;
 };
 // ----------------------------------------------------------------------//
@@ -57,51 +57,51 @@ class CFileSystem
 {
 	friend class rnr::CScene;
 
-	typedef std::map<u32, rnr::CFont*>					TFontList;
-	typedef std::map<u32, rnr::CFont*>::iterator		TFontListIter;
+	typedef std::map<u32, rnr::CFont*>						TFontList;
+	typedef std::map<u32, rnr::CFont*>::iterator			TFontListIter;
 
-	typedef std::map<u32, rnr::CTexture*>				TTextureList;
-	typedef std::map<u32, rnr::CTexture*>::iterator		TTextureListIter;
+	typedef std::map<u32, rnr::CTexture*>					TTextureList;
+	typedef std::map<u32, rnr::CTexture*>::iterator			TTextureListIter;
 
-	typedef std::map<u32, rnr::CSkyBox*>				TSkyboxList;
-	typedef std::map<u32, rnr::CSkyBox*>::iterator		TSkyboxListIter;
+	typedef std::map<u32, rnr::CSkyBox*>					TSkyboxList;
+	typedef std::map<u32, rnr::CSkyBox*>::iterator			TSkyboxListIter;
 
-	typedef std::map<u32, rnr::CShader*>				TShaderList;
-	typedef std::map<u32, rnr::CShader*>::iterator		TShaderListIter;
+	typedef std::map<u32, rnr::CShader*>					TShaderList;
+	typedef std::map<u32, rnr::CShader*>::iterator			TShaderListIter;
 
-	typedef std::map<u32, rnr::CEffect*>				TEffectList;
-	typedef std::map<u32, rnr::CEffect*>::iterator		TEffectListIter;
+	typedef std::map<u32, rnr::CEffect*>					TEffectList;
+	typedef std::map<u32, rnr::CEffect*>::iterator			TEffectListIter;
 
-	typedef std::map<u32, rnr::CMaterial*>				TMaterialList;
-	typedef std::map<u32, rnr::CMaterial*>::iterator	TMaterialListIter;
+	typedef std::map<u32, rnr::CMaterial*>					TMaterialList;
+	typedef std::map<u32, rnr::CMaterial*>::iterator		TMaterialListIter;
 
-	typedef std::map<u32, rnr::CMesh*>					TMeshList;
-	typedef std::map<u32, rnr::CMesh*>::iterator		TMeshListIter;
+	typedef std::map<u32, rnr::CMesh*>						TMeshList;
+	typedef std::map<u32, rnr::CMesh*>::iterator			TMeshListIter;
 
-	typedef std::map<u32, rnr::CActor*>					TActorList;
-	typedef std::map<u32, rnr::CActor*>::iterator		TActorListIter;
+	typedef std::map<u32, rnr::CActor*>						TActorList;
+	typedef std::map<u32, rnr::CActor*>::iterator			TActorListIter;
 
-	typedef std::map<u32, rnr::CLight*>					TLightList;
-	typedef std::map<u32, rnr::CLight*>::iterator		TLightListIter;
+	typedef std::map<u32, rnr::CLight*>						TLightList;
+	typedef std::map<u32, rnr::CLight*>::iterator			TLightListIter;
 
-	typedef std::map<u32, rnr::CCamera*>				TCameraList;
-	typedef std::map<u32, rnr::CCamera*>::iterator		TCameraListIter;
+	typedef std::map<u32, rnr::CCamera*>					TCameraList;
+	typedef std::map<u32, rnr::CCamera*>::iterator			TCameraListIter;
 
-	typedef std::map<u32, rnr::CSprite*>				TSpriteList;
-	typedef std::map<u32, rnr::CSprite*>::iterator		TSpriteListIter;
+	typedef std::map<u32, rnr::CSpriteTexture*>				TSpriteList;
+	typedef std::map<u32, rnr::CSpriteTexture*>::iterator	TSpriteListIter;
 
-	typedef std::map<u32, rnr::CSvgImage*>				TSvgImageList;
-	typedef std::map<u32, rnr::CSvgImage*>::iterator	TSvgImageListIter;
+	typedef std::map<u32, rnr::CSvgImage*>					TSvgImageList;
+	typedef std::map<u32, rnr::CSvgImage*>::iterator		TSvgImageListIter;
 
-	typedef std::map<u32, snd::CSoundData*>				TSoundList;
-	typedef std::map<u32, snd::CSoundData*>::iterator	TSoundListIter;
+	typedef std::map<u32, snd::CSoundData*>					TSoundList;
+	typedef std::map<u32, snd::CSoundData*>::iterator		TSoundListIter;
 
-	typedef std::map<u32, vm::CScript*>					TScriptList;
-	typedef std::map<u32, vm::CScript*>::iterator		TScriptListIter;
+	typedef std::map<u32, vm::CScript*>						TScriptList;
+	typedef std::map<u32, vm::CScript*>::iterator			TScriptListIter;
 
 
-	typedef std::map<u32, rnr::CScene*>					TSceneList;
-	typedef std::map<u32, rnr::CScene*>::iterator		TSceneListIter;
+	typedef std::map<u32, rnr::CScene*>						TSceneList;
+	typedef std::map<u32, rnr::CScene*>::iterator			TSceneListIter;
 
 public:
 
@@ -123,7 +123,7 @@ public:
 	rnr::CActor*				GetActor( const std::string &name );
 	rnr::CLight*				GetLight( const std::string &name );
 	rnr::CCamera*				GetCamera( const std::string &name );
-	rnr::CSprite*				GetSprite( const std::string &name );
+	rnr::CSpriteTexture*		GetSprite( const std::string &name );
 	rnr::CSvgImage*				GetSvgImage( const std::string &name );
 	snd::CSoundData*			GetSound( const std::string &name );
 	vm::CScript*				GetScript( const std::string &name );

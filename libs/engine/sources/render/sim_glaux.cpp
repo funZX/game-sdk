@@ -394,16 +394,16 @@ void gluRenderCube( CDriver *driver, TCube *cube )
 
 // ----------------------------------------------------------------------//
 
-void gluProject( TVec3 *obj, TMatrix4 *modelViewMatrix, TMatrix4 *projectionMatrix, CRect2D *viewPort, TVec3 *screen )
+void gluProject( mat::TVec3 *obj, mat::TMatrix4 *modelViewMatrix, mat::TMatrix4 *projectionMatrix, CRect2D *viewPort, mat::TVec3 *screen )
 {
-	TVec3 in, out;
+	mat::TVec3 in, out;
 	
 	in.x = obj->x;
 	in.y = obj->y;
 	in.x = obj->z;
 
-	Matrix4Transform( modelViewMatrix, &in, &out );
-	Matrix4TransformHomogen( projectionMatrix, &out, &in );
+	mat::Matrix4Transform( modelViewMatrix, &in, &out );
+	mat::Matrix4TransformHomogen( projectionMatrix, &out, &in );
 
 	screen->x = viewPort->Left() + ( 1.0f + in.x ) * viewPort->Right()  * 0.5f;
 	screen->y = viewPort->Top()  + ( 1.0f + in.y ) * viewPort->Bottom() * 0.5f;
@@ -413,20 +413,20 @@ void gluProject( TVec3 *obj, TMatrix4 *modelViewMatrix, TMatrix4 *projectionMatr
 
 // ----------------------------------------------------------------------//
 
-void gluTBN(	TVec3* TAN, 
-			TVec3* BIN,
-			const TVec3* NOR,
-			const TVec3* A, const TVec3* B, const TVec3* C,
-			const TVec2* H, const TVec2* K, const TVec2* L )
+void gluTBN(mat::TVec3* TAN,
+	mat::TVec3* BIN,
+			const mat::TVec3* NOR,
+			const mat::TVec3* A, const mat::TVec3* B, const mat::TVec3* C,
+			const mat::TVec2* H, const mat::TVec2* K, const mat::TVec2* L )
 {
-	TVec3 D, E, T, U;
-	TVec2 F, G;
+	mat::TVec3 D, E, T, U;
+	mat::TVec2 F, G;
 
-	Vec3Diff( &D, B, A );													// D = B-A
-	Vec3Diff( &E, C, A );													// E = C-A
+	mat::Vec3Diff( &D, B, A );													// D = B-A
+	mat::Vec3Diff( &E, C, A );													// E = C-A
 
-	Vec2Diff( &F, K, H );													// F = K-H
-	Vec2Diff( &G, L, H );													// G = L-H
+	mat::Vec2Diff( &F, K, H );													// F = K-H
+	mat::Vec2Diff( &G, L, H );													// G = L-H
 
 	// Expressed as:
 	//			D = F.s * T + F.t * U
@@ -461,18 +461,18 @@ void gluTBN(	TVec3* TAN,
 	
 	TVec3 n, t;
 
-	Vec3Copy( &n, NOR );
-	Vec3Scale( &n, &n, Vec3Dot( NOR, &T ) );
-	Vec3Diff( TAN, &T, &n );
-	Vec3Normalize( TAN );
+	mat::Vec3Copy( &n, NOR );
+	mat::Vec3Scale( &n, &n, Vec3Dot( NOR, &T ) );
+	mat::Vec3Diff( TAN, &T, &n );
+	mat::Vec3Normalize( TAN );
 
-	Vec3Copy( &n, NOR );
-	Vec3Scale( &n, &n, Vec3Dot( NOR, &U ) );
-	Vec3Copy( &t, TAN );
-	Vec3Scale( &t, &t, Vec3Dot( TAN, &U ) );
-	Vec3Diff( BIN, &U, &n );
-	Vec3Diff( BIN, BIN, &t );
-	Vec3Normalize( BIN );
+	mat::Vec3Copy( &n, NOR );
+	mat::Vec3Scale( &n, &n, Vec3Dot( NOR, &U ) );
+	mat::Vec3Copy( &t, TAN );
+	mat::Vec3Scale( &t, &t, Vec3Dot( TAN, &U ) );
+	mat::Vec3Diff( BIN, &U, &n );
+	mat::Vec3Diff( BIN, BIN, &t );
+	mat::Vec3Normalize( BIN );
 }
 // ----------------------------------------------------------------------//
 }; // namespace rnr

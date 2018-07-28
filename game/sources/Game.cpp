@@ -36,12 +36,14 @@ CGame::CGame( const std::string& fsDir )
 
 	O.game				= this;
 	O.fsDir				= m_fsDir.c_str();
+
 	O.driver			= m_driver;
 	O.canvas			= m_canvas;
 	O.camera			= m_camera;
-	
-	O.font.engine		= m_font;
-	O.effect.engine		= m_effect;
+	O.material			= m_material;
+
+	O.font				= m_font;
+	O.effect			= m_effect;
 
 	m_world				= SIM_NEW CWorld();
 	m_world->SetVisible( false );

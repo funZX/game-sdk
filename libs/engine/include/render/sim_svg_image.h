@@ -34,16 +34,18 @@ namespace rnr
 
 class CSvgImage : public CRect2D
 {
+	friend class CWidgetSvg;
 public:
 	// ------------------------------------------------------------------//
 	CSvgImage();
 	CSvgImage( const std::string &name );
 	virtual ~CSvgImage();
-
-	void							Load( io::CMemStream* ms );
+	// ------------------------------------------------------------------//
+	agg::svg::path_renderer&			GetPath() { return m_path; }
+	void								Load( io::CMemStream* ms );
 protected:
 	// ------------------------------------------------------------------//
-	agg::svg::path_renderer			m_path;
+	agg::svg::path_renderer				m_path;
 	// ------------------------------------------------------------------//
 };
 

@@ -1123,7 +1123,7 @@ void CFileSystem::UnloadSprites()
 
 // ----------------------------------------------------------------------//
 
-rnr::CSprite* CFileSystem::GetSprite( const std::string &name )
+rnr::CSpriteTexture* CFileSystem::GetSprite( const std::string &name )
 {
 	TSpriteListIter it = m_spriteList.find( hash::Get( name ) );
 

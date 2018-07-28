@@ -44,6 +44,9 @@ public:
 	// ------------------------------------------------------------------//
 	void							Draw( CDriver *driver );	
 	CRenderTexture*					GetTexture() { return m_rendertexture; }
+	virtual void					Render(CDriver *driver);
+	// ------------------------------------------------------------------//
+public: // Signals
 	// ------------------------------------------------------------------//
 	sigcxx::Signal<CDriver*>		OnDraw;
 	// ------------------------------------------------------------------//
