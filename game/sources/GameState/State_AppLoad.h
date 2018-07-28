@@ -19,6 +19,11 @@ public:
 	void				OnEnter();
 	void				OnExit();
 
+protected:
+	CFileSystem*		m_fsui;
+	CFileSystem*		m_fsworld;
+	CFileSystem*		m_fsCrt;
+
 // ----------------------------------------------------------------------//
 };
 

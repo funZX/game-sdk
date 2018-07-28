@@ -312,8 +312,6 @@ CRenderTexture* CDriver::BindRenderTexture( CRenderTexture* texture )
 		SIM_CHECK_OPENGL();
 
 		SetViewport( texture->GetWidth(), texture->GetHeight() );
-
-		glClear( GL_COLOR_BUFFER_BIT );
 	}
 	else
 	{
@@ -713,9 +711,15 @@ void CDriver::Clear()
 	m_crtVertexSource	= 0;
 	m_crtRenderTexture	= 0;
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
+// ----------------------------------------------------------------------//
+
+void CDriver::ClearColor()
+{
+	glClear( GL_COLOR_BUFFER_BIT );
+}
 // ----------------------------------------------------------------------//
 
 void CDriver::SetScreenSize( u32 width, u32 height )

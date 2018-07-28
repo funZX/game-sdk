@@ -14,25 +14,35 @@
 
 CState_AppLoad::CState_AppLoad()
 {
+	m_fsui = SIM_NEW CFileSystem( O.game->GetFsPath("ui.7z") );
+	m_fsworld = O.world->GetFs();
+	m_fsCrt = m_fsui;
 }
 
 CState_AppLoad::~CState_AppLoad()
 {
+	SIM_SAFE_DELETE( m_fsui );
 	SIM_PRINT("~CState_AppLoad");
 }
 
 void CState_AppLoad::Update( f32 dt, void *userData )
 {
-	if ( !O.world->GetFs()->LoadStep() )
+	if (!m_fsCrt->LoadStep())
+		m_fsCrt = (m_fsCrt == m_fsworld ? NULL : m_fsworld);
+
+	if (m_fsCrt == NULL)
 		O.game->GoNext(SIM_NEW CState_MenuMain());
 }
 
 void CState_AppLoad::Render2D( CDriver *driver )
 {
-	O.game->Print( driver,
-		0, 
-		O.canvas->Height() - 2 * O.font.engine->GetHeight(), 
-		O.world->GetFs()->GetLoadMessage() );
+	if (m_fsCrt != NULL)
+	{
+		O.game->Print(driver,
+			0,
+			O.canvas->Height() - 2 * O.font.engine->GetHeight(),
+			m_fsCrt->GetLoadMessage());
+	}
 }
 
 void CState_AppLoad::Render3D( CDriver *driver )
@@ -42,10 +52,12 @@ void CState_AppLoad::Render3D( CDriver *driver )
 
 void CState_AppLoad::OnEnter()
 {
-	O.world->GetFs()->Open();
+	m_fsui->Open();
+	m_fsworld->Open();
 };
 
 void CState_AppLoad::OnExit()
 {
-	O.world->GetFs()->Close();
+	m_fsworld->Close();
+	m_fsui->Close();
 };

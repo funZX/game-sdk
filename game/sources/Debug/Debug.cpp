@@ -78,6 +78,7 @@ void CDebug::Render( CDriver *driver )
 
 		fb =
 		driver->BindRenderTexture(m_rendertexture);
+		driver->ClearColor();
 		mesh->Render(driver);
 		driver->MatrixPop();
 

@@ -87,7 +87,7 @@ void CCamera::SetOrthographic( CRect2D *rect)
 	size.x = ( f32 ) rect->Width();
 	size.y = ( f32 ) rect->Height();
 
-	Matrix4FromOrtho( &m_orthographicMatrix, 0.0f, size.x, size.y, 0.0f, -1.0f, 1.0f );
+	Matrix4FromOrtho( &m_orthographicMatrix, rect->Left(), rect->Right(), rect->Bottom(), rect->Top(), -1.0f, 1.0f );
 }
 
 // ----------------------------------------------------------------------//

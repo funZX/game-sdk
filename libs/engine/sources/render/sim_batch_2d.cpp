@@ -82,7 +82,7 @@ void CBatch2D::AddQuad( CMaterial *material, const f32* v0, const f32* v1, const
 			m_driver->EnableBatch2D(true);
 		}
 
-		m_vertexGroup->SetMaterial(material);
+		m_vertexGroup->SetMaterial( material );
 	}
 
 	s32 vtxSize		= m_vertexGroup->m_vertexSource->m_vertexStride / sizeof( f32 );
@@ -120,6 +120,7 @@ void CBatch2D::Render( CDriver *driver )
 	driver->Render( m_vertexGroup );
 
 	m_numQuads = 0;
+	m_vertexGroup->SetMaterial( NULL );
 
 	SIM_CHECK_OPENGL();
 }
