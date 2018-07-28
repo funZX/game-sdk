@@ -62,18 +62,6 @@ public:
 
 	} K_ALIGN;
 	// ------------------------------------------------------------------//
-	typedef enum
-	{
-		k_Transform_Rot90,
-		k_Transform_Rot180,
-		k_Transform_Rot270,
-
-		k_Transform_FlipHor,
-		k_Transform_FlipVer,
-		k_Transform_Flip,
-
-	} K_TRANSFORM;
-	// ------------------------------------------------------------------//
 
 	f32						    Left( void ) const;
 	f32						    Right( void ) const;
@@ -91,12 +79,12 @@ public:
 	void						Zoom( f32 dw, f32 dh );
 	void						Resize( f32 w, f32 h );
 	void						Scale( f32 kw, f32 kh );
+	void						Rotate( f32 rotation);
 
 	void						SetCenter( TVec2 *pos );
 	void						GetCenter( TVec2 *pos );
 
 	void						Align( CRect2D *, K_ALIGN align );
-	void						Transform( K_TRANSFORM trans );
 
 	bool						IsInside( TVec2 *pos );
 	bool						IsInside( f32 x, f32 y );
@@ -123,10 +111,11 @@ protected:
 	// ------------------------------------------------------------------//
 	virtual void				OnMove();
 	virtual void				OnResize();
-	virtual void				OnTransform();
+	virtual void				OnRotate();
 	// ------------------------------------------------------------------//
 	TVec2						m_position;
 	TVec2						m_size;
+	f32							m_rotation;
 
 	CMaterial*					m_material;
 	// ------------------------------------------------------------------//

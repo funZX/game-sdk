@@ -38,6 +38,7 @@ CRect2D::CRect2D()
 	Vec2ToZero(&m_position);
 	Vec2ToZero(&m_size);
 
+	m_rotation = 0.0f;
 	m_material = NULL;
 }
 // ----------------------------------------------------------------------//
@@ -207,6 +208,13 @@ void CRect2D::Scale( f32 kw, f32 kh )
 
 // ----------------------------------------------------------------------//
 
+void CRect2D::Rotate( f32 rotation)
+{
+	m_rotation = rotation;
+}
+
+// ----------------------------------------------------------------------//
+
 void CRect2D::Union( CRect2D *r1, CRect2D *r2, CRect2D *dst )
 {
 
@@ -305,82 +313,6 @@ void CRect2D::Align( CRect2D *c, K_ALIGN align )
 }
 
 // ----------------------------------------------------------------------//
-
-void CRect2D::Transform( K_TRANSFORM transform )
-{
-	switch (transform)
-	{
-	case k_Transform_FlipHor:
-	{
-		m_position.x = Right();
-		m_size.x = -m_size.x;
-	}
-	break;
-
-	case k_Transform_FlipVer:
-	{
-		m_position.y = Bottom();
-		m_size.y = -m_size.y;
-	}
-	break;
-
-	case k_Transform_Flip:
-	{
-		m_position.x = Right();
-		m_position.y = Bottom();
-		m_size.x = -m_size.x;
-		m_size.y = -m_size.y;
-	}
-	break;
-
-	case k_Transform_Rot90:
-	{
-		f32 f;
-		TVec2 center;
-
-		GetCenter(&center);
-
-		m_position.x = center.x + Height() * 0.5f;
-		m_position.y = center.y + Width() * 0.5f;
-
-		f = m_size.x;
-		m_size.x = -m_size.y;
-		m_size.y = -f;
-	}
-	break;
-
-	case k_Transform_Rot180:
-	{
-		m_position.x = Right();
-		m_position.y = Bottom();
-
-		m_size.x = -m_size.x;
-		m_size.y = -m_size.y;
-	}
-	break;
-
-	case k_Transform_Rot270:
-	{
-		f32 f;
-		TVec2 center;
-
-		GetCenter(&center);
-
-		m_position.x = center.x + Height() * 0.5f;
-		m_position.y = center.y - Width() * 0.5f;
-
-		f = m_size.x;
-		m_size.x = -m_size.y;
-		m_size.y = +f;
-	}
-	break;
-	}
-
-	OnTransform();
-}
-
-
-// ----------------------------------------------------------------------//
 bool CRect2D::IsInside( f32 x, f32 y )
 {
 	return ( x > m_position.x && x < this->Right() && y > m_position.y && y < this->Top() );
@@ -406,7 +338,7 @@ void CRect2D::OnMove()
 }
 
 // ----------------------------------------------------------------------//
-void CRect2D::OnTransform()
+void CRect2D::OnRotate()
 {
 
 }
@@ -429,28 +361,46 @@ void CRect2D::Update( f32 dt, void *userData )
 
 void CRect2D::Render( CDriver* driver, const CRect2D *texRect )
 {
-	static f32 v[ 20 ];
+	static f32		v[ 20 ];
+	static TVec2	r[ 4 ];
 
-	v[  0 ] = m_position.x;
-	v[  1 ] = m_position.y;
+	Vec2Set( &r[0], m_position.x,				m_position.y );
+	Vec2Set( &r[1], m_position.x + m_size.x,	m_position.y );
+	Vec2Set( &r[2], m_position.x,				m_position.y + m_size.y);
+	Vec2Set( &r[3], m_position.x + m_size.x,	m_position.y + m_size.y);
+
+	if (m_rotation != 0.0f)
+	{
+		TVec2 center;
+
+		GetCenter( &center );
+
+		Vec2Rotate( &r[ 0 ], &center, m_rotation );
+		Vec2Rotate( &r[ 1 ], &center, m_rotation );
+		Vec2Rotate( &r[ 2 ], &center, m_rotation );
+		Vec2Rotate( &r[ 3 ], &center, m_rotation );
+	}
+
+	v[  0 ] = r[ 0 ].x;
+	v[  1 ] = r[ 0 ].y;
 	v[  2 ] = 1.0f;
 	v[  3 ] = texRect->Left();
 	v[  4 ] = texRect->Top();
 
-	v[  5 ] = m_position.x + m_size.x;
-	v[  6 ] = m_position.y;
+	v[  5 ] = r[ 1 ].x;
+	v[  6 ] = r[ 1 ].y;
 	v[  7 ] = 1.0f;
 	v[  8 ] = texRect->Right();
 	v[  9 ] = texRect->Top();
 
-	v[ 10 ] = m_position.x;
-	v[ 11 ] = m_position.y + m_size.y;
+	v[ 10 ] = r[ 2 ].x;
+	v[ 11 ] = r[ 2 ].y;
 	v[ 12 ] = 1.0f;
 	v[ 13 ] = texRect->Left();
 	v[ 14 ] = texRect->Bottom();
 
-	v[ 15 ] = m_position.x + m_size.x;
-	v[ 16 ] = m_position.y + m_size.y;
+	v[ 15 ] = r[ 3 ].x;
+	v[ 16 ] = r[ 3 ].y;
 	v[ 17 ] = 1.0f;
 	v[ 18 ] = texRect->Right();
 	v[ 19 ] = texRect->Bottom();
@@ -461,7 +411,7 @@ void CRect2D::Render( CDriver* driver, const CRect2D *texRect )
 	vs.m_vertexStride	= CVertexSource::k_Vertex_Attribute_Offset_Position + CVertexSource::k_Vertex_Attribute_Offset_TexCoord_0;
 	vs.m_vboSize		= 4;
 
-	vs.m_vboData	= &v[0];
+	vs.m_vboData		= &v[0];
 
 	static u16 i[6];
 
