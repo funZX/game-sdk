@@ -144,7 +144,6 @@
     <ClInclude Include="..\..\include\ctrl\agg_slider_ctrl.h" />
     <ClInclude Include="..\..\include\ctrl\agg_spline_ctrl.h" />
     <ClInclude Include="..\..\include\freetype\agg_font_freetype.h" />
-    <ClInclude Include="..\..\include\platform\agg_platform_support.h" />
     <ClInclude Include="..\..\include\svg\agg_svg_exception.h" />
     <ClInclude Include="..\..\include\svg\agg_svg_parser.h" />
     <ClInclude Include="..\..\include\svg\agg_svg_path_renderer.h" />

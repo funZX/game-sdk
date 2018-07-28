@@ -65,6 +65,7 @@ public:
 
 	inline void		Rewind()	{ m_cursor = 0; }
 	inline u32		GetCursor() { return m_cursor; }
+	inline u32		GetSize() { return m_maxsize; }
 	// ------------------------------------------------------------------//
 
 protected:

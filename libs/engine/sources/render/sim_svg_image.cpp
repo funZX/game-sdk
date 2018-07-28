@@ -15,6 +15,7 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <svg/agg_svg_parser.h>
 
 #include <core/io/sim_mem_stream.h>
 
@@ -27,7 +28,8 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CSvgImage::CSvgImage()
+CSvgImage::CSvgImage() : 
+	m_path()
 {
 
 }
@@ -51,7 +53,14 @@ CSvgImage::~CSvgImage()
 
 void CSvgImage::Load( io::CMemStream* ms )
 {
+	agg::svg::parser p(m_path);
+	
+	p.parse( (const char*)ms->Read(0), ms->GetSize() );
+	m_path.arrange_orientations();
 
+	double minx = 0.0, miny = 0.0, maxx = 0.0, maxy = 0.0;
+	m_path.bounding_rect( &minx, &miny, &maxx, &maxy );
+	Bound( minx, miny, maxx - minx, maxy - miny );
 }
 
 // ----------------------------------------------------------------------//

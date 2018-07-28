@@ -36,6 +36,7 @@
 #include <render/sim_cube_texture.h>
 #include <render/sim_material.h>
 #include <render/sim_sprite.h>
+#include <render/sim_svg_image.h>
 #include <render/font/sim_font.h>
 #include <render/font/sim_font_atlas.h>
 
@@ -73,6 +74,7 @@ CFileSystem::~CFileSystem()
 	UnloadScenes();
 	UnloadScripts();
 	UnloadSounds();
+	UnloadSvgImages();
 	UnloadSprites();
 	UnloadCameras();
 	UnloadLights();
@@ -130,6 +132,7 @@ void CFileSystem::Open()
 	m_steps[ k_Load_Light ]		.Init("light",		&CFileSystem::LoadLight);
 	m_steps[ k_Load_Camera ]	.Init("camera",		&CFileSystem::LoadCamera);
 	m_steps[ k_Load_Sprite ]	.Init("sprite",		&CFileSystem::LoadSprite);
+	m_steps [k_Load_SvgImage ]	.Init("svg",		&CFileSystem::LoadSvgImage);
 	m_steps[ k_Load_Sound ]		.Init("sound",		&CFileSystem::LoadSound);
 	m_steps[ k_Load_Script ]	.Init("script",		&CFileSystem::LoadScript);
 	m_steps[ k_Load_Scene ]		.Init("scene",		&CFileSystem::LoadScene);
@@ -780,6 +783,39 @@ bool CFileSystem::LoadSprite(const json_t* jsonRoot, s32 index)
 {
 	return NextStep(jsonRoot);
 }
+
+// ----------------------------------------------------------------------//
+
+bool CFileSystem::LoadSvgImage(const json_t* jsonRoot, s32 index)
+{
+	json_t* jsonValue = json_array_get(jsonRoot, index);
+
+	std::string name = json_string_value(json_object_get(jsonValue, "name"));
+	std::string file = json_string_value(json_object_get(jsonValue, "file"));
+
+	CSvgImage* svg = SIM_NEW CSvgImage( name );
+
+	u32 offset = 0;
+	m_lzmaStream->OpenFile(file, &m_buffer, &offset, &m_bufferSize);
+
+	CMemStream ms(&m_buffer[offset], m_bufferSize);
+
+	svg->Load(&ms);
+
+	m_lzmaStream->CloseFile(&m_buffer);
+
+	m_svgImageList[hash::Get(name)] = svg;
+
+	m_loadMessage.clear();
+	m_loadMessage = "Loading svg ";
+	m_loadMessage.append("\"");
+	m_loadMessage.append( name );
+	m_loadMessage.append("\"");
+	m_loadMessage.append("...");
+
+	return NextStep(jsonRoot);
+}
+
 // ----------------------------------------------------------------------//
 
 bool CFileSystem::LoadSound(const json_t* jsonRoot, s32 index)
@@ -1092,6 +1128,30 @@ rnr::CSprite* CFileSystem::GetSprite( const std::string &name )
 	TSpriteListIter it = m_spriteList.find( hash::Get( name ) );
 
 	return it != m_spriteList.end() ? it->second : NULL;
+}
+
+// ----------------------------------------------------------------------//
+
+void CFileSystem::UnloadSvgImages()
+{
+	TSvgImageListIter it = m_svgImageList.begin();
+
+	while ( it != m_svgImageList.end() )
+	{
+		SIM_SAFE_DELETE( it->second );
+		++it;
+	}
+
+	m_svgImageList.clear();
+}
+
+// ----------------------------------------------------------------------//
+
+rnr::CSvgImage* CFileSystem::GetSvgImage( const std::string &name )
+{
+	TSvgImageListIter it = m_svgImageList.find( hash::Get( name ) );
+
+	return it != m_svgImageList.end() ? it->second : NULL;
 }
 
 // ----------------------------------------------------------------------//

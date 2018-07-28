@@ -40,6 +40,7 @@ namespace rnr
 	class CLight;
 	class CCamera;
 	class CSprite;
+	class CSvgImage;
 };
 // ----------------------------------------------------------------------//
 namespace snd { class CSoundData; };
@@ -89,11 +90,15 @@ class CFileSystem
 	typedef std::map<u32, rnr::CSprite*>				TSpriteList;
 	typedef std::map<u32, rnr::CSprite*>::iterator		TSpriteListIter;
 
+	typedef std::map<u32, rnr::CSvgImage*>				TSvgImageList;
+	typedef std::map<u32, rnr::CSvgImage*>::iterator	TSvgImageListIter;
+
 	typedef std::map<u32, snd::CSoundData*>				TSoundList;
 	typedef std::map<u32, snd::CSoundData*>::iterator	TSoundListIter;
 
 	typedef std::map<u32, vm::CScript*>					TScriptList;
 	typedef std::map<u32, vm::CScript*>::iterator		TScriptListIter;
+
 
 	typedef std::map<u32, rnr::CScene*>					TSceneList;
 	typedef std::map<u32, rnr::CScene*>::iterator		TSceneListIter;
@@ -119,6 +124,7 @@ public:
 	rnr::CLight*				GetLight( const std::string &name );
 	rnr::CCamera*				GetCamera( const std::string &name );
 	rnr::CSprite*				GetSprite( const std::string &name );
+	rnr::CSvgImage*				GetSvgImage( const std::string &name );
 	snd::CSoundData*			GetSound( const std::string &name );
 	vm::CScript*				GetScript( const std::string &name );
 	rnr::CScene*				GetScene( const std::string &name );
@@ -145,6 +151,7 @@ protected:
 		k_Load_Light,
 		k_Load_Camera,
 		k_Load_Sprite,
+		k_Load_SvgImage,
 		k_Load_Sound,
 		k_Load_Script,
 		k_Load_Scene,
@@ -187,6 +194,7 @@ protected:
 	bool						LoadLight(const json_t* jsonRoot, s32 index);
 	bool						LoadCamera(const json_t* jsonRoot, s32 index);
 	bool						LoadSprite(const json_t* jsonRoot, s32 index);
+	bool						LoadSvgImage(const json_t* jsonRoot, s32 index);
 	bool						LoadSound(const json_t* jsonRoot, s32 index);
 	bool						LoadScript(const json_t* jsonRoot, s32 index);
 	bool						LoadScene(const json_t* jsonRoot, s32 index);
@@ -204,6 +212,7 @@ protected:
 	void						UnloadLights();
 	void						UnloadCameras();
 	void						UnloadSprites();
+	void						UnloadSvgImages();
 	void						UnloadSounds();
 	void						UnloadScripts();
 	void						UnloadScenes();
@@ -233,6 +242,7 @@ protected:
 	TLightList					m_lightList;
 	TCameraList					m_cameraList;
 	TSpriteList					m_spriteList;
+	TSvgImageList				m_svgImageList;
 	TSoundList					m_soundList;
 	TScriptList					m_scriptList;
 	TSceneList					m_sceneList;

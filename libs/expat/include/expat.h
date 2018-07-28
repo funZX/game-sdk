@@ -42,6 +42,8 @@
 #define XML_SetExternalEntityRefHandlerArg  XML_SetExternalEntRefHandlerArg
 #endif
 
+#define XML_STATIC
+
 #include <stdlib.h>
 #include "expat_external.h"
 

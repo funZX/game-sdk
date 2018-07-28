@@ -19,8 +19,11 @@
 #ifndef __SIM_SVG_IMAGE_H
 #define __SIM_SVG_IMAGE_H
 
+#include <svg/agg_svg_path_renderer.h>
+
 #include <core/sim_interfaces.h>
 #include <render/sim_render.h>
+#include <render/sim_rect_2d.h>
 
 namespace sim
 {
@@ -29,7 +32,7 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CSvgImage : public IEngineItem
+class CSvgImage : public CRect2D
 {
 public:
 	// ------------------------------------------------------------------//
@@ -37,9 +40,10 @@ public:
 	CSvgImage( const std::string &name );
 	virtual ~CSvgImage();
 
-
-	void						Load( io::CMemStream* ms );
+	void							Load( io::CMemStream* ms );
 protected:
+	// ------------------------------------------------------------------//
+	agg::svg::path_renderer			m_path;
 	// ------------------------------------------------------------------//
 };
 

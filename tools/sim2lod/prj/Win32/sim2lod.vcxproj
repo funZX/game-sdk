@@ -70,7 +70,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>../../../../libs/engine/bin/Win32/Debug/engine.lib;../../../../libs/jansson/bin/Win32/Debug/jansson.lib;../../../../libs/lzma/bin/Win32/Debug/lzma.lib;../../../../libs/squirrel/bin/Win32/Debug/squirrel.lib;../../../../libs/freetype/bin/Win32/Debug/freetype.lib;../../../../libs/opengles/bin/libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../../../libs/engine/bin/Win32/Debug/engine.lib;../../../../libs/jansson/bin/Win32/Debug/jansson.lib;../../../../libs/lzma/bin/Win32/Debug/lzma.lib;../../../../libs/squirrel/bin/Win32/Debug/squirrel.lib;../../../../libs/freetype/bin/Win32/Debug/freetype.lib;../../../../libs/expat/bin/Win32/Debug/expat.lib;../../../../libs/agg/bin/Win32/Debug/agg.lib;../../../../libs/sigcxx/bin/Win32/Debug/sigcxx.lib;../../../../libs/opengles/bin/libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -90,7 +90,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>../../../../libs/engine/bin/Win32/Release/engine.lib;../../../../libs/jansson/bin/Win32/Release/jansson.lib;../../../../libs/lzma/bin/Win32/Release/lzma.lib;../../../../libs/squirrel/bin/Win32/Release/squirrel.lib;../../../../libs/freetype/bin/Win32/Release/freetype.lib;../../../../libs/opengles/bin/libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../../../libs/engine/bin/Win32/Release/engine.lib;../../../../libs/jansson/bin/Win32/Release/jansson.lib;../../../../libs/lzma/bin/Win32/Release/lzma.lib;../../../../libs/squirrel/bin/Win32/Release/squirrel.lib;../../../../libs/freetype/bin/Win32/Release/freetype.lib;../../../../libs/expat/bin/Win32/Release/expat.lib;../../../../libs/agg/bin/Win32/Release/agg.lib;../../../../libs/sigcxx/bin/Win32/Release/sigcxx.lib;../../../../libs/opengles/bin/libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
