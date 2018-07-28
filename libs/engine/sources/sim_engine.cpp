@@ -321,7 +321,7 @@ void CEngine::Update( f32 dt, void *userData )
 
 void CEngine::Render( CDriver *driver )
 {
-	driver->Clear();
+	driver->Clear( &col::Black );
 
 	// 3D rendering
 	On3D();

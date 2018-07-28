@@ -38,9 +38,9 @@ CDebug::CDebug(CFileSystem* fs)
 	m_mesh	= fs->GetMesh( "melonman/melonman" );
 
 	m_drawable = SIM_NEW CWidgetDrawable();
-	m_drawable->MoveTo( 0.0f, 30.0f );
-	m_drawable->Resize( 400, 300 );
-
+	m_drawable->MoveTo( 100.0f, 100.0f );
+	m_drawable->Resize( 200, 200 );
+	m_drawable->SetColor( &col::Blueish );
 	m_drawable->OnDraw.Connect( this, &CDebug::DrawToWidget );
 }
 // ----------------------------------------------------------------------//
@@ -59,9 +59,7 @@ void CDebug::Render(CDriver *driver)
 
 	driver->MatrixPush();
 	{
-		driver->MatrixTranslateX(0.3f);
-		driver->MatrixTranslateZ(-4.0f);
-		m_mesh->Render(driver);
+
 	}
 	driver->MatrixPop();
 
@@ -82,7 +80,8 @@ void CDebug::Render2D(CDriver *driver)
 	m.SetEffect(fill);
 	m.SetTexture(0, 0);
 
-	r.Bound(10.0f, 30.0f, 150.0f, 150.0f);
+	r.Bound( m_drawable );
+	r.Zoom( 6.0f, 6.0f );
 	r.Rotate(dr);
 	r.Render(driver, CRect2D::OneSizeRect);
 
@@ -94,11 +93,10 @@ void CDebug::Render2D(CDriver *driver)
 	filltex->m_technique.depthtest = false;
 
 	m_drawable->SetMaterial( &m );
-	m.SetEffect(filltex);
+	m.SetEffect( filltex );
 	m.SetTexture( m_drawable->GetTexture(), 0 );
-	r.Zoom(-6.0f, -6.0f);
-	r.Rotate(dr);
-	r.Render(driver, CRect2D::OneSizeRectFlip);
+	m_drawable->Rotate( dr );
+	m_drawable->Render( driver );
 
 	filltex->SetTechnique(&techique);
 	driver->EnableBatch2D(isBatchEnabled);

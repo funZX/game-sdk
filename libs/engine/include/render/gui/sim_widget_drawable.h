@@ -44,6 +44,10 @@ public:
 	// ------------------------------------------------------------------//
 	void							Draw( CDriver *driver );	
 	CRenderTexture*					GetTexture() { return m_rendertexture; }
+	void							SetColor( const TVec4* color );
+	virtual void					Render(CDriver *driver);
+	// ------------------------------------------------------------------//
+public: // Signals
 	// ------------------------------------------------------------------//
 	sigcxx::Signal<CDriver*>		OnDraw;
 	// ------------------------------------------------------------------//
@@ -54,6 +58,7 @@ protected:
 	// ------------------------------------------------------------------//
 	CRenderTexture*					m_rendertexture;
 	CCamera*						m_camera;
+	TVec4							m_backcolor;
 	// ------------------------------------------------------------------//
 };
 

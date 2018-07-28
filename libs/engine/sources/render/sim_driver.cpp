@@ -162,7 +162,6 @@ void CDriver::Initialize()
 	glDepthMask( GL_TRUE );
 
 	glActiveTexture( GL_TEXTURE0 );
-	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 }
 
 // ----------------------------------------------------------------------//
@@ -706,18 +705,20 @@ void CDriver::MatrixScaleZ( const f32 scale )
 
 // ----------------------------------------------------------------------//
 
-void CDriver::Clear()
+void CDriver::Clear( const TVec4* color )
 {
 	m_crtVertexSource	= 0;
 	m_crtRenderTexture	= 0;
 
+	glClearColor( color->x, color->y, color->z, color->w );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
 // ----------------------------------------------------------------------//
 
-void CDriver::ClearColor()
+void CDriver::ClearColor( const TVec4* color )
 {
+	glClearColor( color->x, color->y, color->z, color->w );
 	glClear( GL_COLOR_BUFFER_BIT );
 }
 // ----------------------------------------------------------------------//
