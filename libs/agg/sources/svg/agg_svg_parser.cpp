@@ -192,7 +192,6 @@ namespace svg
     {
         delete [] m_attr_value;
         delete [] m_attr_name;
-        delete [] m_buf;
         delete [] m_title;
     }
 
@@ -200,7 +199,6 @@ namespace svg
     parser::parser(path_renderer& path) :
         m_path(path),
         m_tokenizer(),
-        m_buf(new char[buf_size]),
         m_title(new char[256]),
         m_title_len(0),
         m_title_flag(false),
@@ -214,50 +212,36 @@ namespace svg
     }
 
     //------------------------------------------------------------------------
-    void parser::parse(const char* fname)
+    void parser::parse(const char* xmlbuf, unsigned int xmlsize)
     {
-        char msg[1024];
-	    XML_Parser p = XML_ParserCreate(NULL);
-	    if(p == 0) 
-	    {
-		    throw exception("Couldn't allocate memory for parser");
-	    }
+		XML_Parser p = XML_ParserCreate(NULL);
+		if (p == 0)
+		{
+			throw exception("Couldn't allocate memory for parser");
+		}
 
-        XML_SetUserData(p, this);
-	    XML_SetElementHandler(p, start_element, end_element);
-	    XML_SetCharacterDataHandler(p, content);
+		XML_SetUserData(p, this);
+		XML_SetElementHandler(p, start_element, end_element);
+		XML_SetCharacterDataHandler(p, content);
 
-        FILE* fd = fopen(fname, "r");
-        if(fd == 0)
-        {
-            sprintf(msg, "Couldn't open file %s", fname);
-		    throw exception(msg);
-        }
+		if (!XML_Parse(p, xmlbuf, xmlsize, true))
+		{
+			char msg[512];
+			snprintf(msg, 512,
+				"%s at line %d\n",
+				XML_ErrorString(XML_GetErrorCode(p)),
+				XML_GetCurrentLineNumber(p));
+			throw exception(msg);
+		}
 
-        bool done = false;
-        do
-        {
-            size_t len = fread(m_buf, 1, buf_size, fd);
-            done = len < buf_size;
-            if(!XML_Parse(p, m_buf, len, done))
-            {
-                sprintf(msg,
-                    "%s at line %d\n",
-                    XML_ErrorString(XML_GetErrorCode(p)),
-                    XML_GetCurrentLineNumber(p));
-                throw exception(msg);
-            }
-        }
-        while(!done);
-        fclose(fd);
-        XML_ParserFree(p);
+		XML_ParserFree(p);
 
-        char* ts = m_title;
-        while(*ts)
-        {
-            if(*ts < ' ') *ts = ' ';
-            ++ts;
-        }
+		char* ts = m_title;
+		while (*ts)
+		{
+			if (*ts < ' ') *ts = ' ';
+			++ts;
+		}
     }
 
 

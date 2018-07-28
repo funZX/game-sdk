@@ -30,13 +30,12 @@ namespace svg
 
     class parser
     {
-        enum buf_size_e { buf_size = BUFSIZ };
     public:
 
         ~parser();
         parser(path_renderer& path);
 
-        void parse(const char* fname);
+        void parse(const char* xmlbuf, unsigned int xmlsize);
         const char* title() const { return m_title; }
 
     private:
@@ -68,7 +67,6 @@ namespace svg
     private:
         path_renderer& m_path;
         path_tokenizer m_tokenizer;
-        char*          m_buf;
         char*          m_title;
         unsigned       m_title_len;
         bool           m_title_flag;

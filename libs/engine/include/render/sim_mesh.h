@@ -52,7 +52,7 @@ class CMesh: public IRenderable, public IEngineItem
 public:
 	CMesh();
 	CMesh( const std::string &name );
-	CMesh(const std::string &name, io::CFileSystem* fs);
+	CMesh( const std::string &name, io::CFileSystem* fs );
 	virtual ~CMesh();
 
 	// ------------------------------------------------------------------//

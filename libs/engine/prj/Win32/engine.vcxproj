@@ -204,7 +204,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_STRUCT_TIMESPEC;WIN32;_DEBUG;_LIB;SIM_DEBUG=1;GL_GLEXT_PROTOTYPES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../include;../../../dirent/include;../../../jansson/include;../../../freetype/include;../../../pthread/include;../../../openal/include;../../../opengles/include;../../../squirrel/include;../../../bullet/sources;../../../lzma/include;../../../detour/include;../../../recast/include;../../../sigcxx/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include;../../../dirent/include;../../../jansson/include;../../../freetype/include;../../../pthread/include;../../../openal/include;../../../opengles/include;../../../squirrel/include;../../../bullet/sources;../../../lzma/include;../../../detour/include;../../../recast/include;../../../sigcxx/include;../../../agg/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -220,7 +220,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_STRUCT_TIMESPEC;WIN32;NDEBUG;_LIB;GL_GLEXT_PROTOTYPES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../include;../../../dirent/include;../../../jansson\include;../../../freetype/include;../../../pthread/include;../../../openal/include;../../../opengles/include;../../../squirrel/include;../../../bullet/sources;../../../lzma/include;../../../detour/include;../../../recast/include;../../../sigcxx/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include;../../../dirent/include;../../../jansson\include;../../../freetype/include;../../../pthread/include;../../../openal/include;../../../opengles/include;../../../squirrel/include;../../../bullet/sources;../../../lzma/include;../../../detour/include;../../../recast/include;../../../sigcxx/include;../../../agg/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
