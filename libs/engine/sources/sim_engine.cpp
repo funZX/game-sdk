@@ -49,10 +49,10 @@ CEngine::CEngine()
 	m_sm				= SIM_NEW CStateMachine();	
 
 	m_fontAtlas			= SIM_NEW CFontAtlas( "Driver Atlas" );
-	m_material			= SIM_NEW CMaterial( "Driver Material" );
-	m_effect			= SIM_NEW CEffect( "Driver Effect" );
 	m_canvas			= SIM_NEW CCanvas( "Driver Canvas" );
 	m_camera			= SIM_NEW rnr::CCamera( "Driver Camera" );
+	m_effect			= SIM_NEW CEffect("Driver Effect");
+	m_material			= SIM_NEW CMaterial("Driver Material");
 
 	m_activeCamera		= NULL;
 
@@ -92,9 +92,15 @@ void CEngine::Initialize()
 {
 	InitOpenGL();
 	InitOpenAL();
+	InitFont();
+	InitEffect();
+	InitMaterial();
 	InitVirtualMachine();
+}
 
 // ----------------------------------------------------------------------//
+void CEngine::InitEffect()
+{
 	static const char *defaultVSH =
 		"attribute vec4 a_PositionL;"
 		"attribute vec2 a_TexCoord_0;"
@@ -114,7 +120,7 @@ void CEngine::Initialize()
 		"	gl_Position		= a_PositionL * u_Matrix_WorldViewProjection;"
 		"}";
 
-// ----------------------------------------------------------------------//
+	// ----------------------------------------------------------------------//
 
 	static const char *defaultFSH =
 		"precision mediump float;"
@@ -162,20 +168,28 @@ void CEngine::Initialize()
 	for (u32 k = 0; k < nUniform; k++)
 		m_effect->AddUniform(uniforms[k], k);
 
-	m_effect->Load( &vsh, &fsh );
+	m_effect->Load(&vsh, &fsh);
 
-	m_effect->m_technique.depthtest	= true;
-	m_effect->m_technique.depthmask	= true;
-	m_effect->m_technique.cullface	= true;
-	m_effect->m_technique.alphatest	= false;
+	m_effect->m_technique.depthtest = true;
+	m_effect->m_technique.depthmask = true;
+	m_effect->m_technique.cullface = true;
+	m_effect->m_technique.alphatest = false;
 
-	m_effect->m_technique.blending	= true;
+	m_effect->m_technique.blending = true;
 	m_effect->m_technique.blendfunc.equation = GL_FUNC_ADD;
-	m_effect->m_technique.blendfunc.src		= GL_SRC_ALPHA;
-	m_effect->m_technique.blendfunc.dst		= GL_ONE_MINUS_SRC_ALPHA;
+	m_effect->m_technique.blendfunc.src = GL_SRC_ALPHA;
+	m_effect->m_technique.blendfunc.dst = GL_ONE_MINUS_SRC_ALPHA;
+}
+// ----------------------------------------------------------------------//
 
-	m_material->SetEffect( m_effect );
+void CEngine::InitMaterial()
+{
+	m_material->SetEffect(m_effect);
+}
 
+// ----------------------------------------------------------------------//
+void CEngine::InitFont()
+{
 	const char* szLetters = 
 		" ~`!@#$%^&*()-_=+0123456789:;'\"\\|<>?,./?{}[]@ABCDEFGHI"
 		"JKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÁáÉéÍíÑñÓóÚú";
@@ -183,8 +197,7 @@ void CEngine::Initialize()
 	sim::u8* buffer		= (sim::u8*) &BlobFont[0];
 	sim::s32 bufferSize = 4 * 28948;
 
-	m_font = m_fontAtlas->AddFont( "Default", buffer, bufferSize, 9, szLetters );
-	
+	m_font = m_fontAtlas->AddFont( "Default", buffer, bufferSize, 9, szLetters );	
 	m_fontAtlas->Create();
 }
 

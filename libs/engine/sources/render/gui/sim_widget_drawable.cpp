@@ -32,7 +32,7 @@ namespace rnr
 CWidgetDrawable::CWidgetDrawable()
 	:CWidget()
 {
-	Vec4Copy( &m_backcolor, &col::Black );
+	Vec4Copy( &m_fillcolor, &col::Black );
 
 	m_rendertexture = NULL;
 	m_camera = new CCamera();
@@ -51,13 +51,6 @@ CWidgetDrawable::~CWidgetDrawable()
 {
 	SIM_SAFE_DELETE( m_camera );
 	SIM_SAFE_DELETE( m_rendertexture );
-}
-
-// ----------------------------------------------------------------------//
-
-void CWidgetDrawable::SetColor(const TVec4* color)
-{
-	Vec4Copy( &m_backcolor, color );
 }
 
 // ----------------------------------------------------------------------//
@@ -85,7 +78,7 @@ void CWidgetDrawable::Draw( CDriver *driver )
 
 	CRenderTexture* fb =
 	driver->BindRenderTexture(m_rendertexture);
-	driver->ClearColor( &m_backcolor );
+	driver->ClearColor( &m_fillcolor);
 
 	engine->SetCamera( m_camera );
 

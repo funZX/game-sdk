@@ -10,38 +10,39 @@
 
 #include "State_MenuMain.h"
 #include "State_Game.h"
-
+// ----------------------------------------------------------------------//
 CState_MenuMain::CState_MenuMain()
 {
 
 }
-
+// ----------------------------------------------------------------------//
 CState_MenuMain::~CState_MenuMain()
 {
 
 }
-
+// ----------------------------------------------------------------------//
 void CState_MenuMain::Update( f32 dt, void *userData )
 {
 	O.world->Update( dt, userData );
 	O.game->GoNext(SIM_NEW CState_Game());
 }
-
+// ----------------------------------------------------------------------//
 void CState_MenuMain::Render2D( CDriver *driver )
 {
 	O.world->Render2D(driver);
 }
-
+// ----------------------------------------------------------------------//
 void CState_MenuMain::Render3D( CDriver *driver )
 {
 	O.world->Render(driver);
 }
-
+// ----------------------------------------------------------------------//
 void CState_MenuMain::OnEnter()
 {
 
-};
-
+}
+// ----------------------------------------------------------------------//
 void CState_MenuMain::OnExit()
 {
-};
+}
+// ----------------------------------------------------------------------//

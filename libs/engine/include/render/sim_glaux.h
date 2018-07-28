@@ -20,6 +20,7 @@
 #define __SIM_GLAUX_H
 
 #include <core/sim_interfaces.h>
+#include <math/sim_vec2.h>
 #include <math/sim_vec3.h>
 #include <math/sim_matrix4.h>
 #include <render/sim_render.h>
@@ -59,13 +60,13 @@ TCube*		gluNewCube( f32 sideSize );
 TCube*		gluDelCube( TCube *cube );
 void		gluRenderCube( CDriver *driver, TCube *cube );
 
-void		gluTBN(	TVec3* TAN, 
-					TVec3* BIN,
-					const TVec3* NOR,
-					const TVec3* A, const TVec3* B, const TVec3* C,
-					const TVec2* H, const TVec2* K, const TVec2* L );
+void		gluTBN(	mat::TVec3* TAN, 
+					mat::TVec3* BIN,
+					const mat::TVec3* NOR,
+					const mat::TVec3* A, const mat::TVec3* B, const mat::TVec3* C,
+					const mat::TVec2* H, const mat::TVec2* K, const mat::TVec2* L );
 
-void		gluProject( TVec3 *obj, TMatrix4 *modelViewMatrix, TMatrix4 *projectionMatrix, CRect2D *viewPort, TVec3 *screen );
+void		gluProject( mat::TVec3 *obj, mat::TMatrix4 *modelViewMatrix, mat::TMatrix4 *projectionMatrix, CRect2D *viewPort, mat::TVec3 *screen );
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

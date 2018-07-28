@@ -4,9 +4,7 @@
 #include <LinearMath/btIDebugDraw.h>
 #include <sim_engine.h>
 
-class CGame;
-
-class CDebug : public IRenderable, public btIDebugDraw, public sigcxx::Trackable
+class CDebug : public IRenderable, public btIDebugDraw
 {
 public:
 	class CTiming
@@ -30,11 +28,11 @@ public:
 	};
 
 public:
-	CDebug( CFileSystem* fs );
+	CDebug();
 	~CDebug();
 
 	void						Render( CDriver *driver );
-	void						Render2D(CDriver *driver);
+	void						Render2D( CDriver *driver);
 
 	// btIDebugDraw interface
 	void						drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor);
@@ -47,19 +45,11 @@ public:
 	int							getDebugMode() const { return m_debugMode;}
 	void						reportErrorWarning(const char* warningString);
 
-protected:
-	void						DrawToWidget( CDriver* driver, sigcxx::SLOT slot = nullptr );
-
 public:
 	TSphere*					m_debugSphere;
 	TCube*						m_debugCube;
 
 	sim::s32					m_debugMode;
-	CLight*						m_debugLight;
-
-	CFileSystem*				m_fs;
-	CMesh*						m_mesh;
-	CWidgetDrawable*		m_drawable;
 };
 
 #endif // __WINDOW_H

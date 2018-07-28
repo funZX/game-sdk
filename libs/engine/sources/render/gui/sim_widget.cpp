@@ -51,6 +51,13 @@ CWidget::~CWidget()
 
 
 // ----------------------------------------------------------------------//
+
+void CWidget::SetColor(const TVec4* color)
+{
+	Vec4Copy( &m_fillcolor, color );
+}
+
+// ----------------------------------------------------------------------//
 void CWidget::SetParent( CWidget* parent )
 {
 	if( m_parent != parent )

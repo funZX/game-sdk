@@ -35,22 +35,16 @@ typedef struct
 	const char*					fsDir;
 
 	CGame*						game;
+
 	CDriver*					driver;	
 	CWorld*						world;
 	CCamera*					camera;
 	CCanvas*					canvas;
 
-	struct
-	{
-		CFont*					engine;
+	CMaterial*					material;
 
-	} font;
-
-	struct
-	{
-		CEffect*				engine;
-
-	} effect;
+	CFont*						font;
+	CEffect*					effect;
 	
 
 } TGlobal;

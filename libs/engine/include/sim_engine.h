@@ -207,6 +207,9 @@ protected:
 	void							ShowStats( CDriver* driver );
 	f32								Smooth( f32 dt );
 
+	void							InitFont();
+	void							InitEffect();
+	void							InitMaterial();
 	void							InitVirtualMachine();
 
 protected:
