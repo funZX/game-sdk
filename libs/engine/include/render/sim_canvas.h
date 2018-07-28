@@ -23,7 +23,7 @@
 #include <core/sim_interfaces.h>
 
 #include <render/sim_render.h>
-#include <render/sim_widget.h>
+#include <render/gui/sim_widget.h>
 
 #include <math/sim_vec2.h>
 #include <math/sim_vec3.h>

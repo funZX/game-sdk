@@ -60,4 +60,7 @@ void CState_AppLoad::OnExit()
 {
 	m_fsworld->Close();
 	m_fsui->Close();
+
+	O.world->SetEnabled( true );
+	O.world->SetVisible( true );
 };

@@ -3,9 +3,12 @@
 #include <stdlib.h>
 
 #include "SimulatorWindow.h"
+// ----------------------------------------------------------------------//
+void SaveWindowPosition();
+void LoadWindowPosition();
 
 static TSimulator SIM;
-
+// ----------------------------------------------------------------------//
 LRESULT WINAPI SimulatorWindowProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam ) 
 {
 	TSimulator *sim = (TSimulator*)(LONG_PTR)GetWindowLongPtr(hWnd, GWL_USERDATA);
@@ -15,10 +18,12 @@ LRESULT WINAPI SimulatorWindowProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 	switch (uMsg) 
 	{ 
 	case WM_CREATE:
+		LoadWindowPosition();
 		break;
 
 	case WM_CLOSE:
 	case WM_DESTROY:
+		SaveWindowPosition();
 		sim->active = false;          
 		break;
 
@@ -92,7 +97,7 @@ LRESULT WINAPI SimulatorWindowProc ( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 
 	return lRet; 
 }
-
+// ----------------------------------------------------------------------//
 GLboolean SimulatorWinCreate ( TSimulator *sim, const char *title )
 {
 	WNDCLASS wndclass = {0}; 
@@ -144,7 +149,7 @@ GLboolean SimulatorWinCreate ( TSimulator *sim, const char *title )
 
 	return GL_TRUE;
 }
-
+// ----------------------------------------------------------------------//
 EGLBoolean SimulatorCreateEGLContext ( EGLNativeWindowType hWnd, EGLDisplay* eglDisplay,
 	EGLContext* eglContext, EGLSurface* eglSurface,
 	EGLint attribList[])
@@ -189,7 +194,7 @@ EGLBoolean SimulatorCreateEGLContext ( EGLNativeWindowType hWnd, EGLDisplay* egl
 
 	return EGL_TRUE;
 } 
-
+// ----------------------------------------------------------------------//
 GLboolean  SimulatorCreateWindow ( TSimulator *sim, const char* title, GLint width, GLint height )
 {
 	EGLint attribList[] =
@@ -222,7 +227,7 @@ GLboolean  SimulatorCreateWindow ( TSimulator *sim, const char* title, GLint wid
 
 	return GL_TRUE;
 }
-
+// ----------------------------------------------------------------------//
 void SimulatorWinLoop ( TSimulator *sim )
 {
 	MSG msg = { 0 };
@@ -250,42 +255,42 @@ void SimulatorWinLoop ( TSimulator *sim )
 
 	PostQuitMessage(0);   
 }
-
+// ----------------------------------------------------------------------//
 void SimulatorSetRenderCallback( OnRenderCallback *OnRender )
 {
 	SIM.OnRender = OnRender;
 }
-
+// ----------------------------------------------------------------------//
 void SimulatorSetResizeFromLayerCallback( OnResizeCallback *OnResize )
 {
 	SIM.OnResize = OnResize;
 }
-
+// ----------------------------------------------------------------------//
 void SimulatorSetTouchesBeganCallback( OnTouchBeganCallback *OnTouchBegan )
 {
 	SIM.OnTouchBegan = OnTouchBegan;
 }
-
+// ----------------------------------------------------------------------//
 void SimulatorSetTouchesMovedCallback( OnTouchMoveCallback *OnTouchMove )
 {
 	SIM.OnTouchMove = OnTouchMove;
 }
-
+// ----------------------------------------------------------------------//
 void SimulatorSetTouchesEndedCallback( OnTouchEndCallback *OnTouchEnd )
 {
 	SIM.OnTouchEnd = OnTouchEnd;
 }
-
+// ----------------------------------------------------------------------//
 void SimulatorSetKeyCallback( OnKeyCallback *OnKey )
 {
 	SIM.OnKey = OnKey;
 }
-
+// ----------------------------------------------------------------------//
 void SimulatorSetQuitCallback( OnQuitCallback *OnQuit )
 {
 	SIM.OnQuit = OnQuit;
 }
-
+// ----------------------------------------------------------------------//
 void SimulatorRun( int width, int height )
 {
 	SimulatorCreateWindow ( &SIM, 
@@ -300,5 +305,14 @@ void SimulatorRun( int width, int height )
 
 	SimulatorWinLoop ( &SIM );
 }
+// ----------------------------------------------------------------------//
+void SaveWindowPosition()
+{
 
+}
+// ----------------------------------------------------------------------//
+void LoadWindowPosition()
+{
 
+}
+// ----------------------------------------------------------------------//

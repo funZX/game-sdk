@@ -20,7 +20,7 @@
 
 #include <render/gui/sim_widget_button.h>
 
-#include <render/sim_sprite.h>
+#include <render/sim_sprite_texture.h>
 #include <render/sim_batch_2d.h>
 #include <render/sim_driver.h>
 #include <render/sim_material.h>
@@ -70,10 +70,10 @@ void CWidgetButton::Render( CDriver *driver )
 	if( m_sprite != NULL )
 	{
 		if (m_isPressed) {
-			m_sprite->RenderFrame( driver, this, m_frameDn );
+			m_sprite->Render( driver, this, m_frameDn );
 		}
 		else {
-			m_sprite->RenderFrame( driver, this, m_frameUp );
+			m_sprite->Render( driver, this, m_frameUp );
 		}
 	}
 
@@ -91,7 +91,6 @@ void CWidgetButton::Render( CDriver *driver )
 
 void CWidgetButton::PointerDown( u32 x, u32 y)
 {
-	SetFocus( true );
 	m_isPressed = true;
 
 	f32 px = (f32) x;
@@ -105,7 +104,6 @@ void CWidgetButton::PointerDown( u32 x, u32 y)
 
 void CWidgetButton::PointerUp( u32 x, u32 y )
 {
-	SetFocus( false );
 	m_isPressed = false;
 
 	f32 px = (f32) x;

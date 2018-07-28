@@ -45,6 +45,7 @@ CGame::CGame( const std::string& fsDir )
 
 	m_world				= SIM_NEW CWorld();
 	m_world->SetVisible( false );
+	m_world->SetEnabled( false );
 
 	O.world				= m_world;
 

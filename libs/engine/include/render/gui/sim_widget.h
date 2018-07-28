@@ -16,11 +16,12 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SIM_WIDGET_LABEL_H
-#define __SIM_WIDGET_LABEL_H
+#ifndef __SIM_WIDGET_H
+#define __SIM_WIDGET_H
 
+#include <core/sim_interfaces.h>
 #include <render/sim_render.h>
-#include <render/gui/sim_widget.h>
+#include <render/sim_rect_2d.h>
 
 namespace sim
 {
@@ -28,34 +29,61 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CSpriteTexture;
-class CFont;
-
-class CWidgetLabel: public CWidget
+class CWidget : public CRect2D
 {
 public:
-	CWidgetLabel();
-	CWidgetLabel( const std::string& name );
-	virtual ~CWidgetLabel();
-	// ------------------------------------------------------------------//
-	void				Render( CDriver *driver );
+	CWidget();
+	CWidget( const std::string& name );
+	virtual	~CWidget();
 
-	void				SetString( std::string str ) { m_string.clear(); m_string = str; }
-	void				SetFont( CFont *font ) { m_font = font; }
-	void				SetSprite( CSpriteTexture *sprite, s32 frame ) { m_sprite = sprite; m_frame = frame; }
+	// ------------------------------------------------------------------//
+	typedef union
+	{
+		s32		  m_param;
+		struct
+		{
+			u16 m_loParam;
+			u16 m_hiParam;
+		};
+
+	} TPointerParam;
+	// ------------------------------------------------------------------//
+
+	void							SetParent( CWidget* parent );
+	CWidget*						GetParent() { return m_parent; }
+
+	void							SetEnabled(bool enabled) {m_isEnabled = enabled;}
+	bool							IsEnabled() {return m_isEnabled;}
+
+	void							SetVisible(bool visible) {m_isVisible = visible;}
+	bool							IsVisible() {return m_isVisible;}
+
+	void							AddChild( CWidget *child );
+	void							RemChild( CWidget *child );
+	void							DelChild( CWidget *child );
+
+	void							RemAllChilds( void );
+	void							DelAllChilds( void );
+
+    virtual void					Render( CDriver *driver );
+
+	virtual void					PointerDown( u32 x, u32 y );
+	virtual void					PointerDrag( u32 x, u32 y );
+	virtual void					PointerUp( u32 x, u32 y );
+
 	// ------------------------------------------------------------------//
 
 protected:
 
 	// ------------------------------------------------------------------//
-	std::string 		m_string;
-	CFont*				m_font;
-	CSpriteTexture*		m_sprite;
-	s32 				m_frame;
-	// ------------------------------------------------------------------//
+	CWidget*						m_parent;
+	std::map< CWidget*, CWidget* > 	m_childs;
+
+	bool							m_isEnabled;
+	bool							m_isVisible;
 };
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
-#endif // __SIM_WIDGET_LABEL_H
+#endif // __WIDGET_ABSTRACT_H

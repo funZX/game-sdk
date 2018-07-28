@@ -58,27 +58,46 @@ namespace sim
 	namespace rnr
 	{
 		class CDriver;
+		class CBatch2D;
 		class CFont;
 		class CFontAtlas;
-		class CRect2D;
-		class CBatch2D;
-		class CBatch3D;
-		class CSprite;
-		class CCamera;
-		class CWidget;
-		class CCanvas;
+
 		class CTexture;
+		class CSvgTexture;
 		class CRenderTexture;
+		class CSpriteTexture;
+
+		class CMesh;
+		class CVertexGroup;
 		class CVertexSource;
 		class Material;
-		class CVertexGroup;
-		class CMesh;
-		class CSkyBox;
-		class CShader;
 		class CEffect;
+		class CShader;
+		class CSkyBox;
+
+		class CScene;
+		class CSceneNode;
+		class CCamera;
 		class CLight;
 		class CActor;
-		class CScene;
+
+		class CBone;
+		class CBoneMask;
+		class CBoneHierarchy;
+		class CAnimationPose;
+		class CAnimationFrame;
+		class CBoneAnimation;
+		class CAnimationBlend;
+		class CAnimationPlayer;
+
+		class CRect2D;
+		class CCanvas;
+
+		class CWidget;
+		class CWidgetLabel;
+		class CWidgetButton;
+		class CWidgetSvg;
+		class CWidgetDrawable;
 
 		struct TColor;
 	};

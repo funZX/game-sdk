@@ -16,80 +16,47 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SIM_WIDGET_H
-#define __SIM_WIDGET_H
+#ifndef __SIM_SPRITE_H
+#define __SIM_SPRITE_H
 
 #include <core/sim_interfaces.h>
+
 #include <render/sim_render.h>
+#include <render/sim_material.h>
+#include <render/sim_texture.h>
 #include <render/sim_rect_2d.h>
 
 namespace sim
 {
+namespace io { class CMemoryStream;  }
 namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CWidget : public CRect2D
+class CRect2D;
+class CDriver;
+
+class CSpriteTexture : public CTexture
 {
 public:
-	CWidget();
-	CWidget( const std::string& name );
-	virtual	~CWidget();
-
 	// ------------------------------------------------------------------//
-	typedef union
-	{
-		s32		  m_param;
-		struct
-		{
-			u16 m_loParam;
-			u16 m_hiParam;
-		};
-
-	} TPointerParam;
+	CSpriteTexture();
+	CSpriteTexture( const std::string& name );
 	// ------------------------------------------------------------------//
+	void						AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h );
+	void						Render( CDriver *driver, CRect2D *rect, s32 frame );
 
-	void						SetParent( CWidget* parent );
-	CWidget*					GetParent() { return m_parent; }
-
-	void						SetFocus( bool focus ) { m_isFocused = focus; }
-	bool						IsFocused() { return m_isFocused; }
-
-	void						SetEnabled(bool enabled) {m_isEnabled = enabled;}
-	bool						IsEnabled() {return m_isEnabled;}
-
-	void						SetVisible(bool visible) {m_isVisible = visible;}
-	bool						IsVisible() {return m_isVisible;}
-
-	void						AddChild( CWidget *child );
-	void						RemoveChild( CWidget *child );
-	void						DeleteChild( CWidget *child );
-
-	void						RemoveAllChilds( void );
-	void						DeleteAllChilds( void );
-
-    virtual void				Render( CDriver *driver );
-
-	virtual void				PointerDown( u32 x, u32 y ) = 0;
-	virtual void				PointerDrag( u32 x, u32 y ) = 0;
-	virtual void				PointerUp( u32 x, u32 y )   = 0;
-
+	void						Load( io::CMemStream* ms );
 	// ------------------------------------------------------------------//
 
 protected:
 
 	// ------------------------------------------------------------------//
-	CWidget*						m_parent;
-	std::map< CWidget*, CWidget* > 	m_childs;
-
-	bool							m_isFocused;
-	bool							m_isEnabled;
-	bool							m_isVisible;
-
+	std::map<s32, CRect2D>		m_frames;
 	// ------------------------------------------------------------------//
 };
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
-#endif // __WIDGET_ABSTRACT_H
+#endif // __SIM_SPRITE_H

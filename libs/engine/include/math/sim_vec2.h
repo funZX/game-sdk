@@ -195,26 +195,18 @@ static inline void Vec2Normalize( TVec2 *_this )
 	_this->y = _this->y * mag;
 }
 
-static inline void Vec2RotateZ( TVec2 *_this, const f32 _az, const f32 _d )
-{
-	const f32 a_z = SIM_DEG2RAD( _az );
-
-	_this->x = _this->x + _d * sinf( a_z );
-	_this->y = _this->y - _d * cosf( a_z );
-}
-
-static inline void Vec2Rotate( TVec2 *_this, const TVec2 *src, const f32 angle )
+static inline void Vec2Rotate( TVec2 *_this, const TVec2 *center, const f32 angle )
 {
 	const f32 ang = SIM_DEG2RAD(angle);
 
 	const f32 s = sinf( ang );
 	const f32 c = cosf( ang );
 
-	const f32 _dx = src->x - _this->x;
-	const f32 _dy = src->y - _this->y;
+	const f32 _dx = _this->x - center->x;
+	const f32 _dy = _this->y - center->y;
 
-	_this->x = _dx * c - _dy * s + src->x;
-	_this->y = _dx * s + _dy * c + src->y;
+	_this->x = center->x + ( _dx * c - _dy * s );
+	_this->y = center->y + ( _dx * s + _dy * c );
 }
 
 static inline f32 Vec2GetAngle( const TVec2* v0, const TVec2* v1 )

@@ -16,53 +16,48 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SIM_SPRITE_H
-#define __SIM_SPRITE_H
+#ifndef __SIM_WIDGET_RENDERTEXTURE_H
+#define __SIM_WIDGET_RENDERTEXTURE_H
 
-#include <core/sim_interfaces.h>
+#include <core/sim_core.h>
 
 #include <render/sim_render.h>
-#include <render/sim_material.h>
-#include <render/sim_texture.h>
-#include <render/sim_rect_2d.h>
+#include <render/gui/sim_widget.h>
 
 namespace sim
 {
 namespace rnr
 {
 // ----------------------------------------------------------------------//
-
-class CWidget;
+class CCamera;
+class CRenderTexture;
 class CDriver;
+// ----------------------------------------------------------------------//
 
-class CSprite : public IEngineItem
+class CWidgetDrawable: public CWidget
 {
 public:
 	// ------------------------------------------------------------------//
-	CSprite();
-	CSprite( const std::string& name );
+	CWidgetDrawable();
+	CWidgetDrawable( const std::string& name );
+	virtual ~CWidgetDrawable();
 	// ------------------------------------------------------------------//
-	void						SetMaterial( CMaterial *mtl ) { m_material = mtl; }
-	CMaterial*					GetMaterial() { return m_material; }
-
-	s32							GetWidth() { return m_material->GetTexture( 0 )->GetWidth(); }
-	s32							GetHeight() { return m_material->GetTexture( 0 )->GetHeight(); }
-
-	void						AddFrame( s32 modId, s32 x, s32 y, s32 w, s32 h );
-	void						RenderFrame( CDriver *driver, CWidget *widget, s32 modId );
-
-	void						Load( const std::string &file );
+	void							Draw( CDriver *driver );	
+	CRenderTexture*					GetTexture() { return m_rendertexture; }
+	// ------------------------------------------------------------------//
+	sigcxx::Signal<CDriver*>		OnDraw;
 	// ------------------------------------------------------------------//
 
 protected:
-
 	// ------------------------------------------------------------------//
-	CMaterial*					m_material;
-	std::map<s32, CRect2D>		m_frames;
+	virtual void					OnResize();
+	// ------------------------------------------------------------------//
+	CRenderTexture*					m_rendertexture;
+	CCamera*						m_camera;
 	// ------------------------------------------------------------------//
 };
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
-#endif // __SIM_SPRITE_H
+#endif // __SIM_WIDGET_RENDERTEXTURE_H

@@ -15,12 +15,11 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <svg/agg_svg_parser.h>
 
-#include <core/io/sim_mem_stream.h>
-
-#include <render/sim_svg_image.h>
+#include <render/sim_sprite_texture.h>
 #include <render/sim_driver.h>
+#include <render/sim_material.h>
+#include <render/gui/sim_widget.h>
 
 namespace sim
 {
@@ -28,39 +27,55 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CSvgImage::CSvgImage() : 
-	m_path()
+CSpriteTexture::CSpriteTexture()
+	: CTexture()
 {
-
 }
 
 // ----------------------------------------------------------------------//
 
-CSvgImage::CSvgImage( const std::string &name )
-	: CSvgImage()
+CSpriteTexture::CSpriteTexture( const std::string& name )
+	: CSpriteTexture()
 {
 	m_name = name;
 }
 
 // ----------------------------------------------------------------------//
 
-CSvgImage::~CSvgImage()
+void CSpriteTexture::AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h  )
 {
+	CRect2D m;
 
+	f32 rw = 1.0f / GetWidth();
+	f32 rh = 1.0f / GetHeight();
+
+	m.Bound(
+		x * rw,
+		y * rw,
+		w * rw,
+		h * rh
+	);
+
+	m_frames[frame] = m;
 }
 
 // ----------------------------------------------------------------------//
 
-void CSvgImage::Load( io::CMemStream* ms )
+void CSpriteTexture::Render( CDriver *driver, CRect2D *rect, s32 frame )
 {
-	agg::svg::parser p( m_path );
-	
-	p.parse( ( const char* )ms->Read( 0 ), ms->GetSize() );
-	m_path.arrange_orientations();
+	std::map<s32, CRect2D>::iterator m = m_frames.find(frame);
 
-	double minx = 0.0, miny = 0.0, maxx = 0.0, maxy = 0.0;
-	m_path.bounding_rect( &minx, &miny, &maxx, &maxy );
-	Bound( minx, miny, maxx - minx, maxy - miny );
+	SIM_ASSERT( this == rect->GetMaterial()->GetTexture( 0 ) );
+
+	if (m != m_frames.end())
+		rect->Render(driver, &m->second);
+}
+
+// ----------------------------------------------------------------------//
+
+void CSpriteTexture::Load(io::CMemStream* ms)
+{
+
 }
 
 // ----------------------------------------------------------------------//

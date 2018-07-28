@@ -140,9 +140,6 @@
     <ClCompile Include="..\..\sources\render\sim_vertex_source.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sources\render\sim_widget.cpp">
-      <Filter>Source Files\render</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\sources\render\sim_batch_2d.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
@@ -212,9 +209,6 @@
     <ClCompile Include="..\..\sources\vm\sim_script.cpp">
       <Filter>Source Files\vm</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sources\render\sim_sprite.cpp">
-      <Filter>Source Files\render</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\sources\render\scene\sim_actor.cpp">
       <Filter>Source Files\render\scene</Filter>
     </ClCompile>
@@ -280,6 +274,15 @@
     </ClCompile>
     <ClCompile Include="..\..\sources\sim_engine.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_sprite_texture.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\gui\sim_widget.cpp">
+      <Filter>Source Files\render\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\gui\sim_widget_drawable.cpp">
+      <Filter>Source Files\render\gui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -347,9 +350,6 @@
       <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\render\sim_vertex_source.h">
-      <Filter>Header Files\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\render\sim_widget.h">
       <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\render\sim_batch_2d.h">
@@ -442,9 +442,6 @@
     <ClInclude Include="..\..\include\vm\sim_script.h">
       <Filter>Header Files\vm</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\render\sim_sprite.h">
-      <Filter>Header Files\render</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\render\scene\sim_actor.h">
       <Filter>Header Files\render\scene</Filter>
     </ClInclude>
@@ -513,6 +510,15 @@
     </ClInclude>
     <ClInclude Include="..\..\include\sim_engine.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_sprite_texture.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\gui\sim_widget.h">
+      <Filter>Header Files\render\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\gui\sim_widget_drawable.h">
+      <Filter>Header Files\render\gui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

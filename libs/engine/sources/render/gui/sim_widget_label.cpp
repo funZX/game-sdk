@@ -19,7 +19,7 @@
 #include <render/sim_batch_2d.h>
 #include <render/sim_driver.h>
 #include <render/sim_material.h>
-#include <render/sim_sprite.h>
+#include <render/sim_sprite_texture.h>
 
 #include <render/font/sim_font.h>
 
@@ -57,7 +57,7 @@ CWidgetLabel::~CWidgetLabel()
 void CWidgetLabel::Render( CDriver *driver )
 {
 	if( m_sprite != NULL ) {
-		m_sprite->RenderFrame( driver, this, m_frame );
+		m_sprite->Render( driver, this, m_frame );
 	}
 
 	if( !m_string.empty() && m_font != NULL )

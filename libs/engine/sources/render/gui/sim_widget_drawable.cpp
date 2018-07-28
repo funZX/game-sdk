@@ -16,10 +16,12 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <render/sim_sprite.h>
+#include <sim_engine.h>
+#include <render/sim_render_texture.h>
+#include <render/scene/sim_camera.h>
 #include <render/sim_driver.h>
-#include <render/sim_material.h>
-#include <render/sim_widget.h>
+
+#include <render/gui/sim_widget_drawable.h>
 
 namespace sim
 {
@@ -27,58 +29,62 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CSprite::CSprite()
+CWidgetDrawable::CWidgetDrawable()
+	:CWidget()
 {
-	m_material = NULL;
+	m_rendertexture = NULL;
+	m_camera = new CCamera();
 }
 
 // ----------------------------------------------------------------------//
 
-CSprite::CSprite( const std::string& name )
-	: CSprite()
+CWidgetDrawable::CWidgetDrawable( const std::string& name )
+	:CWidgetDrawable()
 {
 	m_name = name;
 }
-
 // ----------------------------------------------------------------------//
 
-void CSprite::AddFrame( s32 modId, s32 x, s32 y, s32 w, s32 h  )
+CWidgetDrawable::~CWidgetDrawable()
 {
-	CRect2D m;
-
-	f32 rw = 1.0f / GetWidth();
-	f32 rh = 1.0f / GetHeight();
-
-	m.Bound(
-		x * rw,
-		y * rw,
-		w * rw,
-		h * rh
-	);
-
-	m_frames[ modId ] = m;
+	SIM_SAFE_DELETE( m_camera );
+	SIM_SAFE_DELETE( m_rendertexture );
 }
 
 // ----------------------------------------------------------------------//
 
-void CSprite::RenderFrame( CDriver *driver, CWidget *widget, s32 modId )
+void CWidgetDrawable::OnResize()
 {
-	std::map<s32, CRect2D>::iterator m = m_frames.find( modId );
+	SIM_SAFE_DELETE( m_rendertexture );
 
-	if( m != m_frames.end() )
-	{
-	    CRect2D *rect2D = ( CRect2D* ) widget;
+	m_rendertexture = SIM_NEW CRenderTexture();
+	m_rendertexture->Generate( m_size.x, m_size.y );
 
-		rect2D->SetMaterial( m_material );
-		rect2D->Render( driver, &m->second );
-	}
+	CRect2D r;
+	r.Resize( m_rendertexture->GetWidth(), m_rendertexture->GetHeight() );
+	m_camera->SetPerspective( &r );
 }
 
 // ----------------------------------------------------------------------//
 
-void CSprite::Load( const std::string &file )
+void CWidgetDrawable::Draw( CDriver *driver )
 {
+	static CEngine *engine = CEngine::GetSingletonPtr();
 
+	if ( m_rendertexture == NULL )
+		return;
+
+	CRenderTexture* fb =
+	driver->BindRenderTexture(m_rendertexture);
+	driver->ClearColor();
+
+	engine->SetCamera( m_camera );
+
+	OnDraw.Emit( driver );
+	
+	engine->SetCamera( 0 );
+
+	driver->BindRenderTexture( 0 );
 }
 
 // ----------------------------------------------------------------------//
