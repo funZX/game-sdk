@@ -6,7 +6,7 @@
 
 class CGame;
 
-class CDebug : public IRenderable, btIDebugDraw
+class CDebug : public IRenderable, public btIDebugDraw, public sigcxx::Trackable
 {
 public:
 	class CTiming
@@ -47,6 +47,9 @@ public:
 	int							getDebugMode() const { return m_debugMode;}
 	void						reportErrorWarning(const char* warningString);
 
+protected:
+	void						DrawToWidget( CDriver* driver, sigcxx::SLOT slot = nullptr );
+
 public:
 	TSphere*					m_debugSphere;
 	TCube*						m_debugCube;
@@ -55,7 +58,8 @@ public:
 	CLight*						m_debugLight;
 
 	CFileSystem*				m_fs;
-	CRenderTexture*				m_rendertexture;
+	CMesh*						m_mesh;
+	CWidgetDrawable*		m_drawable;
 };
 
 #endif // __WINDOW_H

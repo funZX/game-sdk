@@ -23,16 +23,19 @@ CWorld::CWorld()
 	m_physic			= SIM_NEW CPhysic();
 	m_scene				= SIM_NEW CScene( "main scene" );
 
-	m_isFocused			= false;
 	m_isEnabled			= true;
 	m_isVisible			= true;
 
-	m_debug				= SIM_NEW CDebug( m_fs );
+#if SIM_DEBUG
+	m_debug				= NULL;
+#endif
 }
 
 CWorld::~CWorld()
 {
+#if SIM_DEBUG
 	SIM_SAFE_DELETE( m_debug );
+#endif
 
 	SIM_SAFE_DELETE( m_scene );
 	SIM_SAFE_DELETE( m_physic );
@@ -41,12 +44,23 @@ CWorld::~CWorld()
 
 void CWorld::Update( f32 dt, void *userData )
 {
+	if (!m_isEnabled)
+		return;
+
+#if SIM_DEBUG
+	if ( !m_debug )
+		m_debug = SIM_NEW CDebug( m_fs );
+#endif 
+
 	m_physic->Update( dt, userData );
 	m_scene->Update( dt, userData );
 }
 
 void CWorld::Render( CDriver *driver )
 {
+	if (!m_isEnabled)
+		return;
+
 	if( !m_isVisible )
 		return;
 
@@ -55,16 +69,16 @@ void CWorld::Render( CDriver *driver )
 
 	m_scene->Render( driver );
 
-	#if SIM_DEBUG
+#if SIM_DEBUG
 	m_debug->Render( driver );
-	#endif
+#endif
 }
 
 void CWorld::Render2D(CDriver *driver)
 {
-	#if SIM_DEBUG
+#if SIM_DEBUG
 	m_debug->Render2D(driver);
-	#endif
+#endif
 }
 
 void CWorld::AddActor( CActor* actor )

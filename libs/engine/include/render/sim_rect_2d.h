@@ -95,7 +95,7 @@ public:
 	static void					Union( CRect2D *, CRect2D *, CRect2D * );
 	static void					Intersect( CRect2D *, CRect2D *, CRect2D* );
 
-	void						SetMaterial( CMaterial *material ) { m_material = material; }
+	virtual void				SetMaterial( CMaterial *material ) { m_material = material; }
 	CMaterial*					GetMaterial() { return m_material; }
 
 	virtual void				Render( CDriver *driver );

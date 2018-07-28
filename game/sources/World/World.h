@@ -15,16 +15,13 @@ public:
 	void						Render( CDriver *driver );
 	void						Render2D(CDriver *driver);
 
-	void						SetFocus( bool focus ) {m_isFocused = focus;}
-	bool						IsFocused() { return m_isFocused; }
-
 	void						SetEnabled(bool enabled) {m_isEnabled = enabled;}
 	bool						IsEnabled() {return m_isEnabled;}
 
 	void						SetVisible(bool visible) {m_isVisible = visible;}
 	bool						IsVisible() {return m_isVisible;}
 
-	CFileSystem*				GetFs()			{ return m_fs; }
+	CFileSystem*				GetFs()		{ return m_fs; }
 
 	void						AddActor( CActor* actor );
 
@@ -32,13 +29,14 @@ protected:
 	CFileSystem*				m_fs;
 	CPhysic*					m_physic;
 
-	bool						m_isFocused;
 	bool						m_isEnabled;
 	bool						m_isVisible;
 
 	CScene*						m_scene;
 
+#if SIM_DEBUG
 	CDebug*						m_debug;
+#endif
 };
 
 #endif // __WORLD_H

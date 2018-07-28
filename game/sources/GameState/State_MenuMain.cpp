@@ -23,6 +23,7 @@ CState_MenuMain::~CState_MenuMain()
 
 void CState_MenuMain::Update( f32 dt, void *userData )
 {
+	O.world->Update( dt, userData );
 	O.game->GoNext(SIM_NEW CState_Game());
 }
 
@@ -38,7 +39,7 @@ void CState_MenuMain::Render3D( CDriver *driver )
 
 void CState_MenuMain::OnEnter()
 {
-	O.world->SetVisible( true );
+
 };
 
 void CState_MenuMain::OnExit()

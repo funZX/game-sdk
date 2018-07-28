@@ -35,7 +35,7 @@
 #include <render/sim_texture.h>
 #include <render/sim_cube_texture.h>
 #include <render/sim_material.h>
-#include <render/sim_sprite.h>
+#include <render/sim_sprite_texture.h>
 #include <render/sim_svg_image.h>
 #include <render/font/sim_font.h>
 #include <render/font/sim_font_atlas.h>

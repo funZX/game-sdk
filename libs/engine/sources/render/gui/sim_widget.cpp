@@ -16,7 +16,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <render/sim_widget.h>
+#include <render/gui/sim_widget.h>
 #include <render/sim_driver.h>
 
 namespace sim
@@ -29,7 +29,7 @@ CWidget::CWidget()
 	: CRect2D()
 {
 	m_parent 	= NULL;
-	m_isFocused = false;
+
 	m_isEnabled = true;
 	m_isVisible = true;
 }
@@ -46,7 +46,7 @@ CWidget::CWidget(const std::string& name)
 
 CWidget::~CWidget()
 {
-	DeleteAllChilds();
+	DelAllChilds();
 }
 
 
@@ -55,7 +55,7 @@ void CWidget::SetParent( CWidget* parent )
 {
 	if( m_parent != parent )
 	{
-		m_parent->RemoveChild( this );
+		m_parent->RemChild( this );
 		m_parent = parent;
 	}
 }
@@ -79,7 +79,7 @@ void CWidget::AddChild( CWidget *child )
 
 // ----------------------------------------------------------------------//
 
-void CWidget::RemoveChild( CWidget *child )
+void CWidget::RemChild( CWidget *child )
 {
 	std::map< CWidget*, CWidget* >::iterator c = m_childs.find(child);
 
@@ -93,7 +93,7 @@ void CWidget::RemoveChild( CWidget *child )
 
 // ----------------------------------------------------------------------//
 
-void CWidget::DeleteChild( CWidget *child )
+void CWidget::DelChild( CWidget *child )
 {
 	std::map< CWidget*, CWidget* >::iterator c = m_childs.find( child );
 
@@ -107,7 +107,7 @@ void CWidget::DeleteChild( CWidget *child )
 
 // ----------------------------------------------------------------------//
 
-void CWidget::DeleteAllChilds( void )
+void CWidget::DelAllChilds( void )
 {
 	std::map< CWidget*, CWidget* >::iterator c = m_childs.begin();
 
@@ -122,7 +122,7 @@ void CWidget::DeleteAllChilds( void )
 
 // ----------------------------------------------------------------------//
 
-void CWidget::RemoveAllChilds( void )
+void CWidget::RemAllChilds( void )
 {
 	m_childs.clear();
 }

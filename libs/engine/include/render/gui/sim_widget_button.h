@@ -20,7 +20,7 @@
 #define __SIM_WIDGET_BUTTON_H
 
 #include <render/sim_render.h>
-#include <render/sim_widget.h>
+#include <render/gui/sim_widget.h>
 
 namespace sim
 {
@@ -28,7 +28,7 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CSprite;
+class CSpriteTexture;
 class CFont;
 class CDriver;
 
@@ -45,7 +45,7 @@ public:
 	void				Render( CDriver *driver );
 
 	void				SetString( std::string str ) { m_string.clear(); m_string = str; }
-	void				SetSprite( CSprite *spr, s32 frameUp, s32 frameDn ) { m_sprite = spr; m_frameUp = frameUp; m_frameDn = frameDn; }
+	void				SetSprite( CSpriteTexture *spr, s32 frameUp, s32 frameDn ) { m_sprite = spr; m_frameUp = frameUp; m_frameDn = frameDn; }
 	void				SetFont( CFont *font ) { m_font = font ;}
 
 	virtual void		PointerDown( u32 x, u32 y );
@@ -56,8 +56,8 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	std::string		m_string;
-	CSprite*			m_sprite;
+	std::string			m_string;
+	CSpriteTexture*		m_sprite;
 	s32					m_frameUp, m_frameDn;
 
 	CFont*				m_font;

@@ -20,7 +20,7 @@
 #define __SIM_WIDGET_SVG_H
 
 #include <render/sim_render.h>
-#include <render/sim_widget.h>
+#include <render/gui/sim_widget.h>
 
 namespace sim
 {
