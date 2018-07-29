@@ -75,10 +75,10 @@ void CWidgetSvg::OnResize()
 	bounds->GetCenter( &center );
 
 	u32 w = mat::nextPowerOfTwo( Width() );
-	u32 h = mat::nextPowerOfTwo (Height() );
+	u32 h = mat::nextPowerOfTwo ( Height() );
 
 	u8* renderbuf = SIM_NEW u8[ w * h * 2 ];
-	m_renderbuffer.attach(renderbuf, w, h, w * 2 );
+	m_renderbuffer.attach( renderbuf, w, h, w * 2 );
 
 	pixfmt pixf( m_renderbuffer );
 	renderer_base rb( pixf );
@@ -90,7 +90,7 @@ void CWidgetSvg::OnResize()
 	agg::scanline_p8 sl;
 	agg::trans_affine mtx;
 
-	mtx *= agg::trans_affine_scaling( Width() / bounds->Width(), Height() / bounds->Height() );
+	mtx *= agg::trans_affine_scaling( w / bounds->Width(), h / bounds->Height() );
 	path.render( ras, sl, ren, mtx, rb.clip_box(), 1.0 );
 	agg::render_scanlines( ras, sl, ren );
 
