@@ -24,6 +24,7 @@
 
 #include <render/sim_render.h>
 #include <render/gui/sim_widget.h>
+#include <render/sim_rect_2d.h>
 
 namespace sim
 {
