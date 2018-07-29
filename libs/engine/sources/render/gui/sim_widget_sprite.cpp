@@ -17,11 +17,9 @@
 */
 
 #include <sim_engine.h>
-#include <render/sim_render_texture.h>
-#include <render/scene/sim_camera.h>
 #include <render/sim_driver.h>
-
-#include <render/gui/sim_widget_drawable.h>
+#include <render/sim_sprite_texture.h>
+#include <render/gui/sim_widget_sprite.h>
 
 namespace sim
 {
@@ -29,70 +27,28 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CWidgetDrawable::CWidgetDrawable()
+CWidgetSprite::CWidgetSprite()
 	:CWidget()
 {
-	Vec4Copy( &m_fillcolor, &col::Black );
-
-	m_rendertexture = NULL;
-	m_camera		= new CCamera();
-
-	m_isFlipped		= true;
+	m_sprite = NULL;
 }
 
 // ----------------------------------------------------------------------//
 
-CWidgetDrawable::CWidgetDrawable( const std::string& name )
-	:CWidgetDrawable()
+CWidgetSprite::CWidgetSprite( const std::string& name )
+	:CWidgetSprite()
 {
 	m_name = name;
 }
 // ----------------------------------------------------------------------//
 
-CWidgetDrawable::~CWidgetDrawable()
+CWidgetSprite::~CWidgetSprite()
 {
-	SIM_SAFE_DELETE( m_camera );
-	SIM_SAFE_DELETE( m_rendertexture );
+	SIM_SAFE_DELETE( m_sprite );
 }
 
 // ----------------------------------------------------------------------//
-
-void CWidgetDrawable::OnResize()
-{
-	SIM_SAFE_DELETE( m_rendertexture );
-
-	m_rendertexture = SIM_NEW CRenderTexture();
-	m_rendertexture->Generate( (u32)m_size.x, (u32)m_size.y );
-
-	CRect2D r;
-	r.Resize( (u32)m_rendertexture->GetWidth(), (u32)m_rendertexture->GetHeight() );
-	m_camera->SetPerspective( &r );
-}
-
-// ----------------------------------------------------------------------//
-
-void CWidgetDrawable::Draw( CDriver *driver )
-{
-	static CEngine *engine = CEngine::GetSingletonPtr();
-
-	if ( m_rendertexture == NULL )
-		return;
-
-	CRenderTexture* fb =
-	driver->BindRenderTexture(m_rendertexture);
-	driver->ClearColor( &m_fillcolor);
-
-	engine->SetCamera( m_camera );
-
-	OnDraw.Emit( driver );
-	
-	engine->SetCamera( 0 );
-
-	driver->BindRenderTexture( 0 );
-}
-
-// ----------------------------------------------------------------------//
-void CWidgetDrawable::Render( CDriver *driver )
+void CWidgetSprite::Render( CDriver *driver )
 {
 	CWidget::Render( driver );
 }

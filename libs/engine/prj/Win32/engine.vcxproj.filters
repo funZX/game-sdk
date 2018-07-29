@@ -284,6 +284,9 @@
     <ClCompile Include="..\..\sources\render\gui\sim_widget_drawable.cpp">
       <Filter>Source Files\render\gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\sources\render\gui\sim_widget_sprite.cpp">
+      <Filter>Source Files\render\gui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\math\sim_math.h">
@@ -518,6 +521,9 @@
       <Filter>Header Files\render\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\render\gui\sim_widget_drawable.h">
+      <Filter>Header Files\render\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\gui\sim_widget_sprite.h">
       <Filter>Header Files\render\gui</Filter>
     </ClInclude>
   </ItemGroup>

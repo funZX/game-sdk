@@ -59,8 +59,8 @@ void CSvgImage::Load( io::CMemStream* ms )
 	m_path.arrange_orientations();
 
 	double minx = 0.0, miny = 0.0, maxx = 0.0, maxy = 0.0;
-	m_path.bounding_rect( &minx, &miny, &maxx, &maxy );
-	Bound( minx, miny, maxx - minx, maxy - miny );
+	m_path.bounding_rect( &minx, &miny, &maxx, &maxy );	
+	m_bounds.Bound( minx, miny, maxx - minx, maxy - miny );
 }
 
 // ----------------------------------------------------------------------//

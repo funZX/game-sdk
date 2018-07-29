@@ -82,7 +82,7 @@ public:
 	void						Rotate( f32 rotation);
 
 	void						SetCenter( TVec2 *pos );
-	void						GetCenter( TVec2 *pos );
+	void						GetCenter( TVec2 *pos ) const;
 
 	void						Align( CRect2D *, K_ALIGN align );
 

@@ -85,6 +85,8 @@ void CWidgetButton::Render( CDriver *driver )
 
 		m_font->DrawString( driver, x + off, y + off, m_string );
 	}
+
+	CWidget::Render(driver);
 }
 
 // ----------------------------------------------------------------------//

@@ -8,7 +8,7 @@
 - engine: octree (http://www.piko3d.net/tutorials/space-partitioning-tutorial-piko3ds-dynamic-octree/)
 - engine: scene node interface, scene manager
 - engine: particle system & fluid simulation
-- engine: gui support (drawable, slider, checkbox, etc...) && anchors
+- engine: gui support (slider, checkbox, etc...) && anchors
 - engine: box2D physics
 
 2.

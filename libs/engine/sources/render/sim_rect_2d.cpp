@@ -38,8 +38,8 @@ CRect2D::CRect2D()
 	Vec2ToZero(&m_position);
 	Vec2ToZero(&m_size);
 
-	m_rotation = 0.0f;
-	m_material = NULL;
+	m_rotation	= 0.0f;
+	m_material	= NULL;
 }
 // ----------------------------------------------------------------------//
 
@@ -251,7 +251,7 @@ void CRect2D::SetCenter( TVec2 *loc )
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::GetCenter( TVec2 *loc )
+void CRect2D::GetCenter( TVec2 *loc ) const 
 {
 	loc->x = m_position.x + ( m_size.x * 0.5f );
 	loc->y = m_position.y + ( m_size.y * 0.5f );
@@ -345,7 +345,7 @@ void CRect2D::OnRotate()
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::Render( CDriver* driver )
+void CRect2D::Render(CDriver* driver)
 {
 	Render( driver, CRect2D::OneSizeRect );
 }
