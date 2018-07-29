@@ -74,11 +74,11 @@ void CWidgetSvg::OnResize()
 	const CRect2D* bounds = m_svgimage->GetBounds();
 	bounds->GetCenter( &center );
 
-	u32 w = ( u32 )bounds->Width();
-	u32 h = ( u32 )bounds->Height();
+	u32 w = mat::nextPowerOfTwo( Width() );
+	u32 h = mat::nextPowerOfTwo (Height() );
 
-	u8* texbuf = SIM_NEW u8[ w * h * 2 ];
-	m_renderbuffer.attach( texbuf, w, h, w * 2 );
+	u8* renderbuf = SIM_NEW u8[ w * h * 2 ];
+	m_renderbuffer.attach(renderbuf, w, h, w * 2 );
 
 	pixfmt pixf( m_renderbuffer );
 	renderer_base rb( pixf );
@@ -90,25 +90,22 @@ void CWidgetSvg::OnResize()
 	agg::scanline_p8 sl;
 	agg::trans_affine mtx;
 
-	mtx *= agg::trans_affine_translation( -center.x, -center.y );
-	//mtx *= agg::trans_affine_scaling( m_size.x / w, m_size.y / h );
-	mtx *= agg::trans_affine_translation( center.x, center.y );
-
+	mtx *= agg::trans_affine_scaling( Width() / bounds->Width(), Height() / bounds->Height() );
 	path.render( ras, sl, ren, mtx, rb.clip_box(), 1.0 );
 	agg::render_scanlines( ras, sl, ren );
 
 	m_texture = SIM_NEW CTexture();
 	m_texture->Generate(
-		texbuf, 
+		renderbuf, 
 		w,
-		h, 
+		h,
 		CTexture::k_Type_RGB,
 		CTexture::k_Wrap_Clamp,
 		CTexture::k_Filter_Nearest, 
 		CTexture::k_Format_RGB565
 	);
 
-	SIM_SAFE_DELETE( texbuf );
+	SIM_SAFE_DELETE(renderbuf);
 }
 
 // ----------------------------------------------------------------------//
