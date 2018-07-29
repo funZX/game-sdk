@@ -82,6 +82,7 @@ protected:
 
 	bool							m_isEnabled;
 	bool							m_isVisible;
+	bool							m_isFlipped;
 
 	TVec4							m_fillcolor;
 };

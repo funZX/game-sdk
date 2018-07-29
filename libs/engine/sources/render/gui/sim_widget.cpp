@@ -18,6 +18,7 @@
 
 #include <render/gui/sim_widget.h>
 #include <render/sim_driver.h>
+#include <render/sim_color.h>
 
 namespace sim
 {
@@ -32,6 +33,9 @@ CWidget::CWidget()
 
 	m_isEnabled = true;
 	m_isVisible = true;
+	m_isFlipped = false;
+
+	Vec4Copy(&m_fillcolor, &col::Blueish);
 }
 
 // ----------------------------------------------------------------------//
@@ -171,6 +175,8 @@ void CWidget::Render( CDriver *driver )
 
 	while( c != m_childs.end() )
 		c->second->Render( driver );
+
+	CRect2D::Render( driver, m_isFlipped ? CRect2D::OneSizeRectFlip : CRect2D::OneSizeRect );
 }
 
 // ----------------------------------------------------------------------//

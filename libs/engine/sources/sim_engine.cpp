@@ -64,7 +64,7 @@ CEngine::CEngine()
 	m_drawCount			= 0;
 	m_vertexCount		= 0;
 	m_fps				= 0;
-	SIM_MEMSET(&m_filter[0], 0, sizeof(m_filter));
+	SIM_MEMSET( &m_dtfilter[ 0 ], 0, sizeof( m_dtfilter ) );
 
 	Initialize();
 }
@@ -246,11 +246,11 @@ f32 CEngine::Smooth( f32 deltaTime )
 	f32 min1, min2, max1, max2;
 	f32 dt		= 0.0f;
 
-	min1 = min2 = max1 = max2 = m_filter[ 0 ];
+	min1 = min2 = max1 = max2 = m_dtfilter[ 0 ];
 
 	for( s32 k = 0; k < 11; k++ )
 	{
-		dt = m_filter[ k ];
+		dt = m_dtfilter[ k ];
 
 		if ( dt < min1 && dt < min2 )
 			min1 = dt;
@@ -271,8 +271,8 @@ f32 CEngine::Smooth( f32 deltaTime )
 	dt	 = Lerp( deltaTime, sum, 0.5f );
 
 	for( s32 k = 0; k < 10; k++ )
-		m_filter[ k ] = m_filter[ k + 1 ];
-	m_filter[ 10 ] = dt;
+		m_dtfilter[ k ] = m_dtfilter[ k + 1 ];
+	m_dtfilter[ 10 ] = dt;
 
 	return dt;
 }

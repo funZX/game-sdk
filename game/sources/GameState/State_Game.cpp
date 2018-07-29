@@ -41,8 +41,11 @@ CState_Game::CState_Game()
 	m_drawable->OnDraw.Connect(this, &CState_Game::DrawToWidget);
 
 	m_svg = SIM_NEW CWidgetSvg();
-	m_svg->SetImage( m_fs->GetSvgImage("tiger/tiger") );
-	m_svg->Resize( 100, 100 );
+	m_svg->SetImage(m_fs->GetSvgImage("tiger/tiger"));
+	m_svg->Resize(256, 256);
+	m_svg->Align( CDriver::ScreenRect, CRect2D::k_Align_RightIn );
+	m_svg->Align( CDriver::ScreenRect, CRect2D::k_Align_BottomIn );
+	m_svg->Move( -10.0f, -10.0f );
 
 	CScript* script = O.world->GetFs()->GetScript("dt/deltatime");
 	script->Run();
@@ -81,7 +84,7 @@ void CState_Game::Render2D( CDriver *driver )
 	r.Render(driver, CRect2D::OneSizeRect);
 
 	bool isBatchEnabled =
-		driver->EnableBatch2D(false);
+	driver->EnableBatch2D(false);
 
 	CEffect::TTechnique techique;
 	filltex->CopyTechnique(&techique);
@@ -92,6 +95,10 @@ void CState_Game::Render2D( CDriver *driver )
 	m.SetTexture(m_drawable->GetTexture(), 0);
 	m_drawable->Rotate(dr);
 	m_drawable->Render(driver);
+
+	m.SetTexture( m_svg->GetTexture(), 0 );
+	m_svg->SetMaterial( &m );
+	m_svg->Render(driver);
 
 	filltex->SetTechnique(&techique);
 	driver->EnableBatch2D(isBatchEnabled);

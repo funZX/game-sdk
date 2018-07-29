@@ -32,7 +32,7 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CSvgImage : public CRect2D
+class CSvgImage: public IEngineItem
 {
 	friend class CWidgetSvg;
 public:
@@ -43,9 +43,13 @@ public:
 	// ------------------------------------------------------------------//
 	agg::svg::path_renderer&			GetPath() { return m_path; }
 	void								Load( io::CMemStream* ms );
+	const CRect2D*						GetBounds() { return &m_bounds;  }
+	// ------------------------------------------------------------------//
+
 protected:
 	// ------------------------------------------------------------------//
 	agg::svg::path_renderer				m_path;
+	CRect2D								m_bounds;
 	// ------------------------------------------------------------------//
 };
 

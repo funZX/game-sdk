@@ -70,6 +70,16 @@ void CWidgetSvg::OnResize()
 	typedef agg::renderer_base<pixfmt> renderer_base;
 	typedef agg::renderer_scanline_aa_solid<renderer_base> renderer_solid;
 
+	TVec2 center;
+	const CRect2D* bounds = m_svgimage->GetBounds();
+	bounds->GetCenter( &center );
+
+	u32 w = ( u32 )bounds->Width();
+	u32 h = ( u32 )bounds->Height();
+
+	u8* texbuf = SIM_NEW u8[ w * h * 2 ];
+	m_renderbuffer.attach( texbuf, w, h, w * 2 );
+
 	pixfmt pixf( m_renderbuffer );
 	renderer_base rb( pixf );
 	renderer_solid ren( rb );
@@ -80,14 +90,12 @@ void CWidgetSvg::OnResize()
 	agg::scanline_p8 sl;
 	agg::trans_affine mtx;
 
-	mtx *= agg::trans_affine_scaling ( m_size.x, m_size.y );
+	mtx *= agg::trans_affine_translation( -center.x, -center.y );
+	//mtx *= agg::trans_affine_scaling( m_size.x / w, m_size.y / h );
+	mtx *= agg::trans_affine_translation( center.x, center.y );
+
 	path.render( ras, sl, ren, mtx, rb.clip_box(), 1.0 );
 	agg::render_scanlines( ras, sl, ren );
-
-	u32 w = mat::nextPowerOfTwo( m_size.x );
-	u32 h = mat::nextPowerOfTwo( m_size.y );
-	u8* texbuf = SIM_NEW u8[ w * h * 2 ];
-	m_renderbuffer.attach( texbuf, w, h, w * 2 );
 
 	m_texture = SIM_NEW CTexture();
 	m_texture->Generate(
@@ -109,6 +117,8 @@ void CWidgetSvg::Render( CDriver *driver )
 {
 	if ( m_texture == NULL )
 		return;
+
+	CWidget::Render(driver);
 }
 
 // ----------------------------------------------------------------------//

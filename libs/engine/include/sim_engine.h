@@ -98,6 +98,7 @@ namespace sim
 		class CWidgetButton;
 		class CWidgetSvg;
 		class CWidgetDrawable;
+		class CWidgetSprite;
 
 		struct TColor;
 	};
@@ -242,7 +243,7 @@ protected:
 	u32								m_drawCount;
 	u32								m_vertexCount;
 	f32								m_fps;
-	f32								m_filter[11];
+	f32								m_dtfilter[11];
 	// ------------------------------------------------------------------//
 };
 

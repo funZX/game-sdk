@@ -32,9 +32,9 @@ namespace sim
 namespace rnr
 {
 // ----------------------------------------------------------------------//
-
-extern const char *defaultVSH;
-extern const char *defaultFSH;
+CRect2D				ScreenRectStatic(0.0f, 0.0f, 0.0f, 0.0f);
+CRect2D*			CDriver::ScreenRect = &ScreenRectStatic;
+// ----------------------------------------------------------------------//
 
 // ----------------------------------------------------------------------//
 
@@ -729,6 +729,8 @@ void CDriver::SetScreenSize( u32 width, u32 height )
 
 	m_screenWidth = width;
 	m_screenHeight = height;
+
+	CDriver::ScreenRect->Resize( width, height );
 }
 
 // ----------------------------------------------------------------------//

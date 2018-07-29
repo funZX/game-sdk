@@ -16,11 +16,10 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef __SIM_WIDGET_SVG_H
-#define __SIM_WIDGET_SVG_H
+#ifndef __SIM_WIDGET_SPRITE_H
+#define __SIM_WIDGET_SPRITE_H
 
-#include <agg_basics.h>
-#include <agg_rendering_buffer.h>
+#include <core/sim_core.h>
 
 #include <render/sim_render.h>
 #include <render/gui/sim_widget.h>
@@ -30,34 +29,28 @@ namespace sim
 namespace rnr
 {
 // ----------------------------------------------------------------------//
+class CDriver;
+class CSpriteTexture;
+// ----------------------------------------------------------------------//
 
-class CSvgImage;
-
-class CWidgetSvg: public CWidget
+class CWidgetSprite: public CWidget
 {
 public:
-	CWidgetSvg();
-	CWidgetSvg( const std::string& name );
-	virtual ~CWidgetSvg();
 	// ------------------------------------------------------------------//
-	void						Render( CDriver *driver );
-	
-	inline void					SetImage( CSvgImage * svgimage ) { m_svgimage = svgimage; }
-	CTexture*					GetTexture() { return m_texture;  }
+	CWidgetSprite();
+	CWidgetSprite( const std::string& name );
+	virtual ~CWidgetSprite();
+	// ------------------------------------------------------------------//
+	virtual void					Render(CDriver *driver);
 	// ------------------------------------------------------------------//
 
 protected:
 	// ------------------------------------------------------------------//
-	virtual void				OnResize();
-	// ------------------------------------------------------------------//
-	CSvgImage*					m_svgimage;
-	agg::rendering_buffer		m_renderbuffer;
-
-	CTexture*					m_texture;
+	CSpriteTexture*					m_sprite;
 	// ------------------------------------------------------------------//
 };
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
-#endif // __SIM_WIDGET_SVG_H
+#endif // __SIM_WIDGET_SPRITE_H
