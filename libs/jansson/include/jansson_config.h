@@ -23,5 +23,6 @@
    supported. */
 
 #define JSON_INLINE __inline
+#define JSON_PARSER_MAX_DEPTH 2048
 
 #endif
