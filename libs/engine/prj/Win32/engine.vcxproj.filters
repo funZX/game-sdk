@@ -266,12 +266,6 @@
     <ClCompile Include="..\..\sources\render\sim_render_texture.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sources\render\sim_svg_image.cpp">
-      <Filter>Source Files\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\sources\render\gui\sim_widget_svg.cpp">
-      <Filter>Source Files\render\gui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\sources\sim_engine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -504,12 +498,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\render\sim_render_texture.h">
       <Filter>Header Files\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\render\sim_svg_image.h">
-      <Filter>Header Files\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\render\gui\sim_widget_svg.h">
-      <Filter>Header Files\render\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\sim_engine.h">
       <Filter>Header Files</Filter>

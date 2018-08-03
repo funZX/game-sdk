@@ -44,7 +44,6 @@
     <ClCompile Include="..\..\sources\render\gui\sim_widget_label.cpp" />
     <ClCompile Include="..\..\sources\render\gui\sim_widget_drawable.cpp" />
     <ClCompile Include="..\..\sources\render\gui\sim_widget_sprite.cpp" />
-    <ClCompile Include="..\..\sources\render\gui\sim_widget_svg.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_actor.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_camera.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_light.cpp" />
@@ -65,7 +64,6 @@
     <ClCompile Include="..\..\sources\render\sim_shader.cpp" />
     <ClCompile Include="..\..\sources\render\sim_cube_texture.cpp" />
     <ClCompile Include="..\..\sources\render\sim_sprite_texture.cpp" />
-    <ClCompile Include="..\..\sources\render\sim_svg_image.cpp" />
     <ClCompile Include="..\..\sources\render\sim_texture.cpp" />
     <ClCompile Include="..\..\sources\render\sim_vertex_group.cpp" />
     <ClCompile Include="..\..\sources\render\sim_vertex_source.cpp" />
@@ -125,7 +123,6 @@
     <ClInclude Include="..\..\include\render\gui\sim_widget_label.h" />
     <ClInclude Include="..\..\include\render\gui\sim_widget_drawable.h" />
     <ClInclude Include="..\..\include\render\gui\sim_widget_sprite.h" />
-    <ClInclude Include="..\..\include\render\gui\sim_widget_svg.h" />
     <ClInclude Include="..\..\include\render\scene\sim_actor.h" />
     <ClInclude Include="..\..\include\render\scene\sim_camera.h" />
     <ClInclude Include="..\..\include\render\scene\sim_light.h" />
@@ -146,7 +143,6 @@
     <ClInclude Include="..\..\include\render\sim_shader.h" />
     <ClInclude Include="..\..\include\render\sim_cube_texture.h" />
     <ClInclude Include="..\..\include\render\sim_sprite_texture.h" />
-    <ClInclude Include="..\..\include\render\sim_svg_image.h" />
     <ClInclude Include="..\..\include\render\sim_texture.h" />
     <ClInclude Include="..\..\include\render\sim_vertex_group.h" />
     <ClInclude Include="..\..\include\render\sim_vertex_source.h" />
@@ -208,7 +204,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_STRUCT_TIMESPEC;WIN32;_DEBUG;_LIB;SIM_DEBUG=1;GL_GLEXT_PROTOTYPES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../include;../../../dirent/include;../../../jansson/include;../../../freetype/include;../../../pthread/include;../../../openal/include;../../../opengles/include;../../../squirrel/include;../../../bullet/sources;../../../lzma/include;../../../detour/include;../../../recast/include;../../../sigcxx/include;../../../agg/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include;../../../dirent/include;../../../jansson/include;../../../freetype/include;../../../pthread/include;../../../openal/include;../../../opengles/include;../../../squirrel/include;../../../bullet/sources;../../../lzma/include;../../../detour/include;../../../recast/include;../../../sigcxx/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -224,7 +220,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_STRUCT_TIMESPEC;WIN32;NDEBUG;_LIB;GL_GLEXT_PROTOTYPES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../include;../../../dirent/include;../../../jansson\include;../../../freetype/include;../../../pthread/include;../../../openal/include;../../../opengles/include;../../../squirrel/include;../../../bullet/sources;../../../lzma/include;../../../detour/include;../../../recast/include;../../../sigcxx/include;../../../agg/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include;../../../dirent/include;../../../jansson\include;../../../freetype/include;../../../pthread/include;../../../openal/include;../../../opengles/include;../../../squirrel/include;../../../bullet/sources;../../../lzma/include;../../../detour/include;../../../recast/include;../../../sigcxx/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

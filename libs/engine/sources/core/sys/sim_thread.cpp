@@ -24,7 +24,7 @@ namespace sys
 {
 // ----------------------------------------------------------------------//
 
-CThread::CThread( RunFunc runFunc, void *arg, K_PRIORITY prio )
+CThread::CThread( RunFunc runFunc, void *arg, Priority prio )
 {
 	m_isRunning = false;
 	m_runFunc	= runFunc;
@@ -33,7 +33,7 @@ CThread::CThread( RunFunc runFunc, void *arg, K_PRIORITY prio )
 
     pthread_attr_init( &m_attr );
 
-    if( prio != k_Priority_Normal )
+    if( prio != Priority::Normal )
     {
 		struct sched_param param;
 		SIM_MEMSET( &param, 0, sizeof( param ) );
@@ -56,7 +56,7 @@ CThread::~CThread()
 
 // ----------------------------------------------------------------------//
 
-s32	CThread::GetSystemPrio( K_PRIORITY prio )
+s32	CThread::GetSystemPrio( Priority prio )
 {
 	s32 minPrio		= sched_get_priority_min( SCHED_FIFO );
 	s32 maxPrio		= sched_get_priority_max( SCHED_FIFO );
@@ -67,7 +67,7 @@ s32	CThread::GetSystemPrio( K_PRIORITY prio )
 
 	const s32 pArray[] = { minPrio, lowPrio, normalPrio, highPrio, maxPrio };
 
-	return pArray[ prio ];
+	return pArray[ static_cast<u32>(prio) ];
 }
 
 // ----------------------------------------------------------------------//

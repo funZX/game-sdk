@@ -28,7 +28,6 @@ protected:
 
 	CMesh*				m_mesh;
 	CWidgetDrawable*	m_drawable;
-	CWidgetSvg*			m_svg;
 // ----------------------------------------------------------------------//
 };
 

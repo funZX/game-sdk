@@ -63,7 +63,6 @@ namespace sim
 		class CFontAtlas;
 
 		class CTexture;
-		class CSvgTexture;
 		class CRenderTexture;
 		class CSpriteTexture;
 
@@ -96,7 +95,6 @@ namespace sim
 		class CWidget;
 		class CWidgetLabel;
 		class CWidgetButton;
-		class CWidgetSvg;
 		class CWidgetDrawable;
 		class CWidgetSprite;
 

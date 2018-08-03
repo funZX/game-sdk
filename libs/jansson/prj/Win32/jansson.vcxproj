@@ -15,6 +15,7 @@
     <ClInclude Include="..\..\include\jansson.h" />
     <ClInclude Include="..\..\include\jansson_config.h" />
     <ClInclude Include="..\..\include\jansson_private.h" />
+    <ClInclude Include="..\..\include\lookup3.h" />
     <ClInclude Include="..\..\include\strbuffer.h" />
     <ClInclude Include="..\..\include\utf.h" />
   </ItemGroup>
@@ -22,6 +23,7 @@
     <ClCompile Include="..\..\sources\dump.c" />
     <ClCompile Include="..\..\sources\error.c" />
     <ClCompile Include="..\..\sources\hashtable.c" />
+    <ClCompile Include="..\..\sources\hashtable_seed.c" />
     <ClCompile Include="..\..\sources\load.c" />
     <ClCompile Include="..\..\sources\memory.c" />
     <ClCompile Include="..\..\sources\pack_unpack.c" />

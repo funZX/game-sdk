@@ -40,6 +40,8 @@ CRect2D::CRect2D()
 
 	m_rotation	= 0.0f;
 	m_material	= NULL;
+
+	m_texRect = &OneSizeRectStatic;
 }
 // ----------------------------------------------------------------------//
 

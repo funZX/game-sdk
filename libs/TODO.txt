@@ -1,4 +1,5 @@
 
+- C++11, class enums, header initialization, override, final and virtual final, constructor = default, shared_ptr
 - fix mesh lod tool & engine's mesh detail
 - tool: exporter: texture, material, camera, light, actor, scene, animation
 - tool: data builder - tex converter

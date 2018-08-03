@@ -37,7 +37,10 @@ CWidgetDrawable::CWidgetDrawable()
 	m_rendertexture = NULL;
 	m_camera		= new CCamera();
 
-	m_isFlipped		= true;
+	// flip
+	m_texRect		= SIM_NEW CRect2D();
+	m_texRect->MoveTo(  1.0f,  1.0f );
+	m_texRect->Resize( -1.0f, -1.0f );
 }
 
 // ----------------------------------------------------------------------//
@@ -53,6 +56,7 @@ CWidgetDrawable::~CWidgetDrawable()
 {
 	SIM_SAFE_DELETE( m_camera );
 	SIM_SAFE_DELETE( m_rendertexture );
+	SIM_SAFE_DELETE( m_texRect );
 }
 
 // ----------------------------------------------------------------------//

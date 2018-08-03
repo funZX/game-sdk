@@ -31,13 +31,12 @@ class CFileStream
 {
 public:
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class SeekFrom : u32
 	{
-		k_SeekFrom_Start,
-		k_SeekFrom_Current,
-		k_SeekFrom_End
-
-	} K_SEEK_FROM;
+		Start,
+		Current,
+		End
+	};
 	// ------------------------------------------------------------------//
 
 public:
@@ -53,7 +52,7 @@ public:
 	void*			Drop();
 	void*			Read( u32 size );
 	bool			Eof( void );
-	void			Seek( K_SEEK_FROM seekMode, u32 offset );
+	void			Seek( SeekFrom seekMode, u32 offset );
 
 protected:
 	std::string		m_filename;
