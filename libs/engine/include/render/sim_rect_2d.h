@@ -118,6 +118,7 @@ protected:
 	f32							m_rotation;
 
 	CMaterial*					m_material;
+	CRect2D*					m_texRect;
 	// ------------------------------------------------------------------//
 };
 

@@ -118,21 +118,21 @@ bool CFileStream::Eof( void )
 
 // ----------------------------------------------------------------------//
 
-void CFileStream::Seek( K_SEEK_FROM seekMode, u32 offset)
+void CFileStream::Seek( SeekFrom seekFrom, u32 offset)
 {
-	switch(seekMode)
+	switch(seekFrom)
 	{
-		case k_SeekFrom_Start:
+		case SeekFrom::Start:
 		{
 			m_cursor = offset;
 			break;
 		}
-		case k_SeekFrom_Current:
+		case SeekFrom::Current:
 		{
 			m_cursor += offset;
 			break;
 		}
-		case k_SeekFrom_End:
+		case SeekFrom::End:
 		{
 			m_cursor -= offset;
 			break;

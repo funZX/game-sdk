@@ -47,7 +47,6 @@
     <Compile Include="data\skybox.py" />
     <Compile Include="data\sound.py" />
     <Compile Include="data\sprite.py" />
-    <Compile Include="data\svg.py" />
     <Compile Include="data\texture.py" />
     <Compile Include="make.py" />
     <Compile Include="utils.py" />

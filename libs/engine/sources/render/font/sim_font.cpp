@@ -69,7 +69,6 @@ s32 CFont::GetWidth( const char* text )
 	s32 n 		= 0;
 	u8 c;
 
-	std::map<s32, CFontChar*>::iterator iter;
 	FT_Vector kerning;
 	FT_UInt ixGlyph;
 	FT_UInt ixGlyphPrev = 0;
@@ -81,10 +80,10 @@ s32 CFont::GetWidth( const char* text )
 
 	while( text[ n ] != 0 )
 	{
-		c 		= text[ n ];
-		iter 	= m_mapBitmapChar.find( c );
+		c = text[ n ];
+		auto bitmap = m_mapBitmapChar.find( c );
 
-		if( iter != m_mapBitmapChar.end() )
+		if(bitmap != m_mapBitmapChar.end() )
 		{
 			if( hasKerning )
 			{
@@ -97,7 +96,7 @@ s32 CFont::GetWidth( const char* text )
 				}
 				ixGlyphPrev = ixGlyph;
 			}
-			currX += iter->second->GetXAdvance();
+			currX += bitmap->second->GetXAdvance();
 		}
 		n++;
 	}
@@ -108,9 +107,7 @@ s32 CFont::GetWidth( const char* text )
 
 CFontChar* CFont::GetChar( s32 charCode )
 {
-	std::map<s32, CFontChar*>::iterator c;
-	c = m_mapBitmapChar.find( charCode );
-
+	auto c = m_mapBitmapChar.find( charCode );
 	return c == m_mapBitmapChar.end() ? NULL : c->second;
 }
 
@@ -131,7 +128,6 @@ s32 CFont::DrawString( CDriver* driver, s32 x, s32 y, const std::string &text )
 	s32 currX 	= x;
 	s32 n 		= 0;
 
-	std::map<s32, CFontChar*>::iterator iter;
 	FT_Vector kerning;
 	FT_UInt ixGlyph;
 	FT_UInt ixGlyphPrev = 0;
@@ -143,10 +139,10 @@ s32 CFont::DrawString( CDriver* driver, s32 x, s32 y, const std::string &text )
 
 	while( text[ n ] != 0 )
 	{
-		c 		= text[ n ];
-		iter 	= m_mapBitmapChar.find(c);
+		c = text[ n ];
+		auto bitmap	= m_mapBitmapChar.find(c);
 
-		if( iter != m_mapBitmapChar.end() )
+		if( bitmap != m_mapBitmapChar.end() )
 		{
 			if( hasKerning )
 			{
@@ -160,8 +156,8 @@ s32 CFont::DrawString( CDriver* driver, s32 x, s32 y, const std::string &text )
 				ixGlyphPrev = ixGlyph;
 			}
 
-			iter->second->Draw( driver, m_fontAtlas->GetMaterial(), currX, y );
-			currX += iter->second->GetXAdvance();
+			bitmap->second->Draw( driver, m_fontAtlas->GetMaterial(), currX, y );
+			currX += bitmap->second->GetXAdvance();
 		}
 		n++;
 	}

@@ -8,9 +8,6 @@ class CWindow;
 
 class CGame : public CEngine
 {
-	typedef std::map<std::string, rnr::CFont*>					TFontList;
-	typedef std::map<std::string, rnr::CFont*>::iterator		TFontListIter;
-
 public:
 	CGame( const std::string& fsDir );
 	~CGame();

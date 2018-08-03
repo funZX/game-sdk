@@ -3,7 +3,6 @@
 #include <render/scene/sim_camera.h>
 
 #include <render/gui/sim_widget_drawable.h>
-#include <render/gui/sim_widget_svg.h>
 
 #include <render/sim_canvas.h>
 #include <render/sim_texture.h>
@@ -40,13 +39,6 @@ CState_Game::CState_Game()
 	m_drawable->SetColor(&col::Blueish);
 	m_drawable->OnDraw.Connect(this, &CState_Game::DrawToWidget);
 
-	m_svg = SIM_NEW CWidgetSvg();
-	m_svg->SetImage(m_fs->GetSvgImage("tiger/tiger"));
-	m_svg->Resize(256, 256);
-	m_svg->Align( CDriver::ScreenRect, CRect2D::k_Align_RightIn );
-	m_svg->Align( CDriver::ScreenRect, CRect2D::k_Align_BottomIn );
-	m_svg->Move( -10.0f, -10.0f );
-
 	CScript* script = O.world->GetFs()->GetScript("dt/deltatime");
 	script->Run();
 }
@@ -54,7 +46,6 @@ CState_Game::CState_Game()
 CState_Game::~CState_Game()
 {
 	SIM_SAFE_DELETE( m_drawable );
-	SIM_SAFE_DELETE( m_svg );
 }
 // ----------------------------------------------------------------------//
 void CState_Game::Update( f32 dt, void *userData )
@@ -95,10 +86,6 @@ void CState_Game::Render2D( CDriver *driver )
 	m.SetTexture(m_drawable->GetTexture(), 0);
 	m_drawable->Rotate(dr);
 	m_drawable->Render(driver);
-
-	m.SetTexture( m_svg->GetTexture(), 0 );
-	m_svg->SetMaterial( &m );
-	m_svg->Render(driver);
 
 	filltex->SetTechnique(&techique);
 	driver->EnableBatch2D(isBatchEnabled);

@@ -33,7 +33,6 @@ CWidget::CWidget()
 
 	m_isEnabled = true;
 	m_isVisible = true;
-	m_isFlipped = false;
 
 	Vec4Copy(&m_fillcolor, &col::Blueish);
 }
@@ -77,7 +76,7 @@ void CWidget::AddChild( CWidget *child )
 {
 	if( child != NULL )
 	{
-		std::map< CWidget*, CWidget* >::iterator c = m_childs.find(child);
+		auto c = m_childs.find(child);
 
 		if( c != m_childs.end() )
 		{
@@ -92,7 +91,7 @@ void CWidget::AddChild( CWidget *child )
 
 void CWidget::RemChild( CWidget *child )
 {
-	std::map< CWidget*, CWidget* >::iterator c = m_childs.find(child);
+	auto c = m_childs.find(child);
 
 	if( c != m_childs.end() )
 	{
@@ -106,7 +105,7 @@ void CWidget::RemChild( CWidget *child )
 
 void CWidget::DelChild( CWidget *child )
 {
-	std::map< CWidget*, CWidget* >::iterator c = m_childs.find( child );
+	auto c = m_childs.find( child );
 
 	if( c != m_childs.end() )
 	{
@@ -120,7 +119,7 @@ void CWidget::DelChild( CWidget *child )
 
 void CWidget::DelAllChilds( void )
 {
-	std::map< CWidget*, CWidget* >::iterator c = m_childs.begin();
+	auto c = m_childs.begin();
 
 	while( c != m_childs.end() )
 	{
@@ -171,12 +170,12 @@ void CWidget::PointerUp( u32 x, u32 y )
 
 void CWidget::Render( CDriver *driver )
 {
-	std::map< CWidget*, CWidget* >::iterator c = m_childs.begin();
+	auto c = m_childs.begin();
 
 	while( c != m_childs.end() )
 		c->second->Render( driver );
 
-	CRect2D::Render( driver, m_isFlipped ? CRect2D::OneSizeRectFlip : CRect2D::OneSizeRect );
+	CRect2D::Render( driver, m_texRect );
 }
 
 // ----------------------------------------------------------------------//

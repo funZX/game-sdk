@@ -63,7 +63,7 @@ void CSpriteTexture::AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h  )
 
 void CSpriteTexture::Render( CDriver *driver, CRect2D *rect, s32 frame )
 {
-	std::map<s32, CRect2D>::iterator m = m_frames.find(frame);
+	auto m = m_frames.find(frame);
 
 	SIM_ASSERT( this == rect->GetMaterial()->GetTexture( 0 ) );
 

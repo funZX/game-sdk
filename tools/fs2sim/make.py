@@ -12,7 +12,6 @@ sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
 import font
 import texture
-import svg
 import skybox
 import effect
 import material
@@ -36,9 +35,6 @@ def main(argv):
 	
 	print('\n--------- FONTS -----\n')
 	content.append(font.main(dirlist))
-	
-	print('\n--------- SVG -----\n')
-	content.append(svg.main(dirlist) )
 
 	print('\n--------- TEXTURES -----\n')
 	content.append(texture.main(dirlist) )

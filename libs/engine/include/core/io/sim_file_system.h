@@ -40,7 +40,6 @@ namespace rnr
 	class CLight;
 	class CCamera;
 	class CSpriteTexture;
-	class CSvgImage;
 };
 // ----------------------------------------------------------------------//
 namespace snd { class CSoundData; };
@@ -58,50 +57,19 @@ class CFileSystem
 	friend class rnr::CScene;
 
 	typedef std::map<u32, rnr::CFont*>						TFontList;
-	typedef std::map<u32, rnr::CFont*>::iterator			TFontListIter;
-
 	typedef std::map<u32, rnr::CTexture*>					TTextureList;
-	typedef std::map<u32, rnr::CTexture*>::iterator			TTextureListIter;
-
 	typedef std::map<u32, rnr::CSkyBox*>					TSkyboxList;
-	typedef std::map<u32, rnr::CSkyBox*>::iterator			TSkyboxListIter;
-
 	typedef std::map<u32, rnr::CShader*>					TShaderList;
-	typedef std::map<u32, rnr::CShader*>::iterator			TShaderListIter;
-
 	typedef std::map<u32, rnr::CEffect*>					TEffectList;
-	typedef std::map<u32, rnr::CEffect*>::iterator			TEffectListIter;
-
 	typedef std::map<u32, rnr::CMaterial*>					TMaterialList;
-	typedef std::map<u32, rnr::CMaterial*>::iterator		TMaterialListIter;
-
 	typedef std::map<u32, rnr::CMesh*>						TMeshList;
-	typedef std::map<u32, rnr::CMesh*>::iterator			TMeshListIter;
-
 	typedef std::map<u32, rnr::CActor*>						TActorList;
-	typedef std::map<u32, rnr::CActor*>::iterator			TActorListIter;
-
 	typedef std::map<u32, rnr::CLight*>						TLightList;
-	typedef std::map<u32, rnr::CLight*>::iterator			TLightListIter;
-
 	typedef std::map<u32, rnr::CCamera*>					TCameraList;
-	typedef std::map<u32, rnr::CCamera*>::iterator			TCameraListIter;
-
 	typedef std::map<u32, rnr::CSpriteTexture*>				TSpriteList;
-	typedef std::map<u32, rnr::CSpriteTexture*>::iterator	TSpriteListIter;
-
-	typedef std::map<u32, rnr::CSvgImage*>					TSvgImageList;
-	typedef std::map<u32, rnr::CSvgImage*>::iterator		TSvgImageListIter;
-
 	typedef std::map<u32, snd::CSoundData*>					TSoundList;
-	typedef std::map<u32, snd::CSoundData*>::iterator		TSoundListIter;
-
 	typedef std::map<u32, vm::CScript*>						TScriptList;
-	typedef std::map<u32, vm::CScript*>::iterator			TScriptListIter;
-
-
 	typedef std::map<u32, rnr::CScene*>						TSceneList;
-	typedef std::map<u32, rnr::CScene*>::iterator			TSceneListIter;
 
 public:
 
@@ -110,7 +78,7 @@ public:
 
 	// ------------------------------------------------------------------//
 	void						Open();
-	bool						LoadStep();
+	bool						LoadNext();
 	void						Close();
 
 	rnr::CFont*					GetFont( const std::string &name );
@@ -124,7 +92,6 @@ public:
 	rnr::CLight*				GetLight( const std::string &name );
 	rnr::CCamera*				GetCamera( const std::string &name );
 	rnr::CSpriteTexture*		GetSprite( const std::string &name );
-	rnr::CSvgImage*				GetSvgImage( const std::string &name );
 	snd::CSoundData*			GetSound( const std::string &name );
 	vm::CScript*				GetScript( const std::string &name );
 	rnr::CScene*				GetScene( const std::string &name );
@@ -136,29 +103,6 @@ public:
 protected:
 	u8*							LoadFile( const std::string& filename );
 	void						UnloadFile(u8* memfile);
-
-	typedef enum
-	{
-		k_Load_Init,
-		k_Load_Font,
-		k_Load_Texture,
-		k_Load_Skybox,
-		k_Load_Shader,
-		k_Load_Effect,
-		k_Load_Material,
-		k_Load_Model,
-		k_Load_Actor,
-		k_Load_Light,
-		k_Load_Camera,
-		k_Load_Sprite,
-		k_Load_SvgImage,
-		k_Load_Sound,
-		k_Load_Script,
-		k_Load_Scene,
-
-		k_Load_Count,
-
-	} K_LOAD;
 
 	typedef bool (CFileSystem::*TLoadFunction)(const json_t* jsonRoot, s32 index);
 
@@ -194,7 +138,6 @@ protected:
 	bool						LoadLight(const json_t* jsonRoot, s32 index);
 	bool						LoadCamera(const json_t* jsonRoot, s32 index);
 	bool						LoadSprite(const json_t* jsonRoot, s32 index);
-	bool						LoadSvgImage(const json_t* jsonRoot, s32 index);
 	bool						LoadSound(const json_t* jsonRoot, s32 index);
 	bool						LoadScript(const json_t* jsonRoot, s32 index);
 	bool						LoadScene(const json_t* jsonRoot, s32 index);
@@ -212,7 +155,6 @@ protected:
 	void						UnloadLights();
 	void						UnloadCameras();
 	void						UnloadSprites();
-	void						UnloadSvgImages();
 	void						UnloadSounds();
 	void						UnloadScripts();
 	void						UnloadScenes();
@@ -242,13 +184,13 @@ protected:
 	TLightList					m_lightList;
 	TCameraList					m_cameraList;
 	TSpriteList					m_spriteList;
-	TSvgImageList				m_svgImageList;
 	TSoundList					m_soundList;
 	TScriptList					m_scriptList;
 	TSceneList					m_sceneList;
 
 	TLoadStep*					m_steps;
 	TLoadStep*					m_crtStep;
+	TLoadStep*					m_lastStep;
 
 	std::string					m_loadMessage;
 	// ------------------------------------------------------------------//

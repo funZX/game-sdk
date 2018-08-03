@@ -36,7 +36,6 @@
 #include <render/sim_cube_texture.h>
 #include <render/sim_material.h>
 #include <render/sim_sprite_texture.h>
-#include <render/sim_svg_image.h>
 #include <render/font/sim_font.h>
 #include <render/font/sim_font_atlas.h>
 
@@ -74,7 +73,6 @@ CFileSystem::~CFileSystem()
 	UnloadScenes();
 	UnloadScripts();
 	UnloadSounds();
-	UnloadSvgImages();
 	UnloadSprites();
 	UnloadCameras();
 	UnloadLights();
@@ -118,26 +116,26 @@ void CFileSystem::UnloadFile( u8* memfile )
 
 void CFileSystem::Open()
 {
-	m_steps		= SIM_NEW TLoadStep[k_Load_Count];
+	m_steps		= SIM_NEW TLoadStep[ 15];
 
-	m_steps[ k_Load_Init ]		.Init("init",		&CFileSystem::LoadInit);
-	m_steps[ k_Load_Font ]		.Init("font",		&CFileSystem::LoadFont);
-	m_steps[ k_Load_Texture ]	.Init("texture",	&CFileSystem::LoadTexture);
-	m_steps[ k_Load_Skybox ]	.Init("skybox",		&CFileSystem::LoadSkybox);
-	m_steps[ k_Load_Shader ]	.Init("shader",		&CFileSystem::LoadShader);
-	m_steps[ k_Load_Effect ]	.Init("effect",		&CFileSystem::LoadEffect);
-	m_steps[ k_Load_Material ]	.Init("material",	&CFileSystem::LoadMaterial);
-	m_steps[ k_Load_Model ]		.Init("mesh",		&CFileSystem::LoadMesh);
-	m_steps[ k_Load_Actor ]		.Init("actor",		&CFileSystem::LoadActor);
-	m_steps[ k_Load_Light ]		.Init("light",		&CFileSystem::LoadLight);
-	m_steps[ k_Load_Camera ]	.Init("camera",		&CFileSystem::LoadCamera);
-	m_steps[ k_Load_Sprite ]	.Init("sprite",		&CFileSystem::LoadSprite);
-	m_steps [k_Load_SvgImage ]	.Init("svg",		&CFileSystem::LoadSvgImage);
-	m_steps[ k_Load_Sound ]		.Init("sound",		&CFileSystem::LoadSound);
-	m_steps[ k_Load_Script ]	.Init("script",		&CFileSystem::LoadScript);
-	m_steps[ k_Load_Scene ]		.Init("scene",		&CFileSystem::LoadScene);
+	m_steps[  0 ].Init("init",		&CFileSystem::LoadInit);
+	m_steps[  1 ].Init("font",		&CFileSystem::LoadFont);
+	m_steps[  2 ].Init("texture",	&CFileSystem::LoadTexture);
+	m_steps[  3 ].Init("skybox",	&CFileSystem::LoadSkybox);
+	m_steps[  4 ].Init("shader",	&CFileSystem::LoadShader);
+	m_steps[  5 ].Init("effect",	&CFileSystem::LoadEffect);
+	m_steps[  6 ].Init("material",	&CFileSystem::LoadMaterial);
+	m_steps[  7 ].Init("mesh",		&CFileSystem::LoadMesh);
+	m_steps[  8 ].Init("actor",		&CFileSystem::LoadActor);
+	m_steps[  9 ].Init("light",		&CFileSystem::LoadLight);
+	m_steps[ 10 ].Init("camera",	&CFileSystem::LoadCamera);
+	m_steps[ 11 ].Init("sprite",	&CFileSystem::LoadSprite);
+	m_steps[ 12 ].Init("sound",		&CFileSystem::LoadSound);
+	m_steps[ 13 ].Init("script",	&CFileSystem::LoadScript);
+	m_steps[ 14 ].Init("scene",		&CFileSystem::LoadScene);
 
 	m_crtStep	= m_steps;
+	m_lastStep  = m_steps + 15;
 
 	m_lzmaStream->Open();
 
@@ -155,7 +153,7 @@ void CFileSystem::Close()
 
 	m_crtStep = m_steps;
 
-	for ( s32 k = 0; k < k_Load_Count; k++ )
+	for ( s32 k = 0; k < ( m_lastStep - m_steps ); k++ )
 	{
 		SIM_SAFE_DELETE( m_crtStep->json );
 		++m_crtStep;
@@ -179,7 +177,7 @@ bool CFileSystem::NextStep(const json_t* jsonRoot)
 
 // ----------------------------------------------------------------------//
 
-bool CFileSystem::LoadStep( void )
+bool CFileSystem::LoadNext( void )
 {
 	bool stepDone = true;
 
@@ -196,7 +194,7 @@ bool CFileSystem::LoadStep( void )
 	if ( stepDone )
 		++m_crtStep;
 
-	return ( m_crtStep != ( m_steps + k_Load_Count ) );
+	return ( m_crtStep != m_lastStep );
 }
 
 // ----------------------------------------------------------------------//
@@ -209,7 +207,7 @@ bool CFileSystem::LoadInit(const json_t* jsonRoot, s32 index)
 	{
 		json_t* jsonValue = json_array_get( jsonRoot, k );
 
-		for ( s32 l = 0; l < k_Load_Count ; l++)
+		for ( s32 l = 0; l < (m_lastStep - m_steps) ; l++)
 		{
 			TLoadStep* ls		= &m_steps[l];
 			json_t* jsonName	= json_object_get( jsonValue, "name" );
@@ -786,38 +784,6 @@ bool CFileSystem::LoadSprite(const json_t* jsonRoot, s32 index)
 
 // ----------------------------------------------------------------------//
 
-bool CFileSystem::LoadSvgImage(const json_t* jsonRoot, s32 index)
-{
-	json_t* jsonValue = json_array_get(jsonRoot, index);
-
-	std::string name = json_string_value(json_object_get(jsonValue, "name"));
-	std::string file = json_string_value(json_object_get(jsonValue, "file"));
-
-	CSvgImage* svg = SIM_NEW CSvgImage( name );
-
-	u32 offset = 0;
-	m_lzmaStream->OpenFile(file, &m_buffer, &offset, &m_bufferSize);
-
-	CMemStream ms(&m_buffer[offset], m_bufferSize);
-
-	svg->Load(&ms);
-
-	m_lzmaStream->CloseFile(&m_buffer);
-
-	m_svgImageList[hash::Get(name)] = svg;
-
-	m_loadMessage.clear();
-	m_loadMessage = "Loading svg ";
-	m_loadMessage.append("\"");
-	m_loadMessage.append( name );
-	m_loadMessage.append("\"");
-	m_loadMessage.append("...");
-
-	return NextStep(jsonRoot);
-}
-
-// ----------------------------------------------------------------------//
-
 bool CFileSystem::LoadSound(const json_t* jsonRoot, s32 index)
 {
 	return NextStep(jsonRoot);
@@ -869,7 +835,7 @@ bool CFileSystem::LoadScene(const json_t* jsonRoot, s32 index)
 
 void CFileSystem::UnloadFonts()
 {
-	TFontListIter it = m_fontList.begin();
+	auto it = m_fontList.begin();
 
 	while( it != m_fontList.end())
 	{
@@ -884,7 +850,7 @@ void CFileSystem::UnloadFonts()
 
 rnr::CFont* CFileSystem::GetFont( const std::string &name )
 {
-	TFontListIter it = m_fontList.find( hash::Get( name ) );
+	auto it = m_fontList.find( hash::Get( name ) );
 
 	return it != m_fontList.end() ? it->second : NULL;
 }
@@ -893,7 +859,7 @@ rnr::CFont* CFileSystem::GetFont( const std::string &name )
 
 void CFileSystem::UnloadTextures()
 {
-	TTextureListIter it = m_textureList.begin();
+	auto it = m_textureList.begin();
 
 	while( it != m_textureList.end())
 	{
@@ -908,7 +874,7 @@ void CFileSystem::UnloadTextures()
 
 rnr::CTexture* CFileSystem::GetTexture( const std::string &name )
 {
-	TTextureListIter it = m_textureList.find( hash::Get( name ) );
+	auto it = m_textureList.find( hash::Get( name ) );
 
 	return it != m_textureList.end() ? it->second : NULL;
 }
@@ -917,7 +883,7 @@ rnr::CTexture* CFileSystem::GetTexture( const std::string &name )
 
 void CFileSystem::UnloadSkyboxes()
 {
-	TSkyboxListIter it = m_skyboxList.begin();
+	auto it = m_skyboxList.begin();
 
 	while( it != m_skyboxList.end())
 	{
@@ -932,7 +898,7 @@ void CFileSystem::UnloadSkyboxes()
 
 rnr::CSkyBox* CFileSystem::GetSkybox( const std::string &name )
 {
-	TSkyboxListIter it = m_skyboxList.find( hash::Get( name ) );
+	auto it = m_skyboxList.find( hash::Get( name ) );
 
 	return it != m_skyboxList.end() ? it->second : NULL;
 }
@@ -941,7 +907,7 @@ rnr::CSkyBox* CFileSystem::GetSkybox( const std::string &name )
 
 void CFileSystem::UnloadShaders()
 {
-	TShaderListIter it = m_shaderList.begin();
+	auto it = m_shaderList.begin();
 
 	while( it != m_shaderList.end())
 	{
@@ -956,7 +922,7 @@ void CFileSystem::UnloadShaders()
 
 rnr::CShader* CFileSystem::GetShader( const std::string &name )
 {
-	TShaderListIter it = m_shaderList.find( hash::Get( name ) );
+	auto it = m_shaderList.find( hash::Get( name ) );
 
 	return it != m_shaderList.end() ? it->second : NULL;
 }
@@ -965,7 +931,7 @@ rnr::CShader* CFileSystem::GetShader( const std::string &name )
 
 void CFileSystem::UnloadEffects()
 {
-	TEffectListIter it = m_effectList.begin();
+	auto it = m_effectList.begin();
 
 	while( it != m_effectList.end())
 	{
@@ -980,7 +946,7 @@ void CFileSystem::UnloadEffects()
 
 rnr::CEffect* CFileSystem::GetEffect( const std::string &name )
 {
-	TEffectListIter it = m_effectList.find( hash::Get( name ) );
+	auto it = m_effectList.find( hash::Get( name ) );
 
 	return it != m_effectList.end() ? it->second : NULL;
 }
@@ -990,7 +956,7 @@ rnr::CEffect* CFileSystem::GetEffect( const std::string &name )
 
 void CFileSystem::UnloadMaterials()
 {
-	TMaterialListIter it = m_materialList.begin();
+	auto it = m_materialList.begin();
 
 	while( it != m_materialList.end())
 	{
@@ -1005,7 +971,7 @@ void CFileSystem::UnloadMaterials()
 
 rnr::CMaterial* CFileSystem::GetMaterial( const std::string &name )
 {
-	TMaterialListIter it = m_materialList.find( hash::Get( name ) );
+	auto it = m_materialList.find( hash::Get( name ) );
 
 	return it != m_materialList.end() ? it->second : NULL;
 }
@@ -1014,7 +980,7 @@ rnr::CMaterial* CFileSystem::GetMaterial( const std::string &name )
 
 void CFileSystem::UnloadMeshes()
 {
-	TMeshListIter it = m_meshList.begin();
+	auto it = m_meshList.begin();
 
 	while( it != m_meshList.end())
 	{
@@ -1029,7 +995,7 @@ void CFileSystem::UnloadMeshes()
 
 rnr::CMesh* CFileSystem::GetMesh( const std::string &name )
 {
-	TMeshListIter it = m_meshList.find( hash::Get( name ) );
+	auto it = m_meshList.find( hash::Get( name ) );
 
 	return it != m_meshList.end() ? it->second : NULL;
 }
@@ -1038,7 +1004,7 @@ rnr::CMesh* CFileSystem::GetMesh( const std::string &name )
 
 void CFileSystem::UnloadActors()
 {
-	TActorListIter it = m_actorList.begin();
+	auto it = m_actorList.begin();
 
 	while( it != m_actorList.end())
 	{
@@ -1053,7 +1019,7 @@ void CFileSystem::UnloadActors()
 
 rnr::CActor* CFileSystem::GetActor( const std::string &name )
 {
-	TActorListIter it = m_actorList.find( hash::Get( name ) );
+	auto it = m_actorList.find( hash::Get( name ) );
 
 	return it != m_actorList.end() ? it->second : NULL;
 }
@@ -1062,7 +1028,7 @@ rnr::CActor* CFileSystem::GetActor( const std::string &name )
 
 void CFileSystem::UnloadLights()
 {
-	TLightListIter it = m_lightList.begin();
+	auto it = m_lightList.begin();
 
 	while( it != m_lightList.end())
 	{
@@ -1077,7 +1043,7 @@ void CFileSystem::UnloadLights()
 
 rnr::CLight* CFileSystem::GetLight( const std::string &name )
 {
-	TLightListIter it = m_lightList.find( hash::Get( name ) );
+	auto it = m_lightList.find( hash::Get( name ) );
 
 	return it != m_lightList.end() ? it->second : NULL;
 }
@@ -1086,7 +1052,7 @@ rnr::CLight* CFileSystem::GetLight( const std::string &name )
 
 void CFileSystem::UnloadCameras()
 {
-	TCameraListIter it = m_cameraList.begin();
+	auto it = m_cameraList.begin();
 
 	while( it != m_cameraList.end())
 	{
@@ -1101,7 +1067,7 @@ void CFileSystem::UnloadCameras()
 
 rnr::CCamera* CFileSystem::GetCamera( const std::string &name )
 {
-	TCameraListIter it = m_cameraList.find( hash::Get( name ) );
+	auto it = m_cameraList.find( hash::Get( name ) );
 
 	return it != m_cameraList.end() ? it->second : NULL;
 }
@@ -1110,7 +1076,7 @@ rnr::CCamera* CFileSystem::GetCamera( const std::string &name )
 
 void CFileSystem::UnloadSprites()
 {
-	TSpriteListIter it = m_spriteList.begin();
+	auto it = m_spriteList.begin();
 
 	while( it != m_spriteList.end())
 	{
@@ -1125,40 +1091,16 @@ void CFileSystem::UnloadSprites()
 
 rnr::CSpriteTexture* CFileSystem::GetSprite( const std::string &name )
 {
-	TSpriteListIter it = m_spriteList.find( hash::Get( name ) );
+	auto it = m_spriteList.find( hash::Get( name ) );
 
 	return it != m_spriteList.end() ? it->second : NULL;
 }
 
 // ----------------------------------------------------------------------//
 
-void CFileSystem::UnloadSvgImages()
-{
-	TSvgImageListIter it = m_svgImageList.begin();
-
-	while ( it != m_svgImageList.end() )
-	{
-		SIM_SAFE_DELETE( it->second );
-		++it;
-	}
-
-	m_svgImageList.clear();
-}
-
-// ----------------------------------------------------------------------//
-
-rnr::CSvgImage* CFileSystem::GetSvgImage( const std::string &name )
-{
-	TSvgImageListIter it = m_svgImageList.find( hash::Get( name ) );
-
-	return it != m_svgImageList.end() ? it->second : NULL;
-}
-
-// ----------------------------------------------------------------------//
-
 void CFileSystem::UnloadSounds()
 {
-	TSoundListIter it = m_soundList.begin();
+	auto it = m_soundList.begin();
 
 	while( it != m_soundList.end())
 	{
@@ -1173,7 +1115,7 @@ void CFileSystem::UnloadSounds()
 
 snd::CSoundData* CFileSystem::GetSound( const std::string &name )
 {
-	TSoundListIter it = m_soundList.find( hash::Get( name ) );
+	auto it = m_soundList.find( hash::Get( name ) );
 
 	return it != m_soundList.end() ? it->second : NULL;
 }
@@ -1182,7 +1124,7 @@ snd::CSoundData* CFileSystem::GetSound( const std::string &name )
 
 void CFileSystem::UnloadScripts()
 {
-	TScriptListIter it = m_scriptList.begin();
+	auto it = m_scriptList.begin();
 
 	while( it != m_scriptList.end())
 	{
@@ -1197,7 +1139,7 @@ void CFileSystem::UnloadScripts()
 
 vm::CScript* CFileSystem::GetScript( const std::string &name )
 {
-	TScriptListIter it = m_scriptList.find( hash::Get( name ) );
+	auto it = m_scriptList.find( hash::Get( name ) );
 
 	return it != m_scriptList.end() ? it->second : NULL;
 }
@@ -1206,7 +1148,7 @@ vm::CScript* CFileSystem::GetScript( const std::string &name )
 
 void CFileSystem::UnloadScenes()
 {
-	TSceneListIter it = m_sceneList.begin();
+	auto it = m_sceneList.begin();
 
 	while( it != m_sceneList.end())
 	{
@@ -1221,7 +1163,7 @@ void CFileSystem::UnloadScenes()
 
 rnr::CScene* CFileSystem::GetScene( const std::string &name )
 {
-	TSceneListIter it = m_sceneList.find( hash::Get( name ) );
+	auto it = m_sceneList.find( hash::Get( name ) );
 
 	return it != m_sceneList.end() ? it->second : NULL;
 }

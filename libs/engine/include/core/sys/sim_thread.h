@@ -37,18 +37,18 @@ public:
 
 	// ------------------------------------------------------------------//
 
-	typedef enum
+	enum class Priority : u32
 	{
-		k_Priority_Lowest	= 0,
-		k_Priority_Low		= 1,
-		k_Priority_Normal	= 2,
-		k_Priority_High		= 3,
-		k_Priority_Highest	= 4,
+		Lowest	= 0,
+		Low		= 1,
+		Normal	= 2,
+		High	= 3,
+		Highest	= 4,
 
-	} K_PRIORITY;
+	};
 
 	// ------------------------------------------------------------------//
-	CThread( RunFunc runFunc, void *arg, K_PRIORITY prio );
+	CThread( RunFunc runFunc, void *arg, Priority prio );
 	virtual ~CThread();
 
 	void				Start();
@@ -59,14 +59,14 @@ public:
 
 	// ------------------------------------------------------------------//
 protected:
-	s32					GetSystemPrio( K_PRIORITY prio );
+	s32					GetSystemPrio( Priority prio );
 	// ------------------------------------------------------------------//
 
 protected:
     pthread_t			m_thread;
     pthread_attr_t		m_attr;
 
-    K_PRIORITY			m_priority;
+	Priority			m_priority;
 	bool				m_isRunning;
 	RunFunc				m_runFunc;
 	void*				m_arg;
