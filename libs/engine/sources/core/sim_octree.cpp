@@ -16,7 +16,7 @@ COctreeVolume::COctreeVolume()
 // ----------------------------------------------------------------------//
 void COctreeNode::OnOctreeUpdate(sigcxx::SLOT slot)
 {
-	
+
 }
 // ----------------------------------------------------------------------//
 u32 COctreeNode::IsOutside( const COctreeVolume* volume )
@@ -48,16 +48,16 @@ void COctreeNode::Split()
 }
 
 // ----------------------------------------------------------------------//
-void COctreeNode::AddVolume(COctreeVolume* volume)
+void COctreeNode::NewVolume(COctreeVolume* volume)
 {
 	m_volumetree.Insert(volume->GetID(), volume);
-	//volume->OctreeUpdateSignal.Connect(this, &COctreeNode::OnOctreeUpdate);
+	volume->OctreeUpdateSignal.Connect(this, &COctreeNode::OnOctreeUpdate);
 }
 // ----------------------------------------------------------------------//
 void COctreeNode::DelVolume(COctreeVolume* volume)
 {
 	m_volumetree.Delete(volume->GetID());
-	//volume->OctreeUpdateSignal.Disconnect(this, &COctreeNode::OnOctreeUpdate);
+	volume->OctreeUpdateSignal.Disconnect(this, &COctreeNode::OnOctreeUpdate);
 }
 
 
@@ -76,7 +76,7 @@ void COctree::Insert(COctreeVolume* volume)
 		m_root->m_radius = Vec3Max(volume->GetBox());
 		Vec3Copy(&m_root->m_center, volume->GetCenter());
 
-		m_root->AddVolume(volume);
+		m_root->NewVolume(volume);
 
 		return;
 	}

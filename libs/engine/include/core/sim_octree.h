@@ -78,22 +78,13 @@ protected:
 
 // ----------------------------------------------------------------------//
 
-class COctreeNode : public sigcxx::Trackable
+class COctreeNode : public sigcxx::Trackable, public IDummySlot
 {
 	friend class COctree;
 public:
 	// ----------------------------------------------------------------------//
-	enum class ParentRelation : u32
-	{
-		TopFrontLeft,
-		TopFrontRight,
-		TopBottomLeft,
-		TopBottomRight,
-		BottomFrontLeft,
-		BottomFrontRight,
-		BottomBackLeft,
-		BottomBackRight,
-	};
+	typedef enum
+	{ k_TFL, k_TFR, k_TBL, k_TBR, k_BFL, k_BFR, k_BBL, k_BBR };
 	// ----------------------------------------------------------------------//
 	
 	COctreeNode()
@@ -127,10 +118,11 @@ public:
 	// ----------------------------------------------------------------------//
 	u32						IsOutside(const COctreeVolume* volume);
 
-	void					AddVolume(COctreeVolume* volume);
+	void					NewVolume(COctreeVolume* volume);
 	void					DelVolume(COctreeVolume* volume);
 
 	void					Split();
+	void					OnDummySlot() {}
 	// ----------------------------------------------------------------------//
 protected:
 	// ----------------------------------------------------------------------//
