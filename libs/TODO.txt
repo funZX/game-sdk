@@ -16,7 +16,6 @@
 - engine: line, plane & curves math
 - engine: buffered sound
 - engine: networking
-- engine: memory pool
 - engine: recast & detour
 - engine: ragdoll physics
 - engine: automaton -> controller 
@@ -41,7 +40,6 @@
 
 - engine: vbo buffers ???
 - engine: 3d static batch ???
-- engine: memory manager ???
 - engine: const properties ???
 
 - engine: boost libraries ???

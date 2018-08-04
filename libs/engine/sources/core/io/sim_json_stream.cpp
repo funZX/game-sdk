@@ -26,7 +26,7 @@ namespace io
 // ----------------------------------------------------------------------//
 
 CJsonStream::CJsonStream( const std::string &filename )
-	: m_jsonRoot(NULL)
+	: m_jsonRoot(nullptr)
 {
 	CFileStream* fileStream = SIM_NEW CFileStream( filename );
 
@@ -49,10 +49,10 @@ CJsonStream::CJsonStream( const u8* memfile )
 
 CJsonStream::~CJsonStream()
 {
-	if ( m_jsonRoot != NULL )
+	if ( m_jsonRoot != nullptr )
 	{
 		json_decref( m_jsonRoot );
-		m_jsonRoot = NULL;
+		m_jsonRoot = nullptr;
 	}
 }
 

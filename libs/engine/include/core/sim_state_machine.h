@@ -38,7 +38,7 @@ protected:
 
 public:
 	CStateMachine();
-	~CStateMachine();
+	virtual ~CStateMachine();
 
 	IState*				GetCurrentState()			{ m_currState; }
 

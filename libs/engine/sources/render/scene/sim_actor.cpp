@@ -41,7 +41,7 @@ namespace rnr
 CActor::CActor()
 	: CSceneNode()
 {
-	m_mesh			            = NULL;
+	m_mesh			            = nullptr;
 
 	m_properties.shape			= k_Shape_Box;
 	m_properties.type			= k_Type_Default;
@@ -49,8 +49,8 @@ CActor::CActor()
 	m_properties.isCulled		= false;
 	m_properties.isPhysic		= false;
 
-	m_collisionShape			= NULL;
-	m_rigidBody					= NULL;
+	m_collisionShape			= nullptr;
+	m_rigidBody					= nullptr;
 
 	m_mass						= 0.0f;
 	m_restitution				= 0.0f;

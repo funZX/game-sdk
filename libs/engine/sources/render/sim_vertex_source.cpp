@@ -29,7 +29,7 @@ CVertexSource::CVertexSource()
 {
 	m_iD				= 0;
 
-	m_vboData			= NULL;
+	m_vboData			= nullptr;
 	m_vboSize			= 0;
 
 	m_vertexStride		= 0;

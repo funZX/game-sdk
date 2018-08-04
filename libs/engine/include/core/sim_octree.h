@@ -99,7 +99,7 @@ public:
 	
 	COctreeNode()
 	{
-		m_parent	= NULL;
+		m_parent	= nullptr;
 
 		SIM_MEMSET( m_children, 0, sizeof( m_children ) );
 	}
@@ -175,7 +175,7 @@ public:
 	// ----------------------------------------------------------------------//
 	COctree()
 	{
-		m_root = NULL;
+		m_root = nullptr;
 	}
 
 	~COctree()

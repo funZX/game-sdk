@@ -115,7 +115,7 @@ TSphere*	gluNewSphere( s32 numSlices, f32 radius )
 
 TSphere* gluDelSphere( TSphere *sphere )
 {
-	SIM_ASSERT( sphere != NULL );
+	SIM_ASSERT( sphere != nullptr );
 
 	SIM_SAFE_DELETE_ARRAY( sphere->vertexGroup->m_vertexSource->m_vboData );
 	SIM_SAFE_DELETE( sphere->vertexGroup->m_vertexSource );
@@ -125,15 +125,15 @@ TSphere* gluDelSphere( TSphere *sphere )
 	
 	SIM_SAFE_DELETE( sphere );
 
-	return NULL;
+	return nullptr;
 }
 
 // ----------------------------------------------------------------------//
 
 void gluRenderSphere( CDriver *driver, TSphere *sphere )
 {
-	SIM_ASSERT( sphere != NULL );
-	SIM_ASSERT( driver != NULL );
+	SIM_ASSERT( sphere != nullptr );
+	SIM_ASSERT( driver != nullptr );
 
 	driver->Render( sphere->vertexGroup );
 }
@@ -369,7 +369,7 @@ TCube* gluNewCube( f32 sideSize )
 
 TCube* gluDelCube( TCube *cube )
 {
-	SIM_ASSERT( cube != NULL );
+	SIM_ASSERT( cube != nullptr );
 
 	SIM_SAFE_DELETE_ARRAY( cube->vertexGroup->m_vertexSource->m_vboData );
 	SIM_SAFE_DELETE( cube->vertexGroup->m_vertexSource );
@@ -379,15 +379,15 @@ TCube* gluDelCube( TCube *cube )
 	
 	SIM_SAFE_DELETE( cube );
 
-	return NULL;	
+	return nullptr;	
 }
 
 // ----------------------------------------------------------------------//
 
 void gluRenderCube( CDriver *driver, TCube *cube )
 {
-	SIM_ASSERT( cube != NULL );
-	SIM_ASSERT( driver != NULL );
+	SIM_ASSERT( cube != nullptr );
+	SIM_ASSERT( driver != nullptr );
 
 	driver->Render( cube->vertexGroup );
 }

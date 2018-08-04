@@ -32,7 +32,7 @@ namespace rnr
 
 CBatch2D::CBatch2D( CDriver *driver )
 {
-	SIM_ASSERT( driver != NULL );
+	SIM_ASSERT( driver != nullptr );
 
 	m_driver			                = driver;
 
@@ -120,7 +120,7 @@ void CBatch2D::Render( CDriver *driver )
 	driver->Render( m_vertexGroup );
 
 	m_numQuads = 0;
-	m_vertexGroup->SetMaterial( NULL );
+	m_vertexGroup->SetMaterial( nullptr );
 
 	SIM_CHECK_OPENGL();
 }

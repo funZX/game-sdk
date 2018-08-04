@@ -44,7 +44,7 @@ public:
 	~CSingleton()
 	{
 		SIM_ASSERT( m_Singleton );
-		m_Singleton = NULL;
+		m_Singleton = nullptr;
 	}
 	// ------------------------------------------------------------------//
 	static T& GetSingleton()
@@ -61,7 +61,7 @@ public:
 };
 
 template <typename T>
-T* CSingleton< T >::m_Singleton = NULL;
+T* CSingleton< T >::m_Singleton = nullptr;
 
 // ----------------------------------------------------------------------//
 } // namespace stl;

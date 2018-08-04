@@ -32,14 +32,14 @@ CVertexGroup::CVertexGroup()
 {
 	m_iD			= 0;
 
-	m_vertexSource	= NULL;
+	m_vertexSource	= nullptr;
 
 	m_vboSize		= 0;
-	m_vboData       = NULL;
+	m_vboData       = nullptr;
 
-	m_material      = NULL;
+	m_material      = nullptr;
 
-	m_lod			= NULL;
+	m_lod			= nullptr;
 	m_detail		= this;
 }
 
@@ -80,7 +80,7 @@ void CVertexGroup::SetMaterial( CMaterial *material )
 {
 	m_material = material;
 
-	if ( m_lod != NULL )
+	if ( m_lod != nullptr )
 		m_lod->SetMaterial( material );
 }
 
@@ -109,7 +109,7 @@ void CVertexGroup::Save( io::CMemStream* ms )
 	ms->WriteU16( m_vboSize );
 	ms->Write( ( void* ) m_vboData, m_vboSize * sizeof( u16 ) );
 
-	if ( m_lod != NULL )
+	if ( m_lod != nullptr )
 	{
 		ms->WriteU8( 1 );
 

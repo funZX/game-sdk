@@ -44,11 +44,11 @@ namespace rnr
 CFontAtlas::CFontAtlas()
 {
 	m_useKerning 	= false;
-	m_library 		= NULL;
+	m_library 		= nullptr;
 
-	m_material 		= NULL;
-	m_effect		= NULL;
-	m_texture		= NULL;
+	m_material 		= nullptr;
+	m_effect		= nullptr;
+	m_texture		= nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -80,7 +80,7 @@ void CFontAtlas::ReleaseLibrary()
 	if( m_library )
 	{
 		FT_Done_FreeType( m_library );
-		m_library = NULL;
+		m_library = nullptr;
 	}
 }
 
@@ -88,7 +88,7 @@ void CFontAtlas::ReleaseLibrary()
 
 CFont* CFontAtlas::AddFont( const std::string &name, u8* memfile, s32 memsize, s32 size, const char* szLetters )
 {
-	if( m_library == NULL )
+	if( m_library == nullptr )
 	{
 		if( FT_Init_FreeType( &m_library ) ) {
 			SIM_ASSERT( 0 && SIM_PRINT("FT_Init_Frek_Type_ failed") );
@@ -126,7 +126,7 @@ CFont* CFontAtlas::AddFont( const std::string &name, u8* memfile, s32 memsize, s
 	{
 		c = szLetters[ n ];
 		// chaeck that the character hasn't already been processed
-		if( ftBitmapFont->GetChar( c ) == NULL )
+		if( ftBitmapFont->GetChar( c ) == nullptr )
 		{
 			// Load The Glyph For Our Character.
 			ixGlyph = FT_Get_Char_Index( face, c );

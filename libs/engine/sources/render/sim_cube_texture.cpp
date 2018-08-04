@@ -62,7 +62,7 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 	glTexParameteri( GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 
 	u8 *buf = LoadPVR( front, &m_width, &m_height, &m_bits, &m_format );
-	SIM_ASSERT( buf != NULL);
+	SIM_ASSERT( buf != nullptr);
 
 	u8 *pvr = buf + sizeof( CTexture::TPVRHeader)	;
 
@@ -82,7 +82,7 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 	SIM_SAFE_DELETE_ARRAY( buf );
 
 	buf = LoadPVR( back, &m_width, &m_height, &m_bits, &m_format );
-	SIM_ASSERT( buf != NULL);
+	SIM_ASSERT( buf != nullptr);
 
 	pvr = buf + sizeof( CTexture::TPVRHeader)	;
 
@@ -100,7 +100,7 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 	SIM_SAFE_DELETE_ARRAY( buf );
 
 	buf = LoadPVR( left, &m_width, &m_height, &m_bits, &m_format );
-	SIM_ASSERT( buf != NULL);
+	SIM_ASSERT( buf != nullptr);
 
 	pvr = buf + sizeof( CTexture::TPVRHeader)	;
 
@@ -118,7 +118,7 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 	SIM_SAFE_DELETE_ARRAY( buf );
 
 	buf = LoadPVR( right, &m_width, &m_height, &m_bits, &m_format );
-	SIM_ASSERT( buf != NULL);
+	SIM_ASSERT( buf != nullptr);
 
 	pvr = buf + sizeof( CTexture::TPVRHeader)	;
 
@@ -136,7 +136,7 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 	SIM_SAFE_DELETE_ARRAY( buf );
 
 	buf = LoadPVR( top, &m_width, &m_height, &m_bits, &m_format );
-	SIM_ASSERT( buf != NULL);
+	SIM_ASSERT( buf != nullptr);
 
 	pvr = buf + sizeof( CTexture::TPVRHeader)	;
 
@@ -154,7 +154,7 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 	SIM_SAFE_DELETE_ARRAY( buf );
 
 	buf = LoadPVR( bottom, &m_width, &m_height, &m_bits, &m_format );
-	SIM_ASSERT( buf != NULL);
+	SIM_ASSERT( buf != nullptr);
 
 	pvr = buf + sizeof( CTexture::TPVRHeader)	;
 

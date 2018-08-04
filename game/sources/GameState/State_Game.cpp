@@ -12,6 +12,7 @@
 #include <render/sim_mesh.h>
 
 #include <core/io/sim_file_system.h>
+#include <core/sim_list.h>
 #include <render/sim_material.h>
 
 #include <render/sim_canvas.h>
@@ -40,6 +41,10 @@ CState_Game::CState_Game()
 	m_drawable->OnDraw.Connect(this, &CState_Game::DrawToWidget);
 
 	CScript* script = O.world->GetFs()->GetScript("dt/deltatime");
+
+	sim::stl::CList<CScript*> list;
+	list.AddToFront(script);
+
 	script->Run();
 }
 // ----------------------------------------------------------------------//

@@ -39,7 +39,7 @@ CFontChar::CFontChar()
 	m_offsetX 		= 0;
 	m_offsetY 		= 0;
 	m_advanceX 		= 0;
-	m_glyph 		= NULL;
+	m_glyph 		= nullptr;
 }
 
 // ----------------------------------------------------------------------//

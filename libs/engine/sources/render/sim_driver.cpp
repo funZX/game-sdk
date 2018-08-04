@@ -131,8 +131,8 @@ CDriver::CDriver()
 
 	InitUniform();
 
-	m_crtVertexSource		= NULL;
-	m_crtRenderTexture		= NULL;
+	m_crtVertexSource		= nullptr;
+	m_crtRenderTexture		= nullptr;
 
 	m_viewportWidth			= 0;
 	m_viewportHeight		= 0;
@@ -177,7 +177,7 @@ void CDriver::Flush2D()
 {
 	m_batch2D->Render( this );
 
-	m_crtVertexSource = NULL;
+	m_crtVertexSource = nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -305,7 +305,7 @@ CRenderTexture* CDriver::BindRenderTexture( CRenderTexture* texture )
 	if (texture == m_crtRenderTexture)
 		return m_crtRenderTexture;
 
-	if (texture != NULL)
+	if (texture != nullptr)
 	{
 		glBindFramebuffer( GL_FRAMEBUFFER, texture->GetBufferID() );
 		SIM_CHECK_OPENGL();
@@ -1031,9 +1031,9 @@ void CDriver::SetUniformMatrix4fv( s32 loc, void *value, u32 count )
 
 void CDriver::Render( CVertexGroup* vertexGroup )
 {
-	SIM_ASSERT( vertexGroup != NULL );
-	SIM_ASSERT( vertexGroup->GetMaterial() != NULL );
-	SIM_ASSERT( vertexGroup->GetMaterial()->GetEffect() != NULL );
+	SIM_ASSERT( vertexGroup != nullptr );
+	SIM_ASSERT( vertexGroup->GetMaterial() != nullptr );
+	SIM_ASSERT( vertexGroup->GetMaterial()->GetEffect() != nullptr );
 
 	CEffect* effect				= vertexGroup->GetMaterial()->GetEffect();
 	CMaterial* material			= vertexGroup->GetMaterial();
@@ -1068,7 +1068,7 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 			k_Render_Type_TriangleStrips
 		};
 
-		SIM_ASSERT(vertexSource != NULL);
+		SIM_ASSERT(vertexSource != nullptr);
 
 		material->Render(this);
 		effect->Render(this);
@@ -1119,7 +1119,7 @@ void CDriver::InitUniform()
 	m_uniformInfo[ CShader::k_Uniform_Point_Size ].m_callback = &CDriver::SetUniform1f;
 
 	// -----------------------------------------
-	m_uniformInfo[ CShader::k_Uniform_Matrix_World ].m_value = NULL;
+	m_uniformInfo[ CShader::k_Uniform_Matrix_World ].m_value = nullptr;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_World ].m_count = 1;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_World ].m_callback = &CDriver::SetUniformMatrix4fv;
 
@@ -1131,7 +1131,7 @@ void CDriver::InitUniform()
 	m_uniformInfo[ CShader::k_Uniform_Matrix_World_InverseT ].m_count = 1;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_World_InverseT ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_View ].m_value = NULL;
+	m_uniformInfo[ CShader::k_Uniform_Matrix_View ].m_value = nullptr;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_View ].m_count = 1;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_View ].m_callback = &CDriver::SetUniformMatrix4fv;
 
@@ -1143,7 +1143,7 @@ void CDriver::InitUniform()
 	m_uniformInfo[ CShader::k_Uniform_Matrix_View_InverseT ].m_count = 1;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_View_InverseT ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Projection ].m_value = NULL;
+	m_uniformInfo[ CShader::k_Uniform_Matrix_Projection ].m_value = nullptr;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_Projection ].m_count = 1;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_Projection ].m_callback = &CDriver::SetUniformMatrix4fv;
 
@@ -1169,23 +1169,23 @@ void CDriver::InitUniform()
 	m_uniformInfo[ CShader::k_Uniform_Matrix_Skeleton ].m_callback = &CDriver::SetUniformMatrix4fv;
 
 	// -----------------------------------------
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_0 ].m_value = NULL;
+	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_0 ].m_value = nullptr;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_0 ].m_count = 1;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_0 ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_1 ].m_value = NULL;
+	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_1 ].m_value = nullptr;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_1 ].m_count = 1;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_1 ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_2 ].m_value = NULL;
+	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_2 ].m_value = nullptr;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_2 ].m_count = 1;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_2 ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_3 ].m_value = NULL;
+	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_3 ].m_value = nullptr;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_3 ].m_count = 1;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_3 ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_4 ].m_value = NULL;
+	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_4 ].m_value = nullptr;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_4 ].m_count = 1;
 	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_4 ].m_callback = &CDriver::SetUniformMatrix4fv;
 	

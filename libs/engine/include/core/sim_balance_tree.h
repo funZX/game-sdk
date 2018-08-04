@@ -79,7 +79,7 @@ protected:
 #if SIM_DEBUG
 	void check_one( CNode* subRoot )
 	{
-		if ( subRoot == NULL )
+		if ( subRoot == nullptr )
 			return;
 
 		if ( CNodeIsRed( subRoot ) )
@@ -313,7 +313,7 @@ public:
 							subTree->GetLeft() :
 							subTree->GetRight();
 
-		if ( node != NULL )
+		if ( node != nullptr )
 			node->SetParent( subTree->GetParent() );
 
 		bool isLeft			= false;
@@ -369,7 +369,7 @@ public:
 	{
 		while ( subRoot != m_root && !CNodeIsRed( subRoot ) )
 		{
-			CNode* subTree = NULL;
+			CNode* subTree = nullptr;
 
 			if ( isLeft ) 
 			{
@@ -411,7 +411,7 @@ public:
 
 					RotateLeft( parent );
 					subRoot		= m_root;
-					parent		= NULL;
+					parent		= nullptr;
 				}
 			} 
 			else 
@@ -456,7 +456,7 @@ public:
 					RotateRight( parent );
 
 					subRoot = m_root;
-					parent	= NULL;
+					parent	= nullptr;
 				}
 			}
 		}

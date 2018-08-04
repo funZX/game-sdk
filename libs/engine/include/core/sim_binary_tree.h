@@ -23,12 +23,12 @@ public:
 // ----------------------------------------------------------------------//
 	CBinaryTreeNode()
 	{
-		m_parent		= NULL;
+		m_parent		= nullptr;
 
-		m_left			= NULL;
-		m_right			= NULL;
+		m_left			= nullptr;
+		m_right			= nullptr;
 
-		m_data			= NULL;
+		m_data			= nullptr;
 		m_key			= 0;
 	}
 
@@ -134,7 +134,7 @@ public:
 // ----------------------------------------------------------------------//
 	CBinaryTree()
 	{
-		m_root			= NULL;
+		m_root			= nullptr;
 	}
 	~CBinaryTree()
 	{
@@ -150,7 +150,7 @@ public:
 	void RemoveAll()
 	{
 		CNode* subRoot	= m_root;
-		CNode* temp		= NULL;
+		CNode* temp		= nullptr;
 		
 		while( subRoot )
 		{		
@@ -169,8 +169,8 @@ public:
 				if( subRoot->GetParent() )
 				{
 					subRoot->IsLeft() ?
-						subRoot->GetParent()->SetLeft( NULL ) :
-						subRoot->GetParent()->SetRight( NULL );
+						subRoot->GetParent()->SetLeft( nullptr ) :
+						subRoot->GetParent()->SetRight( nullptr );
 				}
 				
 				subRoot = subRoot->GetParent();
@@ -179,7 +179,7 @@ public:
 			}
 		}
 
-		m_root		= NULL;
+		m_root		= nullptr;
 	}
 
 // ----------------------------------------------------------------------//
@@ -259,7 +259,7 @@ public:
 	{
 		SIM_ASSERT( !Search( key ) );
 
-		CNode* node		= NULL;
+		CNode* node		= nullptr;
 		CNode* subRoot	= m_root;
 
 		while( subRoot )
@@ -302,7 +302,7 @@ public:
 							subTree->GetLeft() :
 							subTree->GetRight();
 
-		if ( node != NULL )
+		if ( node != nullptr )
 			node->SetParent( subTree->GetParent() );
 
 		CNode* nodeParent	= subTree->GetParent();
@@ -347,7 +347,7 @@ public:
 #if SIM_DEBUG
 	void Print( CNode* subRoot, u32 indent )
 	{
-		if( subRoot == NULL )
+		if( subRoot == nullptr )
 			return;
 
 		if( subRoot->GetRight() )

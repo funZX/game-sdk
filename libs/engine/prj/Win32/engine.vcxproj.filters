@@ -514,6 +514,9 @@
     <ClInclude Include="..\..\include\render\gui\sim_widget_sprite.h">
       <Filter>Header Files\render\gui</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_memory_pool.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\TODO.txt" />

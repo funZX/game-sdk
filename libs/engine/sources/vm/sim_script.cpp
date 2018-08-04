@@ -54,7 +54,7 @@ SQInteger CScript::Read(SQUserPointer pObj, SQUserPointer pDest, SQInteger size)
 
 	void* buffer	= memstream->Read(size);
 
-	if( buffer != NULL )
+	if( buffer != nullptr )
 	{
 		SIM_MEMCPY(reinterpret_cast<char *>(pDest), buffer, size);
 

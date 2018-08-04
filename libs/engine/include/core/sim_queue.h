@@ -33,7 +33,7 @@ template <class T> class CQueue
 {
 public:
 	CQueue() : CList<T>() {}
-	virtual ~CQueue(){};
+	virtual ~CQueue() {};
 
 	virtual void Pop()
 	{

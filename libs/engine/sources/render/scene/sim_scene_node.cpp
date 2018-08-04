@@ -29,7 +29,7 @@ CSceneNode::CSceneNode()
 {
 	m_iD		= id::Get();
 
-	m_parent	= NULL;
+	m_parent	= nullptr;
 	m_children	= SIM_NEW TChildren();
 
 	Vec3ToZero( &m_transform.position );
@@ -83,7 +83,7 @@ void CSceneNode::DelChild( CSceneNode* child )
 	CSceneNode* node = m_children->Delete( child->GetID() );
 
 	if ( node )
-		child->SetParent( NULL );
+		child->SetParent( nullptr );
 }
 
 // ----------------------------------------------------------------------//
@@ -94,7 +94,7 @@ CSceneNode* CSceneNode::GetChild( const std::string& name )
 
 	TChild* node = m_children->Search( h );
 
-	return node ? node->GetData() : NULL;
+	return node ? node->GetData() : nullptr;
 }
 
 // ----------------------------------------------------------------------//

@@ -50,7 +50,7 @@ void CAnimationPose::Slerp( const CAnimationPose *from, const CAnimationPose *to
 {
 	f32 w0 = 1.0f - weight;
 
-	if ( mask != NULL )
+	if ( mask != nullptr )
 	{
 		if ( mask->IsSet( 0 ) )
 		{

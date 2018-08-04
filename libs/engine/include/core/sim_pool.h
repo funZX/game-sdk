@@ -31,7 +31,7 @@ template <class T>
 class CPool
 {
 public:
-	CPool() : m_cache( NULL ), m_size( 0 ), m_currUsed( 0 ) {}
+	CPool() : m_cache( nullptr ), m_size( 0 ), m_currUsed( 0 ) {}
 	~CPool()  { Release(); }
 
 	// ------------------------------------------------------------------//
@@ -48,7 +48,7 @@ public:
 									{
 										T* newCache = SIM_NEW T[ size ];
 
-										if( newCache == NULL ) {
+										if( newCache == nullptr ) {
 											SIM_ASSERT( 0 &&  SIM_PRINT("not enough memory") );
 										}
 
@@ -67,7 +67,7 @@ public:
 									if( m_currUsed >= m_size)
 									{
 										SIM_ASSERT( 0 && SIM_PRINT( "No space for another instance!!\n" ) );
-										return NULL;
+										return nullptr;
 									}
 									return &m_cache[ m_currUsed++ ];
 								}

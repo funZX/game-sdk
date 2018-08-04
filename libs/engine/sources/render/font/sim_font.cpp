@@ -34,7 +34,7 @@ namespace rnr
 CFont::CFont( CFontAtlas* fontAtlas )
 {
 	m_fontAtlas 	= fontAtlas;
-	m_ftFace		= NULL;
+	m_ftFace		= nullptr;
 }
 // ----------------------------------------------------------------------//
 
@@ -57,7 +57,7 @@ void CFont::ReleaseFace()
 	if( m_ftFace )
 	{
 		FT_Done_Face( m_ftFace );
-		m_ftFace = NULL;
+		m_ftFace = nullptr;
 	}
 }
 
@@ -108,7 +108,7 @@ s32 CFont::GetWidth( const char* text )
 CFontChar* CFont::GetChar( s32 charCode )
 {
 	auto c = m_mapBitmapChar.find( charCode );
-	return c == m_mapBitmapChar.end() ? NULL : c->second;
+	return c == m_mapBitmapChar.end() ? nullptr : c->second;
 }
 
 // ----------------------------------------------------------------------//
@@ -117,7 +117,7 @@ s32 CFont::GetCharWidth( s32 charCode )
 {
 	CFontChar *c = GetChar( charCode );
 
-	return c == NULL ? 0 : c->GetWidth();
+	return c == nullptr ? 0 : c->GetWidth();
 }
 
 // ----------------------------------------------------------------------//
