@@ -90,6 +90,8 @@ void CActor::BindSize()
 	Vec3Multiply( &m_box, &m_transform.scale );
 
 	m_radius *= Vec3Max( &m_transform.scale );
+
+	CSceneNode::OnResize();
 }
 
 // ----------------------------------------------------------------------//
@@ -169,10 +171,10 @@ void CActor::Update( f32 dt, void *userData )
 	if ( IsVisible() )
 	{
 		CCamera *camera = (CCamera*) userData;
-		m_properties.isCulled = !camera->SphereIn( &m_transform.position, m_radius );
+		m_properties.isCulled = !camera->SphereIn( &m_transform.translation, m_radius );
 
 		if( !m_properties.isCulled )
-			m_properties.isCulled = !camera->BoxIn( &m_transform.position, &m_box, &m_transform.matrix.orientation );
+			m_properties.isCulled = !camera->BoxIn( &m_transform.translation, &m_box, &m_transform.matrix.orientation );
 	}
 
 	if ( IsPhysic() )
@@ -183,7 +185,7 @@ void CActor::Update( f32 dt, void *userData )
 		const btVector3& origin = worldTransform.getOrigin();
 		const btQuaternion& quat = worldTransform.getRotation();
 
-		Vec3Set( &m_transform.position, origin.getX(), origin.getY(), origin.getZ());
+		Vec3Set( &m_transform.translation, origin.getX(), origin.getY(), origin.getZ());
 		QuatSet( &m_transform.quaternion, quat.getX(), quat.getY(), quat.getZ(), quat.getW() );
 		QuatGetRot( &m_transform.quaternion, &m_transform.rotation );
 
@@ -195,6 +197,8 @@ void CActor::Update( f32 dt, void *userData )
 		Matrix4GetUp( &m_transform.matrix.orientation, &m_transform.axis.up );
 		Matrix4GetFront( &m_transform.matrix.orientation, &m_transform.axis.direction );
 		//QuatGetDir( &m_quaternion, &m_direction );
+
+		CSceneNode::OnMove();
 	}
 }
 

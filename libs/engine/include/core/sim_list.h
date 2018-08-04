@@ -30,18 +30,18 @@ namespace stl
 template <class T> class CList;
 // ------------------------------------------------------------------//
 template <class T>
-class CNode
+class CListNode
 {
 	friend class CList<T>;
 
 protected:
 	T												*m_data;
-	CNode<T>										*m_prev;
-	CNode<T>										*m_next;
+	CListNode<T>									*m_prev;
+	CListNode<T>									*m_next;
 	static CMemoryPool<T, k_Pool_Size * sizeof(T)>	 m_pool;
 
 public:
-	CNode(T data, CNode<T> *pPrev = nullptr, CNode<T> *pNext = nullptr)
+	CListNode(T data, CListNode<T> *pPrev = nullptr, CListNode<T> *pNext = nullptr)
 	{
 		m_data = m_pool.New();
 		SIM_MEMCPY(m_data, &data, sizeof(T));
@@ -50,7 +50,7 @@ public:
 		m_next = pNext;
 	}
 
-	~CNode()
+	~CListNode()
 	{
 		if (m_next) {
 			m_next->m_prev = m_prev;
@@ -65,7 +65,7 @@ public:
 };
 
 // ------------------------------------------------------------------//
-template <typename T> CMemoryPool<T, k_Pool_Size * sizeof(T)> CNode<T>::m_pool;
+template <typename T> CMemoryPool<T, k_Pool_Size * sizeof(T)> CListNode<T>::m_pool;
 // ------------------------------------------------------------------//
 
 template <class T>
@@ -98,12 +98,12 @@ public:
 	void 													MoveToFront( T *item );
 															
 protected:													
-	CNode<T>*												m_first;
-	CNode<T>*												m_current;
-	CNode<T>*												m_last;
+	CListNode<T>*												m_first;
+	CListNode<T>*												m_current;
+	CListNode<T>*												m_last;
 															 
-	s32 			 										m_count;
-	static CMemoryPool<CNode<T>, k_Pool_Size * sizeof(T)>	m_pool;
+	s32 			 											m_count;
+	static CMemoryPool<CListNode<T>, k_Pool_Size * sizeof(T)>	m_pool;
 };
 // ------------------------------------------------------------------//
 
@@ -142,7 +142,7 @@ template<class T> u32 CList<T>::Count()
 // ------------------------------------------------------------------//
 template<class T> void CList<T>::AddToFront(T item )
 {
-	CNode<T> *temp = m_pool.New( item, nullptr, m_first );
+	CListNode<T> *temp = m_pool.New( item, nullptr, m_first );
 
 	if( m_first )
 	{
@@ -162,7 +162,7 @@ template<class T> void CList<T>::AddToFront(T item )
 // ------------------------------------------------------------------//
 template <class T> void CList<T>::AddToEnd( T item )
 {
-	CNode<T> *temp = m_pool.New( item, m_last, nullptr );
+	CListNode<T> *temp = m_pool.New( item, m_last, nullptr );
 
 	if( m_last)
 	{
@@ -185,7 +185,7 @@ template <class T> void CList<T>::InsertAfter( T item )
 {
 	SIM_ASSERT( m_current );
 
-	CNode<T> *temp = m_pool.New( item, m_current, m_current->m_next );
+	CListNode<T> *temp = m_pool.New( item, m_current, m_current->m_next );
 
 	if( m_current->m_next ) {
 		m_current->m_next->prev = temp;
@@ -202,7 +202,7 @@ template <class T> void CList<T>::InsertBefore( T item )
 {
 	SIM_ASSERT( m_current );
 
-	CNode<T> *temp = m_pool.New( item, m_current->m_prev, m_current );
+	CListNode<T> *temp = m_pool.New( item, m_current->m_prev, m_current );
 
 	if( m_current->m_prev ) {
 		m_current->m_prev->m_next = temp;
@@ -264,7 +264,7 @@ template<class T> void CList<T>::RemoveFirst()
 		m_last = nullptr;
 	}
 
-	CNode<T> *temp = m_first;
+	CListNode<T> *temp = m_first;
 	m_first = m_first->m_next;
 	m_pool.Delete( temp );
 
@@ -273,7 +273,7 @@ template<class T> void CList<T>::RemoveFirst()
 // ------------------------------------------------------------------//
 template<class T> void CList<T>::Remove( T *item )
 {
-	CNode<T> *temp = m_first;
+	CListNode<T> *temp = m_first;
 
 	while( temp )
 	{
@@ -301,7 +301,7 @@ template<class T> void CList<T>::Remove( T *item )
 // ------------------------------------------------------------------//
 template<class T> void CList<T>::RemoveAll()
 {
-	CNode<T> *temp = nullptr;
+	CListNode<T> *temp = nullptr;
 
 	while( m_first )
 	{
@@ -330,7 +330,7 @@ template<class T> void CList<T>::RemoveLast()
 		m_first = nullptr;
 	}
 
-	CNode<T> *temp = m_last;
+	CListNode<T> *temp = m_last;
 
 	m_last = m_last->m_prev;
 
@@ -341,7 +341,7 @@ template<class T> void CList<T>::RemoveLast()
 // ------------------------------------------------------------------//
 template<class T> void CList<T>::MoveToFront( T *item )
 {
-	CNode<T> *temp;
+	CListNode<T> *temp;
 
 	if( m_first->m_data	== item )
 		return;
@@ -382,7 +382,7 @@ template<class T> void CList<T>::MoveToFront( T *item )
 // ------------------------------------------------------------------//
 template<class T> void CList<T>::MoveToEnd( T *item )
 {
-	CNode<T> *temp;
+	CListNode<T> *temp;
 
 	if( m_last->m_data == item )
 		return;
@@ -422,7 +422,7 @@ template<class T> void CList<T>::MoveToEnd( T *item )
 }
 
 // ----------------------------------------------------------------------//
-template <typename T> CMemoryPool<CNode<T>, k_Pool_Size * sizeof(T)> CList<T>::m_pool;
+template <typename T> CMemoryPool<CListNode<T>, k_Pool_Size * sizeof(T)> CList<T>::m_pool;
 // ------------------------------------------------------------------//
 
 } // namespace stl;

@@ -281,6 +281,9 @@
     <ClCompile Include="..\..\sources\render\gui\sim_widget_sprite.cpp">
       <Filter>Source Files\render\gui</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\sources\core\sim_octree.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\math\sim_math.h">

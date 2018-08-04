@@ -25,14 +25,18 @@ namespace rnr
 // ----------------------------------------------------------------------//
 
 CSceneNode::CSceneNode()
-	: stl::COctreeData<CSceneNode*>()
+	: COctreeVolume()
 {
 	m_iD		= id::Get();
 
 	m_parent	= nullptr;
 	m_children	= SIM_NEW TChildren();
 
-	Vec3ToZero( &m_transform.position );
+	m_radius = 1.0f;
+	Vec3ToZero( &m_box );
+	Vec3ToZero( &m_center );
+
+	Vec3ToZero( &m_transform.translation );
 	Vec3ToZero( &m_transform.rotation );
 	Vec3ToOne( &m_transform.scale );
 
@@ -92,7 +96,7 @@ CSceneNode* CSceneNode::GetChild( const std::string& name )
 {
 	u32 h = hash::Get( name );
 
-	TChild* node = m_children->Search( h );
+	auto node = m_children->Search( h );
 
 	return node ? node->GetData() : nullptr;
 }
@@ -134,9 +138,22 @@ void CSceneNode::BindOrientationMatrix()
 
 void CSceneNode::BindWorldMatrix()
 {
-	Matrix4ToTranslate( &m_transform.matrix.world, &m_transform.position );
+	Matrix4ToTranslate( &m_transform.matrix.world, &m_transform.translation );
 	Matrix4Multiply( &m_transform.matrix.world, &m_transform.matrix.orientation );
 	Matrix4Scale( &m_transform.matrix.world, &m_transform.scale );
+}
+// ----------------------------------------------------------------------//
+
+void CSceneNode::OnResize()
+{
+	OctreeUpdateSignal.Emit();
+}
+
+// ----------------------------------------------------------------------//
+
+void CSceneNode::OnMove()
+{
+	OctreeUpdateSignal.Emit();
 }
 
 // ----------------------------------------------------------------------//

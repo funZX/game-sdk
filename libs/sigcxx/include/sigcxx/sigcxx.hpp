@@ -854,19 +854,19 @@ class WIZTK_EXPORT Signal : public Trackable {
  private:
 
   static inline void PushFrontToken(Signal *signal, internal::SignalTokenNode *token) {
-    _ASSERT(nullptr == token->trackable);
+    assert(nullptr == token->trackable);
     token->trackable = signal;
     signal->tokens_.push_front(token);
   }
 
   static inline void PushBackToken(Signal *signal, internal::SignalTokenNode *token) {
-    _ASSERT(nullptr == token->trackable);
+	  assert(nullptr == token->trackable);
     token->trackable = signal;
     signal->tokens_.push_back(token);
   }
 
   static inline void InsertToken(Signal *signal, internal::SignalTokenNode *token, int index = 0) {
-    _ASSERT(nullptr == token->trackable);
+	  assert(nullptr == token->trackable);
     token->trackable = signal;
     signal->tokens_.insert(token, index);
   }

@@ -17,6 +17,7 @@
     <ClCompile Include="..\..\sources\core\io\sim_lzma_stream.cpp" />
     <ClCompile Include="..\..\sources\core\io\sim_mem_stream.cpp" />
     <ClCompile Include="..\..\sources\core\sim_core.cpp" />
+    <ClCompile Include="..\..\sources\core\sim_octree.cpp" />
     <ClCompile Include="..\..\sources\core\sim_polygon.cpp" />
     <ClCompile Include="..\..\sources\core\sim_shellsort.cpp" />
     <ClCompile Include="..\..\sources\core\sim_state_machine.cpp" />

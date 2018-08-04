@@ -68,13 +68,13 @@ void CScene::Render( CDriver *driver )
 
 void CScene::Add( CSceneNode* node )
 {
-	m_graph.Insert( node );
+	m_octree.Insert( node );
 }
 // ----------------------------------------------------------------------//
 
 void CScene::Del( CSceneNode* node )
 {
-	m_graph.Delete(node);
+	m_octree.Delete( node );
 }
 
 // ----------------------------------------------------------------------//

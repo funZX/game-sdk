@@ -30,23 +30,18 @@
 namespace sim
 {
 // ----------------------------------------------------------------------//
-namespace io { class CFileSystem; };
-// ----------------------------------------------------------------------//
 namespace rnr
 {
 // ----------------------------------------------------------------------//
 class CActor;
 class CLight;
 class CCamera;
-class CSkyBox;
 class CSceneNode;
 // ----------------------------------------------------------------------//
 
 class CScene : public IUpdatable, public IRenderable, public IEngineItem
 {
 public:
-	// ------------------------------------------------------------------//
-	typedef stl::COctree<CSceneNode*>		TGraph;
 	// ------------------------------------------------------------------//
 	CScene();
 	CScene( const std::string &name );
@@ -64,8 +59,7 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	io::CFileSystem*				m_fs;
-	TGraph							m_graph;
+	stl::COctree					m_octree;
 	// ------------------------------------------------------------------//
 };
 
