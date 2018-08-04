@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files\detail">
+      <UniqueIdentifier>{2cc4dc73-da9a-4adb-9895-71990b769124}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\foonathan">
+      <UniqueIdentifier>{f6fdbcbe-ab24-4249-907b-67e165dc9141}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\foonathan\memory">
+      <UniqueIdentifier>{3ffe9227-45d2-43c9-98a9-bf99653bb888}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\foonathan\memory\detail">
+      <UniqueIdentifier>{b10e648a-114b-4946-9520-4a0e5b85e698}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\detail\free_list_utils.hpp">
+      <Filter>Source Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\detail\ilog2.hpp">
+      <Filter>Source Files\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\detail\align.hpp">
+      <Filter>Header Files\foonathan\memory\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\detail\assert.hpp">
+      <Filter>Header Files\foonathan\memory\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\detail\container_node_sizes.hpp">
+      <Filter>Header Files\foonathan\memory\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\detail\debug_helpers.hpp">
+      <Filter>Header Files\foonathan\memory\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\detail\ebo_storage.hpp">
+      <Filter>Header Files\foonathan\memory\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\detail\free_list.hpp">
+      <Filter>Header Files\foonathan\memory\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\detail\free_list_array.hpp">
+      <Filter>Header Files\foonathan\memory\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\detail\lowlevel_allocator.hpp">
+      <Filter>Header Files\foonathan\memory\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\detail\memory_stack.hpp">
+      <Filter>Header Files\foonathan\memory\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\detail\small_free_list.hpp">
+      <Filter>Header Files\foonathan\memory\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\detail\utility.hpp">
+      <Filter>Header Files\foonathan\memory\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\aligned_allocator.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\allocator_storage.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\allocator_traits.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\config.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\config_impl.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\container.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\debugging.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\default_allocator.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\deleter.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\error.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\fallback_allocator.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\heap_allocator.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\iteration_allocator.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\joint_allocator.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\malloc_allocator.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\memory_arena.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\memory_pool.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\memory_pool_collection.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\memory_pool_type.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\memory_resource_adapter.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\memory_stack.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\namespace_alias.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\new_allocator.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\segregator.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\smart_ptr.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\static_allocator.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\std_allocator.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\temporary_allocator.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\threading.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\tracking.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\memory\virtual_memory.hpp">
+      <Filter>Header Files\foonathan\memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\alignas.hpp">
+      <Filter>Header Files\foonathan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\alignof.hpp">
+      <Filter>Header Files\foonathan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\clz.hpp">
+      <Filter>Header Files\foonathan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\constexpr.hpp">
+      <Filter>Header Files\foonathan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\exception_support.hpp">
+      <Filter>Header Files\foonathan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\get_new_handler.hpp">
+      <Filter>Header Files\foonathan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\hosted_implementation.hpp">
+      <Filter>Header Files\foonathan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\literal_op.hpp">
+      <Filter>Header Files\foonathan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\max_align_t.hpp">
+      <Filter>Header Files\foonathan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\mutex.hpp">
+      <Filter>Header Files\foonathan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\noexcept.hpp">
+      <Filter>Header Files\foonathan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\pmr.hpp">
+      <Filter>Header Files\foonathan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\rvalue_ref.hpp">
+      <Filter>Header Files\foonathan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\foonathan\thread_local.hpp">
+      <Filter>Header Files\foonathan</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\detail\align.cpp">
+      <Filter>Source Files\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\detail\assert.cpp">
+      <Filter>Source Files\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\detail\debug_helpers.cpp">
+      <Filter>Source Files\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\detail\free_list.cpp">
+      <Filter>Source Files\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\detail\free_list_array.cpp">
+      <Filter>Source Files\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\detail\small_free_list.cpp">
+      <Filter>Source Files\detail</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\debugging.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\error.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\heap_allocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\iteration_allocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\malloc_allocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\memory_arena.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\memory_pool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\memory_pool_collection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\memory_stack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\new_allocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\static_allocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\temporary_allocator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\virtual_memory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

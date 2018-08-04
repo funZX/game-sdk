@@ -320,19 +320,16 @@ bool CFileSystem::LoadTexture(const json_t* jsonRoot, s32 index)
 	u32 offset = 0;
 	m_lzmaStream->OpenFile( file, &m_buffer, &offset, &m_bufferSize );
 
-	CMemStream ms(m_bufferSize);
-	ms.Write( &m_buffer[offset], m_bufferSize );
-	ms.Rewind();
-
-	m_lzmaStream->CloseCurrent( &m_buffer );
-	m_buffer = NULL;
-
+	CMemStream ms(&m_buffer[offset], m_bufferSize);
 	CTexture* texture	= SIM_NEW CTexture( name );
 
 	u32 tex = 
 	m_driver->BindTexture( 0 );
 	texture->Generate( &ms, t, w, f ); 
 	m_driver->BindTexture( tex );
+
+	m_lzmaStream->CloseCurrent(&m_buffer);
+	m_buffer = NULL;
 
 	m_textureList[ hash::Get( name ) ] = texture;
 

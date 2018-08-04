@@ -474,6 +474,28 @@ void gluTBN(mat::TVec3* TAN,
 	mat::Vec3Diff( BIN, BIN, &t );
 	mat::Vec3Normalize( BIN );
 }
+
+
+// ----------------------------------------------------------------------//
+void gluPickMatrix(mat::TMatrix4* m,  f32 x, f32 y, f32 deltax, f32 deltay, CRect2D* viewport)
+{
+	if (deltax <= 0 || deltay <= 0) 
+		return;
+
+	mat::TVec3 translation;
+	mat::TVec3 scale;
+
+	translation.x = (viewport->Width() - 2 * (x - viewport->Left())) / deltax;
+	translation.y = (viewport->Height() - 2 * (y - viewport->Top())) / deltay;
+	translation.z = 0.0f;
+
+	scale.x = viewport->Width() / deltax;
+	scale.y = viewport->Height() / deltay;
+	scale.z = 1.0f;
+
+	mat::Matrix4ToTranslate( m, &translation );
+	mat::Matrix4Scale( m, &scale );
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
