@@ -205,7 +205,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>HAVE_STRUCT_TIMESPEC;WIN32;_DEBUG;_LIB;SIM_DEBUG=1;GL_GLEXT_PROTOTYPES;FOONATHAN_MEMORY=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;HAVE_STRUCT_TIMESPEC;GL_GLEXT_PROTOTYPES;SIM_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../include;../../../dirent/include;../../../jansson/include;../../../freetype/include;../../../pthread/include;../../../openal/include;../../../opengles/include;../../../squirrel/include;../../../bullet/sources;../../../lzma/include;../../../detour/include;../../../recast/include;../../../sigcxx/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -221,7 +221,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>HAVE_STRUCT_TIMESPEC;WIN32;NDEBUG;_LIB;GL_GLEXT_PROTOTYPES;FOONATHAN_MEMORY=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HAVE_STRUCT_TIMESPEC;WIN32;NDEBUG;_LIB;GL_GLEXT_PROTOTYPES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>../../include;../../../dirent/include;../../../jansson\include;../../../freetype/include;../../../pthread/include;../../../openal/include;../../../opengles/include;../../../squirrel/include;../../../bullet/sources;../../../lzma/include;../../../detour/include;../../../recast/include;../../../sigcxx/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
