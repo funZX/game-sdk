@@ -33,8 +33,8 @@ namespace rnr
 
 CWidgetLabel::CWidgetLabel()
 {
-	m_font			= NULL;
-	m_sprite		= NULL;
+	m_font			= nullptr;
+	m_sprite		= nullptr;
 	m_frame			= 0;
 
 	SetEnabled( false );
@@ -56,11 +56,11 @@ CWidgetLabel::~CWidgetLabel()
 
 void CWidgetLabel::Render( CDriver *driver )
 {
-	if( m_sprite != NULL ) {
+	if( m_sprite != nullptr ) {
 		m_sprite->Render( driver, this, m_frame );
 	}
 
-	if( !m_string.empty() && m_font != NULL )
+	if( !m_string.empty() && m_font != nullptr )
 	{
 		s32 x = ( s32 ) Left();
 		s32 y = ( s32 ) Top();

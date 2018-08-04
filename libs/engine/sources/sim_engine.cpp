@@ -54,7 +54,7 @@ CEngine::CEngine()
 	m_effect			= SIM_NEW CEffect("Driver Effect");
 	m_material			= SIM_NEW CMaterial("Driver Material");
 
-	m_activeCamera		= NULL;
+	m_activeCamera		= nullptr;
 
 	m_currentTime		= 0;
 	m_updateTime		= 0;
@@ -212,11 +212,11 @@ void CEngine::InitOpenGL( void )
 
 void CEngine::InitOpenAL()
 {
-	m_ALDevice = alcOpenDevice( NULL );
+	m_ALDevice = alcOpenDevice( nullptr );
 
-	if( m_ALDevice != NULL )
+	if( m_ALDevice != nullptr )
 	{	
-		m_ALContext = alcCreateContext( m_ALDevice, NULL );
+		m_ALContext = alcCreateContext( m_ALDevice, nullptr );
 		alcMakeContextCurrent( m_ALContext );
 	}
 }
@@ -308,9 +308,9 @@ void CEngine::Run( void )
 
 void CEngine::Quit( void )
 {
-	alcMakeContextCurrent( NULL );
+	alcMakeContextCurrent( nullptr );
 	
-	if( m_ALContext != NULL )
+	if( m_ALContext != nullptr )
 	{
 		alcDestroyContext( m_ALContext );
 		
@@ -378,7 +378,7 @@ void CEngine::GoBack()
 
 void CEngine::SetCamera( CCamera *camera )
 {
-	if ( camera != NULL )
+	if ( camera != nullptr )
 	{
 		m_driver->SelectMatrix(CDriver::k_Select_Matrix_Projection);
 		m_driver->MatrixPush();

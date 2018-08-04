@@ -15,11 +15,14 @@
 *    You should have received a copy of the GNU General Public License
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <sigcxx/sigcxx.hpp>
 
-#include <core/sim_core.h>
-#include <math/sim_vec3.h>
-
+#include <core/sim_interfaces.h>
+#include <core/sim_memory_pool.h>
 #include <core/sim_balance_tree.h>
+#include <core/sim_core.h>
+
+#include <math/sim_vec3.h>
 
 using namespace sim::mat;
 
@@ -30,245 +33,168 @@ namespace sim
 {
 namespace stl
 {
-
 // ----------------------------------------------------------------------//
 
-#define CNode COctreeNode<DATA>
-#define CTree COctree<DATA>
-
-template<class DATA>
-class COctreeData
+class COctreeVolume
 {
 public:
-	COctreeData()
-	{
-		Vec3ToZero( &m_box );
-		Vec3ToZero( &m_center );
+	COctreeVolume();
 
-		m_radius = 1.0f;
-	}
+	inline const u32		GetID() { return id::Get();  }
 
-	inline void								SetBox( const TVec3* box)			{ Vec3Copy( &m_box, box ); }
-	inline const TVec3*						GetBox() const						{ return &m_box; }
+	inline void				SetBox(const TVec3* box) { Vec3Copy(&m_box, box); }
+	inline const TVec3*		GetBox() const { return &m_box; }
 
-	inline void								SetCenter( const TVec3* center){ Vec3Copy( &m_center, center ); }
-	inline const TVec3*						GetCenter() const					{ return &m_center; }
+	inline void				SetCenter(const TVec3* center) { Vec3Copy(&m_center, center); }
+	inline const TVec3*		GetCenter() const { return &m_center; }
 
-	inline void								SetRadius( f32 radius )				{ m_radius = radius; }
-	inline f32								GetRadius() const					{ return m_radius; }
-
-	virtual const u32						GetID() = 0;
+	inline void				SetRadius(f32 radius) { m_radius = radius; }
+	inline f32				GetRadius() const { return m_radius; }
 
 	// ----------------------------------------------------------------------//
-	inline f32 GetMaxX()					{ return m_center.x + m_radius; }
-	inline f32 GetMaxY()					{ return m_center.y + m_radius; }
-	inline f32 GetMaxZ()					{ return m_center.z + m_radius; }
+	inline f32				GetMaxX() const { return m_center.x + m_radius; }
+	inline f32				GetMaxY() const { return m_center.y + m_radius; }
+	inline f32				GetMaxZ() const { return m_center.z + m_radius; }
 	// ----------------------------------------------------------------------//
-	inline f32 GetMinX()					{ return m_center.x - m_radius; }
-	inline f32 GetMinY()					{ return m_center.y - m_radius; }
-	inline f32 GetMinZ()					{ return m_center.z - m_radius; }
+	inline f32				GetMinX() const { return m_center.x - m_radius; }
+	inline f32				GetMinY() const { return m_center.y - m_radius; }
+	inline f32				GetMinZ() const { return m_center.z - m_radius; }
 	// ----------------------------------------------------------------------//
+
+public:
+	// ------------------------------------------------------------------//
+	sigcxx::Signal<>		OctreeUpdateSignal;
+	// ------------------------------------------------------------------//
 
 protected:
-	TVec3							m_box;
-	TVec3							m_center;
-	f32								m_radius;
+	TVec3					m_box;
+	TVec3					m_center;
+	f32						m_radius;
 };
+
+
+
+
+
 // ----------------------------------------------------------------------//
-	
-template <class DATA>
-class COctreeNode
+
+class COctreeNode : public sigcxx::Trackable
 {
+	friend class COctree;
 public:
 	// ----------------------------------------------------------------------//
-	typedef stl::CBalanceTree<u32, DATA>			TData;
-	// ----------------------------------------------------------------------//
-	typedef enum
+	enum class ParentRelation : u32
 	{
-		k_Type_TFL,
-		k_Type_TFR,
-		k_Type_TBL,
-		k_Type_TBR,
-		k_Type_BFL,
-		k_Type_BFR,
-		k_Type_BBL,
-		k_Type_BBR,
-
-	} K_TYPE;
+		TopFrontLeft,
+		TopFrontRight,
+		TopBottomLeft,
+		TopBottomRight,
+		BottomFrontLeft,
+		BottomFrontRight,
+		BottomBackLeft,
+		BottomBackRight,
+	};
 	// ----------------------------------------------------------------------//
 	
 	COctreeNode()
 	{
-		m_parent	= NULL;
-
-		SIM_MEMSET( m_children, 0, sizeof( m_children ) );
+		m_octreeparent = nullptr;
+		
+		SIM_MEMSET( m_octreenodes, 0, sizeof( m_octreenodes ) );
 	}
 
 	// ----------------------------------------------------------------------//
 	
-	~COctreeNode()
+	virtual ~COctreeNode()
 	{
-		for ( int k = 0; k < 8; k++ )
-			SIM_SAFE_DELETE( m_children[ k ] );
 	}
 
+public:	
 	// ----------------------------------------------------------------------//
-	
-	bool IsLeaf() { return !m_children[ 0 ]; }
-
-	// ----------------------------------------------------------------------//
-	f32 GetMaxX() { return m_center.x + m_radius; }
-	f32 GetMaxY() { return m_center.y + m_radius; }
-	f32 GetMaxZ() { return m_center.z + m_radius; }
-	// ----------------------------------------------------------------------//
-	f32 GetMinX() { return m_center.x - m_radius; }
-	f32 GetMinY() { return m_center.y - m_radius; }
-	f32 GetMinZ() { return m_center.z - m_radius; }
+	typedef stl::CBalanceTree<u32, COctreeVolume*> TVolumeTree;
 	// ----------------------------------------------------------------------//
 
-	u32 IsOutside( DATA data )
-	{
-		if ( data->GetMaxX() > GetMaxX() )
-			return 1;
-
-		if ( data->GetMaxY() > GetMaxY() )
-			return 2;
-
-		if ( data->GetMaxZ() > GetMaxZ() )
-			return 3;
-
-		if ( data->GetMinX() < GetMinX() )
-			return -1;
-
-		if ( data->GetMinY() < GetMinY() )
-			return -2;
-
-		if ( data->GetMinZ() < GetMinZ() )
-			return -3;
-
-		return 0;
-	}
+	bool					IsLeaf() { return !m_octreenodes[ 0 ]; }
 
 	// ----------------------------------------------------------------------//
-	
-	void Split()
-	{
-	
-	}
-
+	inline f32				GetMaxX() { return m_center.x + m_radius; }
+	inline f32				GetMaxY() { return m_center.y + m_radius; }
+	inline f32				GetMaxZ() { return m_center.z + m_radius; }
 	// ----------------------------------------------------------------------//
-public:
-	COctreeNode*					m_children[8];
-	COctreeNode*					m_parent;
-	TData							m_data;
+	inline f32				GetMinX() { return m_center.x - m_radius; }
+	inline f32				GetMinY() { return m_center.y - m_radius; }
+	inline f32				GetMinZ() { return m_center.z - m_radius; }
+	// ----------------------------------------------------------------------//
+	u32						IsOutside(const COctreeVolume* volume);
 
-	TVec3							m_center;
-	f32								m_radius;
+	void					AddVolume(COctreeVolume* volume);
+	void					DelVolume(COctreeVolume* volume);
 
-	static const u32				k_Data_Threshold = 16;
+	void					Split();
+	// ----------------------------------------------------------------------//
+protected:
+	// ----------------------------------------------------------------------//
+	void					OnOctreeUpdate(sigcxx::SLOT slot = nullptr);
+	// ----------------------------------------------------------------------//
+
+	COctreeNode*			m_octreenodes[8];
+	COctreeNode*			m_octreeparent;
+	TVolumeTree				m_volumetree;
+
+	TVec3					m_center;
+	f32						m_radius;
 };
 
-template <class DATA> 
+
+
+
 class COctree
 {
 public:
 	// ----------------------------------------------------------------------//
 	COctree()
 	{
-		m_root = NULL;
+		m_root = nullptr;
 	}
 
 	~COctree()
 	{
-		SIM_SAFE_DELETE( m_root );
-	}
-
-	// ----------------------------------------------------------------------//
-	void Insert( DATA data )
-	{
-		if ( !m_root )
-		{
-			m_root = CreateNode();
-
-			m_root->m_radius = Vec3Max( data->GetBox() );
-			Vec3Copy( &m_root->m_center, data->GetCenter() );
-
-			m_root->m_data.Insert( data->GetID(), data );
-
-			return;
-		}
-
-		while ( u32 axis = m_root->IsOutside( data ) )
-			Expand( data, axis );
-
-		CNode* subRoot = m_root;
-
-		if ( subRoot->m_data.GetCount() > CNode::k_Data_Threshold ) 
-			subRoot->Split();
-
-		Shrink();
+		if ( m_root != nullptr )
+			DestroyNode( m_root );
 	}
 	// ----------------------------------------------------------------------//
-	void Delete( DATA data )
-	{
-		
-	}
+	void Insert( COctreeVolume* volume );
+	void Delete( COctreeVolume* volume );
 	// ----------------------------------------------------------------------//
+
+private:
+	// ----------------------------------------------------------------------//
+	static CMemoryPool<COctreeNode, k_Pool_Size * sizeof(COctreeNode)>	 m_pool;
+	// ----------------------------------------------------------------------//
+
 protected:
 	// ----------------------------------------------------------------------//
-	void Expand( DATA data, u32 axis )
-	{
-		CNode* newRoot = CreateNode();
+	COctreeNode*		m_root;
+	// ----------------------------------------------------------------------//
+	void Expand(COctreeVolume* volume, u32 axis);
+	void Shrink();
 
-		newRoot->m_radius = m_root->m_radius * 2.0f;
-		m_root = newRoot;
+	virtual COctreeNode* CreateNode()
+	{
+		return m_pool.New();
 	}
-	// ----------------------------------------------------------------------//
-	void Shrink()
+
+	virtual void DestroyNode ( COctreeNode* node )
 	{
-		s32 count = 0, full = 0;
+		for ( int k = 0; k < 8; k++ )
+			m_pool.Delete( node->m_octreenodes[k] );
 
-		for ( u32 k = 0; k < 8; k++ )
-		{
-			if ( m_root->m_children[ k ]->m_data.m_root )
-			{
-				full = k;
-				++count;
-			}
-		}
-
-		if ( count == 1 )
-		{
-			for ( u32 k = 0; k < 8; k++ )
-				if ( k != full )
-					SIM_SAFE_DELETE( m_root->m_children[ k ] );
-
-			m_root = m_root->m_children[ full ];
-		}
-		else
-		{
-			if ( count == 0 )
-				SIM_SAFE_DELETE( m_root );
-		}
-	}
-	// ----------------------------------------------------------------------//
-protected:
-	// ----------------------------------------------------------------------//
-	CNode*			m_root;
-	// ----------------------------------------------------------------------//
-
-	virtual CNode* CreateNode()
-	{
-		return SIM_NEW CNode();
+		return m_pool.Delete( node );
 	}
 
 // ----------------------------------------------------------------------//
 };
 
-#undef CTree
-#undef CNode
-
-// ----------------------------------------------------------------------//
 } // namespace stl;
 } // namespace sim;
 

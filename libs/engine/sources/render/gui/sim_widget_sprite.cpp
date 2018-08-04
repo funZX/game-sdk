@@ -30,7 +30,7 @@ namespace rnr
 CWidgetSprite::CWidgetSprite()
 	:CWidget()
 {
-	m_sprite = NULL;
+	m_sprite = nullptr;
 }
 
 // ----------------------------------------------------------------------//

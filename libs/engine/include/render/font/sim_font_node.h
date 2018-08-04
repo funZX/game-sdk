@@ -39,7 +39,7 @@ public:
 	// ------------------------------------------------------------------//
 	void									Set( s32 x, s32 y, s32 width, s32 height );
 	bool									Add( CFontChar* fontChar );
-	bool									IsEmpty() const { return m_leaf1 == NULL && m_leaf2 == NULL; }
+	bool									IsEmpty() const { return m_leaf1 == nullptr && m_leaf2 == nullptr; }
 
 	static stl::CPool<CFontNode>&			GetPool()  { return m_pool; }
 	// ------------------------------------------------------------------//

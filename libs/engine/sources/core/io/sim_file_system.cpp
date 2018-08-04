@@ -59,11 +59,11 @@ CFileSystem::CFileSystem( const std::string &filename )
 	m_lzmaStream	= SIM_NEW io::CLzmaStream(filename);
 	m_fontAtlas		= SIM_NEW CFontAtlas(m_filename);
 
-	m_buffer		= NULL;
+	m_buffer		= nullptr;
 	m_bufferSize	= 0;
 
-	m_steps			= NULL;
-	m_crtStep		= NULL;
+	m_steps			= nullptr;
+	m_crtStep		= nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -263,7 +263,7 @@ bool CFileSystem::LoadFont(const json_t* jsonRoot, s32 index)
 	m_fontAtlas->AddFont( name, &m_buffer[ offset ], m_bufferSize, size, szLetters );
 
 	m_lzmaStream->CloseCurrent( &m_buffer );
-	m_buffer = NULL;
+	m_buffer = nullptr;
 
 	m_fontList[ hash::Get( name ) ]	= font;
 
@@ -320,19 +320,16 @@ bool CFileSystem::LoadTexture(const json_t* jsonRoot, s32 index)
 	u32 offset = 0;
 	m_lzmaStream->OpenFile( file, &m_buffer, &offset, &m_bufferSize );
 
-	CMemStream ms(m_bufferSize);
-	ms.Write( &m_buffer[offset], m_bufferSize );
-	ms.Rewind();
-
-	m_lzmaStream->CloseCurrent( &m_buffer );
-	m_buffer = NULL;
-
+	CMemStream ms(&m_buffer[offset], m_bufferSize);
 	CTexture* texture	= SIM_NEW CTexture( name );
 
 	u32 tex = 
 	m_driver->BindTexture( 0 );
 	texture->Generate( &ms, t, w, f ); 
 	m_driver->BindTexture( tex );
+
+	m_lzmaStream->CloseCurrent(&m_buffer);
+	m_buffer = nullptr;
 
 	m_textureList[ hash::Get( name ) ] = texture;
 
@@ -370,42 +367,42 @@ bool CFileSystem::LoadSkybox(const json_t* jsonRoot, s32 index)
 	msfront.Write( &m_buffer[offset], m_bufferSize );
 	msfront.Rewind();
 	m_lzmaStream->CloseCurrent( &m_buffer );
-	m_buffer = NULL;
+	m_buffer = nullptr;
 
 	m_lzmaStream->OpenFile( back, &m_buffer, &offset, &m_bufferSize );
 	CMemStream msback(m_bufferSize);
 	msback.Write( &m_buffer[offset], m_bufferSize );
 	msback.Rewind();
 	m_lzmaStream->CloseCurrent( &m_buffer );
-	m_buffer = NULL;
+	m_buffer = nullptr;
 
 	m_lzmaStream->OpenFile( right, &m_buffer, &offset, &m_bufferSize );
 	CMemStream msright(m_bufferSize);
 	msright.Write( &m_buffer[offset], m_bufferSize );
 	msright.Rewind();
 	m_lzmaStream->CloseCurrent( &m_buffer );
-	m_buffer = NULL;
+	m_buffer = nullptr;
 
 	m_lzmaStream->OpenFile( left, &m_buffer, &offset, &m_bufferSize );
 	CMemStream msleft(m_bufferSize);
 	msleft.Write( &m_buffer[offset], m_bufferSize );
 	msleft.Rewind();
 	m_lzmaStream->CloseCurrent( &m_buffer );
-	m_buffer = NULL;
+	m_buffer = nullptr;
 
 	m_lzmaStream->OpenFile( top, &m_buffer, &offset, &m_bufferSize );
 	CMemStream mstop(m_bufferSize);
 	mstop.Write( &m_buffer[offset], m_bufferSize );
 	mstop.Rewind();
 	m_lzmaStream->CloseCurrent( &m_buffer );
-	m_buffer = NULL;
+	m_buffer = nullptr;
 
 	m_lzmaStream->OpenFile( bottom, &m_buffer, &offset, &m_bufferSize );
 	CMemStream msbot(m_bufferSize);
 	msbot.Write( &m_buffer[offset], m_bufferSize );
 	msbot.Rewind();
 	m_lzmaStream->CloseCurrent( &m_buffer );
-	m_buffer = NULL;
+	m_buffer = nullptr;
 
 	skybox->Generate( 1.0f, &msfront, &msback, &msleft, &msright, &mstop, &msbot );
 
@@ -476,10 +473,10 @@ bool CFileSystem::LoadEffect(const json_t* jsonRoot, s32 index)
 	std::string fsh		= json_string_value( json_object_get( jsonValue, "fsh" ) );
 
 	CShader* vShader = GetShader( vsh );
-	SIM_ASSERT( vShader != NULL );
+	SIM_ASSERT( vShader != nullptr );
 
 	CShader* fShader = GetShader( fsh );
-	SIM_ASSERT( fShader != NULL );
+	SIM_ASSERT( fShader != nullptr );
 
 	CEffect* effect = SIM_NEW CEffect( name );
 	
@@ -605,7 +602,7 @@ bool CFileSystem::LoadEffect(const json_t* jsonRoot, s32 index)
 
 		effect->SetTexture( tex, channel );
 
-		SIM_ASSERT( tex != NULL );
+		SIM_ASSERT( tex != nullptr );
 	}
 
 	m_effectList[ hash::Get( name ) ] = effect;
@@ -852,7 +849,7 @@ rnr::CFont* CFileSystem::GetFont( const std::string &name )
 {
 	auto it = m_fontList.find( hash::Get( name ) );
 
-	return it != m_fontList.end() ? it->second : NULL;
+	return it != m_fontList.end() ? it->second : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -876,7 +873,7 @@ rnr::CTexture* CFileSystem::GetTexture( const std::string &name )
 {
 	auto it = m_textureList.find( hash::Get( name ) );
 
-	return it != m_textureList.end() ? it->second : NULL;
+	return it != m_textureList.end() ? it->second : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -900,7 +897,7 @@ rnr::CSkyBox* CFileSystem::GetSkybox( const std::string &name )
 {
 	auto it = m_skyboxList.find( hash::Get( name ) );
 
-	return it != m_skyboxList.end() ? it->second : NULL;
+	return it != m_skyboxList.end() ? it->second : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -924,7 +921,7 @@ rnr::CShader* CFileSystem::GetShader( const std::string &name )
 {
 	auto it = m_shaderList.find( hash::Get( name ) );
 
-	return it != m_shaderList.end() ? it->second : NULL;
+	return it != m_shaderList.end() ? it->second : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -948,7 +945,7 @@ rnr::CEffect* CFileSystem::GetEffect( const std::string &name )
 {
 	auto it = m_effectList.find( hash::Get( name ) );
 
-	return it != m_effectList.end() ? it->second : NULL;
+	return it != m_effectList.end() ? it->second : nullptr;
 }
 
 
@@ -973,7 +970,7 @@ rnr::CMaterial* CFileSystem::GetMaterial( const std::string &name )
 {
 	auto it = m_materialList.find( hash::Get( name ) );
 
-	return it != m_materialList.end() ? it->second : NULL;
+	return it != m_materialList.end() ? it->second : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -997,7 +994,7 @@ rnr::CMesh* CFileSystem::GetMesh( const std::string &name )
 {
 	auto it = m_meshList.find( hash::Get( name ) );
 
-	return it != m_meshList.end() ? it->second : NULL;
+	return it != m_meshList.end() ? it->second : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -1021,7 +1018,7 @@ rnr::CActor* CFileSystem::GetActor( const std::string &name )
 {
 	auto it = m_actorList.find( hash::Get( name ) );
 
-	return it != m_actorList.end() ? it->second : NULL;
+	return it != m_actorList.end() ? it->second : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -1045,7 +1042,7 @@ rnr::CLight* CFileSystem::GetLight( const std::string &name )
 {
 	auto it = m_lightList.find( hash::Get( name ) );
 
-	return it != m_lightList.end() ? it->second : NULL;
+	return it != m_lightList.end() ? it->second : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -1069,7 +1066,7 @@ rnr::CCamera* CFileSystem::GetCamera( const std::string &name )
 {
 	auto it = m_cameraList.find( hash::Get( name ) );
 
-	return it != m_cameraList.end() ? it->second : NULL;
+	return it != m_cameraList.end() ? it->second : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -1093,7 +1090,7 @@ rnr::CSpriteTexture* CFileSystem::GetSprite( const std::string &name )
 {
 	auto it = m_spriteList.find( hash::Get( name ) );
 
-	return it != m_spriteList.end() ? it->second : NULL;
+	return it != m_spriteList.end() ? it->second : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -1117,7 +1114,7 @@ snd::CSoundData* CFileSystem::GetSound( const std::string &name )
 {
 	auto it = m_soundList.find( hash::Get( name ) );
 
-	return it != m_soundList.end() ? it->second : NULL;
+	return it != m_soundList.end() ? it->second : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -1141,7 +1138,7 @@ vm::CScript* CFileSystem::GetScript( const std::string &name )
 {
 	auto it = m_scriptList.find( hash::Get( name ) );
 
-	return it != m_scriptList.end() ? it->second : NULL;
+	return it != m_scriptList.end() ? it->second : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -1165,7 +1162,7 @@ rnr::CScene* CFileSystem::GetScene( const std::string &name )
 {
 	auto it = m_sceneList.find( hash::Get( name ) );
 
-	return it != m_sceneList.end() ? it->second : NULL;
+	return it != m_sceneList.end() ? it->second : nullptr;
 }
 
 // ----------------------------------------------------------------------//

@@ -338,11 +338,11 @@ class WIZTK_EXPORT Delegate<ReturnType(ParamTypes...)> {
    */
   ReturnType operator()(ParamTypes... Args) const {
     if (data_.object) {
-      _ASSERT(nullptr != data_.method_stub);
+      assert(nullptr != data_.method_stub);
       return (*data_.method_stub)(data_.object, data_.pointer.method, Args...);
     }
 
-    _ASSERT(nullptr == data_.method_stub);
+	assert(nullptr == data_.method_stub);
     return reinterpret_cast<TFunction >(data_.pointer.function)(Args...);
   }
 
@@ -355,11 +355,11 @@ class WIZTK_EXPORT Delegate<ReturnType(ParamTypes...)> {
    */
   ReturnType Invoke(ParamTypes... Args) const {
     if (data_.object) {
-      _ASSERT(nullptr != data_.method_stub);
+		assert(nullptr != data_.method_stub);
       return (*data_.method_stub)(data_.object, data_.pointer.method, Args...);
     }
 
-    _ASSERT(nullptr == data_.method_stub);
+	assert(nullptr == data_.method_stub);
     return reinterpret_cast<TFunction >(data_.pointer.function)(Args...);
   }
 
@@ -456,11 +456,11 @@ class WIZTK_EXPORT Delegate<ReturnType(ParamTypes...)> {
    */
   DelegateType type() const {
     if (nullptr == data_.object) {
-      _ASSERT(nullptr == data_.method_stub);
+		assert(nullptr == data_.method_stub);
       return nullptr == data_.pointer.function ? kDelegateTypeUndefined : kDelegateTypeStatic;
     }
 
-    _ASSERT(nullptr != data_.method_stub);
+	assert(nullptr != data_.method_stub);
     return kDelegateTypeMember;
   }
 

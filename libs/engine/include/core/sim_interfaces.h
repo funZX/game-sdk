@@ -69,6 +69,8 @@ public:
 struct IState : public IUpdatable
 {
 public:
+	virtual ~IState() {}
+
 	virtual void				Render2D( rnr::CDriver *driver ) = 0;
 	virtual void				Render3D( rnr::CDriver *driver ) = 0;
 
@@ -83,6 +85,7 @@ class IEngineItem
 public:
 	IEngineItem() {}
 	IEngineItem( const std::string& name ) { m_name = name; }
+	virtual ~IEngineItem() {}
 
 	const std::string& 			GetName() { return m_name; }
 

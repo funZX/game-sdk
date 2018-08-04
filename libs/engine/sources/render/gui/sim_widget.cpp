@@ -29,7 +29,7 @@ namespace rnr
 CWidget::CWidget()
 	: CRect2D()
 {
-	m_parent 	= NULL;
+	m_parent 	= nullptr;
 
 	m_isEnabled = true;
 	m_isVisible = true;
@@ -74,7 +74,7 @@ void CWidget::SetParent( CWidget* parent )
 
 void CWidget::AddChild( CWidget *child )
 {
-	if( child != NULL )
+	if( child != nullptr )
 	{
 		auto c = m_childs.find(child);
 
@@ -95,7 +95,7 @@ void CWidget::RemChild( CWidget *child )
 
 	if( c != m_childs.end() )
 	{
-		c->second->SetParent( NULL );
+		c->second->SetParent( nullptr );
 
 		m_childs.erase( c );
 	}

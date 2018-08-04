@@ -115,7 +115,7 @@ bool CLzmaStream::GetCurrent( std::string &name )
 
 	if( !isDir )
 	{
-		s32 len16	= SzArEx_GetFileNameUtf16( &m_lzmaDB, m_currentEntry, NULL );
+		s32 len16	= SzArEx_GetFileNameUtf16( &m_lzmaDB, m_currentEntry, nullptr );
 		u16 *tu16	= SIM_NEW u16[ len16 ];
 		u8  *tu8	= SIM_NEW u8[ len16 ];
 		SzArEx_GetFileNameUtf16( &m_lzmaDB, m_currentEntry, tu16 );
@@ -147,8 +147,8 @@ bool CLzmaStream::Advance()
 
 void CLzmaStream::OpenCurrent( u8 **out, u32* offset, s32 *outSize )
 {
-	SIM_ASSERT( out != NULL );
-	SIM_ASSERT( outSize != NULL );
+	SIM_ASSERT( out != nullptr );
+	SIM_ASSERT( outSize != nullptr );
 
 	size_t blockOffset		= 0;
 	size_t outSizeProcessed = 0;
@@ -171,10 +171,10 @@ void CLzmaStream::OpenCurrent( u8 **out, u32* offset, s32 *outSize )
 
 void CLzmaStream::CloseCurrent( u8 **out )
 {
-	SIM_ASSERT( *out != NULL );
+	SIM_ASSERT( *out != nullptr );
 
 	IAlloc_Free( &m_lzmaAllocImp, *out );
-	*out = NULL;
+	*out = nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -197,7 +197,7 @@ void CLzmaStream::OpenFile( const std::string &file, u8 **out, u32* offset, s32 
 			break;
 	};
 
-	*out = NULL;
+	*out = nullptr;
 	*size = 0;
 
 	if( m_currentEntry < m_numEntries )
@@ -210,10 +210,10 @@ void CLzmaStream::OpenFile( const std::string &file, u8 **out, u32* offset, s32 
 
 void CLzmaStream::CloseFile( u8 **out )
 {
-	SIM_ASSERT( *out != NULL );
+	SIM_ASSERT( *out != nullptr );
 
 	IAlloc_Free( &m_lzmaAllocImp, *out );
-	*out = NULL;
+	*out = nullptr;
 }
 
 // ----------------------------------------------------------------------//

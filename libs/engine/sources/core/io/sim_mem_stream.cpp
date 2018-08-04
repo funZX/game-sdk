@@ -169,7 +169,7 @@ void* CMemStream::Read( u32 nBytes )
 {
 	SIM_ASSERT( CanRead( nBytes * sizeof( s8 ) ) );
 
-	s8 *c = NULL;
+	s8 *c = nullptr;
 
 	if( nBytes >= 0 )
 	{
@@ -301,7 +301,7 @@ void* CMemStream::Drop()
 {
 	void *buf		= m_memory;
 
-	m_memory		= NULL;
+	m_memory		= nullptr;
 	m_maxsize		= 0;
 	m_cursor		= 0;
 	m_isMemOwn		= false;

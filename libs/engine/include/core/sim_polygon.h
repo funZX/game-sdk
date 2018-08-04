@@ -22,7 +22,7 @@ class CPolygon : public sim::stl::CList<mat::TVec2>
 {
 public:
 	CPolygon();
-	~CPolygon();
+	virtual ~CPolygon();
 
 public:
 	bool			Intersects( CPolygon* polygon );

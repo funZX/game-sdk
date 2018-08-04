@@ -31,10 +31,10 @@ CEffect::CEffect()
 {
 	m_iD				= glCreateProgram();
 
-	m_uniforms			= NULL;
+	m_uniforms			= nullptr;
 	m_numUniforms       = 0;
 
-	m_attributes		= NULL;
+	m_attributes		= nullptr;
 	m_numAttrib			= 0;
 
 	m_isUsingWorldInverseMatrix			= false;
@@ -106,7 +106,7 @@ void CEffect::AddAttribute(const std::string& name, int index)
 {
 	const CShader::TAttrib* attrib = CShader::FindAttrib( name );
 
-	SIM_ASSERT( attrib != NULL );
+	SIM_ASSERT( attrib != nullptr );
 
 	SIM_MEMCPY( &m_attributes[index], attrib, sizeof(CShader::TAttrib) );
 }
@@ -144,7 +144,7 @@ void CEffect::ApplyTextures( CDriver* driver )
 {
 	for( u32 i = 0; i < CDriver::k_Select_Texture_Count; i++ )
 	{
-		if ( m_textures[ i ] != NULL )
+		if ( m_textures[ i ] != nullptr )
 		{
 			driver->SelectTexture( ( CDriver::K_SELECT_TEXTURE ) i );
 			driver->BindTexture( m_textures[ i ]->GetID() );
@@ -158,7 +158,7 @@ void CEffect::AddUniform(const std::string& name, int index)
 {
 	const CShader::TUniform* uni = CShader::FindUniform(name);
 
-	SIM_ASSERT( uni != NULL );
+	SIM_ASSERT( uni != nullptr );
 
 	SIM_MEMCPY( &m_uniforms[index], uni, sizeof(CShader::TUniform) );
 }
@@ -223,7 +223,7 @@ void CEffect::Load( CShader *vsh, CShader *fsh )
 
 #if SIM_DEBUG
 	s32 status = GL_TRUE, infologLength = 0, charsWritten  = 0;
-	char *infoLog = NULL;
+	char *infoLog = nullptr;
 
 	glGetProgramiv( m_iD, GL_LINK_STATUS, &status );
 	glGetProgramiv( m_iD, GL_INFO_LOG_LENGTH, &infologLength );

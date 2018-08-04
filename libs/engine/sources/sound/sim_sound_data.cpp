@@ -76,16 +76,16 @@ u8* CSoundData::LoadWAV( io::CMemStream* ms, ALenum *format, u32 *size, u32 *rat
 	SIM_MEMCPY( &header, ms->Read( header_size ), header_size );
 	
 	if (header.chunkID != 0x46464952)		//RIFF
-		return NULL;
+		return nullptr;
 		
 	if (header.chunkFormat != 0x45564157)	//WAVE
-		return NULL;
+		return nullptr;
 		
 	if (header.subchunk1ID != 0x20746D66)	//fmt 
-		return NULL;
+		return nullptr;
 		
 	if (header.subchunk2ID != 0x61746164)	//data
-		return NULL;
+		return nullptr;
 	
 	unsigned char *buf = SIM_NEW unsigned char[ header.subchunk2Size ];
 	SIM_MEMCPY( buf, ms->Read( header.subchunk2Size ), header.subchunk2Size );	
@@ -131,7 +131,7 @@ u32 CSoundData::Generate( io::CMemStream* ms )
 
 	u8 *buf = LoadWAV( ms, &format, &size, &rate );
 
-	if( buf != NULL ) {
+	if( buf != nullptr ) {
 		Generate( buf, format, size, rate );
 	}
 

@@ -71,6 +71,10 @@ namespace sim
 		u32							Get();
 	};
 
+
+	
+	static const int k_Pool_Size = 64;
+	
 }; // namespace sim
 
 #define SIM_ASSERT( x )				assert(x)
@@ -87,7 +91,7 @@ namespace sim
 #define SIM_MEMCMP					memcmp
 #define SIM_MEMSET					memset
 
-#define SIM_SAFE_DELETE( x )		{ if( x ) { SIM_DELETE x; x = NULL; } }
-#define SIM_SAFE_DELETE_ARRAY( x )	{ if( x ) { SIM_DELETE [] x; x = NULL; } }
+#define SIM_SAFE_DELETE( x )		{ if( x ) { SIM_DELETE x; x = nullptr; } }
+#define SIM_SAFE_DELETE_ARRAY( x )	{ if( x ) { SIM_DELETE [] x; x = nullptr; } }
 
 #endif // __SIM_CORE_H

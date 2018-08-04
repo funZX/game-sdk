@@ -31,10 +31,10 @@ namespace rnr
 
 CBoneAnimation::CBoneAnimation()
 {
-	m_hierarchy		= NULL;
+	m_hierarchy		= nullptr;
 
 	m_nFrames		= 0;
-	m_frames		= NULL;
+	m_frames		= nullptr;
 
 	m_fps			= 25;
 }

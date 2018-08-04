@@ -118,7 +118,7 @@ protected:
 		{
 			name	= n;
 			index	= 0;
-			json	= NULL;
+			json	= nullptr;
 			LoadFn	= loadFn;
 		}
 

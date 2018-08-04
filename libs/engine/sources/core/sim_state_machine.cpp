@@ -27,9 +27,9 @@ namespace sm
 
 CStateMachine::CStateMachine() : stl::CStack<IState*>()
 {
-	m_prevState	= NULL;
-	m_currState = NULL;
-	m_nextState = NULL;
+	m_prevState	= nullptr;
+	m_currState = nullptr;
+	m_nextState = nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -38,7 +38,9 @@ CStateMachine::~CStateMachine()
 {
 	while( Count() > 0 )
 	{
-		SIM_SAFE_DELETE(*Top());
+		IState* top = *Top();
+
+		SIM_SAFE_DELETE(top);
 		Pop();
 	}
 }
@@ -77,11 +79,11 @@ void CStateMachine::PopAll()
 
 void CStateMachine::Update( f32 dt, void *userData )
 {
-	if (m_nextState != NULL)
+	if (m_nextState != nullptr)
 	{
 		m_prevState = m_currState;
 		m_currState = m_nextState;
-		m_nextState = NULL;
+		m_nextState = nullptr;
 	}
 
 	m_currState->Update( dt, userData );

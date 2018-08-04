@@ -34,11 +34,11 @@ namespace rnr
 CWidgetButton::CWidgetButton()
 	: CWidget()
 {
-	m_sprite	= NULL;
+	m_sprite	= nullptr;
 	m_frameUp	= -1;
 	m_frameDn	= -1;
 
-	m_font		= NULL;
+	m_font		= nullptr;
 
 	m_isPressed = false;
 }
@@ -67,7 +67,7 @@ void CWidgetButton::Update( u32 dt, void *userData )
 
 void CWidgetButton::Render( CDriver *driver )
 {
-	if( m_sprite != NULL )
+	if( m_sprite != nullptr )
 	{
 		if (m_isPressed) {
 			m_sprite->Render( driver, this, m_frameDn );
@@ -77,7 +77,7 @@ void CWidgetButton::Render( CDriver *driver )
 		}
 	}
 
-	if( !m_string.empty() && ( m_font != NULL ) )
+	if( !m_string.empty() && ( m_font != nullptr ) )
 	{
 		s32 x = ( s32 ) Left();
 		s32 y = ( s32 ) Top();

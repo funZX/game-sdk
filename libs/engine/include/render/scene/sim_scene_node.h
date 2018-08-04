@@ -35,14 +35,14 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CSceneNode: public stl::COctreeData<CSceneNode*>, public IUpdatable, public IRenderable, public IEngineItem
+class CSceneNode: public stl::COctreeVolume, public IUpdatable, public IRenderable, public IEngineItem
 {
 public:
 	// ------------------------------------------------------------------//
 	
 	typedef struct
 	{
-		TVec3				position;
+		TVec3				translation;
 		TVec3				rotation;
 		TVec3				scale;
 
@@ -65,9 +65,8 @@ public:
 	} TTransform;
 
 	// ------------------------------------------------------------------//
-
-	typedef stl::CBinaryTreeNode<u32, CSceneNode*>		TChild;
 	typedef stl::CBalanceTree<u32, CSceneNode*>			TChildren;
+	// ------------------------------------------------------------------//
 
 	CSceneNode();
 	CSceneNode( const std::string &name );
@@ -87,12 +86,12 @@ public:
 
 	CSceneNode*						GetChild( const std::string& name );
 
-	const u32						GetID()		{ return m_iD; }
+	const u32						GetID() { return m_iD; }
 
-	inline void						SetPosition( f32 x, f32 y, f32 z )
-									{ Vec3Set( &m_transform.position, x, y, z ); };
+	inline void						SetTranslation( f32 x, f32 y, f32 z )
+									{ Vec3Set( &m_transform.translation, x, y, z ); };
 
-	inline TVec3*					GetPosition()						{ return &m_transform.position; };
+	inline TVec3*					GetTranslation()					{ return &m_transform.translation; };
 
 	inline void						SetRotation( f32 x, f32 y, f32 z )
 									{ Vec3Set( &m_transform.rotation, x, y, z ); };
@@ -119,7 +118,8 @@ public:
 	// ------------------------------------------------------------------//
 
 protected:
-
+	virtual void					OnResize();
+	virtual void					OnMove();
 	// ------------------------------------------------------------------//
 	u32								m_iD;
 
@@ -127,7 +127,6 @@ protected:
 	TChildren*						m_children;
 
 	TTransform						m_transform;
-
 	// ------------------------------------------------------------------//
 };
 

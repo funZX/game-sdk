@@ -39,7 +39,7 @@ CRect2D::CRect2D()
 	Vec2ToZero(&m_size);
 
 	m_rotation	= 0.0f;
-	m_material	= NULL;
+	m_material	= nullptr;
 
 	m_texRect = &OneSizeRectStatic;
 }
@@ -53,6 +53,7 @@ CRect2D::CRect2D( const std::string& name )
 // ----------------------------------------------------------------------//
 
 CRect2D::CRect2D(f32 x, f32 y, f32 width, f32 height)
+	: CRect2D()
 {
 	m_position.x = x;
 	m_position.y = y;
@@ -428,8 +429,8 @@ void CRect2D::Render( CDriver* driver, const CRect2D *texRect )
 
 	driver->Render(&vg);
 
-	vs.m_vboData = NULL;
-	vg.m_vboData = NULL;
+	vs.m_vboData = nullptr;
+	vg.m_vboData = nullptr;
 }
 
 // ----------------------------------------------------------------------//

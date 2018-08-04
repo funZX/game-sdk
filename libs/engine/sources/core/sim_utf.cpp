@@ -28,7 +28,7 @@ bool UTF16ToUTF8( u8 *dst, s32 *dstLen, const u16 *src, s32 srcLen )
 	size_t dstPos	= 0;
 	size_t srcPos	= 0;
 
-	SIM_ASSERT( dst != NULL );
+	SIM_ASSERT( dst != nullptr );
 
 	while( true )
 	{

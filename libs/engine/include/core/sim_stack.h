@@ -33,7 +33,7 @@ template <class T> class CStack
 {
 public:
 	CStack() : CList<T>() {}
-	virtual ~CStack(){};
+	virtual ~CStack() {};
 
 	virtual void Pop()
 	{

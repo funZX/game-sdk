@@ -29,8 +29,8 @@ CFileStream::CFileStream( const std::string& filename )
 	m_cursor 	= 0;
 	m_size 		= 0;
 
-	m_memory 	= NULL;
-	m_current 	= NULL;
+	m_memory 	= nullptr;
+	m_current 	= nullptr;
 
 	m_filename 	= filename;
 }
@@ -86,8 +86,8 @@ void* CFileStream::Drop()
 	m_cursor 	= 0;
 	m_size 		= 0;
 
-	m_memory 	= NULL;
-	m_current 	= NULL;
+	m_memory 	= nullptr;
+	m_current 	= nullptr;
 
 	return buf;
 }
@@ -96,7 +96,7 @@ void* CFileStream::Drop()
 
 void* CFileStream::Read( u32 size )
 {
-	void *ptr = NULL;
+	void *ptr = nullptr;
 
 	if( m_cursor + size > m_size ) {
 		size = m_size - m_cursor;

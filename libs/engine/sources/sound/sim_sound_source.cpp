@@ -33,7 +33,7 @@ CSoundSource::CSoundSource()
 	m_loop		= k_Loop_No;
 	m_state		= AL_STOPPED;
 	
-	m_soundData = NULL;
+	m_soundData = nullptr;
 }
 
 // ----------------------------------------------------------------------//

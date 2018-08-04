@@ -18,12 +18,12 @@ CPolygon::CPolygon()
 {
 
 }
-
+// ----------------------------------------------------------------------//
 CPolygon::~CPolygon()
 {
 
 }
-
+// ----------------------------------------------------------------------//
 void CPolygon::AddVertex( const f32 x, const f32 y )
 {
 	TVec2 v;
@@ -33,12 +33,12 @@ void CPolygon::AddVertex( const f32 x, const f32 y )
 
 	AddToEnd( v );
 }
-
+// ----------------------------------------------------------------------//
 void CPolygon::AddVertex( const TVec2* v )
 {
 	AddVertex( v->x, v->y );
 }
-
+// ----------------------------------------------------------------------//
 void CPolygon::Translate( const f32 x, const f32 y )
 {
 	TVec2* p, v;
@@ -51,10 +51,10 @@ void CPolygon::Translate( const f32 x, const f32 y )
 		Vec2Add( p, p, &v );
 }
 
-
+// ----------------------------------------------------------------------//
 void CPolygon::Scale( const f32 kx, const f32 ky )
 {
-	TVec2* p = NULL;
+	TVec2* p = nullptr;
 
 	Begin();
 
@@ -64,12 +64,12 @@ void CPolygon::Scale( const f32 kx, const f32 ky )
 		p->y *= ky;
 	}
 }
-
+// ----------------------------------------------------------------------//
 const f32 CPolygon::GetMinX()
 {
 	f32 min = FLT_MAX;
 
-	TVec2* p = NULL;
+	TVec2* p = nullptr;
 
 	Begin();
 
@@ -79,12 +79,12 @@ const f32 CPolygon::GetMinX()
 
 	return min;
 }
-
+// ----------------------------------------------------------------------//
 const f32 CPolygon::GetMinY()
 {
 	f32 min = FLT_MAX;
 
-	TVec2* p = NULL;
+	TVec2* p = nullptr;
 
 	Begin();
 
@@ -94,12 +94,12 @@ const f32 CPolygon::GetMinY()
 
 	return min;
 }
-
+// ----------------------------------------------------------------------//
 const f32 CPolygon::GetMaxX()
 {
 	f32 max = -FLT_MAX;
 
-	TVec2* p = NULL;
+	TVec2* p = nullptr;
 
 	Begin();
 
@@ -109,12 +109,12 @@ const f32 CPolygon::GetMaxX()
 
 	return max;
 }
-
+// ----------------------------------------------------------------------//
 const f32 CPolygon::GetMaxY()
 {
 	f32 max = -FLT_MAX;
 
-	TVec2* p = NULL;
+	TVec2* p = nullptr;
 
 	Begin();
 
@@ -124,12 +124,12 @@ const f32 CPolygon::GetMaxY()
 
 	return max;
 }
-
+// ----------------------------------------------------------------------//
 bool CPolygon::IsInside( const TVec2* p )
 {
 	u32 wn = 0;
 
-	TVec2 *v0 = NULL, *v1 = NULL;
+	TVec2 *v0 = nullptr, *v1 = nullptr;
 
 	Begin();
 
@@ -151,7 +151,7 @@ bool CPolygon::IsInside( const TVec2* p )
 
 	return wn != 0;
 }
-
+// ----------------------------------------------------------------------//
 bool CPolygon::IsInside( const f32 x, const f32 y )
 {
 	TVec2 v;
@@ -159,10 +159,10 @@ bool CPolygon::IsInside( const f32 x, const f32 y )
 
 	return IsInside( &v );
 }
-
+// ----------------------------------------------------------------------//
 bool CPolygon::Intersects( CPolygon* polygon )
 {
-	TVec2* v = NULL;
+	TVec2* v = nullptr;
 
 	polygon->Begin();
 
@@ -172,10 +172,10 @@ bool CPolygon::Intersects( CPolygon* polygon )
 
 	return false;
 }
-
+// ----------------------------------------------------------------------//
 CPolygon* CPolygon::Intersects( TPolygonList* polygonList )
 {
-	CPolygon** poly = NULL;
+	CPolygon** poly = nullptr;
 
 	polygonList->Begin();
 
@@ -183,9 +183,9 @@ CPolygon* CPolygon::Intersects( TPolygonList* polygonList )
 		if ( (*poly)->Intersects( this ) )
 			return (*poly);
 
-	return NULL;
+	return nullptr;
 }
-
+// ----------------------------------------------------------------------//
 void CPolygon::Render( rnr::CDriver *driver, rnr::CMaterial *mtl )
 {
 	CVertexGroup vg;
@@ -207,10 +207,10 @@ void CPolygon::Render( rnr::CDriver *driver, rnr::CMaterial *mtl )
 
 	vg.m_vertexSource->m_vboData	= SIM_NEW f32[ newFloats ];
 
-	TVec2* p	= NULL;
+	TVec2* p	= nullptr;
 	s32 k			= 0;
 	s32  currIndex	= 0;
-	f32* curVertex	= NULL;
+	f32* curVertex	= nullptr;
 
 	Begin();
 	while ( p = Next() )

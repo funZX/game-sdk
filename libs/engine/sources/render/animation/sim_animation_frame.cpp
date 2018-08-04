@@ -27,7 +27,7 @@ namespace rnr
 
 CAnimationFrame::CAnimationFrame()
 {
-	m_pose = NULL;
+	m_pose = nullptr;
 }
 
 // ----------------------------------------------------------------------//

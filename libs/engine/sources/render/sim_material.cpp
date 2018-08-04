@@ -73,7 +73,7 @@ void CMaterial::Render( CDriver *driver )
 
 	for( u32 i = 0; i < CDriver::k_Select_Texture_Count; i++ )
 	{
-		if ( m_textures[ i ] != NULL )
+		if ( m_textures[ i ] != nullptr )
 		{
 			driver->SelectTexture( ( CDriver::K_SELECT_TEXTURE ) i );
 

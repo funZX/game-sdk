@@ -29,8 +29,8 @@ stl::CPool<CFontNode> CFontNode::m_pool;
 
 CFontNode::CFontNode()
 {
-	m_leaf1 	= NULL;
-	m_leaf2 	= NULL;
+	m_leaf1 	= nullptr;
+	m_leaf2 	= nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -41,8 +41,8 @@ CFontNode::CFontNode( s32 x, s32 y, s32 width, s32 height )
 	m_y 		= y;
 	m_width 	= width;
 	m_height 	= height;
-	m_leaf1 	= NULL;
-	m_leaf2 	= NULL;
+	m_leaf1 	= nullptr;
+	m_leaf2 	= nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -53,8 +53,8 @@ void CFontNode::Set( s32 x, s32 y, s32 width, s32 height )
 	m_y 		= y;
 	m_width 	= width;
 	m_height	= height;
-	m_leaf1 	= NULL;
-	m_leaf2 	= NULL;
+	m_leaf1 	= nullptr;
+	m_leaf2 	= nullptr;
 }
 
 // ----------------------------------------------------------------------//

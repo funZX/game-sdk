@@ -60,7 +60,7 @@ CTexture::~CTexture()
 
 u8* CTexture::LoadTGA( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, K_FORMAT *format )
 {
-	u8 *buf = NULL;
+	u8 *buf = nullptr;
 	u32 size;
 	u8 *header;
 	u32 w, h, b;
@@ -186,12 +186,12 @@ u8*	CTexture::LoadPVR( io::CMemStream* memstream, u32 *width, u32 *height, u32 *
     TPVRHeader* header	= ( TPVRHeader* ) buf;
 
 	if( header->dwPVR != (*SigU32) )
-		return NULL;
+		return nullptr;
 
     formatFlags = header->dwpfFlags & 0xFF;
 
     if( formatFlags != FlagTypePVR2 && formatFlags != FlagTypePVR4 )
-		return NULL;
+		return nullptr;
 
 	*width	= header->dwWidth;
 	*height = header->dwHeight;
@@ -213,7 +213,7 @@ u8*	CTexture::LoadPVR( io::CMemStream* memstream, u32 *width, u32 *height, u32 *
 
 u8*	CTexture::LoadMIP( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, K_FORMAT *format )
 {
-    TMIPHeader *header = NULL;
+    TMIPHeader *header = nullptr;
 
 	u8 *buf = (u8*) memstream->Read( 0 );
     header	= ( TMIPHeader* ) buf;
@@ -401,7 +401,7 @@ u32 CTexture::Generate(   u8 *buf,
 						  u32 width, u32 height,
 						  K_TYPE type, K_WRAP wrap, K_FILTER filter, K_FORMAT format )
 {
-	SIM_ASSERT( buf != NULL );
+	SIM_ASSERT( buf != nullptr );
 
 	m_type		= type;
 	m_filter	= filter;
@@ -455,7 +455,7 @@ u32 CTexture::Generate(   u8 *buf,
 
 u32 CTexture::Generate( io::CMemStream* memstream, K_TYPE type, K_WRAP wrap, K_FILTER filter )
 {
-	u8 *buf = NULL;
+	u8 *buf = nullptr;
 
 	switch( type )
 	{

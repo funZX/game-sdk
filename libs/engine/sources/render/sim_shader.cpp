@@ -152,12 +152,12 @@ CShader::~CShader()
 
 void CShader::Load( const s8 *source )
 {
-	glShaderSource( m_iD, 1, &source, NULL);
+	glShaderSource( m_iD, 1, &source, nullptr);
 	glCompileShader( m_iD );
 
 #if SIM_DEBUG
 	s32 status = GL_TRUE, infologLength = 0, charsWritten  = 0;
-	char *infoLog = NULL;
+	char *infoLog = nullptr;
 
 	glGetShaderiv( m_iD, GL_COMPILE_STATUS, &status );
 	glGetShaderiv( m_iD, GL_INFO_LOG_LENGTH, &infologLength );
@@ -186,7 +186,7 @@ const CShader::TAttrib* CShader::FindAttrib(const std::string& name)
 			return &Attributes[ k ];
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -199,7 +199,7 @@ const CShader::TUniform* CShader::FindUniform(const std::string& name)
 			return &Uniforms[k];
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 // ----------------------------------------------------------------------//

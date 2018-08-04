@@ -34,7 +34,7 @@ CWidgetDrawable::CWidgetDrawable()
 {
 	Vec4Copy( &m_fillcolor, &col::Black );
 
-	m_rendertexture = NULL;
+	m_rendertexture = nullptr;
 	m_camera		= new CCamera();
 
 	// flip
@@ -69,7 +69,7 @@ void CWidgetDrawable::OnResize()
 	m_rendertexture->Generate( (u32)m_size.x, (u32)m_size.y );
 
 	CRect2D r;
-	r.Resize( (u32)m_rendertexture->GetWidth(), (u32)m_rendertexture->GetHeight() );
+	r.Resize( (f32)m_rendertexture->GetWidth(), (f32)m_rendertexture->GetHeight() );
 	m_camera->SetPerspective( &r );
 }
 
@@ -79,7 +79,7 @@ void CWidgetDrawable::Draw( CDriver *driver )
 {
 	static CEngine *engine = CEngine::GetSingletonPtr();
 
-	if ( m_rendertexture == NULL )
+	if ( m_rendertexture == nullptr )
 		return;
 
 	CRenderTexture* fb =

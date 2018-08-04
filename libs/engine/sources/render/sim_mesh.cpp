@@ -34,14 +34,14 @@ namespace rnr
 
 CMesh::CMesh()
 {
-	m_vertexSource		= NULL;
-	m_vertexGroup		= NULL;
+	m_vertexSource		= nullptr;
+	m_vertexGroup		= nullptr;
 
 	Vec3ToZero( &m_box );
 	Vec3ToZero( &m_center );
 	m_radius			= 1.0f;
 
-	m_fs				= NULL;
+	m_fs				= nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -71,7 +71,7 @@ CMesh::~CMesh( void )
 
 void CMesh::Render( CDriver *driver )
 {
-	SIM_ASSERT( driver != NULL );
+	SIM_ASSERT( driver != nullptr );
 
 	driver->Render( m_vertexGroup );
 }
@@ -99,7 +99,7 @@ void CMesh::Load( io::CMemStream* ms )
 
 	m_material = ms->ReadString();
 
-	SIM_ASSERT( m_vertexSource == NULL );
+	SIM_ASSERT( m_vertexSource == nullptr );
 	CVertexSource* vertexSource = SIM_NEW CVertexSource();
 
 	vertexSource->m_vertexFormat = ms->ReadU32();
@@ -112,7 +112,7 @@ void CMesh::Load( io::CMemStream* ms )
 	vertexSource->m_vboData = SIM_NEW f32[ vboDim / sizeof( f32 ) ];
 	SIM_MEMCPY( vertexSource->m_vboData, ms->Read( vboDim ), vboDim );
 
-	SIM_ASSERT( m_vertexGroup == NULL );
+	SIM_ASSERT( m_vertexGroup == nullptr );
 	CVertexGroup* vertexGroup	= SIM_NEW CVertexGroup();
 	vertexGroup->m_vertexSource	= vertexSource;
 		
