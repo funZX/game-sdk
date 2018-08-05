@@ -45,7 +45,7 @@ public:
 		this->AddToFront( item );
 	}
 
-	virtual T *Top()
+	virtual T* Top()
 	{
 		return this->First();
 	}

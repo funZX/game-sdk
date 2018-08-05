@@ -22,11 +22,13 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <functional>
 #include <string>
 #include <stdio.h>
 #include <assert.h>
 #include <pthread.h>
 #include <stdarg.h>
+
 
 #ifdef WIN32
 #	include <windows.h>

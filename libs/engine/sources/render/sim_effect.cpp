@@ -255,7 +255,9 @@ void CEffect::Render(CDriver *driver)
 	for (s32 k = 0; k < m_numUniforms; k++)
 	{
 		CShader::TUniform *crtUniform = &m_uniforms[k];
-		driver->SetUniform(crtUniform);
+
+		if ( crtUniform->m_location != -1 )
+			driver->SetUniform(crtUniform);
 	}
 
 	ApplyTextures(driver);

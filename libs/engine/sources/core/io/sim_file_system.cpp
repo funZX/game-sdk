@@ -17,6 +17,8 @@
 */
 
 #include <core/io/sim_file_system.h>
+#include <core/sim_stack.h>
+#include <core/sim_binary_tree.h>
 
 #include <core/io/sim_lzma_stream.h>
 #include <core/io/sim_json_stream.h>
@@ -265,7 +267,7 @@ bool CFileSystem::LoadFont(const json_t* jsonRoot, s32 index)
 	m_lzmaStream->CloseCurrent( &m_buffer );
 	m_buffer = nullptr;
 
-	m_fontList[ hash::Get( name ) ]	= font;
+	m_fontList.Insert( hash::Get( name ), font );
 
 	m_loadMessage.clear();
 	m_loadMessage = "Loading font ";
@@ -331,7 +333,7 @@ bool CFileSystem::LoadTexture(const json_t* jsonRoot, s32 index)
 	m_lzmaStream->CloseCurrent(&m_buffer);
 	m_buffer = nullptr;
 
-	m_textureList[ hash::Get( name ) ] = texture;
+	m_textureList.Insert( hash::Get( name ), texture);
 
 	m_loadMessage.clear();
 	m_loadMessage = "Loading texture ";
@@ -406,7 +408,7 @@ bool CFileSystem::LoadSkybox(const json_t* jsonRoot, s32 index)
 
 	skybox->Generate( 1.0f, &msfront, &msback, &msleft, &msright, &mstop, &msbot );
 
-	m_skyboxList[ hash::Get( name ) ] = skybox;
+	m_skyboxList.Insert( hash::Get( name ), skybox );
 
 	m_loadMessage.clear();
 	m_loadMessage = "Loading skybox ";
@@ -450,7 +452,7 @@ bool CFileSystem::LoadShader(const json_t* jsonRoot, s32 index)
 
 	SIM_SAFE_DELETE_ARRAY(data);
 
-	m_shaderList[ hash::Get( name ) ] = shader;
+	m_shaderList.Insert( hash::Get( name ), shader);
 
 	m_loadMessage.clear();
 	m_loadMessage = "Loading shader ";
@@ -605,7 +607,7 @@ bool CFileSystem::LoadEffect(const json_t* jsonRoot, s32 index)
 		SIM_ASSERT( tex != nullptr );
 	}
 
-	m_effectList[ hash::Get( name ) ] = effect;
+	m_effectList.Insert( hash::Get( name ), effect );
 
 	m_loadMessage.clear();
 	m_loadMessage = "Loading effect ";
@@ -707,7 +709,7 @@ bool CFileSystem::LoadMaterial(const json_t* jsonRoot, s32 index)
 	std::string  effect = json_string_value( json_object_get( jmr, "effect" ) );
 	material->SetEffect( GetEffect( effect ) );
 
-	m_materialList[ hash::Get( name ) ] = material;
+	m_materialList.Insert( hash::Get( name ), material );
 
 	m_loadMessage.clear();
 	m_loadMessage = "Loading material ";
@@ -739,7 +741,7 @@ bool CFileSystem::LoadMesh(const json_t* jsonRoot, s32 index)
 
 	m_lzmaStream->CloseFile( &m_buffer );
 
-	m_meshList[ hash::Get( name ) ] = mesh;
+	m_meshList.Insert( hash::Get( name ), mesh );
 
 	m_loadMessage.clear();
 	m_loadMessage = "Loading mesh ";
@@ -809,7 +811,7 @@ bool CFileSystem::LoadScript(const json_t* jsonRoot, s32 index)
 
 	m_lzmaStream->CloseFile( &m_buffer );
 
-	m_scriptList[ hash::Get( name ) ] = script;
+	m_scriptList.Insert( hash::Get( name ), script );
 
 	m_loadMessage.clear();
 	m_loadMessage = "Loading script ";
@@ -832,337 +834,238 @@ bool CFileSystem::LoadScene(const json_t* jsonRoot, s32 index)
 
 void CFileSystem::UnloadFonts()
 {
-	auto it = m_fontList.begin();
-
-	while( it != m_fontList.end())
-	{
-		SIM_SAFE_DELETE(it->second);
-		++it;
-	}
-
-	m_fontList.clear();
+	m_fontList.Print(m_fontList.GetRoot(), 1);
+	m_fontList.DeleteAll();
 }
 
 // ----------------------------------------------------------------------//
 
 rnr::CFont* CFileSystem::GetFont( const std::string &name )
 {
-	auto it = m_fontList.find( hash::Get( name ) );
+	auto item = m_fontList.Search(hash::Get(name));
 
-	return it != m_fontList.end() ? it->second : nullptr;
+	return item ? item->GetData() : nullptr;
 }
 
 // ----------------------------------------------------------------------//
 
 void CFileSystem::UnloadTextures()
 {
-	auto it = m_textureList.begin();
-
-	while( it != m_textureList.end())
-	{
-		SIM_SAFE_DELETE(it->second);
-		++it;
-	}
-
-	m_textureList.clear();
+	m_textureList.Print(m_textureList.GetRoot(), 1);
+	m_textureList.DeleteAll();
 }
 
 // ----------------------------------------------------------------------//
 
 rnr::CTexture* CFileSystem::GetTexture( const std::string &name )
 {
-	auto it = m_textureList.find( hash::Get( name ) );
+	auto item = m_textureList.Search(hash::Get(name));
 
-	return it != m_textureList.end() ? it->second : nullptr;
+	return item ? item->GetData() : nullptr;
 }
 
 // ----------------------------------------------------------------------//
 
 void CFileSystem::UnloadSkyboxes()
 {
-	auto it = m_skyboxList.begin();
-
-	while( it != m_skyboxList.end())
-	{
-		SIM_SAFE_DELETE(it->second);
-		++it;
-	}
-
-	m_skyboxList.clear();
+	m_skyboxList.Print(m_skyboxList.GetRoot(), 1);
+	m_skyboxList.DeleteAll();
 }
 
 // ----------------------------------------------------------------------//
 
 rnr::CSkyBox* CFileSystem::GetSkybox( const std::string &name )
 {
-	auto it = m_skyboxList.find( hash::Get( name ) );
+	auto item = m_skyboxList.Search(hash::Get(name));
 
-	return it != m_skyboxList.end() ? it->second : nullptr;
+	return item ? item->GetData() : nullptr;
 }
 
 // ----------------------------------------------------------------------//
 
 void CFileSystem::UnloadShaders()
 {
-	auto it = m_shaderList.begin();
-
-	while( it != m_shaderList.end())
-	{
-		SIM_SAFE_DELETE(it->second);
-		++it;
-	}
-
-	m_shaderList.clear();
+	m_shaderList.Print(m_shaderList.GetRoot(), 1);
+	m_shaderList.DeleteAll();
 }
 
 // ----------------------------------------------------------------------//
 
 rnr::CShader* CFileSystem::GetShader( const std::string &name )
 {
-	auto it = m_shaderList.find( hash::Get( name ) );
+	auto item = m_shaderList.Search(hash::Get(name));
 
-	return it != m_shaderList.end() ? it->second : nullptr;
+	return item ? item->GetData() : nullptr;
 }
 
 // ----------------------------------------------------------------------//
 
 void CFileSystem::UnloadEffects()
 {
-	auto it = m_effectList.begin();
-
-	while( it != m_effectList.end())
-	{
-		SIM_SAFE_DELETE(it->second);
-		++it;
-	}
-
-	m_effectList.clear();
+	m_effectList.Print(m_effectList.GetRoot(), 1);
+	m_effectList.DeleteAll();
 }
 
 // ----------------------------------------------------------------------//
 
 rnr::CEffect* CFileSystem::GetEffect( const std::string &name )
 {
-	auto it = m_effectList.find( hash::Get( name ) );
+	auto item = m_effectList.Search(hash::Get(name));
 
-	return it != m_effectList.end() ? it->second : nullptr;
+	return item ? item->GetData() : nullptr;
 }
-
 
 // ----------------------------------------------------------------------//
 
 void CFileSystem::UnloadMaterials()
 {
-	auto it = m_materialList.begin();
-
-	while( it != m_materialList.end())
-	{
-		SIM_SAFE_DELETE(it->second);
-		++it;
-	}
-
-	m_materialList.clear();
+	m_materialList.Print(m_materialList.GetRoot(), 1);
+	m_materialList.DeleteAll();
 }
 
 // ----------------------------------------------------------------------//
 
 rnr::CMaterial* CFileSystem::GetMaterial( const std::string &name )
 {
-	auto it = m_materialList.find( hash::Get( name ) );
+	auto item = m_materialList.Search(hash::Get(name));
 
-	return it != m_materialList.end() ? it->second : nullptr;
+	return item ? item->GetData() : nullptr;
 }
 
 // ----------------------------------------------------------------------//
 
 void CFileSystem::UnloadMeshes()
 {
-	auto it = m_meshList.begin();
-
-	while( it != m_meshList.end())
-	{
-		SIM_SAFE_DELETE(it->second);
-		++it;
-	}
-
-	m_meshList.clear();
+	m_meshList.Print(m_meshList.GetRoot(), 1);
+	m_meshList.DeleteAll();
 }
 
 // ----------------------------------------------------------------------//
 
 rnr::CMesh* CFileSystem::GetMesh( const std::string &name )
 {
-	auto it = m_meshList.find( hash::Get( name ) );
+	auto item = m_meshList.Search(hash::Get(name));
 
-	return it != m_meshList.end() ? it->second : nullptr;
+	return item ? item->GetData() : nullptr;
 }
 
 // ----------------------------------------------------------------------//
 
 void CFileSystem::UnloadActors()
 {
-	auto it = m_actorList.begin();
-
-	while( it != m_actorList.end())
-	{
-		SIM_SAFE_DELETE(it->second);
-		++it;
-	}
-
-	m_actorList.clear();
+	m_actorList.Print(m_actorList.GetRoot(), 1);
+	m_actorList.DeleteAll();
 }
 
 // ----------------------------------------------------------------------//
 
 rnr::CActor* CFileSystem::GetActor( const std::string &name )
 {
-	auto it = m_actorList.find( hash::Get( name ) );
+	auto item = m_actorList.Search(hash::Get(name));
 
-	return it != m_actorList.end() ? it->second : nullptr;
+	return item ? item->GetData() : nullptr;
 }
 
 // ----------------------------------------------------------------------//
 
 void CFileSystem::UnloadLights()
 {
-	auto it = m_lightList.begin();
-
-	while( it != m_lightList.end())
-	{
-		SIM_SAFE_DELETE(it->second);
-		++it;
-	}
-
-	m_lightList.clear();
+	m_lightList.Print(m_lightList.GetRoot(), 1);
+	m_lightList.DeleteAll();
 }
 
 // ----------------------------------------------------------------------//
 
 rnr::CLight* CFileSystem::GetLight( const std::string &name )
 {
-	auto it = m_lightList.find( hash::Get( name ) );
+	auto item = m_lightList.Search(hash::Get(name));
 
-	return it != m_lightList.end() ? it->second : nullptr;
+	return item ? item->GetData() : nullptr;
 }
 
 // ----------------------------------------------------------------------//
 
 void CFileSystem::UnloadCameras()
 {
-	auto it = m_cameraList.begin();
-
-	while( it != m_cameraList.end())
-	{
-		SIM_SAFE_DELETE(it->second);
-		++it;
-	}
-
-	m_cameraList.clear();
+	m_cameraList.Print(m_cameraList.GetRoot(), 1);
+	m_cameraList.DeleteAll();
 }
 
 // ----------------------------------------------------------------------//
 
 rnr::CCamera* CFileSystem::GetCamera( const std::string &name )
 {
-	auto it = m_cameraList.find( hash::Get( name ) );
+	auto item = m_cameraList.Search(hash::Get(name));
 
-	return it != m_cameraList.end() ? it->second : nullptr;
+	return item ? item->GetData() : nullptr;
 }
 
 // ----------------------------------------------------------------------//
 
 void CFileSystem::UnloadSprites()
 {
-	auto it = m_spriteList.begin();
-
-	while( it != m_spriteList.end())
-	{
-		SIM_SAFE_DELETE(it->second);
-		++it;
-	}
-
-	m_spriteList.clear();
+	m_spriteList.Print(m_spriteList.GetRoot(), 1);
+	m_spriteList.DeleteAll();
 }
 
 // ----------------------------------------------------------------------//
 
 rnr::CSpriteTexture* CFileSystem::GetSprite( const std::string &name )
 {
-	auto it = m_spriteList.find( hash::Get( name ) );
+	auto item = m_spriteList.Search(hash::Get(name));
 
-	return it != m_spriteList.end() ? it->second : nullptr;
+	return item ? item->GetData() : nullptr;
 }
 
 // ----------------------------------------------------------------------//
 
 void CFileSystem::UnloadSounds()
 {
-	auto it = m_soundList.begin();
-
-	while( it != m_soundList.end())
-	{
-		SIM_SAFE_DELETE(it->second);
-		++it;
-	}
-
-	m_soundList.clear();
+	m_soundList.Print(m_soundList.GetRoot(), 1);
+	m_soundList.DeleteAll();
 }
 
 // ----------------------------------------------------------------------//
 
 snd::CSoundData* CFileSystem::GetSound( const std::string &name )
 {
-	auto it = m_soundList.find( hash::Get( name ) );
+	auto item = m_soundList.Search(hash::Get(name));
 
-	return it != m_soundList.end() ? it->second : nullptr;
+	return item ? item->GetData() : nullptr;
 }
 
 // ----------------------------------------------------------------------//
 
 void CFileSystem::UnloadScripts()
 {
-	auto it = m_scriptList.begin();
-
-	while( it != m_scriptList.end())
-	{
-		SIM_SAFE_DELETE(it->second);
-		++it;
-	}
-
-	m_scriptList.clear();
+	m_scriptList.Print(m_scriptList.GetRoot(), 1);
+	m_scriptList.DeleteAll();
 }
 
 // ----------------------------------------------------------------------//
 
 vm::CScript* CFileSystem::GetScript( const std::string &name )
 {
-	auto it = m_scriptList.find( hash::Get( name ) );
+	auto item = m_scriptList.Search(hash::Get(name));
 
-	return it != m_scriptList.end() ? it->second : nullptr;
+	return item ? item->GetData() : nullptr;
 }
 
 // ----------------------------------------------------------------------//
 
 void CFileSystem::UnloadScenes()
 {
-	auto it = m_sceneList.begin();
-
-	while( it != m_sceneList.end())
-	{
-		SIM_SAFE_DELETE(it->second);
-		++it;
-	}
-
-	m_sceneList.clear();
+	m_sceneList.Print(m_sceneList.GetRoot(), 1);
+	m_sceneList.DeleteAll();
 }
 
 // ----------------------------------------------------------------------//
 
 rnr::CScene* CFileSystem::GetScene( const std::string &name )
 {
-	auto it = m_sceneList.find( hash::Get( name ) );
+	auto item = m_sceneList.Search(hash::Get(name));
 
-	return it != m_sceneList.end() ? it->second : nullptr;
+	return item ? item->GetData() : nullptr;
 }
 
 // ----------------------------------------------------------------------//

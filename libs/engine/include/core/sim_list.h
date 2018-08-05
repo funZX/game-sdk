@@ -307,7 +307,7 @@ template<class T> void CList<T>::RemoveAll()
 	{
 		temp	= m_first->m_next;
 
-		SIM_SAFE_DELETE m_first;
+		SIM_SAFE_DELETE(m_first);
 
 		m_first	= temp;
 	}

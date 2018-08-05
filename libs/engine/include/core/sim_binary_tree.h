@@ -1,8 +1,10 @@
-#include <core/sim_core.h>
-#include <core/sim_memory_pool.h>
-
 #ifndef __SIM_BINARY_TREE_H
 #define __SIM_BINARY_TREE_H
+
+#include <core/sim_core.h>
+#include <core/sim_memory_pool.h>
+#include <core/sim_stack.h>
+
 
 #if SIM_DEBUG
 	#include <iostream>
@@ -56,6 +58,8 @@ public:
 	bool				IsRight()					{ return m_parent->m_right == this; }
 	bool				IsParent()					{ return m_left || m_right; }
 
+
+
 // ----------------------------------------------------------------------//
 
 	CTreeNode* GetSibling()
@@ -87,26 +91,16 @@ public:
 		return GetParent()->GetParent();	
 	}
 
-#if SIM_DEBUG
-	virtual const std::string N() 
-	{
-		return "";
-	}
-
-	template<typename D> 
-	const std::string& GetName( D d );
-#endif
-
-// ----------------------------------------------------------------------//
+//----------------------------------------------------------------------//
 protected:
 // ----------------------------------------------------------------------//
-	K								m_key;
-	D								m_data;
+	K					m_key;
+	D					m_data;
 
-	CTreeNode *						m_parent;
+	CTreeNode *			m_parent;
 
-	CTreeNode*						m_left;
-	CTreeNode*						m_right;
+	CTreeNode*			m_left;
+	CTreeNode*			m_right;
 
 // ----------------------------------------------------------------------//
 
@@ -143,14 +137,43 @@ public:
 	}
 
 private:
-// ----------------------------------------------------------------------//
+	// ----------------------------------------------------------------------//
 	static CMemoryPool<CBinaryTreeNode<K, D>, k_Pool_Size * sizeof(CBinaryTreeNode<K, D>)>	 m_pool;
-// ----------------------------------------------------------------------//
-public:
-// ----------------------------------------------------------------------//	
-	CTreeNode*		m_root;
-// ----------------------------------------------------------------------//	
+	// ----------------------------------------------------------------------//
 
+protected:
+	// ----------------------------------------------------------------------//	
+	CTreeNode*				m_root;
+	// ----------------------------------------------------------------------//	
+
+public:
+	// ----------------------------------------------------------------------//	
+	inline CTreeNode*		GetRoot() { return m_root;  }
+	// ----------------------------------------------------------------------//	
+
+	void DeleteAll()
+	{
+		CStack<CTreeNode*> stack;
+		stack.Push( m_root );
+
+		while (stack.Count() > 0)
+		{
+			auto node = *stack.Top();
+			stack.Pop();
+
+			if (node == nullptr)
+				continue;
+
+			SIM_DELETE(node->GetData());
+
+			stack.Push(node->GetLeft());
+			stack.Push(node->GetRight());
+		}
+
+		RemoveAll();
+	}
+
+	// ----------------------------------------------------------------------//	
 	void RemoveAll()
 	{
 		CTreeNode* subRoot	= m_root;
@@ -348,9 +371,9 @@ public:
 
 // ----------------------------------------------------------------------//
 
-#if SIM_DEBUG
 	void Print( CTreeNode* subRoot, u32 indent )
 	{
+#if SIM_DEBUG
 		if( subRoot == nullptr )
 			return;
 
@@ -363,15 +386,18 @@ public:
 		if ( subRoot->GetRight()) 
 			std::cout<<" /\n" << std::setw(indent) << ' ';
 
-		std::cout << GetName( subRoot->GetData() ).c_str() << subRoot->N() << "\n ";
+		IEngineItem* item = dynamic_cast<IEngineItem*>(subRoot->GetData());
+		if (item != nullptr)
+			std::cout << item->GetName().c_str() << "\n ";
 
 		if( subRoot->GetLeft() )
 		{
 			std::cout << std::setw(indent) << ' ' <<" \\\n";
 			Print( subRoot->GetLeft(), indent + 6 );
 		}
-	}
 #endif
+
+	}
 // ----------------------------------------------------------------------//
 
 protected:
