@@ -29,10 +29,10 @@ CTexture::CTexture()
 {
 	m_iD		= 0;
 
-	m_wrap		= k_Wrap_Default;
-	m_filter	= k_Filter_Default;
-	m_format	= k_Format_Default;
-	m_type		= k_Type_Default;
+	m_wrap		= Wrap::Clamp;
+	m_filter	= Filter::Nearest;
+	m_format	= Format::RGB565;
+	m_type		= Type::PVR;
 
 	m_bits		= 0;
 	m_width		= 0;
@@ -58,7 +58,7 @@ CTexture::~CTexture()
 
 // ----------------------------------------------------------------------//
 
-u8* CTexture::LoadTGA( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, K_FORMAT *format )
+u8* CTexture::LoadTGA( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, Format *format )
 {
 	u8 *buf = nullptr;
 	u32 size;
@@ -162,7 +162,15 @@ u8* CTexture::LoadTGA( io::CMemStream* memstream, u32 *width, u32 *height, u32 *
 		buf = flip;
 	}
 
-	static const K_FORMAT fMap[] = { k_Format_Default, k_Format_Luminance, k_Format_LuminanceAlpha, k_Format_RGB, k_Format_RGBA };
+	static const Format fMap[] = 
+	{ 
+		Format::RGB,
+		Format::Luminance,
+		Format::LuminanceAlpha, 
+		Format::RGB, 
+		Format::RGBA 
+	};
+
 	*format = fMap[ b ];
 
 	*width	= w;
@@ -174,7 +182,7 @@ u8* CTexture::LoadTGA( io::CMemStream* memstream, u32 *width, u32 *height, u32 *
 
 // ----------------------------------------------------------------------//
 
-u8*	CTexture::LoadPVR( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, K_FORMAT *format )
+u8*	CTexture::LoadPVR( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, Format *format )
 {
 	static char Signature[]			= "PVR!";
 	static u32*	SigU32				= (u32*) Signature;
@@ -201,17 +209,17 @@ u8*	CTexture::LoadPVR( io::CMemStream* memstream, u32 *width, u32 *height, u32 *
     buf = ( u8* ) memstream->Drop();
 
 	if( formatFlags == FlagTypePVR2 )
-		*format = k_Format_Compressed2Bpp;
+		*format = Format::Compressed2Bpp;
 	
 	if( formatFlags == FlagTypePVR4 )
-		*format = k_Format_Compressed4Bpp;
+		*format = Format::Compressed4Bpp;
 
 	return buf;
 }
 
 // ----------------------------------------------------------------------//
 
-u8*	CTexture::LoadMIP( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, K_FORMAT *format )
+u8*	CTexture::LoadMIP( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, Format *format )
 {
     TMIPHeader *header = nullptr;
 
@@ -221,7 +229,7 @@ u8*	CTexture::LoadMIP( io::CMemStream* memstream, u32 *width, u32 *height, u32 *
 	*width	= header->dwWidth;
 	*height = header->dwHeight;
 	*bits	= header->dwBits;
-	*format = ( K_FORMAT) header->dwFormat;
+	*format = ( Format) header->dwFormat;
 
 	buf		= ( u8* ) memstream->Drop();
 
@@ -244,7 +252,7 @@ void CTexture::GenerateMipmapsPVR( u8 *buf, u32 maxLevel )
 
 	while( pvrOff < pvrLen && level < maxLevel )
 	{
-		if( m_format == k_Format_Compressed4Bpp )
+		if( m_format == Format::Compressed4Bpp )
 		{
 			bs = 16;
 			bw = w >> 2;
@@ -264,7 +272,17 @@ void CTexture::GenerateMipmapsPVR( u8 *buf, u32 maxLevel )
 
 		pvrSize = bw * bh * ( (bs  * bpp) >> 3 );
 
-		glCompressedTexImage2D( GL_TEXTURE_2D, level, m_format, w, h, 0, pvrSize, pvr );
+		glCompressedTexImage2D(
+			GL_TEXTURE_2D, 
+			level,
+			EnumValue(m_format),
+			w, 
+			h,
+			0,
+			pvrSize,
+			pvr 
+		);
+
 		SIM_CHECK_OPENGL();
 
 		pvrOff += pvrSize;
@@ -290,30 +308,30 @@ void CTexture::GenerateMipmapsMIP( u8 *buf, u32 maxLevel )
 	s32 mipSize = 0;
 	u32 mipOff	= 0;
 
-	K_FORMAT format	= k_Format_RGBA;
+	Format format	= Format::RGBA;
 	GLenum type		= GL_UNSIGNED_BYTE;
 
-	if( m_format == k_Format_RGB || m_format == k_Format_RGB565 )
-		format = k_Format_RGB;
+	if( m_format == Format::RGB || m_format == Format::RGB565 )
+		format = Format::RGB;
 
-	if( m_format == k_Format_RGB565 )
+	if( m_format == Format::RGB565 )
 		type = GL_UNSIGNED_SHORT_5_6_5;
 
-	if( m_format == k_Format_RGB5A1 )
+	if( m_format == Format::RGB5A1 )
 		type = GL_UNSIGNED_SHORT_5_5_5_1;
 
-	if( m_format == k_Format_RGBA4 )
+	if( m_format == Format::RGBA4 )
 		type = GL_UNSIGNED_SHORT_4_4_4_4;
 
 	while( level < SIM_MIN( header->dwNumMipmaps, maxLevel ) )
 	{
 		glTexImage2D( GL_TEXTURE_2D,
 			level,
-			format,
+			EnumValue(format),
 			w,
 			h,
 			0,
-			format,
+			EnumValue(format),
 			type,
 			mip );
 		
@@ -332,13 +350,13 @@ void CTexture::GenerateMipmapsMIP( u8 *buf, u32 maxLevel )
 
 // ----------------------------------------------------------------------//
 
-void CTexture::ApplyWrap(CTexture *tex, K_WRAP wrap)
+void CTexture::ApplyWrap(CTexture *tex, Wrap wrap)
 {
 	tex->m_wrap = wrap;
 
 	glBindTexture( GL_TEXTURE_2D, tex->m_iD );
 
-	if (tex->m_wrap == k_Wrap_Clamp)
+	if (tex->m_wrap == Wrap::Clamp)
 	{
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -351,7 +369,7 @@ void CTexture::ApplyWrap(CTexture *tex, K_WRAP wrap)
 }
 // ----------------------------------------------------------------------//
 
-void CTexture::ApplyFilter( CTexture *tex, K_FILTER filter )
+void CTexture::ApplyFilter( CTexture *tex, Filter filter )
 {
 	tex->m_filter = filter;
 
@@ -359,34 +377,34 @@ void CTexture::ApplyFilter( CTexture *tex, K_FILTER filter )
 
 	switch( tex->m_filter )
 	{
-	case k_Filter_Nearest:
+	case Filter::Nearest:
 		{
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
 			break;
 		}
 
-	case k_Filter_Linear:
+	case Filter::Linear:
 		{
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST );
 		}
 
-	case k_Filter_Bilinear:
+	case Filter::Bilinear:
 		{
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST );
 			break;
 		}
 
-	case k_Filter_Trilinear:
+	case Filter::Trilinear:
 		{
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 			break;
 		}
 
-	case k_Filter_Quadlinear:
+	case Filter::Quadlinear:
 		{
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 			glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR );
@@ -399,7 +417,7 @@ void CTexture::ApplyFilter( CTexture *tex, K_FILTER filter )
 
 u32 CTexture::Generate(   u8 *buf,
 						  u32 width, u32 height,
-						  K_TYPE type, K_WRAP wrap, K_FILTER filter, K_FORMAT format )
+						  Type type, Wrap wrap, Filter filter, Format format )
 {
 	SIM_ASSERT( buf != nullptr );
 
@@ -416,32 +434,32 @@ u32 CTexture::Generate(   u8 *buf,
 	CTexture::ApplyWrap(this, wrap);
 	CTexture::ApplyFilter(this, filter);
 
-	if( m_format != k_Format_Compressed2Bpp && m_format != k_Format_Compressed4Bpp )
+	if( m_format != Format::Compressed2Bpp && m_format != Format::Compressed4Bpp )
 	{
-		bool isTGA = ( type == k_Type_TGA );
+		bool isTGA = ( type == Type::TGA );
 
 		if( isTGA )
 		{
 			glTexImage2D( GL_TEXTURE_2D,
 				0,
-				m_format,
+				EnumValue(m_format),
 				m_width,
 				m_height,
 				0,
-				m_format,
+				EnumValue(m_format),
 				GL_UNSIGNED_BYTE,
 				&buf[ 0 ] );
 
-			if( m_filter != k_Filter_Nearest ) {
+			if( m_filter != Filter::Nearest ) {
 				glGenerateMipmap( GL_TEXTURE_2D );
 			}
 		}
 		else {
-			GenerateMipmapsMIP( buf, m_filter != k_Filter_Nearest ? MaxMipmapLevel : 1 );
+			GenerateMipmapsMIP( buf, m_filter != Filter::Nearest ? MaxMipmapLevel : 1 );
 		}
 	}
 	else {
-		GenerateMipmapsPVR( buf, m_filter != k_Filter_Nearest ? MaxMipmapLevel : 1 );
+		GenerateMipmapsPVR( buf, m_filter != Filter::Nearest ? MaxMipmapLevel : 1 );
 	}
 
 	glBindTexture( GL_TEXTURE_2D, 0 );
@@ -453,21 +471,21 @@ u32 CTexture::Generate(   u8 *buf,
 
 // ----------------------------------------------------------------------//
 
-u32 CTexture::Generate( io::CMemStream* memstream, K_TYPE type, K_WRAP wrap, K_FILTER filter )
+u32 CTexture::Generate( io::CMemStream* memstream, Type type, Wrap wrap, Filter filter )
 {
 	u8 *buf = nullptr;
 
 	switch( type )
 	{
-	case k_Type_TGA:
+	case Type::TGA:
 		buf = LoadTGA( memstream, &m_width, &m_height, &m_bits, &m_format );
 		break;
 
-	case k_Type_PVR:
+	case Type::PVR:
 		buf = LoadPVR( memstream, &m_width, &m_height, &m_bits, &m_format );
 		break;
 
-	case k_Type_MIP:
+	case Type::MIP:
 		buf = LoadMIP( memstream, &m_width, &m_height, &m_bits, &m_format );
 		break;
 	}

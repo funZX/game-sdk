@@ -38,19 +38,17 @@ class CSoundSource : public IEngineItem
 {
 public:
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class Loop : u32
 	{
-		k_Loop_Yes,
-		k_Loop_No
-
-	} K_LOOP;
+		Yes,
+		No
+	};
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class Type : u32
 	{
-		k_Type_Ambient,
-		k_Type_Fx
-
-	} K_TYPE;
+		Ambient,
+		Fx
+	};
 	// ------------------------------------------------------------------//
 
 public:
@@ -72,7 +70,7 @@ public:
 
 	void SetSpeed( f32 val );
 	void SetVolume( f32 val );
-	void SetLoop( K_LOOP loop );
+	void SetLoop( Loop loop );
 	void Rewind( void );
 	// ------------------------------------------------------------------//
 
@@ -80,8 +78,8 @@ protected:
 	ALuint			m_ID;
 
 	ALint			m_state;
-	K_TYPE			m_type;
-	K_LOOP			m_loop;
+	Type			m_type;
+	Loop			m_loop;
 
 	CSoundData*		m_soundData;
 };

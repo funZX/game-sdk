@@ -144,19 +144,14 @@ public:
 		CVertexSource::AttributeType				m_compType;
 	};
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class Type : u32
 	{
-		k_Type_None,
-
-		k_Type_Vertex		= GL_VERTEX_SHADER,
-		k_Type_Fragment		= GL_FRAGMENT_SHADER,
-
-		k_Type_Count
-
-	} K_TYPE;
+		Vertex		= GL_VERTEX_SHADER,
+		Fragment	= GL_FRAGMENT_SHADER,
+	};
 	// ------------------------------------------------------------------//
-	CShader( K_TYPE type );
-	CShader( std::string name, K_TYPE type );
+	CShader( Type type );
+	CShader( std::string name, Type type );
 	virtual ~CShader( );
 
 	// ------------------------------------------------------------------//

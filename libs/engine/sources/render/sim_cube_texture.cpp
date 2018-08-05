@@ -76,7 +76,17 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 
 	u32 pvrSize = bw * bh * ( (bs  * bpp) >> 3 );
 
-	glCompressedTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 0, m_format, m_width, m_height, 0, pvrSize, pvr );
+	glCompressedTexImage2D( 
+		GL_TEXTURE_CUBE_MAP_POSITIVE_Z, 
+		0, 
+		EnumValue(m_format),
+		m_width, 
+		m_height,
+		0, 
+		pvrSize,
+		pvr 
+	);
+
 	SIM_CHECK_OPENGL();
 
 	SIM_SAFE_DELETE_ARRAY( buf );
@@ -94,7 +104,17 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 
 	pvrSize = bw * bh * ( (bs  * bpp) >> 3 );
 
-	glCompressedTexImage2D( GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 0, m_format, m_width, m_height, 0, pvrSize, pvr );
+	glCompressedTexImage2D( 
+		GL_TEXTURE_CUBE_MAP_NEGATIVE_Z, 
+		0,
+		EnumValue(m_format),
+		m_width,
+		m_height,
+		0, 
+		pvrSize,
+		pvr
+	);
+
 	SIM_CHECK_OPENGL();
 
 	SIM_SAFE_DELETE_ARRAY( buf );
@@ -112,7 +132,17 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 
 	pvrSize = bw * bh * ( (bs  * bpp) >> 3 );
 
-	glCompressedTexImage2D( GL_TEXTURE_CUBE_MAP_NEGATIVE_X, 0, m_format, m_width, m_height, 0, pvrSize, pvr );
+	glCompressedTexImage2D( 
+		GL_TEXTURE_CUBE_MAP_NEGATIVE_X,
+		0, 
+		EnumValue(m_format),
+		m_width,
+		m_height,
+		0,
+		pvrSize, 
+		pvr 
+	);
+
 	SIM_CHECK_OPENGL();
 
 	SIM_SAFE_DELETE_ARRAY( buf );
@@ -130,7 +160,17 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 
 	pvrSize = bw * bh * ( (bs  * bpp) >> 3 );
 
-	glCompressedTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X, 0, m_format, m_width, m_height, 0, pvrSize, pvr );
+	glCompressedTexImage2D(
+		GL_TEXTURE_CUBE_MAP_POSITIVE_X,
+		0,
+		EnumValue(m_format),
+		m_width, 
+		m_height,
+		0,
+		pvrSize, 
+		pvr
+	);
+
 	SIM_CHECK_OPENGL();
 
 	SIM_SAFE_DELETE_ARRAY( buf );
@@ -148,7 +188,17 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 
 	pvrSize = bw * bh * ( (bs  * bpp) >> 3 );
 
-	glCompressedTexImage2D( GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 0, m_format, m_width, m_height, 0, pvrSize, pvr );
+	glCompressedTexImage2D( 
+		GL_TEXTURE_CUBE_MAP_NEGATIVE_Y, 
+		0, 
+		EnumValue(m_format),
+		m_width, 
+		m_height, 
+		0,
+		pvrSize,
+		pvr 
+	);
+
 	SIM_CHECK_OPENGL();
 
 	SIM_SAFE_DELETE_ARRAY( buf );
@@ -166,7 +216,17 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 
 	pvrSize = bw * bh * ( (bs  * bpp) >> 3 );
 
-	glCompressedTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_Y, 0, m_format, m_width, m_height, 0, pvrSize, pvr );
+	glCompressedTexImage2D( 
+		GL_TEXTURE_CUBE_MAP_POSITIVE_Y,
+		0, 
+		EnumValue(m_format),
+		m_width,
+		m_height,
+		0,
+		pvrSize, 
+		pvr 
+	);
+
 	SIM_CHECK_OPENGL();
 	
 	SIM_SAFE_DELETE_ARRAY( buf );

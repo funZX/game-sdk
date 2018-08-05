@@ -28,8 +28,8 @@ namespace rnr
 CRenderTexture::CRenderTexture()
 	: CTexture()
 {
-	m_type			= k_Type_RGB;
-	m_format		= k_Format_RGB;
+	m_type			= Type::RGB;
+	m_format		= Format::RGB;
 
 	m_bufferiD		= 0;
 }
@@ -64,8 +64,8 @@ void CRenderTexture::Generate( u32 width, u32 height )
 	glBindFramebuffer(GL_FRAMEBUFFER, m_bufferiD);
 
 	glGenTextures( 1, &m_iD );
-	CTexture::ApplyWrap(this, CTexture::k_Wrap_Clamp);
-	CTexture::ApplyFilter(this, CTexture::k_Filter_Nearest);
+	CTexture::ApplyWrap(this, CTexture::Wrap::Clamp);
+	CTexture::ApplyFilter(this, CTexture::Filter::Nearest);
 	glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0 );
 
 	glFramebufferTexture2D( GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_iD, 0 );

@@ -138,8 +138,8 @@ void CEngine::InitEffect()
 		"	gl_FragColor = col;"
 		"}";
 
-	CShader vsh("vsh", CShader::k_Type_Vertex);
-	CShader fsh("fsh", CShader::k_Type_Fragment);
+	CShader vsh("vsh", CShader::Type::Vertex);
+	CShader fsh("fsh", CShader::Type::Fragment);
 
 	vsh.Load(defaultVSH);
 	fsh.Load(defaultFSH);

@@ -37,69 +37,60 @@ public:
 	virtual ~CTexture();
 
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class Wrap : u32
 	{
-		k_Wrap_Repeat,
-		k_Wrap_Clamp,
-
-		k_Wrap_Default = k_Wrap_Clamp,
-	} K_WRAP;
+		Repeat,
+		Clamp,
+	};
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class Filter : u32
 	{
-		k_Filter_Nearest,
-		k_Filter_Linear,
-		k_Filter_Bilinear,
-		k_Filter_Trilinear,
-		k_Filter_Quadlinear,
-
-		k_Filter_Default = k_Filter_Quadlinear,
-	} K_FILTER;
+		Nearest,
+		Linear,
+		Bilinear,
+		Trilinear,
+		Quadlinear,
+	};
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class Format : u32
 	{
-		k_Format_Alpha				=	GL_ALPHA,
-		k_Format_Luminance			=	GL_LUMINANCE,
-		k_Format_LuminanceAlpha		=	GL_LUMINANCE_ALPHA,
-		k_Format_RGB				=	GL_RGB,
-		k_Format_RGBA				=	GL_RGBA,
-		k_Format_RGB565				=	GL_RGB565,
-		k_Format_RGB5A1				=	GL_RGB5_A1,
-		k_Format_RGBA4				=	GL_RGBA4,
-		k_Format_Compressed2Bpp		=	GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG,
-		k_Format_Compressed4Bpp		=	GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG,
-
-		k_Format_Default			= k_Format_RGB,
-	} K_FORMAT;
+		Alpha				=	GL_ALPHA,
+		Luminance			=	GL_LUMINANCE,
+		LuminanceAlpha		=	GL_LUMINANCE_ALPHA,
+		RGB					=	GL_RGB,
+		RGBA				=	GL_RGBA,
+		RGB565				=	GL_RGB565,
+		RGB5A1				=	GL_RGB5_A1,
+		RGBA4				=	GL_RGBA4,
+		Compressed2Bpp		=	GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG,
+		Compressed4Bpp		=	GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG,
+	};
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class Type : u32
 	{
-		k_Type_TGA,
-		k_Type_PVR,
-		k_Type_MIP,
-		k_Type_RGB,
-		
-		k_Type_Default = k_Type_RGB,
-
-	} K_TYPE;
+		TGA,
+		PVR,
+		MIP,
+		RGB,
+	};
 	// ------------------------------------------------------------------//
 	u32			            Generate( u8* buf,
                                       u32 width, u32 height,
-                                      K_TYPE type, K_WRAP wrap, K_FILTER filter, K_FORMAT format );
+                                      Type type, Wrap wrap, Filter filter, Format format );
 
-	u32						Generate( io::CMemStream* memstream, K_TYPE type, K_WRAP wrap, K_FILTER filter );
+	u32						Generate( io::CMemStream* memstream, Type type, Wrap wrap, Filter filter );
 
 
-	static u8*	            LoadTGA( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, K_FORMAT *format );
-	static u8*	            LoadPVR( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, K_FORMAT *format );
-	static u8*	            LoadMIP( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, K_FORMAT *format );
+	static u8*	            LoadTGA( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, Format *format );
+	static u8*	            LoadPVR( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, Format *format );
+	static u8*	            LoadMIP( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, Format *format );
 
 	inline u32              GetID() { return m_iD; }
 	inline u32              GetWidth() { return m_width; }
 	inline u32              GetHeight() { return m_height; }
 
-	static void				ApplyFilter( CTexture *tex, K_FILTER filter );
-	static void				ApplyWrap(CTexture *tex, K_WRAP wrap);
+	static void				ApplyFilter( CTexture *tex, Filter filter );
+	static void				ApplyWrap(CTexture *tex, Wrap wrap);
 	// ------------------------------------------------------------------//
 
 public:
@@ -143,11 +134,11 @@ public:
 	public:
 	u32			            m_iD;
 
-	K_FILTER				m_filter;
-	K_WRAP					m_wrap;
-	K_FORMAT			    m_format;
+	Filter					m_filter;
+	Wrap					m_wrap;
+	Format					m_format;
 
-	K_TYPE					m_type;
+	Type					m_type;
 	// ------------------------------------------------------------------//
 };
 

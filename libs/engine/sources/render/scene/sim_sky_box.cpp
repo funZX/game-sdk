@@ -205,8 +205,8 @@ void CSkyBox::InitEffect()
 		"a_PositionL"
 	};
 
-	CShader vsh("", CShader::k_Type_Vertex);
-	CShader fsh("", CShader::k_Type_Fragment);
+	CShader vsh("", CShader::Type::Vertex);
+	CShader fsh("", CShader::Type::Fragment);
 
 	vsh.Load(skyboxVSH);
 	fsh.Load(skyboxFSH);
