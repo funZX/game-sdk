@@ -177,30 +177,30 @@ void CEffect::SetUniforms()
 		{
 			curUni->m_location = loc;
 
-			switch( curUni->m_ID )
+			switch( curUni->m_index )
 			{
-			case CShader::k_Uniform_Matrix_World_Inverse:
+			case CShader::UniformIndex::Matrix_World_Inverse:
 				m_isUsingWorldInverseMatrix = true;
 				break;
-			case CShader::k_Uniform_Matrix_World_InverseT:
+			case CShader::UniformIndex::Matrix_World_InverseT:
 				m_isUsingWorldInverseTMatrix = true;
 				break;
-			case CShader::k_Uniform_Matrix_View_Inverse:
+			case CShader::UniformIndex::Matrix_View_Inverse:
 				m_isUsingViewInverseMatrix = true;
 				break;
-			case CShader::k_Uniform_Matrix_View_InverseT:
+			case CShader::UniformIndex::Matrix_View_InverseT:
 				m_isUsingViewInverseTMatrix = true;
 				break;
-			case CShader::k_Uniform_Matrix_Normal:
+			case CShader::UniformIndex::Matrix_Normal:
 				m_isUsingNormalMatrix = true;
 				break;
-			case CShader::k_Uniform_Matrix_WorldView:
+			case CShader::UniformIndex::Matrix_WorldView:
 				m_isUsingWorldViewMatrix = true;
 				break;
-			case CShader::k_Uniform_Matrix_ViewProjection:
+			case CShader::UniformIndex::Matrix_ViewProjection:
 				m_isUsingViewProjectionMatrix = true;
 				break;
-			case CShader::k_Uniform_Matrix_WorldViewProjection:
+			case CShader::UniformIndex::Matrix_WorldViewProjection:
 				m_isUsingWorldViewProjectionMatrix = true;
 				break;
 			}

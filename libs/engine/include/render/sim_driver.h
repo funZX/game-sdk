@@ -151,7 +151,7 @@ public:
 	} TUniformInfo;
 
 	// ------------------------------------------------------------------//
-	static const u32			k_Skeleton_Bones_Max = 16;
+	static const u32			k_AnimationBones_Max = 16;
 	static CRect2D*				ScreenRect;
 
 	// ------------------------------------------------------------------//
@@ -367,7 +367,7 @@ protected:
 	bool						m_isActiveStackAlteringNormalMatrix;
 	MatrixMode					m_matrixMode;
 
-	TMatrix4					m_skeletonMatrix[ k_Skeleton_Bones_Max ];
+	TMatrix4					m_boneAnimationMatrix[k_AnimationBones_Max];
 
 	u32				            m_textureBind[k_Texture_Channels_Count];
 

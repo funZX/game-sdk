@@ -38,100 +38,98 @@ class CShader : public IEngineItem
 
 public:
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class UniformIndex
 	{
-		k_Uniform_Time,
-		k_Uniform_Color,
-		k_Uniform_Point_Size,
+		Time,
+		Color,
+		Point_Size,
 
-		k_Uniform_Matrix_World,
-		k_Uniform_Matrix_World_Inverse,
-		k_Uniform_Matrix_World_InverseT,
+		Matrix_World,
+		Matrix_World_Inverse,
+		Matrix_World_InverseT,
 
-		k_Uniform_Matrix_View,
-		k_Uniform_Matrix_View_Inverse,
-		k_Uniform_Matrix_View_InverseT,
+		Matrix_View,
+		Matrix_View_Inverse,
+		Matrix_View_InverseT,
 
-		k_Uniform_Matrix_Projection,
+		Matrix_Projection,
 
-		k_Uniform_Matrix_WorldView,
-		k_Uniform_Matrix_ViewProjection,
-		k_Uniform_Matrix_WorldViewProjection,
-		k_Uniform_Matrix_Normal,
-		k_Uniform_Matrix_Skeleton,
+		Matrix_WorldView,
+		Matrix_ViewProjection,
+		Matrix_WorldViewProjection,
+		Matrix_Normal,
+		Matrix_Bone,
 
-		k_Uniform_Matrix_Tex_0,
-		k_Uniform_Matrix_Tex_1,
-		k_Uniform_Matrix_Tex_2,
-		k_Uniform_Matrix_Tex_3,
-		k_Uniform_Matrix_Tex_4,
+		Matrix_Tex_0,
+		Matrix_Tex_1,
+		Matrix_Tex_2,
+		Matrix_Tex_3,
+		Matrix_Tex_4,
 
-		k_Uniform_Eye_Position,
-		k_Uniform_Eye_Direction,
+		Eye_Position,
+		Eye_Direction,
 
-		k_Uniform_Sampler_Tex_0,
-		k_Uniform_Sampler_Tex_1,
-		k_Uniform_Sampler_Tex_2,
-		k_Uniform_Sampler_Tex_3,
-		k_Uniform_Sampler_Tex_4,
+		Sampler_Tex_0,
+		Sampler_Tex_1,
+		Sampler_Tex_2,
+		Sampler_Tex_3,
+		Sampler_Tex_4,
 
-		k_Uniform_Sampler_Cube,
+		Sampler_Cube,
 
-		k_Uniform_Fog_Color,
-		k_Uniform_Fog_Density,
-		k_Uniform_Fog_Select,
-		k_Uniform_Fog_Start,
-		k_Uniform_Fog_End,
+		Fog_Color,
+		Fog_Density,
+		Fog_Select,
+		Fog_Start,
+		Fog_End,
 
-		k_Uniform_Material_Ambient,
-		k_Uniform_Material_Diffuse,
-		k_Uniform_Material_Specular,
-		k_Uniform_Material_Emissive,
-		k_Uniform_Material_Shininess,
-		k_Uniform_Material_Reflectivity,
+		Material_Ambient,
+		Material_Diffuse,
+		Material_Specular,
+		Material_Emissive,
+		Material_Shininess,
+		Material_Reflectivity,
 
-		k_Uniform_Light_Enable_0,
-		k_Uniform_Light_Position_0,
-		k_Uniform_Light_Direction_0,
-		k_Uniform_Light_Ambient_0,
-		k_Uniform_Light_Diffuse_0,
-		k_Uniform_Light_Specular_0,
-		k_Uniform_Light_Intensity_0,
+		Light_Enable_0,
+		Light_Position_0,
+		Light_Direction_0,
+		Light_Ambient_0,
+		Light_Diffuse_0,
+		Light_Specular_0,
+		Light_Intensity_0,
 
-		k_Uniform_Light_Enable_1,
-		k_Uniform_Light_Position_1,
-		k_Uniform_Light_Direction_1,
-		k_Uniform_Light_Ambient_1,
-		k_Uniform_Light_Diffuse_1,
-		k_Uniform_Light_Specular_1,
-		k_Uniform_Light_Intensity_1,
+		Light_Enable_1,
+		Light_Position_1,
+		Light_Direction_1,
+		Light_Ambient_1,
+		Light_Diffuse_1,
+		Light_Specular_1,
+		Light_Intensity_1,
 
-		k_Uniform_Light_Enable_2,
-		k_Uniform_Light_Position_2,
-		k_Uniform_Light_Direction_2,
-		k_Uniform_Light_Ambient_2,
-		k_Uniform_Light_Diffuse_2,
-		k_Uniform_Light_Specular_2,
-		k_Uniform_Light_Intensity_2,
+		Light_Enable_2,
+		Light_Position_2,
+		Light_Direction_2,
+		Light_Ambient_2,
+		Light_Diffuse_2,
+		Light_Specular_2,
+		Light_Intensity_2,
 
-		k_Uniform_Light_Enable_3,
-		k_Uniform_Light_Position_3,
-		k_Uniform_Light_Direction_3,
-		k_Uniform_Light_Ambient_3,
-		k_Uniform_Light_Diffuse_3,
-		k_Uniform_Light_Specular_3,
-		k_Uniform_Light_Intensity_3,
+		Light_Enable_3,
+		Light_Position_3,
+		Light_Direction_3,
+		Light_Ambient_3,
+		Light_Diffuse_3,
+		Light_Specular_3,
+		Light_Intensity_3,
+	};
 
-		k_Uniform_Count
-
-	} K_UNIFORM;
-
+	enum { k_Uniform_Count = 67  };
 	// ------------------------------------------------------------------//
 	struct TUniform
 	{
-		K_UNIFORM									m_ID;
 		const char*									m_name;
 		s32											m_location;
+		UniformIndex								m_index;
 	};
 	// ------------------------------------------------------------------//
 	struct TAttrib

@@ -50,8 +50,8 @@ CDriver::CDriver()
 		Matrix4StackClear( &m_textureStack[ i ] );
 	}
 
-	for( s32 i = 0; i < k_Skeleton_Bones_Max; i++ ) {
-		Matrix4ToIdentity( &m_skeletonMatrix[ i ] );
+	for( s32 i = 0; i < k_AnimationBones_Max; i++ ) {
+		Matrix4ToIdentity( &m_boneAnimationMatrix[ i ] );
 	}
 
 	Matrix4ToIdentity( &m_worldInverseMatrix );
@@ -890,15 +890,14 @@ void CDriver::DisableVertexAttribute( CShader::TAttrib* attrib )
 
 void CDriver::UpdateUniforms( CEffect *effect )
 {
-	m_uniformInfo[ CShader::k_Uniform_Matrix_World ].m_value		= (void*) GetWorldMatrix();
-	m_uniformInfo[ CShader::k_Uniform_Matrix_View ].m_value			= (void*) GetViewMatrix();
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Projection ].m_value	= (void*) GetProjectionMatrix();
-
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_0 ].m_value		= (void*) GetTextureMatrix( TextureChannel::Texture_0 );
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_1 ].m_value		= (void*) GetTextureMatrix( TextureChannel::Texture_1 );
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_2 ].m_value		= (void*) GetTextureMatrix( TextureChannel::Texture_2 );
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_3 ].m_value		= (void*) GetTextureMatrix( TextureChannel::Texture_3 );
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_4 ].m_value		= (void*) GetTextureMatrix( TextureChannel::Texture_4 );
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_World) ].m_value		= (void*) GetWorldMatrix();
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_View) ].m_value		= (void*) GetViewMatrix();
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Projection) ].m_value= (void*) GetProjectionMatrix();
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_0) ].m_value		= (void*) GetTextureMatrix( TextureChannel::Texture_0 );
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_1) ].m_value		= (void*) GetTextureMatrix( TextureChannel::Texture_1 );
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_2) ].m_value		= (void*) GetTextureMatrix( TextureChannel::Texture_2 );
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_3) ].m_value		= (void*) GetTextureMatrix( TextureChannel::Texture_3 );
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_4) ].m_value		= (void*) GetTextureMatrix( TextureChannel::Texture_4 );
 
 	if( m_isWorldMatrixDirty )
 	{
@@ -964,7 +963,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 void CDriver::SetUniform( CShader::TUniform* uni )
 {
-	TUniformInfo *uniInfo		= &m_uniformInfo[ uni->m_ID ];
+	TUniformInfo *uniInfo		= &m_uniformInfo[ EnumValue(uni->m_index) ];
 	SetUniformCallback callback = uniInfo->m_callback;
 	
 	(this->*callback)( uni->m_location, uniInfo->m_value, uniInfo->m_count );	
@@ -1108,98 +1107,98 @@ void CDriver::MatrixDirty()
 void CDriver::InitUniform()
 {
 	// -----------------------------------------
-	m_uniformInfo[ CShader::k_Uniform_Time ].m_value = &m_timer;
-	m_uniformInfo[ CShader::k_Uniform_Time ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Time ].m_callback = &CDriver::SetUniform1f;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Time) ].m_value = &m_timer;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Time) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Time) ].m_callback = &CDriver::SetUniform1f;
 
-	m_uniformInfo[ CShader::k_Uniform_Color ].m_value = &m_color;
-	m_uniformInfo[ CShader::k_Uniform_Color ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Color ].m_callback = &CDriver::SetUniform4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Color) ].m_value = &m_color;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Color) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Color) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Point_Size ].m_value = &m_pointSize;
-	m_uniformInfo[ CShader::k_Uniform_Point_Size ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Point_Size ].m_callback = &CDriver::SetUniform1f;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Point_Size) ].m_value = &m_pointSize;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Point_Size) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Point_Size) ].m_callback = &CDriver::SetUniform1f;
 
 	// -----------------------------------------
-	m_uniformInfo[ CShader::k_Uniform_Matrix_World ].m_value = nullptr;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_World ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_World ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_World) ].m_value = nullptr;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_World) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_World) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_World_Inverse ].m_value = &m_worldInverseMatrix;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_World_Inverse ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_World_Inverse ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_World_Inverse) ].m_value = &m_worldInverseMatrix;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_World_Inverse) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_World_Inverse) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_World_InverseT ].m_value = &m_worldInverseTMatrix;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_World_InverseT ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_World_InverseT ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_World_InverseT) ].m_value = &m_worldInverseTMatrix;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_World_InverseT) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_World_InverseT) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_View ].m_value = nullptr;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_View ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_View ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_View) ].m_value = nullptr;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_View) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_View) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_View_Inverse ].m_value = &m_viewInverseMatrix;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_View_Inverse ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_View_Inverse ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_View_Inverse) ].m_value = &m_viewInverseMatrix;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_View_Inverse) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_View_Inverse) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_View_InverseT ].m_value = &m_viewInverseTMatrix;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_View_InverseT ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_View_InverseT ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_View_InverseT) ].m_value = &m_viewInverseTMatrix;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_View_InverseT) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_View_InverseT) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Projection ].m_value = nullptr;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Projection ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Projection ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Projection) ].m_value = nullptr;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Projection) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Projection) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
 	// -------------------------------Matrix_----------
-	m_uniformInfo[ CShader::k_Uniform_Matrix_WorldView ].m_value = &m_worldViewMatrix;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_WorldView ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_WorldView ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_WorldView) ].m_value = &m_worldViewMatrix;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_WorldView) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_WorldView) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_ViewProjection ].m_value = &m_viewProjectionMatrix;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_ViewProjection ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_ViewProjection ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_ViewProjection) ].m_value = &m_viewProjectionMatrix;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_ViewProjection) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_ViewProjection) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_WorldViewProjection ].m_value = &m_worldViewProjectionMatrix;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_WorldViewProjection ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_WorldViewProjection ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_WorldViewProjection) ].m_value = &m_worldViewProjectionMatrix;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_WorldViewProjection) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_WorldViewProjection) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Normal ].m_value = &m_normalMatrix;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Normal ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Normal ].m_callback = &CDriver::SetUniformMatrix3fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Normal) ].m_value = &m_normalMatrix;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Normal) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Normal) ].m_callback = &CDriver::SetUniformMatrix3fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Skeleton ].m_value = &m_skeletonMatrix;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Skeleton ].m_count = k_Skeleton_Bones_Max;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Skeleton ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Bone) ].m_value = &m_boneAnimationMatrix;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Bone) ].m_count = k_AnimationBones_Max;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Bone) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
 	// -----------------------------------------
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_0 ].m_value = nullptr;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_0 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_0 ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_0) ].m_value = nullptr;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_0) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_0) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_1 ].m_value = nullptr;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_1 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_1 ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_1) ].m_value = nullptr;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_1) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_1) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_2 ].m_value = nullptr;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_2 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_2 ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_2) ].m_value = nullptr;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_2) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_2) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_3 ].m_value = nullptr;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_3 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_3 ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_3) ].m_value = nullptr;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_3) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_3) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_4 ].m_value = nullptr;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_4 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Matrix_Tex_4 ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_4) ].m_value = nullptr;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_4) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Matrix_Tex_4) ].m_callback = &CDriver::SetUniformMatrix4fv;
 	
 	// -----------------------------------------
 
-	m_uniformInfo[ CShader::k_Uniform_Eye_Position ].m_value = &m_eyePosition;
-	m_uniformInfo[ CShader::k_Uniform_Eye_Position ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Eye_Position ].m_callback = &CDriver::SetUniform3fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Eye_Position) ].m_value = &m_eyePosition;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Eye_Position) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Eye_Position) ].m_callback = &CDriver::SetUniform3fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Eye_Direction ].m_value = &m_eyeDirection;
-	m_uniformInfo[ CShader::k_Uniform_Eye_Direction ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Eye_Direction ].m_callback = &CDriver::SetUniform3fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Eye_Direction) ].m_value = &m_eyeDirection;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Eye_Direction) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Eye_Direction) ].m_callback = &CDriver::SetUniform3fv;
 
 	// -----------------------------------------
 	static u32 texSelect[ k_Texture_Channels_Count ] = 
@@ -1211,189 +1210,189 @@ void CDriver::InitUniform()
 		EnumValue(TextureChannel::Texture_4),
 	};
 
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Tex_0 ].m_value = &texSelect[ 0 ];
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Tex_0 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Tex_0 ].m_callback = &CDriver::SetUniform1i;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Tex_0) ].m_value = &texSelect[ 0 ];
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Tex_0) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Tex_0) ].m_callback = &CDriver::SetUniform1i;
 
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Tex_1 ].m_value = &texSelect[ 1 ];
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Tex_1 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Tex_1 ].m_callback = &CDriver::SetUniform1i;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Tex_1) ].m_value = &texSelect[ 1 ];
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Tex_1) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Tex_1) ].m_callback = &CDriver::SetUniform1i;
 
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Tex_2 ].m_value = &texSelect[ 2 ];
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Tex_2 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Tex_2 ].m_callback = &CDriver::SetUniform1i;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Tex_2) ].m_value = &texSelect[ 2 ];
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Tex_2) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Tex_2) ].m_callback = &CDriver::SetUniform1i;
 
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Tex_3 ].m_value = &texSelect[ 3 ];
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Tex_3 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Tex_3 ].m_callback = &CDriver::SetUniform1i;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Tex_3) ].m_value = &texSelect[ 3 ];
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Tex_3) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Tex_3) ].m_callback = &CDriver::SetUniform1i;
 
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Tex_4 ].m_value = &texSelect[ 4 ];
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Tex_4 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Tex_4 ].m_callback = &CDriver::SetUniform1i;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Tex_4) ].m_value = &texSelect[ 4 ];
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Tex_4) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Tex_4) ].m_callback = &CDriver::SetUniform1i;
 
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Cube ].m_value = &texSelect[ 4 ];
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Cube ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Sampler_Cube ].m_callback = &CDriver::SetUniform1i;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Cube) ].m_value = &texSelect[ 4 ];
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Cube) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Sampler_Cube) ].m_callback = &CDriver::SetUniform1i;
 
-	m_uniformInfo[ CShader::k_Uniform_Fog_Color ].m_value = &m_fogColor;
-	m_uniformInfo[ CShader::k_Uniform_Fog_Color ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Fog_Color ].m_callback = &CDriver::SetUniform4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Fog_Color) ].m_value = &m_fogColor;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Fog_Color) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Fog_Color) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Fog_Density ].m_value = &m_fogDensity;
-	m_uniformInfo[ CShader::k_Uniform_Fog_Density ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Fog_Density ].m_callback = &CDriver::SetUniform1f;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Fog_Density) ].m_value = &m_fogDensity;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Fog_Density) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Fog_Density) ].m_callback = &CDriver::SetUniform1f;
 
-	m_uniformInfo[ CShader::k_Uniform_Fog_Select ].m_value = &m_fogMode;
-	m_uniformInfo[ CShader::k_Uniform_Fog_Select ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Fog_Select ].m_callback = &CDriver::SetUniform1i;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Fog_Select) ].m_value = &m_fogMode;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Fog_Select) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Fog_Select) ].m_callback = &CDriver::SetUniform1i;
 
-	m_uniformInfo[ CShader::k_Uniform_Fog_Start ].m_value = &m_fogStart;
-	m_uniformInfo[ CShader::k_Uniform_Fog_Start ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Fog_Start ].m_callback = &CDriver::SetUniform1f;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Fog_Start) ].m_value = &m_fogStart;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Fog_Start) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Fog_Start) ].m_callback = &CDriver::SetUniform1f;
 
-	m_uniformInfo[ CShader::k_Uniform_Fog_End ].m_value = &m_fogEnd;
-	m_uniformInfo[ CShader::k_Uniform_Fog_End ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Fog_End ].m_callback = &CDriver::SetUniform1f;
-
-	// -----------------------------------------
-
-	m_uniformInfo[ CShader::k_Uniform_Material_Ambient ].m_value = &m_materialAmbient;
-	m_uniformInfo[ CShader::k_Uniform_Material_Ambient ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Material_Ambient ].m_callback = &CDriver::SetUniform4fv;
-
-	m_uniformInfo[ CShader::k_Uniform_Material_Diffuse ].m_value = &m_materialDiffuse;
-	m_uniformInfo[ CShader::k_Uniform_Material_Diffuse ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Material_Diffuse ].m_callback = &CDriver::SetUniform4fv;
-
-	m_uniformInfo[ CShader::k_Uniform_Material_Specular  ].m_value = &m_materialSpecular;
-	m_uniformInfo[ CShader::k_Uniform_Material_Specular  ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Material_Specular  ].m_callback = &CDriver::SetUniform4fv;
-
-	m_uniformInfo[ CShader::k_Uniform_Material_Emissive  ].m_value = &m_materialEmissive;
-	m_uniformInfo[ CShader::k_Uniform_Material_Emissive  ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Material_Emissive  ].m_callback = &CDriver::SetUniform4fv;
-
-	m_uniformInfo[ CShader::k_Uniform_Material_Shininess ].m_value = &m_materialShininess;
-	m_uniformInfo[ CShader::k_Uniform_Material_Shininess ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Material_Shininess ].m_callback = &CDriver::SetUniform1f;
-
-	m_uniformInfo[ CShader::k_Uniform_Material_Reflectivity ].m_value = &m_materialReflectivity;
-	m_uniformInfo[ CShader::k_Uniform_Material_Reflectivity ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Material_Reflectivity ].m_callback = &CDriver::SetUniform1f;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Fog_End) ].m_value = &m_fogEnd;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Fog_End) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Fog_End) ].m_callback = &CDriver::SetUniform1f;
 
 	// -----------------------------------------
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Enable_0 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_0)].m_isEnabled;
-	m_uniformInfo[ CShader::k_Uniform_Light_Enable_0 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Enable_0 ].m_callback = &CDriver::SetUniform1i;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Ambient) ].m_value = &m_materialAmbient;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Ambient) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Ambient) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Position_0 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_0)].m_position;
-	m_uniformInfo[ CShader::k_Uniform_Light_Position_0 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Position_0 ].m_callback = &CDriver::SetUniform3fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Diffuse) ].m_value = &m_materialDiffuse;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Diffuse) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Diffuse) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Direction_0 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_0)].m_direction;
-	m_uniformInfo[ CShader::k_Uniform_Light_Direction_0 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Direction_0 ].m_callback = &CDriver::SetUniform3fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Specular)  ].m_value = &m_materialSpecular;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Specular)  ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Specular)  ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Ambient_0 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_0)].m_ambient;
-	m_uniformInfo[ CShader::k_Uniform_Light_Ambient_0 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Ambient_0 ].m_callback = &CDriver::SetUniform4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Emissive)  ].m_value = &m_materialEmissive;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Emissive)  ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Emissive)  ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Diffuse_0 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_0)].m_diffuse;
-	m_uniformInfo[ CShader::k_Uniform_Light_Diffuse_0 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Diffuse_0 ].m_callback = &CDriver::SetUniform4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Shininess) ].m_value = &m_materialShininess;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Shininess) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Shininess) ].m_callback = &CDriver::SetUniform1f;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Specular_0 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_0)].m_specular;
-	m_uniformInfo[ CShader::k_Uniform_Light_Specular_0 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Specular_0 ].m_callback = &CDriver::SetUniform4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Reflectivity) ].m_value = &m_materialReflectivity;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Reflectivity) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Material_Reflectivity) ].m_callback = &CDriver::SetUniform1f;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Intensity_0 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_0)].m_intensity;
-	m_uniformInfo[ CShader::k_Uniform_Light_Intensity_0 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Intensity_0 ].m_callback = &CDriver::SetUniform1f;
+	// -----------------------------------------
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Enable_1 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_1)].m_isEnabled;
-	m_uniformInfo[ CShader::k_Uniform_Light_Enable_1 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Enable_1 ].m_callback = &CDriver::SetUniform1i;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Enable_0) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_0)].m_isEnabled;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Enable_0) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Enable_0) ].m_callback = &CDriver::SetUniform1i;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Position_1 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_1)].m_position;
-	m_uniformInfo[ CShader::k_Uniform_Light_Position_1 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Position_1 ].m_callback = &CDriver::SetUniform3fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Position_0) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_0)].m_position;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Position_0) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Position_0) ].m_callback = &CDriver::SetUniform3fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Direction_1 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_1)].m_direction;
-	m_uniformInfo[ CShader::k_Uniform_Light_Direction_1 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Direction_1 ].m_callback = &CDriver::SetUniform3fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Direction_0) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_0)].m_direction;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Direction_0) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Direction_0) ].m_callback = &CDriver::SetUniform3fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Ambient_1 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_1)].m_ambient;
-	m_uniformInfo[ CShader::k_Uniform_Light_Ambient_1 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Ambient_1 ].m_callback = &CDriver::SetUniform4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Ambient_0) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_0)].m_ambient;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Ambient_0) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Ambient_0) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Diffuse_1 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_1)].m_diffuse;
-	m_uniformInfo[ CShader::k_Uniform_Light_Diffuse_1 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Diffuse_1 ].m_callback = &CDriver::SetUniform4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Diffuse_0) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_0)].m_diffuse;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Diffuse_0) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Diffuse_0) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Specular_1 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_1)].m_specular;
-	m_uniformInfo[ CShader::k_Uniform_Light_Specular_1 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Specular_1 ].m_callback = &CDriver::SetUniform4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Specular_0) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_0)].m_specular;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Specular_0) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Specular_0) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Intensity_1 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_1)].m_intensity;
-	m_uniformInfo[ CShader::k_Uniform_Light_Intensity_1 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Intensity_1 ].m_callback = &CDriver::SetUniform1f;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Intensity_0) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_0)].m_intensity;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Intensity_0) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Intensity_0) ].m_callback = &CDriver::SetUniform1f;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Enable_2 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_2)].m_isEnabled;
-	m_uniformInfo[ CShader::k_Uniform_Light_Enable_2 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Enable_2 ].m_callback = &CDriver::SetUniform1i;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Enable_1) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_1)].m_isEnabled;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Enable_1) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Enable_1) ].m_callback = &CDriver::SetUniform1i;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Position_2 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_2)].m_position;
-	m_uniformInfo[ CShader::k_Uniform_Light_Position_2 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Position_2 ].m_callback = &CDriver::SetUniform3fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Position_1) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_1)].m_position;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Position_1) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Position_1) ].m_callback = &CDriver::SetUniform3fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Direction_2 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_2)].m_direction;
-	m_uniformInfo[ CShader::k_Uniform_Light_Direction_2 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Direction_2 ].m_callback = &CDriver::SetUniform3fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Direction_1) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_1)].m_direction;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Direction_1) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Direction_1) ].m_callback = &CDriver::SetUniform3fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Ambient_2 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_2)].m_ambient;
-	m_uniformInfo[ CShader::k_Uniform_Light_Ambient_2 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Ambient_2 ].m_callback = &CDriver::SetUniform4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Ambient_1) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_1)].m_ambient;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Ambient_1) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Ambient_1) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Diffuse_2 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_2)].m_diffuse;
-	m_uniformInfo[ CShader::k_Uniform_Light_Diffuse_2 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Diffuse_2 ].m_callback = &CDriver::SetUniform4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Diffuse_1) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_1)].m_diffuse;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Diffuse_1) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Diffuse_1) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Specular_2 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_2)].m_specular;
-	m_uniformInfo[ CShader::k_Uniform_Light_Specular_2 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Specular_2 ].m_callback = &CDriver::SetUniform4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Specular_1) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_1)].m_specular;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Specular_1) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Specular_1) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Intensity_2 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_2)].m_intensity;
-	m_uniformInfo[ CShader::k_Uniform_Light_Intensity_2 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Intensity_2 ].m_callback = &CDriver::SetUniform1f;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Intensity_1) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_1)].m_intensity;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Intensity_1) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Intensity_1) ].m_callback = &CDriver::SetUniform1f;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Enable_3 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_3)].m_isEnabled;
-	m_uniformInfo[ CShader::k_Uniform_Light_Enable_3 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Enable_3 ].m_callback = &CDriver::SetUniform1i;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Enable_2) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_2)].m_isEnabled;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Enable_2) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Enable_2) ].m_callback = &CDriver::SetUniform1i;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Position_3 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_3)].m_position;
-	m_uniformInfo[ CShader::k_Uniform_Light_Position_3 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Position_3 ].m_callback = &CDriver::SetUniform3fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Position_2) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_2)].m_position;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Position_2) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Position_2) ].m_callback = &CDriver::SetUniform3fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Direction_3 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_3)].m_direction;
-	m_uniformInfo[ CShader::k_Uniform_Light_Direction_3 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Direction_3 ].m_callback = &CDriver::SetUniform3fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Direction_2) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_2)].m_direction;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Direction_2) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Direction_2) ].m_callback = &CDriver::SetUniform3fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Ambient_3 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_3)].m_ambient;
-	m_uniformInfo[ CShader::k_Uniform_Light_Ambient_3 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Ambient_3 ].m_callback = &CDriver::SetUniform4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Ambient_2) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_2)].m_ambient;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Ambient_2) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Ambient_2) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Diffuse_3 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_3)].m_diffuse;
-	m_uniformInfo[ CShader::k_Uniform_Light_Diffuse_3 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Diffuse_3 ].m_callback = &CDriver::SetUniform4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Diffuse_2) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_2)].m_diffuse;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Diffuse_2) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Diffuse_2) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Specular_3 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_3)].m_specular;
-	m_uniformInfo[ CShader::k_Uniform_Light_Specular_3 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Specular_3 ].m_callback = &CDriver::SetUniform4fv;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Specular_2) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_2)].m_specular;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Specular_2) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Specular_2) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ CShader::k_Uniform_Light_Intensity_3 ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_3)].m_intensity;
-	m_uniformInfo[ CShader::k_Uniform_Light_Intensity_3 ].m_count = 1;
-	m_uniformInfo[ CShader::k_Uniform_Light_Intensity_3 ].m_callback = &CDriver::SetUniform1f;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Intensity_2) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_2)].m_intensity;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Intensity_2) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Intensity_2) ].m_callback = &CDriver::SetUniform1f;
+
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Enable_3) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_3)].m_isEnabled;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Enable_3) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Enable_3) ].m_callback = &CDriver::SetUniform1i;
+
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Position_3) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_3)].m_position;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Position_3) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Position_3) ].m_callback = &CDriver::SetUniform3fv;
+
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Direction_3) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_3)].m_direction;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Direction_3) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Direction_3) ].m_callback = &CDriver::SetUniform3fv;
+
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Ambient_3) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_3)].m_ambient;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Ambient_3) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Ambient_3) ].m_callback = &CDriver::SetUniform4fv;
+
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Diffuse_3) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_3)].m_diffuse;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Diffuse_3) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Diffuse_3) ].m_callback = &CDriver::SetUniform4fv;
+
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Specular_3) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_3)].m_specular;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Specular_3) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Specular_3) ].m_callback = &CDriver::SetUniform4fv;
+
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Intensity_3) ].m_value = &m_lightParameters[EnumValue(LightChannel::Light_3)].m_intensity;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Intensity_3) ].m_count = 1;
+	m_uniformInfo[ EnumValue(CShader::UniformIndex::Light_Intensity_3) ].m_callback = &CDriver::SetUniform1f;
 }
 
 // ----------------------------------------------------------------------//
