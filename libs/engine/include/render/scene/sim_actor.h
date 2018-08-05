@@ -49,28 +49,29 @@ public:
 	virtual ~CActor();
 
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class Shape : u32
 	{
-								k_Shape_Box,
-								k_Shape_Sphere,
-								k_Shape_Cylinder,
-								k_Shape_Cone,
-	} K_SHAPE;
+		Box,
+		Sphere,
+		Cylinder,
+		Cone,
+	};
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class Type : u32
 	{
-								k_Type_Default,
-								k_Type_NotCulled,
-								k_Type_Billboard,
-	} K_TYPE;
+		Default,
+		NotCulled,
+		Billboard,
+	};
 	// ------------------------------------------------------------------//
 	typedef struct
 	{
-		K_SHAPE					shape;
-		K_TYPE					type;
+		Shape					shape;
+		Type					type;
 		bool					isVisible;
 		bool					isCulled;
 		bool					isPhysic;
+
 	} TProperties;
 	// ------------------------------------------------------------------//
 
@@ -90,8 +91,8 @@ public:
 	void						Update( f32 dt, void *userData  );
 	void						Render( CDriver *driver );
 
-	inline void					SetShape( K_SHAPE shape )		{ m_properties.shape = shape; }
-	inline K_SHAPE				GetShape()						{ return m_properties.shape; }
+	inline void					SetShape( Shape shape )			{ m_properties.shape = shape; }
+	inline Shape				GetShape()						{ return m_properties.shape; }
 
 	void						SetMesh( CMesh *mesh );
 	inline CMesh*				GetMesh()						{ return m_mesh; }

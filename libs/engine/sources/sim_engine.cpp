@@ -380,15 +380,15 @@ void CEngine::SetCamera( CCamera *camera )
 {
 	if ( camera != nullptr )
 	{
-		m_driver->SelectMatrix(CDriver::k_Select_Matrix_Projection);
+		m_driver->SetMatrixMode(CDriver::MatrixMode::Projection);
 		m_driver->MatrixPush();
 		m_driver->MatrixLoad(camera->GetPerspectiveMatrix());
 
-		m_driver->SelectMatrix(CDriver::k_Select_Matrix_View);
+		m_driver->SetMatrixMode(CDriver::MatrixMode::View);
 		m_driver->MatrixPush();
 		m_driver->MatrixLoad(camera->GetViewMatrix());
 
-		m_driver->SelectMatrix(CDriver::k_Select_Matrix_World);
+		m_driver->SetMatrixMode(CDriver::MatrixMode::World);
 		m_driver->MatrixPush();
 		m_driver->MatrixLoadIdentity();
 
@@ -396,13 +396,13 @@ void CEngine::SetCamera( CCamera *camera )
 	}
 	else
 	{
-		m_driver->SelectMatrix(CDriver::k_Select_Matrix_Projection);
+		m_driver->SetMatrixMode(CDriver::MatrixMode::Projection);
 		m_driver->MatrixPop();
 
-		m_driver->SelectMatrix(CDriver::k_Select_Matrix_View);
+		m_driver->SetMatrixMode(CDriver::MatrixMode::View);
 		m_driver->MatrixPop();
 
-		m_driver->SelectMatrix(CDriver::k_Select_Matrix_World);
+		m_driver->SetMatrixMode(CDriver::MatrixMode::World);
 		m_driver->MatrixPop();
 
 		m_activeCamera = m_camera;
@@ -413,13 +413,13 @@ void CEngine::SetCamera( CCamera *camera )
 
 void CEngine::On2D()
 {
-	m_driver->SelectMatrix( CDriver::k_Select_Matrix_Projection );
+	m_driver->SetMatrixMode( CDriver::MatrixMode::Projection );
 	m_driver->MatrixLoad( m_activeCamera->GetOrthographicMatrix() );
 
-	m_driver->SelectMatrix( CDriver::k_Select_Matrix_View );
+	m_driver->SetMatrixMode( CDriver::MatrixMode::View );
 	m_driver->MatrixLoadIdentity();
 
-	m_driver->SelectMatrix( CDriver::k_Select_Matrix_World );
+	m_driver->SetMatrixMode( CDriver::MatrixMode::World );
 	m_driver->MatrixLoadIdentity();
 
 	m_driver->EnableBatch2D( true );
@@ -436,13 +436,13 @@ void CEngine::Off2D()
 
 void CEngine::On3D()
 {
-	m_driver->SelectMatrix( CDriver::k_Select_Matrix_Projection );
+	m_driver->SetMatrixMode( CDriver::MatrixMode::Projection );
 	m_driver->MatrixLoad( m_activeCamera->GetPerspectiveMatrix() );
 
-	m_driver->SelectMatrix( CDriver::k_Select_Matrix_View );
+	m_driver->SetMatrixMode( CDriver::MatrixMode::View );
 	m_driver->MatrixLoad( m_activeCamera->GetViewMatrix() );
 
-	m_driver->SelectMatrix( CDriver::k_Select_Matrix_World );
+	m_driver->SetMatrixMode( CDriver::MatrixMode::World );
 	m_driver->MatrixLoadIdentity();
 
 	m_camera->Render( m_driver );

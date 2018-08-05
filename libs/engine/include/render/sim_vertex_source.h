@@ -121,15 +121,14 @@ public:
 
 	// ------------------------------------------------------------------//
 	
-	typedef enum
+	enum class Type : u32
 	{
-		k_Type_Line,
-		k_Type_LineStrip,
-		k_Type_Points,
-		k_Type_Triangle,
-		k_Type_TriangleStrip,
-
-	} K_TYPE;
+		Line,
+		LineStrip,
+		Points,
+		Triangle,
+		TriangleStrip,
+	};
 
 	// ------------------------------------------------------------------//
 
@@ -137,7 +136,7 @@ public:
 	inline u32							GetVboSize() const		{ return m_vboSize; }
 	inline u32							GetVertexStride() const	{ return m_vertexStride; }
 	inline u32							GetVertexFormat() const	{ return m_vertexFormat; }
-	inline K_TYPE						GetType() const			{ return m_type; }
+	inline Type							GetType() const			{ return m_type; }
 	inline u32							GetID()					{ return m_iD; }
 
 	u32									Generate();
@@ -155,7 +154,7 @@ public:
 	u32									m_vboSize;
 	f32*								m_vboData;
 
-	K_TYPE								m_type;
+	Type								m_type;
 	// ------------------------------------------------------------------//
 };
 

@@ -41,7 +41,7 @@ CBatch2D::CBatch2D( CDriver *driver )
 	m_vertexGroup						= SIM_NEW CVertexGroup();
 	m_vertexGroup->m_vertexSource		= SIM_NEW CVertexSource();
 
-	m_vertexGroup->m_vertexSource->m_type			= CVertexSource::k_Type_Triangle;
+	m_vertexGroup->m_vertexSource->m_type			= CVertexSource::Type::Triangle;
 	m_vertexGroup->m_vertexSource->m_vertexFormat	= CVertexSource::k_Vertex_Attribute_Format_Position | CVertexSource::k_Vertex_Attribute_Format_TexCoord_0;
 	m_vertexGroup->m_vertexSource->m_vertexStride	= CVertexSource::k_Vertex_Attribute_Offset_Position + CVertexSource::k_Vertex_Attribute_Offset_TexCoord_0;
 

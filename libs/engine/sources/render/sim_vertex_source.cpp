@@ -35,7 +35,7 @@ CVertexSource::CVertexSource()
 	m_vertexStride		= 0;
 	m_vertexFormat 		= 0;
 
-	m_type				= k_Type_Triangle;
+	m_type				= Type::Triangle;
 }
 // ----------------------------------------------------------------------//
 

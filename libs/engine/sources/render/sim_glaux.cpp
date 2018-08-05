@@ -49,7 +49,7 @@ TSphere*	gluNewSphere( s32 numSlices, f32 radius )
 	sphere->vertexGroup->m_vboData = SIM_NEW u16[ numIndices ];
 	sphere->vertexGroup->m_vboSize = numIndices;
 
-	sphere->vertexGroup->m_vertexSource->m_type			= CVertexSource::k_Type_Triangle;
+	sphere->vertexGroup->m_vertexSource->m_type			= CVertexSource::Type::Triangle;
 	sphere->vertexGroup->m_vertexSource->m_vertexFormat	= CVertexSource::k_Vertex_Attribute_Format_Position | CVertexSource::k_Vertex_Attribute_Format_TexCoord_0 | CVertexSource::k_Vertex_Attribute_Format_Normal;
 	sphere->vertexGroup->m_vertexSource->m_vertexStride	= CVertexSource::k_Vertex_Attribute_Offset_Position + CVertexSource::k_Vertex_Attribute_Offset_TexCoord_0 + CVertexSource::k_Vertex_Attribute_Offset_Normal;
 	sphere->vertexGroup->m_vertexSource->m_vboSize		= numVertices;
@@ -320,7 +320,7 @@ TCube* gluNewCube( f32 sideSize )
 	cube->vertexGroup->m_vboData		= SIM_NEW u16[ numIndices ];
 	cube->vertexGroup->m_vboSize	= numIndices;
 
-	cube->vertexGroup->m_vertexSource->m_type			= CVertexSource::k_Type_Triangle;
+	cube->vertexGroup->m_vertexSource->m_type			= CVertexSource::Type::Triangle;
 	cube->vertexGroup->m_vertexSource->m_vertexFormat	= CVertexSource::k_Vertex_Attribute_Format_Position | CVertexSource::k_Vertex_Attribute_Format_TexCoord_0 | CVertexSource::k_Vertex_Attribute_Format_Normal;
 	cube->vertexGroup->m_vertexSource->m_vertexStride	= CVertexSource::k_Vertex_Attribute_Offset_Position + CVertexSource::k_Vertex_Attribute_Offset_TexCoord_0 + CVertexSource::k_Vertex_Attribute_Offset_Normal;
 	cube->vertexGroup->m_vertexSource->m_vboSize	= numVertices;

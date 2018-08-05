@@ -694,7 +694,7 @@ bool CFileSystem::LoadMaterial(const json_t* jsonRoot, s32 index)
 	material->SetShininess( h );
 
 	json_t*  texture = json_object_get( jmr, "texture" );
-	SIM_ASSERT( json_is_array(texture) && CDriver::k_Select_Texture_Count > json_array_size(texture) );
+	SIM_ASSERT( json_is_array(texture) && CDriver::k_Texture_Channels_Count > json_array_size(texture) );
 
 	for (s32 k = 0; k < (s32)json_array_size(texture); k++ )
 	{

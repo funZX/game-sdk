@@ -28,7 +28,7 @@ namespace rnr
 CLight::CLight()
 	: CSceneNode()
 {
-	m_channel	= CDriver::k_Select_Light_0;
+	m_channel	= CDriver::LightChannel::Light_0;
 
 	Vec4ToOne( &m_ambient );
 	Vec4ToOne( &m_diffuse );
@@ -68,7 +68,7 @@ void CLight::Update( f32 dt, void *userData )
 
 void CLight::Render( CDriver *driver )
 {
-	driver->SelectLight( m_channel );
+	driver->SetLightChannel( m_channel );
 
 	driver->SetLightIntensity( m_intensity );
 
