@@ -290,34 +290,34 @@ bool CFileSystem::LoadTexture(const json_t* jsonRoot, s32 index)
 	std::string wrap	= json_string_value( json_object_get( jsonValue, "wrap" ) );
 	std::string filter	= json_string_value( json_object_get( jsonValue, "filter" ) );
 
-	CTexture::K_TYPE	t	= CTexture::k_Type_Default;
-	CTexture::K_WRAP	w	= CTexture::k_Wrap_Default;
-	CTexture::K_FILTER	f	= CTexture::k_Filter_Default;
+	CTexture::Type	 t;
+	CTexture::Wrap	 w;
+	CTexture::Filter f;
 
 	std::string ext(file.c_str() + (file.length() - 4));
 
 	if ( ext == ".tga" )
-		t = CTexture::k_Type_TGA;
+		t = CTexture::Type::TGA;
 	if ( ext == ".pvr" )
-		t = CTexture::k_Type_PVR;
+		t = CTexture::Type::PVR;
 	if ( ext == ".mip" )
-		t = CTexture::k_Type_MIP;
+		t = CTexture::Type::MIP;
 
 	if ( wrap == "clamp" )
-		w = CTexture::k_Wrap_Clamp;
+		w = CTexture::Wrap::Clamp;
 	if ( wrap == "repeat" )
-		w = CTexture::k_Wrap_Repeat;
+		w = CTexture::Wrap::Repeat;
 
 	if ( filter == "nearest" )
-		f = CTexture::k_Filter_Nearest;
+		f = CTexture::Filter::Nearest;
 	if ( filter == "linear" )
-		f = CTexture::k_Filter_Linear;
+		f = CTexture::Filter::Linear;
 	if ( filter == "bilinear" )
-		f = CTexture::k_Filter_Bilinear;
+		f = CTexture::Filter::Bilinear;
 	if ( filter == "trilinear" )
-		f = CTexture::k_Filter_Trilinear;
+		f = CTexture::Filter::Trilinear;
 	if ( filter == "quadlinear" )
-		f = CTexture::k_Filter_Quadlinear;
+		f = CTexture::Filter::Quadlinear;
 
 	u32 offset = 0;
 	m_lzmaStream->OpenFile( file, &m_buffer, &offset, &m_bufferSize );
@@ -438,14 +438,14 @@ bool CFileSystem::LoadShader(const json_t* jsonRoot, s32 index)
 
 	m_lzmaStream->CloseFile( &m_buffer );
 
-	CShader::K_TYPE type = CShader::k_Type_None;
+	CShader::Type type;
 
 	std::string ext(file.c_str() + (file.length() - 4));
 
 	if ( ext == ".vsh" )
-		type = CShader::k_Type_Vertex;
+		type = CShader::Type::Vertex;
 	if ( ext == ".fsh" )
-		type = CShader::k_Type_Fragment;
+		type = CShader::Type::Fragment;
 
 	CShader* shader = SIM_NEW CShader( name, type );
 	shader->Load( data );

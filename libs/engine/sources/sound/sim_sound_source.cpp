@@ -29,8 +29,8 @@ namespace snd
 CSoundSource::CSoundSource()
 {
 	m_ID		= 0;
-	m_type		= k_Type_Ambient;
-	m_loop		= k_Loop_No;
+	m_type		= Type::Ambient;
+	m_loop		= Loop::No;
 	m_state		= AL_STOPPED;
 	
 	m_soundData = nullptr;
@@ -72,14 +72,14 @@ void CSoundSource::Init( CSoundData *soundData )
 
 void CSoundSource::SetAmbient( void )
 {
-	m_type = k_Type_Ambient;
+	m_type = Type::Ambient;
 
 	SetDefault();
 }
 
 // ----------------------------------------------------------------------//
 
-void CSoundSource::SetLoop( K_LOOP loop )
+void CSoundSource::SetLoop( Loop loop )
 {
 	m_loop = loop;
 }
@@ -88,7 +88,7 @@ void CSoundSource::SetLoop( K_LOOP loop )
 
 void CSoundSource::SetFX( TVec3 *pos, f32 rad, f32 maxrad )
 {
-	m_type = k_Type_Fx;
+	m_type = Type::Fx;
 
     alSourcei( m_ID, AL_SOURCE_RELATIVE, AL_FALSE );
 	alSourcef( m_ID, AL_REFERENCE_DISTANCE, rad );
@@ -130,7 +130,7 @@ void CSoundSource::Play( void )
 	{	
 		m_state = AL_PLAYING;
 		
-		alSourcei( m_ID, AL_LOOPING, m_loop == k_Loop_Yes );
+		alSourcei( m_ID, AL_LOOPING, m_loop == Loop::Yes );
 		
 		alSourcePlay( m_ID );
 		
@@ -160,7 +160,7 @@ void CSoundSource::Resume( void )
 	{
 		m_state = AL_PLAYING;
 		
-		alSourcei( m_ID, AL_LOOPING, m_loop == k_Loop_Yes );
+		alSourcei( m_ID, AL_LOOPING, m_loop == Loop::Yes );
 		
 		alSourcePlay( m_ID );
 		

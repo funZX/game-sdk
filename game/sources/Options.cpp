@@ -5,7 +5,7 @@ namespace Options
 
 namespace Video
 {
-	CTexture::K_FILTER	TextureFilter = CTexture::k_Filter_Bilinear;
+	CTexture::Filter	TextureFilter = CTexture::Filter::Bilinear;
 }; // namespace Video;
 
 namespace Camera

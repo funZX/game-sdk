@@ -244,10 +244,10 @@ void CFontAtlas::Create()
 	m_texture->Generate( data
 		, texWidth
 		, texHeight
-		, CTexture::k_Type_TGA
-		, CTexture::k_Wrap_Clamp
-		, CTexture::k_Filter_Nearest
-		, CTexture::k_Format_Alpha
+		, CTexture::Type::TGA
+		, CTexture::Wrap::Clamp
+		, CTexture::Filter::Nearest
+		, CTexture::Format::Alpha
 	);
 	
 	InitEffect();
@@ -323,8 +323,8 @@ void CFontAtlas::InitEffect()
 	};
 
 
-	CShader vsh("FontAtlas", CShader::k_Type_Vertex);
-	CShader fsh("FontAtlas", CShader::k_Type_Fragment);
+	CShader vsh("FontAtlas", CShader::Type::Vertex);
+	CShader fsh("FontAtlas", CShader::Type::Fragment);
 
 	vsh.Load(defaultVSH);
 	fsh.Load(defaultFSH);

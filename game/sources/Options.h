@@ -9,7 +9,7 @@ namespace Options
 
 namespace Video
 {
-	extern CTexture::K_FILTER TextureFilter;
+	extern CTexture::Filter		TextureFilter;
 
 }; // namespace Video;
 

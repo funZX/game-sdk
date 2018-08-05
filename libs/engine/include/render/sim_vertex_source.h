@@ -52,6 +52,22 @@ public:
 	virtual ~CVertexSource();
 
 	// ------------------------------------------------------------------//
+	enum class AttributeIndex : u32
+	{
+		Position,
+		TexCoord_0,
+		TexCoord_1,
+		TexCoord_2,
+		TexCoord_3,
+		Color,
+		Normal,
+		Tangent,
+		Binormal,
+		Bone,
+		Weight,
+	};
+
+	// ------------------------------------------------------------------//
 	enum class AttributeFormat: u32
 	{
 		None			= 0,
