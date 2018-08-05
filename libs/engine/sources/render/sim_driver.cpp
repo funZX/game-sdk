@@ -837,7 +837,7 @@ void CDriver::SetLightIntensity( f32 intens )
 void CDriver::SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData, 
 	CVertexSource::AttributeStride vertexStride )
 {
-	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[ attrib->m_ID ];
+	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[EnumValue(attrib->m_compIndex)];
 
     if( vertexData != attribInfo->m_vertexData )
     {
@@ -860,7 +860,7 @@ void CDriver::SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData,
 
 void CDriver::EnableVertexAttribute( CShader::TAttrib* attrib )
 {
-	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[ attrib->m_ID ];
+	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[ EnumValue(attrib->m_compIndex) ];
 
 	if( !attribInfo->m_isEnabled )
     {
@@ -875,7 +875,7 @@ void CDriver::EnableVertexAttribute( CShader::TAttrib* attrib )
 
 void CDriver::DisableVertexAttribute( CShader::TAttrib* attrib )
 {
-	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[ attrib->m_ID ];
+	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[EnumValue(attrib->m_compIndex)];
 
     if( attribInfo->m_isEnabled )
 	{

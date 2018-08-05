@@ -18,6 +18,7 @@
 
 #include <render/sim_driver.h>
 #include <render/sim_shader.h>
+#include <render/sim_vertex_source.h>
 
 namespace sim
 {
@@ -25,19 +26,19 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CShader::TAttrib CShader::Attributes[] =
+CShader::TAttrib CShader::Attributes[CVertexSource::k_Vertex_Attributes_Count] =
 {
-	{ CShader::k_Attribute_Position,				"a_PositionL",	-1,		CVertexSource::AttributeFormat::Position,	CVertexSource::AttributeSize::Position,		CVertexSource::AttributeStride::Position,		CVertexSource::AttributeType::Position,		},
-	{ CShader::k_Attribute_TexCoord_0,				"a_TexCoord_0",	-1,		CVertexSource::AttributeFormat::TexCoord_0,	CVertexSource::AttributeSize::TexCoord_0,	CVertexSource::AttributeStride::TexCoord_0,		CVertexSource::AttributeType::TexCoord_0,	},
-	{ CShader::k_Attribute_TexCoord_1,				"a_TexCoord_1",	-1,		CVertexSource::AttributeFormat::TexCoord_1,	CVertexSource::AttributeSize::TexCoord_1,	CVertexSource::AttributeStride::TexCoord_1,		CVertexSource::AttributeType::TexCoord_1,	},
-	{ CShader::k_Attribute_TexCoord_2,				"a_TexCoord_2",	-1,		CVertexSource::AttributeFormat::TexCoord_2,	CVertexSource::AttributeSize::TexCoord_2,	CVertexSource::AttributeStride::TexCoord_2,		CVertexSource::AttributeType::TexCoord_2,	},
-	{ CShader::k_Attribute_TexCoord_3,				"a_TexCoord_3",	-1,		CVertexSource::AttributeFormat::TexCoord_3,	CVertexSource::AttributeSize::TexCoord_3,	CVertexSource::AttributeStride::TexCoord_3,		CVertexSource::AttributeType::TexCoord_3,	},
-	{ CShader::k_Attribute_Color,					"a_Color",		-1,		CVertexSource::AttributeFormat::Color,		CVertexSource::AttributeSize::Color,		CVertexSource::AttributeStride::Color,			CVertexSource::AttributeType::Color,		},
-	{ CShader::k_Attribute_Normal,					"a_NormalL",	-1,		CVertexSource::AttributeFormat::Normal,		CVertexSource::AttributeSize::Normal,		CVertexSource::AttributeStride::Normal,			CVertexSource::AttributeType::Normal,		},
-	{ CShader::k_Attribute_Tangent,					"a_TangentL",	-1,		CVertexSource::AttributeFormat::Tangent,	CVertexSource::AttributeSize::Tangent,		CVertexSource::AttributeStride::Tangent,		CVertexSource::AttributeType::Tangent,		},
-	{ CShader::k_Attribute_Binormal,				"a_BinormalL",	-1,		CVertexSource::AttributeFormat::Binormal,	CVertexSource::AttributeSize::Binormal,		CVertexSource::AttributeStride::Binormal,		CVertexSource::AttributeType::Binormal,		},
-	{ CShader::k_Attribute_Bone,					"a_Bone",		-1,		CVertexSource::AttributeFormat::Bone,		CVertexSource::AttributeSize::Bone,			CVertexSource::AttributeStride::Bone,			CVertexSource::AttributeType::Bone,			},
-	{ CShader::k_Attribute_Weight,					"a_Weight",		-1,		CVertexSource::AttributeFormat::Weight,		CVertexSource::AttributeSize::Weight,		CVertexSource::AttributeStride::Weight,			CVertexSource::AttributeType::Weight,		},
+	{ "a_PositionL",	-1,		CVertexSource::AttributeIndex::Position,	CVertexSource::AttributeFormat::Position,	CVertexSource::AttributeSize::Position,		CVertexSource::AttributeStride::Position,		CVertexSource::AttributeType::Position, },
+	{ "a_TexCoord_0",	-1,		CVertexSource::AttributeIndex::TexCoord_0,	CVertexSource::AttributeFormat::TexCoord_0,	CVertexSource::AttributeSize::TexCoord_0,	CVertexSource::AttributeStride::TexCoord_0,		CVertexSource::AttributeType::TexCoord_0, },
+	{ "a_TexCoord_1",	-1,		CVertexSource::AttributeIndex::TexCoord_1,	CVertexSource::AttributeFormat::TexCoord_1,	CVertexSource::AttributeSize::TexCoord_1,	CVertexSource::AttributeStride::TexCoord_1,		CVertexSource::AttributeType::TexCoord_1, },
+	{ "a_TexCoord_2",	-1,		CVertexSource::AttributeIndex::TexCoord_2,	CVertexSource::AttributeFormat::TexCoord_2,	CVertexSource::AttributeSize::TexCoord_2,	CVertexSource::AttributeStride::TexCoord_2,		CVertexSource::AttributeType::TexCoord_2, },
+	{ "a_TexCoord_3",	-1,		CVertexSource::AttributeIndex::TexCoord_3,	CVertexSource::AttributeFormat::TexCoord_3,	CVertexSource::AttributeSize::TexCoord_3,	CVertexSource::AttributeStride::TexCoord_3,		CVertexSource::AttributeType::TexCoord_3, },
+	{ "a_Color",		-1,		CVertexSource::AttributeIndex::Color,		CVertexSource::AttributeFormat::Color,		CVertexSource::AttributeSize::Color,		CVertexSource::AttributeStride::Color,			CVertexSource::AttributeType::Color, },
+	{ "a_NormalL",		-1,		CVertexSource::AttributeIndex::Normal,		CVertexSource::AttributeFormat::Normal,		CVertexSource::AttributeSize::Normal,		CVertexSource::AttributeStride::Normal,			CVertexSource::AttributeType::Normal, },
+	{ "a_TangentL",		-1,		CVertexSource::AttributeIndex::Tangent,		CVertexSource::AttributeFormat::Tangent,	CVertexSource::AttributeSize::Tangent,		CVertexSource::AttributeStride::Tangent,		CVertexSource::AttributeType::Tangent, },
+	{ "a_BinormalL",	-1,		CVertexSource::AttributeIndex::Binormal,	CVertexSource::AttributeFormat::Binormal,	CVertexSource::AttributeSize::Binormal,		CVertexSource::AttributeStride::Binormal,		CVertexSource::AttributeType::Binormal, },
+	{ "a_Bone",			-1,		CVertexSource::AttributeIndex::Bone,		CVertexSource::AttributeFormat::Bone,		CVertexSource::AttributeSize::Bone,			CVertexSource::AttributeStride::Bone,			CVertexSource::AttributeType::Bone, },
+	{ "a_Weight",		-1,		CVertexSource::AttributeIndex::Weight,		CVertexSource::AttributeFormat::Weight,		CVertexSource::AttributeSize::Weight,		CVertexSource::AttributeStride::Weight,			CVertexSource::AttributeType::Weight,		},
 };
 
 // ----------------------------------------------------------------------//
@@ -180,7 +181,7 @@ void CShader::Load( const s8 *source )
 
 const CShader::TAttrib* CShader::FindAttrib(const std::string& name)
 {
-	for (s32 k = 0; k < k_Attribute_Count; k++)
+	for (s32 k = 0; k < CVertexSource::k_Vertex_Attributes_Count; k++)
 	{
 		if ( !strcmp( name.c_str(), Attributes[k].m_name ) )
 			return &Attributes[ k ];

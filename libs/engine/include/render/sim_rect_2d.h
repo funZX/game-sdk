@@ -44,23 +44,22 @@ public:
 	CRect2D( const std::string& name );
 	CRect2D(f32 x, f32 y, f32 width, f32 height);
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class Align : u32
 	{
-		k_Align_LeftIn,
-		k_Align_RightIn,
-		k_Align_TopIn,
-		k_Align_BottomIn,
+		InLeft,
+		InRight,
+		InTop,
+		InBottom,
 
-		k_Align_LeftOut,
-		k_Align_RightOut,
-		k_Align_TopOut,
-		k_Align_BottomOut,
+		OutLeft,
+		OutRight,
+		OutTop,
+		OutBottom,
 
-		k_Align_HorCenter,
-		k_Align_VerCenter,
-		k_Align_Center
-
-	} K_ALIGN;
+		HorCenter,
+		VerCenter,
+		Center
+	};
 	// ------------------------------------------------------------------//
 
 	f32						    Left( void ) const;
@@ -84,7 +83,7 @@ public:
 	void						SetCenter( TVec2 *pos );
 	void						GetCenter( TVec2 *pos ) const;
 
-	void						Align( CRect2D *, K_ALIGN align );
+	void						AlignTo( CRect2D *, Align align );
 
 	bool						IsInside( TVec2 *pos );
 	bool						IsInside( f32 x, f32 y );

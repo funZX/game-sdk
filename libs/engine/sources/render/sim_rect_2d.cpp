@@ -262,51 +262,51 @@ void CRect2D::GetCenter( TVec2 *loc ) const
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::Align( CRect2D *c, K_ALIGN align )
+void CRect2D::AlignTo( CRect2D *c, Align align )
 {
-	switch (align)
+	switch (EnumValue(align))
 	{
-	case k_Align_RightIn:
+	case Align::InRight:
 		m_position.x = c->Right() - m_size.x;
 		break;
 
-	case k_Align_RightOut:
+	case Align::OutRight:
 		m_position.x = c->Right();
 		break;
 
-	case k_Align_LeftIn:
+	case Align::InLeft:
 		m_position.x = c->m_position.x;
 		break;
 
-	case k_Align_LeftOut:
+	case Align::OutLeft:
 		m_position.x = c->m_position.x - m_size.x;
 		break;
 
-	case k_Align_BottomIn:
+	case Align::InBottom:
 		m_position.y = c->Bottom() - m_size.y;
 		break;
 
-	case k_Align_BottomOut:
+	case Align::OutBottom:
 		m_position.y = c->Bottom();
 		break;
 
-	case k_Align_TopIn:
+	case Align::InTop:
 		m_position.y = c->Top();
 		break;
 
-	case k_Align_TopOut:
+	case Align::OutTop:
 		m_position.y = c->Top() - Height();
 		break;
 
-	case k_Align_HorCenter:
+	case Align::HorCenter:
 		m_position.x = c->m_position.x + ( ( c->m_size.x - m_size.x ) * 0.5f );
 		break;
 
-	case k_Align_VerCenter:
+	case Align::VerCenter:
 		m_position.y = c->m_position.y + ( ( c->m_size.y - m_size.y ) * 0.5f );
 		break;
 
-	case k_Align_Center:
+	case Align::Center:
 		m_position.x = c->m_position.x + ( ( c->m_size.x - m_size.x ) * 0.5f );
 		m_position.y = c->m_position.y + ( ( c->m_size.y - m_size.y ) * 0.5f );
 		break;

@@ -371,7 +371,7 @@ protected:
 
 	u32				            m_textureBind[k_Texture_Channels_Count];
 
-    TVertexAttributeInfo        m_vertexAttributeInfo[ CShader::k_Attribute_Count ];
+    TVertexAttributeInfo        m_vertexAttributeInfo[ CVertexSource::k_Vertex_Attributes_Count ];
 	TLightParameters			m_lightParameters[ k_Light_Channels_Count ];
 	LightChannel				m_lightChannel;
 

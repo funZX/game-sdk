@@ -40,25 +40,6 @@ public:
 	// ------------------------------------------------------------------//
 	typedef enum
 	{
-		k_Attribute_Position,
-		k_Attribute_TexCoord_0,
-		k_Attribute_TexCoord_1,
-		k_Attribute_TexCoord_2,
-		k_Attribute_TexCoord_3,
-		k_Attribute_Color,
-		k_Attribute_Normal,
-		k_Attribute_Tangent,
-		k_Attribute_Binormal,
-		k_Attribute_Bone,
-		k_Attribute_Weight,
-
-		k_Attribute_Count,
-
-	} K_ATTRIBUTE;
-
-	// ------------------------------------------------------------------//
-	typedef enum
-	{
 		k_Uniform_Time,
 		k_Uniform_Color,
 		k_Uniform_Point_Size,
@@ -155,10 +136,10 @@ public:
 	// ------------------------------------------------------------------//
 	struct TAttrib
 	{
-		K_ATTRIBUTE									m_ID;
 		const char*									m_name;
 		s32											m_location;
 
+		CVertexSource::AttributeIndex				m_compIndex;
 		CVertexSource::AttributeFormat				m_compFormat;
 		CVertexSource::AttributeSize				m_compSize;
 		CVertexSource::AttributeStride				m_compStride;
