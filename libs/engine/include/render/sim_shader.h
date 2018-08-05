@@ -159,10 +159,10 @@ public:
 		const char*									m_name;
 		s32											m_location;
 
-		CVertexSource::K_VERTEX_ATTRIBUTE_FORMAT	m_compFormat;
-		CVertexSource::K_VERTEX_ATTRIBUTE_SIZE		m_compSize;
-		CVertexSource::K_VERTEX_ATTRIBUTE_OFFSET	m_compOff;
-		CVertexSource::K_VERTEX_ATTRIBUTE_TYPE		m_compType;
+		CVertexSource::AttributeFormat				m_compFormat;
+		CVertexSource::AttributeSize				m_compSize;
+		CVertexSource::AttributeStride				m_compStride;
+		CVertexSource::AttributeType				m_compType;
 	};
 	// ------------------------------------------------------------------//
 	typedef enum

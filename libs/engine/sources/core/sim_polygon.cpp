@@ -198,11 +198,11 @@ void CPolygon::Render( rnr::CDriver *driver, rnr::CMaterial *mtl )
 	vg.m_vboSize = nVerts;
 
 	vg.m_vertexSource->m_type			= CVertexSource::Type::LineStrip;
-	vg.m_vertexSource->m_vertexFormat	= CVertexSource::k_Vertex_Attribute_Format_Position;
-	vg.m_vertexSource->m_vertexStride	= CVertexSource::k_Vertex_Attribute_Offset_Position;
+	vg.m_vertexSource->m_vertexFormat	= CVertexSource::AttributeFormat::Position;
+	vg.m_vertexSource->m_vertexStride	= CVertexSource::AttributeStride::Position;
 	vg.m_vertexSource->m_vboSize		= nVerts;
 
-	s32 vtxSize		= vg.m_vertexSource->m_vertexStride / sizeof( f32 );
+	s32 vtxSize		= EnumValue(vg.m_vertexSource->m_vertexStride) / sizeof( f32 );
 	s32 newFloats 	= nVerts * vtxSize;
 
 	vg.m_vertexSource->m_vboData	= SIM_NEW f32[ newFloats ];

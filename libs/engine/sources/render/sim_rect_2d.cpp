@@ -410,8 +410,8 @@ void CRect2D::Render( CDriver* driver, const CRect2D *texRect )
 
 	CVertexSource	vs;
 	vs.m_type			= CVertexSource::Type::Triangle;
-	vs.m_vertexFormat	= CVertexSource::k_Vertex_Attribute_Format_Position | CVertexSource::k_Vertex_Attribute_Format_TexCoord_0;
-	vs.m_vertexStride	= CVertexSource::k_Vertex_Attribute_Offset_Position + CVertexSource::k_Vertex_Attribute_Offset_TexCoord_0;
+	vs.m_vertexFormat	= CVertexSource::AttributeFormat::Position | CVertexSource::AttributeFormat::TexCoord_0;
+	vs.m_vertexStride	= CVertexSource::AttributeStride::Position + CVertexSource::AttributeStride::TexCoord_0;
 	vs.m_vboSize		= 4;
 
 	vs.m_vboData		= &v[0];

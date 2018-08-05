@@ -102,11 +102,11 @@ void CSkyBox::Generate( f32 size,
 	m_vertexGroup->m_vboSize		= numIndices;
 
 	m_vertexGroup->m_vertexSource->m_type			= CVertexSource::Type::Triangle;
-	m_vertexGroup->m_vertexSource->m_vertexFormat	= CVertexSource::k_Vertex_Attribute_Format_Position;
-	m_vertexGroup->m_vertexSource->m_vertexStride	= CVertexSource::k_Vertex_Attribute_Offset_Position;
+	m_vertexGroup->m_vertexSource->m_vertexFormat	= CVertexSource::AttributeFormat::Position;
+	m_vertexGroup->m_vertexSource->m_vertexStride	= CVertexSource::AttributeStride::Position;
 	m_vertexGroup->m_vertexSource->m_vboSize		= numVertices;
 
-	s32 vtxSize						= m_vertexGroup->m_vertexSource->m_vertexStride / sizeof( f32 );
+	s32 vtxSize						= EnumValue(m_vertexGroup->m_vertexSource->m_vertexStride) / sizeof( f32 );
 	s32 newFloats 					= numVertices * vtxSize;
 	s32 vboOff						= 0;
 

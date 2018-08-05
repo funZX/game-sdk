@@ -834,7 +834,8 @@ void CDriver::SetLightIntensity( f32 intens )
 
 // ----------------------------------------------------------------------//
 
-void CDriver::SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData, u32 vertexStride )
+void CDriver::SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData, 
+	CVertexSource::AttributeStride vertexStride )
 {
 	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[ attrib->m_ID ];
 
@@ -842,10 +843,10 @@ void CDriver::SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData, u3
     {
 		glVertexAttribPointer( 
 			attrib->m_location,
-			attrib->m_compSize,
-			attrib->m_compType,
+			EnumValue(attrib->m_compSize),
+			EnumValue(attrib->m_compType),
 			GL_FALSE,
-			vertexStride, 
+			EnumValue(vertexStride),
 			vertexData 
 			);
 
@@ -1045,7 +1046,7 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 	{
 		s32 vboSize = vertexSource->GetVboSize();
 		f32* vboData = (f32*)vertexSource->GetVboData();
-		u32 vboStride = vertexSource->GetVertexStride();
+		u32 vboStride = EnumValue(vertexSource->GetVertexStride());
 		u32 vtxSize = vboStride / sizeof(f32);
 
 		for (s32 q = 0; q < vboSize >> 2; q++)

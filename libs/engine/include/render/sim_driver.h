@@ -293,7 +293,7 @@ public:
 	void						SetDepthRange( f32 start, f32 end );
 
 	// ------------------------------------------------------------------//
-	void                        SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData, u32 vertexStride );
+	void                        SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData, CVertexSource::AttributeStride vertexStride );
     void                        EnableVertexAttribute( CShader::TAttrib* attrib );
     void                        DisableVertexAttribute( CShader::TAttrib* attrib );
 	// ------------------------------------------------------------------//

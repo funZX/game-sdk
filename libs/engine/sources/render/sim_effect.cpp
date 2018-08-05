@@ -269,38 +269,40 @@ void CEffect::Render(CDriver *driver)
 void CEffect::Bind( CDriver *driver, CVertexSource *vertexSource )
 {
 	// Attributes
-	void *vboData	   = vertexSource->GetVboData();
-	u32 vertexFormat   = vertexSource->GetVertexFormat();
-	u32 vertexStride   = vertexSource->GetVertexStride();
-	s32 vboOff         = 0;
+	void *vboData = vertexSource->GetVboData();
+
+	CVertexSource::AttributeFormat vertexFormat   = vertexSource->GetVertexFormat();
+	CVertexSource::AttributeStride vertexStride   = vertexSource->GetVertexStride();
+	u32 vboOff         = 0;
 
 	for( s32 k = 0; k < m_numAttrib; k++ )
 	{
 		CShader::TAttrib *crtAttrib	= &m_attributes[ k ];
 
-		CVertexSource::K_VERTEX_ATTRIBUTE_OFFSET attribOff		= crtAttrib->m_compOff;
-		CVertexSource::K_VERTEX_ATTRIBUTE_FORMAT attribFormat	= crtAttrib->m_compFormat;
-		CVertexSource::K_VERTEX_ATTRIBUTE_SIZE attribSize		= crtAttrib->m_compSize;
-		CVertexSource::K_VERTEX_ATTRIBUTE_TYPE attribType		= crtAttrib->m_compType;
+		CVertexSource::AttributeStride attribStride	= crtAttrib->m_compStride;
+		CVertexSource::AttributeFormat attribFormat	= crtAttrib->m_compFormat;
+		CVertexSource::AttributeSize attribSize		= crtAttrib->m_compSize;
+		CVertexSource::AttributeType attribType		= crtAttrib->m_compType;
 
 #if SIM_DEBUG
 		s32 loc = glGetAttribLocation( m_iD, crtAttrib->m_name );
 		SIM_ASSERT( loc == -1 || loc == crtAttrib->m_location);
 #endif
 
-		if( crtAttrib->m_location != -1 && 0 != ( vertexFormat & attribFormat )  )
+		if( crtAttrib->m_location != -1 && 
+			CVertexSource::AttributeFormat::None != ( vertexFormat & attribFormat )  )
 		{
 			void *vertexData = (void*) ( ( size_t ) vboData + vboOff );
 
 			driver->SetVertexAttribute( crtAttrib, vertexData, vertexStride );
 			driver->EnableVertexAttribute( crtAttrib );
 
-			vboOff += attribOff;
+			vboOff += EnumValue(attribStride);
 		}
 		else
 		{
-			if ( 0 != (vertexFormat & attribFormat ) )
-				vboOff += attribOff;
+			if ( CVertexSource::AttributeFormat::None  != (vertexFormat & attribFormat ) )
+				vboOff += EnumValue(attribStride);
 
 			driver->DisableVertexAttribute( crtAttrib );
 		}
