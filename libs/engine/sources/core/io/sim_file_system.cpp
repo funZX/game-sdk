@@ -506,6 +506,9 @@ bool CFileSystem::LoadEffect(const json_t* jsonRoot, s32 index)
 	// Preprocess and load shaders
 	effect->Load(vdata, pdata);
 
+	SIM_SAFE_DELETE_ARRAY( vdata );
+	SIM_SAFE_DELETE_ARRAY( pdata );
+
 	CEffect::TTechnique technique;
 	json_t*  jsonTechnique = json_object_get( jsonValue, "technique" );
 
