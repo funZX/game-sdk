@@ -21,6 +21,7 @@
 
 #include <jansson.h>
 #include <sim_engine.h>
+#include <core/sim_balance_tree.h>
 
 namespace sim
 {
@@ -56,20 +57,20 @@ class CFileSystem
 {
 	friend class rnr::CScene;
 
-	typedef std::map<u32, rnr::CFont*>						TFontList;
-	typedef std::map<u32, rnr::CTexture*>					TTextureList;
-	typedef std::map<u32, rnr::CSkyBox*>					TSkyboxList;
-	typedef std::map<u32, rnr::CShader*>					TShaderList;
-	typedef std::map<u32, rnr::CEffect*>					TEffectList;
-	typedef std::map<u32, rnr::CMaterial*>					TMaterialList;
-	typedef std::map<u32, rnr::CMesh*>						TMeshList;
-	typedef std::map<u32, rnr::CActor*>						TActorList;
-	typedef std::map<u32, rnr::CLight*>						TLightList;
-	typedef std::map<u32, rnr::CCamera*>					TCameraList;
-	typedef std::map<u32, rnr::CSpriteTexture*>				TSpriteList;
-	typedef std::map<u32, snd::CSoundData*>					TSoundList;
-	typedef std::map<u32, vm::CScript*>						TScriptList;
-	typedef std::map<u32, rnr::CScene*>						TSceneList;
+	typedef stl::CBalanceTree<u32, rnr::CFont*>						TFontList;
+	typedef stl::CBalanceTree<u32, rnr::CTexture*>					TTextureList;
+	typedef stl::CBalanceTree<u32, rnr::CSkyBox*>					TSkyboxList;
+	typedef stl::CBalanceTree<u32, rnr::CShader*>					TShaderList;
+	typedef stl::CBalanceTree<u32, rnr::CEffect*>					TEffectList;
+	typedef stl::CBalanceTree<u32, rnr::CMaterial*>					TMaterialList;
+	typedef stl::CBalanceTree<u32, rnr::CMesh*>						TMeshList;
+	typedef stl::CBalanceTree<u32, rnr::CActor*>					TActorList;
+	typedef stl::CBalanceTree<u32, rnr::CLight*>					TLightList;
+	typedef stl::CBalanceTree<u32, rnr::CCamera*>					TCameraList;
+	typedef stl::CBalanceTree<u32, rnr::CSpriteTexture*>			TSpriteList;
+	typedef stl::CBalanceTree<u32, snd::CSoundData*>				TSoundList;
+	typedef stl::CBalanceTree<u32, vm::CScript*>					TScriptList;
+	typedef stl::CBalanceTree<u32, rnr::CScene*>					TSceneList;
 
 public:
 

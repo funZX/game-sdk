@@ -41,10 +41,6 @@ CState_Game::CState_Game()
 	m_drawable->OnDraw.Connect(this, &CState_Game::DrawToWidget);
 
 	CScript* script = O.world->GetFs()->GetScript("dt/deltatime");
-
-	sim::stl::CList<CScript*> list;
-	list.AddToFront(script);
-
 	script->Run();
 }
 // ----------------------------------------------------------------------//

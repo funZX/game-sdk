@@ -163,12 +163,7 @@ void CSceneNode::OnMove()
 void CSceneNode::Print()
 {
 	SIM_PRINT("\n\n");
-	m_children->Print( m_children->m_root, 0 );
-}
-
-const std::string& GetName( CSceneNode* node )
-{
-	return node->GetName();
+	m_children->Print( m_children->GetRoot(), 0 );
 }
 
 #endif
