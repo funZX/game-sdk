@@ -13,80 +13,90 @@ import utils
 #---------------------------------------------------------------------------------------
 
 def main(dirlist):
+    
+    StartTime = time.clock()
+    
+    content = {}
+    
+    for dir in dirlist:
+        effects = []
+        src_dir = dir['src'] + '/effect'
+        dst_dir = dir['dst'] + '/effect'
 
-	StartTime = time.clock()
-	
-	
-	content = {}
-	
-	for dir in dirlist:
-		shaders = []
-		src_dir = dir['src'] + '/effect'
-		dst_dir = dir['dst'] + '/effect'
-		
-		files 		= []
+        files 		= []
 
-		if os.path.exists(src_dir):
-		
-			files = utils.getListOfFiles(src_dir, 'fsh')	
-			
-			if files and not os.path.exists(dst_dir):
-				os.makedirs(dst_dir)		
-		
-		for file in files:
-			d	= file['dir']
-			n 	= file['file']
-			
-			src_subdir = d.split(src_dir, 1)[1]
-			dst_subdir = dst_dir + src_subdir
-			
-			if not os.path.exists(dst_subdir):
-				os.makedirs(dst_subdir)
+        if os.path.exists(src_dir):
+            files = utils.getListOfFiles(src_dir, 'effect')
 
-			file = (d.split(src_dir, 1)[1])
-			file = (file.split('/', 1)[1] + '/' + n)
+            if files and not os.path.exists(dst_dir):
+                os.makedirs(dst_dir)
+        
+        for file in files:
+            d	= file['dir']
+            n 	= file['file']
 
-			utils.updateFile(src_dir + '/' + file, dst_dir + '/' + file)
-			shaders.append({'name' : file, 'file': ('effect/' + file)});
-				
-		if os.path.exists(src_dir):
-		
-			files = utils.getListOfFiles(src_dir, 'vsh')	
-			
-			if files and not os.path.exists(dst_dir):
-				os.makedirs(dst_dir)		
-		
-		for file in files:
-			d	= file['dir']
-			n 	= file['file']
-			
-			src_subdir = d.split(src_dir, 1)[1]
-			dst_subdir = dst_dir + src_subdir
-			
-			if not os.path.exists(dst_subdir):
-				os.makedirs(dst_subdir)
+            src_subdir = d.split(src_dir, 1)[1]
+            dst_subdir = dst_dir + src_subdir
 
-			file = (d.split(src_dir, 1)[1])
-			file = (file.split('/', 1)[1] + '/' + n)
+            if not os.path.exists(dst_subdir):
+                os.makedirs(dst_subdir)
+                
+            in_effect = d + '/' + n
+            with open(in_effect, 'r') as effect_file:
+                effect = json.load(effect_file)
+                
+                out_effect = dst_dir + '/' + n                
+                out_vsource = ('vsource.' + n).split('.effect', 1)[0]
+                out_psource = ('psource.' + n).split('.effect', 1)[0]
 
-			utils.updateFile(src_dir + '/' + file, dst_dir + '/' + file)
-			shaders.append({'name' : file, 'file': ('effect/' + file)});
-			
-		if shaders:
-			fs = dst_dir + '/content.json'
-			with open(fs, 'wb') as f:
-				json.dump(shaders, f)
-			
-			content['id'] 	= dir['id']
-			content['name'] = 'shader'
-			content['file'] = 'effect/content.json'
+                out_vsource_name = out_vsource
+                out_psource_name = out_psource
 
-			utils.updateFile(dir['src'] + '/effect/effects.json', dir['dst'] + '/effect/effects.json')
+                out_vdir = os.path.dirname(dst_subdir) + '/' + os.path.dirname(effect['vsource'])
+                out_pdir = os.path.dirname(dst_subdir) + '/' + os.path.dirname(effect['psource'])
+                
+                if not os.path.exists(out_vdir):
+                    os.makedirs(out_vdir)
 
-	ElapsedTime = time.clock() - StartTime	
-	print '\nElapsed Time: %0.3fs' % (ElapsedTime)
-	
-	return content
+                if not os.path.exists(out_pdir):
+                    os.makedirs(out_pdir)
+
+                out_vsource = out_vdir + '/' + out_vsource
+                out_psource = out_pdir + '/' + out_psource
+
+                in_vsource = os.path.dirname(d) + '/' + effect['vsource']
+                in_psource = os.path.dirname(d) + '/' + effect['psource']
+
+                if (utils.newerFile(in_effect, out_effect) or
+                    utils.newerFile(in_vsource, out_vsource) or
+                    utils.newerFile(in_psource, out_psource) ):
+                    
+                    #command = config.EXE_TCC + ' -E ' + in_vsource + ' -o ' + out_vsource
+                    #utils.spawnProcess(command)
+
+                    #command = config.EXE_TCC + ' -E ' + in_psource + ' -o ' + out_psource
+                    #utils.spawnProcess(command)
+
+                    effect['vsource'] = os.path.dirname(effect['vsource']) +'/'+out_vsource_name
+                    effect['psource'] = os.path.dirname(effect['psource']) +'/'+out_psource_name
+                    
+                    with open(out_effect, 'w') as f:
+                        json.dump(effect, f)
+
+                    utils.updateFile(in_vsource, out_vsource)
+                    utils.updateFile(in_psource, out_psource)
+
+                effects.append({'name' : n.split('.effect',1)[0], 'file': ('effect/' + n)});
+
+        if effects:
+            with open(dst_dir + '/content.json', 'wb') as f:
+                json.dump(effects, f)
+            
+        content['id'] 	= dir['id']
+        content['name'] = 'effect'
+        content['file'] = 'effect/content.json'
+
+    return content
 
 #---------------------------------------------------------------------------------------
 

@@ -147,7 +147,7 @@ public:
 	enum class Type : u32
 	{
 		Vertex		= GL_VERTEX_SHADER,
-		Fragment	= GL_FRAGMENT_SHADER,
+		Pixel		= GL_FRAGMENT_SHADER,
 	};
 	// ------------------------------------------------------------------//
 	CShader( Type type );
@@ -156,7 +156,7 @@ public:
 
 	// ------------------------------------------------------------------//
 	// ------------------------------------------------------------------//
-	void						Load( const s8 *source );
+	void						Load( const s8* source );
 	inline u32 		            GetID() { return m_iD; }
 
 	static const TAttrib*		FindAttrib( const std::string& name );

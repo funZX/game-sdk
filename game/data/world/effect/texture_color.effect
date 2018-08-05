@@ -1,0 +1,35 @@
+{
+	"name": "color/texture_color",
+	"vsource": "effect/color/vsource.texture_color",
+	"psource": "effect/color/psource.texture_color",	
+	"defines": [],
+	
+	"technique":
+	{
+		"depthtest" 		: true,
+		"depthmask" 		: true,
+		"cullface"  		: true,
+		"alphatest"			: false,
+		
+		"blending"			: false,
+		"blendfunc"			: 
+		{
+			"equation"		: "FUNC_ADD",
+			"src"			: "SRC_ALPHA", 
+			"dst"			: "ONE_MINUS_SRC_ALPHA"
+		},
+		"depthfunc"			: "GL_LESS"			
+	},
+	
+	"uniforms":[
+		"u_Matrix_WorldViewProjection",
+		"u_Sampler_Tex_0"
+	],
+	
+	"attributes":[
+		"a_PositionL",
+		"a_TexCoord_0"
+	],
+
+	"textures": []
+}

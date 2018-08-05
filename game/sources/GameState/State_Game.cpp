@@ -58,8 +58,8 @@ void CState_Game::Render2D( CDriver *driver )
 {
 	O.world->Render2D(driver);
 
-	static CEffect* fill	= m_fs->GetEffect("color/fill_color");
-	static CEffect* filltex = m_fs->GetEffect("color/fill_color_texture_color");
+	static CEffect* fill	= m_fs->GetEffect("fill_color");
+	static CEffect* filltex = m_fs->GetEffect("fill_color_texture_color");
 	f32 dr = 20.0f * driver->GetTimerRot();
 
 	CMaterial m;

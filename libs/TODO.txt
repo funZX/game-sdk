@@ -1,12 +1,10 @@
 
 - shader preprocessor
-- C++11, class enums, shared_ptr
 - fix mesh lod tool & engine's mesh detail
 - tool: exporter: texture, material, camera, light, actor, scene, animation
 - tool: data builder - tex converter
 
 1.
-- engine: svg vector graphics
 - engine: octree (http://www.piko3d.net/tutorials/space-partitioning-tutorial-piko3ds-dynamic-octree/)
 - engine: scene node interface, scene manager
 - engine: particle system & fluid simulation
@@ -44,3 +42,4 @@
 - engine: const properties ???
 
 - engine: boost libraries ???
+- engine: svg vector graphics ???

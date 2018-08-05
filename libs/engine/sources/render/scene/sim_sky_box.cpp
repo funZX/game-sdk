@@ -157,7 +157,7 @@ void CSkyBox::Render( CDriver *driver )
 // ----------------------------------------------------------------------//
 void CSkyBox::InitEffect()
 {
-	const char *skyboxVSH =
+	const char* vsource =
 		"attribute vec4 a_PositionL;"
 
 		"uniform mat4 u_Matrix_WorldViewProjection;"
@@ -184,7 +184,7 @@ void CSkyBox::InitEffect()
 
 	// ----------------------------------------------------------------------//
 
-	const char *skyboxFSH =
+	const char* psource =
 		"precision mediump float;"
 
 		"uniform samplerCube u_Sampler_Cube;"
@@ -205,17 +205,11 @@ void CSkyBox::InitEffect()
 		"a_PositionL"
 	};
 
-	CShader vsh("", CShader::Type::Vertex);
-	CShader fsh("", CShader::Type::Fragment);
-
-	vsh.Load(skyboxVSH);
-	fsh.Load(skyboxFSH);
-
-	m_effect = SIM_NEW CEffect(m_name);
+	m_effect = SIM_NEW CEffect( m_name );
 
 	u32 nAttrib = 1;
 	m_effect->InitAttributes(nAttrib);
-	for (u32 k = 0; k < nAttrib; k++)
+	for ( u32 k = 0; k < nAttrib; k++ )
 		m_effect->AddAttribute(attributes[k], k);
 
 	static const char* uniforms[] =
@@ -232,7 +226,7 @@ void CSkyBox::InitEffect()
 	for (u32 k = 0; k < nUniform; k++)
 		m_effect->AddUniform(uniforms[k], k);
 
-	m_effect->Load( &vsh, &fsh );
+	m_effect->Load( vsource, psource );
 
 	CEffect::TTechnique technique;
 

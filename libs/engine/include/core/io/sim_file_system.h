@@ -33,7 +33,6 @@ namespace rnr
 	class CFontAtlas;
 	class CTexture;
 	class CSkyBox;
-	class CShader;
 	class CEffect;
 	class CMaterial;
 	class CMesh;
@@ -60,7 +59,6 @@ class CFileSystem
 	typedef stl::CBalanceTree<u32, rnr::CFont*>						TFontList;
 	typedef stl::CBalanceTree<u32, rnr::CTexture*>					TTextureList;
 	typedef stl::CBalanceTree<u32, rnr::CSkyBox*>					TSkyboxList;
-	typedef stl::CBalanceTree<u32, rnr::CShader*>					TShaderList;
 	typedef stl::CBalanceTree<u32, rnr::CEffect*>					TEffectList;
 	typedef stl::CBalanceTree<u32, rnr::CMaterial*>					TMaterialList;
 	typedef stl::CBalanceTree<u32, rnr::CMesh*>						TMeshList;
@@ -85,7 +83,6 @@ public:
 	rnr::CFont*					GetFont( const std::string &name );
 	rnr::CTexture*				GetTexture( const std::string &name );
 	rnr::CSkyBox*				GetSkybox( const std::string &name );
-	rnr::CShader*				GetShader( const std::string &name );
 	rnr::CEffect*				GetEffect( const std::string &name );
 	rnr::CMaterial*				GetMaterial( const std::string &name );
 	rnr::CMesh*					GetMesh( const std::string &name );
@@ -131,7 +128,6 @@ protected:
 	bool						LoadFont(const json_t* jsonRoot, s32 index);
 	bool						LoadTexture(const json_t* jsonRoot, s32 index);
 	bool						LoadSkybox(const json_t* jsonRoot, s32 index);
-	bool						LoadShader(const json_t* jsonRoot, s32 index);
 	bool						LoadEffect(const json_t* jsonRoot, s32 index);
 	bool						LoadMaterial(const json_t* jsonRoot, s32 index);
 	bool						LoadMesh(const json_t* jsonRoot, s32 index);
@@ -148,7 +144,6 @@ protected:
 	void						UnloadFonts();
 	void						UnloadTextures();
 	void						UnloadSkyboxes();
-	void						UnloadShaders();
 	void						UnloadEffects();
 	void						UnloadMaterials();
 	void						UnloadMeshes();
@@ -177,7 +172,6 @@ protected:
 	TFontList					m_fontList;
 	TTextureList				m_textureList;
 	TSkyboxList					m_skyboxList;
-	TShaderList					m_shaderList;
 	TEffectList					m_effectList;
 	TMaterialList				m_materialList;
 	TMeshList					m_meshList;
