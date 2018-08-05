@@ -101,7 +101,7 @@ void CEngine::Initialize()
 // ----------------------------------------------------------------------//
 void CEngine::InitEffect()
 {
-	static const char *defaultVSH =
+	const char* vsource =
 		"attribute vec4 a_PositionL;"
 		"attribute vec2 a_TexCoord_0;"
 
@@ -122,7 +122,7 @@ void CEngine::InitEffect()
 
 	// ----------------------------------------------------------------------//
 
-	static const char *defaultFSH =
+	const char* psource =
 		"precision mediump float;"
 
 		"uniform sampler2D	u_Sampler_Tex_0;"
@@ -137,12 +137,6 @@ void CEngine::InitEffect()
 
 		"	gl_FragColor = col;"
 		"}";
-
-	CShader vsh("vsh", CShader::Type::Vertex);
-	CShader fsh("fsh", CShader::Type::Fragment);
-
-	vsh.Load(defaultVSH);
-	fsh.Load(defaultFSH);
 
 	static const char* attributes[] =
 	{
@@ -168,7 +162,7 @@ void CEngine::InitEffect()
 	for (u32 k = 0; k < nUniform; k++)
 		m_effect->AddUniform(uniforms[k], k);
 
-	m_effect->Load(&vsh, &fsh);
+	m_effect->Load( vsource, psource );
 
 	m_effect->m_technique.depthtest = true;
 	m_effect->m_technique.depthmask = true;

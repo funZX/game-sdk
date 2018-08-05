@@ -82,7 +82,6 @@ CFileSystem::~CFileSystem()
 	UnloadMeshes();
 	UnloadMaterials();
 	UnloadEffects();
-	UnloadShaders();
 	UnloadSkyboxes();
 	UnloadTextures();
 	UnloadFonts();
@@ -118,26 +117,25 @@ void CFileSystem::UnloadFile( u8* memfile )
 
 void CFileSystem::Open()
 {
-	m_steps		= SIM_NEW TLoadStep[ 15];
+	m_steps		= SIM_NEW TLoadStep[ 14];
 
 	m_steps[  0 ].Init("init",		&CFileSystem::LoadInit);
 	m_steps[  1 ].Init("font",		&CFileSystem::LoadFont);
 	m_steps[  2 ].Init("texture",	&CFileSystem::LoadTexture);
 	m_steps[  3 ].Init("skybox",	&CFileSystem::LoadSkybox);
-	m_steps[  4 ].Init("shader",	&CFileSystem::LoadShader);
-	m_steps[  5 ].Init("effect",	&CFileSystem::LoadEffect);
-	m_steps[  6 ].Init("material",	&CFileSystem::LoadMaterial);
-	m_steps[  7 ].Init("mesh",		&CFileSystem::LoadMesh);
-	m_steps[  8 ].Init("actor",		&CFileSystem::LoadActor);
-	m_steps[  9 ].Init("light",		&CFileSystem::LoadLight);
-	m_steps[ 10 ].Init("camera",	&CFileSystem::LoadCamera);
-	m_steps[ 11 ].Init("sprite",	&CFileSystem::LoadSprite);
-	m_steps[ 12 ].Init("sound",		&CFileSystem::LoadSound);
-	m_steps[ 13 ].Init("script",	&CFileSystem::LoadScript);
-	m_steps[ 14 ].Init("scene",		&CFileSystem::LoadScene);
+	m_steps[  4 ].Init("effect",	&CFileSystem::LoadEffect);
+	m_steps[  5 ].Init("material",	&CFileSystem::LoadMaterial);
+	m_steps[  6 ].Init("mesh",		&CFileSystem::LoadMesh);
+	m_steps[  7 ].Init("actor",		&CFileSystem::LoadActor);
+	m_steps[  8 ].Init("light",		&CFileSystem::LoadLight);
+	m_steps[  9 ].Init("camera",	&CFileSystem::LoadCamera);
+	m_steps[ 10 ].Init("sprite",	&CFileSystem::LoadSprite);
+	m_steps[ 11 ].Init("sound",		&CFileSystem::LoadSound);
+	m_steps[ 12 ].Init("script",	&CFileSystem::LoadScript);
+	m_steps[ 13 ].Init("scene",		&CFileSystem::LoadScene);
 
 	m_crtStep	= m_steps;
-	m_lastStep  = m_steps + 15;
+	m_lastStep  = m_steps + 14;
 
 	m_lzmaStream->Open();
 
@@ -422,66 +420,65 @@ bool CFileSystem::LoadSkybox(const json_t* jsonRoot, s32 index)
 
 // ----------------------------------------------------------------------//
 
-bool CFileSystem::LoadShader(const json_t* jsonRoot, s32 index)
-{
-	json_t* jsonValue	= json_array_get( jsonRoot, index );
-
-	std::string name	= json_string_value( json_object_get( jsonValue, "name" ) );
-	std::string file	= json_string_value( json_object_get( jsonValue, "file" ) );
-
-	u32 offset = 0;
-	m_lzmaStream->OpenFile( file, &m_buffer, &offset, &m_bufferSize );
-
-	s8* data = SIM_NEW s8[ m_bufferSize + 1 ];
-	SIM_MEMCPY( data, &m_buffer[ offset ], m_bufferSize );
-	data[ m_bufferSize ] = 0;
-
-	m_lzmaStream->CloseFile( &m_buffer );
-
-	CShader::Type type;
-
-	std::string ext(file.c_str() + (file.length() - 4));
-
-	if ( ext == ".vsh" )
-		type = CShader::Type::Vertex;
-	if ( ext == ".fsh" )
-		type = CShader::Type::Fragment;
-
-	CShader* shader = SIM_NEW CShader( name, type );
-	shader->Load( data );
-
-	SIM_SAFE_DELETE_ARRAY(data);
-
-	m_shaderList.Insert( hash::Get( name ), shader);
-
-	m_loadMessage.clear();
-	m_loadMessage = "Loading shader ";
-	m_loadMessage.append( "\"" );
-	m_loadMessage.append( name );
-	m_loadMessage.append( "\"" );
-	m_loadMessage.append( "..." );
-
-	return NextStep(jsonRoot);
-}
-
-// ----------------------------------------------------------------------//
-
 bool CFileSystem::LoadEffect(const json_t* jsonRoot, s32 index)
 {
 	json_t* jsonValue	= json_array_get( jsonRoot, index );
-
 	std::string name	= json_string_value( json_object_get( jsonValue, "name" ) );
-	std::string vsh		= json_string_value( json_object_get( jsonValue, "vsh" ) );
-	std::string fsh		= json_string_value( json_object_get( jsonValue, "fsh" ) );
+	std::string file	= json_string_value(json_object_get(jsonValue, "file"));
 
-	CShader* vShader = GetShader( vsh );
-	SIM_ASSERT( vShader != nullptr );
+	CEffect* effect = SIM_NEW CEffect(name);
 
-	CShader* fShader = GetShader( fsh );
-	SIM_ASSERT( fShader != nullptr );
+	// Load effect file
+	u32 offset = 0;
+	m_lzmaStream->OpenFile(file, &m_buffer, &offset, &m_bufferSize);
 
-	CEffect* effect = SIM_NEW CEffect( name );
-	
+	u8* data = SIM_NEW u8[m_bufferSize + 1];
+	SIM_MEMCPY(data, &m_buffer[offset], m_bufferSize);
+	data[m_bufferSize] = 0;
+
+	m_lzmaStream->CloseFile(&m_buffer);
+
+	// Parse effect file && set effect
+	CJsonStream jm(data);
+	jsonValue = jm.GetRoot();
+
+	SIM_SAFE_DELETE_ARRAY(data);
+
+	json_t*  defines	= json_object_get(jsonValue, "defines");
+	SIM_ASSERT(json_is_array(defines));
+
+	u32 nDefines = json_array_size(defines);
+	for (s32 k = 0; k < (s32)nDefines; k++)
+	{
+		std::string define = json_string_value(json_array_get(defines, k));
+
+		effect->AddDefine(define);
+	}
+
+	std::string vsource = json_string_value(json_object_get(jsonValue, "vsource"));
+	std::string psource = json_string_value(json_object_get(jsonValue, "psource"));
+
+	// Load Vertex Shader
+	offset = 0;
+	m_lzmaStream->OpenFile(vsource, &m_buffer, &offset, &m_bufferSize);
+
+	s8* vdata = SIM_NEW s8[m_bufferSize + 1];
+	SIM_MEMCPY(vdata, &m_buffer[offset], m_bufferSize);
+	vdata[m_bufferSize] = 0;
+
+	m_lzmaStream->CloseFile(&m_buffer);
+
+	// Load Pixel Shader
+	m_lzmaStream->OpenFile(psource, &m_buffer, &offset, &m_bufferSize);
+
+	s8* pdata = SIM_NEW s8[m_bufferSize + 1];
+	SIM_MEMCPY(pdata, &m_buffer[offset], m_bufferSize);
+	pdata[m_bufferSize] = 0;
+
+	m_lzmaStream->CloseFile(&m_buffer);
+
+	// Load Effect Props
+
 	json_t*  jsonAttributes = json_object_get(jsonValue, "attributes");
 	SIM_ASSERT(json_is_array(jsonAttributes));
 
@@ -506,8 +503,8 @@ bool CFileSystem::LoadEffect(const json_t* jsonRoot, s32 index)
 		effect->AddUniform(uniform, k);
 	}
 
-
-	effect->Load( vShader, fShader );
+	// Preprocess and load shaders
+	effect->Load(vdata, pdata);
 
 	CEffect::TTechnique technique;
 	json_t*  jsonTechnique = json_object_get( jsonValue, "technique" );
@@ -877,23 +874,6 @@ void CFileSystem::UnloadSkyboxes()
 rnr::CSkyBox* CFileSystem::GetSkybox( const std::string &name )
 {
 	auto item = m_skyboxList.Search(hash::Get(name));
-
-	return item ? item->GetData() : nullptr;
-}
-
-// ----------------------------------------------------------------------//
-
-void CFileSystem::UnloadShaders()
-{
-	m_shaderList.Print(m_shaderList.GetRoot(), 1);
-	m_shaderList.DeleteAll();
-}
-
-// ----------------------------------------------------------------------//
-
-rnr::CShader* CFileSystem::GetShader( const std::string &name )
-{
-	auto item = m_shaderList.Search(hash::Get(name));
 
 	return item ? item->GetData() : nullptr;
 }

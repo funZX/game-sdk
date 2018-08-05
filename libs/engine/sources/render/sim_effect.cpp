@@ -29,13 +29,16 @@ namespace rnr
 
 CEffect::CEffect()
 {
-	m_iD				= glCreateProgram();
+	m_iD								= glCreateProgram();
 
-	m_uniforms			= nullptr;
-	m_numUniforms       = 0;
+	m_uniforms							= nullptr;
+	m_numUniforms						= 0;
 
-	m_attributes		= nullptr;
-	m_numAttrib			= 0;
+	m_attributes						= nullptr;
+	m_numAttrib							= 0;
+
+	m_vshader							= 0;
+	m_pshader							= 0;
 
 	m_isUsingWorldInverseMatrix			= false;
 	m_isUsingWorldInverseTMatrix		= false;
@@ -74,12 +77,20 @@ CEffect::CEffect( std::string name )
 
 CEffect::~CEffect()
 {
+	SIM_SAFE_DELETE(m_vshader);
+	SIM_SAFE_DELETE(m_pshader);
+
 	SIM_SAFE_DELETE_ARRAY(m_uniforms);
 	SIM_SAFE_DELETE_ARRAY(m_attributes);
 
 	glDeleteProgram( m_iD );
 }
 
+// ----------------------------------------------------------------------//
+void CEffect::AddDefine(const std::string& define)
+{
+	m_defines.AddToEnd(define);
+}
 // ----------------------------------------------------------------------//
 
 void CEffect::InitAttributes(unsigned int numAttrib)
@@ -212,10 +223,16 @@ void CEffect::SetUniforms()
 
 // ----------------------------------------------------------------------//
 
-void CEffect::Load( CShader *vsh, CShader *fsh )
+void CEffect::Load( const s8* vsource, const s8* psource )
 {
-	glAttachShader( m_iD, vsh->GetID() );
-	glAttachShader( m_iD, fsh->GetID() );
+	m_vshader = SIM_NEW CShader( CShader::Type::Vertex );
+	m_vshader->Load( vsource );
+
+	m_pshader = SIM_NEW CShader( CShader::Type::Pixel);
+	m_pshader->Load(psource);
+
+	glAttachShader( m_iD, m_vshader->GetID() );
+	glAttachShader( m_iD, m_pshader->GetID() );
 
 	SetAttributes();
 

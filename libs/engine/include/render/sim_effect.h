@@ -20,6 +20,7 @@
 #define __SIM_EFFECT_H
 
 #include <core/sim_interfaces.h>
+#include <core/sim_list.h>
 
 #include <render/sim_render.h>
 #include <render/sim_driver.h>
@@ -59,7 +60,7 @@ public:
 	virtual void				Render(CDriver *driver);
 	void						Bind(CDriver *driver, CVertexSource *vertexSource);
 
-	void						Load( CShader *vsh, CShader *fsh );
+	void						Load( const s8* vsource, const s8* psource );
 
 	// ------------------------------------------------------------------//
 	inline CTexture*			GetTexture( u32 channel )	{ return m_textures[ channel ]; }
@@ -74,7 +75,8 @@ public:
 
 	void						AddAttribute( const std::string& name, int index );
 	void						AddUniform( const std::string& name, int index);
-	
+
+	void						AddDefine( const std::string& define );
 	// ------------------------------------------------------------------//
 protected:
 	// ------------------------------------------------------------------//
@@ -87,28 +89,32 @@ protected:
 protected:
 
 	// ------------------------------------------------------------------//
-	u32					m_iD;
+	u32							m_iD;
 
-	CTexture*			m_textures[ CDriver::k_Texture_Channels_Count ];
+	CTexture*					m_textures[ CDriver::k_Texture_Channels_Count ];
 
-	bool				m_isUsingWorldInverseMatrix;
-	bool				m_isUsingWorldInverseTMatrix;
-	bool				m_isUsingViewInverseMatrix;
-	bool				m_isUsingViewInverseTMatrix;
-	bool				m_isUsingNormalMatrix;
-	bool				m_isUsingWorldViewMatrix;
-	bool				m_isUsingViewProjectionMatrix;
-	bool				m_isUsingWorldViewProjectionMatrix;
+	bool						m_isUsingWorldInverseMatrix;
+	bool						m_isUsingWorldInverseTMatrix;
+	bool						m_isUsingViewInverseMatrix;
+	bool						m_isUsingViewInverseTMatrix;
+	bool						m_isUsingNormalMatrix;
+	bool						m_isUsingWorldViewMatrix;
+	bool						m_isUsingViewProjectionMatrix;
+	bool						m_isUsingWorldViewProjectionMatrix;
 
-	s32					m_numUniforms;
-	CShader::TUniform*	m_uniforms;
+	s32							m_numUniforms;
+	CShader::TUniform*			m_uniforms;
 
-	s32					m_numAttrib;
-	CShader::TAttrib*	m_attributes;
+	s32							m_numAttrib;
+	CShader::TAttrib*			m_attributes;
 
+	stl::CList<std::string>		m_defines;
+
+	CShader*					m_vshader;
+	CShader*					m_pshader;
 
 public:
-	TTechnique			m_technique;
+	TTechnique					m_technique;
     // ------------------------------------------------------------------//
 };
 
