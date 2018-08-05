@@ -19,6 +19,7 @@
 #ifndef __SIM_VERTEX_SOURCE_H
 #define __SIM_VERTEX_SOURCE_H
 
+#include <core/sim_core.h>
 #include <core/sim_interfaces.h>
 
 #include <math/sim_matrix4.h>
@@ -51,114 +52,141 @@ public:
 	virtual ~CVertexSource();
 
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class AttributeFormat: u32
 	{
-        k_Vertex_Attribute_Format_Position			=   ( 1 <<  0 ),
-        k_Vertex_Attribute_Format_TexCoord_0		=   ( 1 <<  1 ),
-        k_Vertex_Attribute_Format_TexCoord_1		=   ( 1 <<  2 ),
-        k_Vertex_Attribute_Format_TexCoord_2		=   ( 1 <<  3 ),
-        k_Vertex_Attribute_Format_TexCoord_3		=   ( 1 <<  4 ),
-        k_Vertex_Attribute_Format_Color				=   ( 1 <<  5 ),
-        k_Vertex_Attribute_Format_Normal			=   ( 1 <<  6 ),
-        k_Vertex_Attribute_Format_Tangent			=   ( 1 <<  7 ),
-        k_Vertex_Attribute_Format_Binormal			=   ( 1 <<  8 ),
-		k_Vertex_Attribute_Format_Bone				=	( 1 <<  9),
-		k_Vertex_Attribute_Format_Weight			=	( 1 << 10),
+		None			= 0,
 
-        k_Vertex_Attribute_Format_Count				=   12,
-
-	} K_VERTEX_ATTRIBUTE_FORMAT;
+        Position		=   ( 1 <<  0 ),
+        TexCoord_0		=   ( 1 <<  1 ),
+        TexCoord_1		=   ( 1 <<  2 ),
+        TexCoord_2		=   ( 1 <<  3 ),
+        TexCoord_3		=   ( 1 <<  4 ),
+        Color			=   ( 1 <<  5 ),
+        Normal			=   ( 1 <<  6 ),
+        Tangent			=   ( 1 <<  7 ),
+        Binormal		=   ( 1 <<  8 ),
+		Bone			=	( 1 <<  9),
+		Weight			=	( 1 << 10),
+	};
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class AttributeSize : u32
 	{
-        k_Vertex_Attribute_Size_Position		=   ( 3 ),
-        k_Vertex_Attribute_Size_TexCoord_0		=   ( 2 ),
-        k_Vertex_Attribute_Size_TexCoord_1		=   ( 2 ),
-        k_Vertex_Attribute_Size_TexCoord_2		=   ( 2 ),
-        k_Vertex_Attribute_Size_TexCoord_3		=   ( 2 ),
-        k_Vertex_Attribute_Size_Color			=   ( 4 ),
-        k_Vertex_Attribute_Size_Normal			=   ( 3 ),
-        k_Vertex_Attribute_Size_Tangent			=   ( 3 ),
-        k_Vertex_Attribute_Size_Binormal		=   ( 3 ),
-		k_Vertex_Attribute_Size_Bone			=	( 2 ),
-		k_Vertex_Attribute_Size_Weight			=	( 2 ),
+        Position		=   ( 3 ),
+        TexCoord_0		=   ( 2 ),
+        TexCoord_1		=   ( 2 ),
+        TexCoord_2		=   ( 2 ),
+        TexCoord_3		=   ( 2 ),
+        Color			=   ( 4 ),
+        Normal			=   ( 3 ),
+        Tangent			=   ( 3 ),
+        Binormal		=   ( 3 ),
+		Bone			=	( 2 ),
+		Weight			=	( 2 ),
 
-	} K_VERTEX_ATTRIBUTE_SIZE;
+	};
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class AttributeStride : u32
 	{
-        k_Vertex_Attribute_Offset_Position		=   ( 3 * sizeof( float ) ),
-        k_Vertex_Attribute_Offset_TexCoord_0    =   ( 2 * sizeof( float ) ),
-        k_Vertex_Attribute_Offset_TexCoord_1    =   ( 2 * sizeof( float ) ),
-        k_Vertex_Attribute_Offset_TexCoord_2    =   ( 2 * sizeof( float ) ),
-        k_Vertex_Attribute_Offset_TexCoord_3    =   ( 2 * sizeof( float ) ),
-        k_Vertex_Attribute_Offset_Color			=   ( 4 * sizeof( char ) ),
-        k_Vertex_Attribute_Offset_Normal		=   ( 3 * sizeof( float ) ),
-        k_Vertex_Attribute_Offset_Tangent		=   ( 3 * sizeof( float ) ),
-        k_Vertex_Attribute_Offset_Binormal		=   ( 3 * sizeof( float ) ),
-		k_Vertex_Attribute_Offset_Bone			=   ( 2 * sizeof( char ) ),
-		k_Vertex_Attribute_Offset_Weight		=   ( 2 * sizeof( float ) ),
-
-	} K_VERTEX_ATTRIBUTE_OFFSET;
-	// ------------------------------------------------------------------//
-	
-	typedef enum
+        Position		=   ( 3 * sizeof( float ) ),
+        TexCoord_0		=   ( 2 * sizeof( float ) ),
+        TexCoord_1		=   ( 2 * sizeof( float ) ),
+        TexCoord_2		=   ( 2 * sizeof( float ) ),
+        TexCoord_3		=   ( 2 * sizeof( float ) ),
+        Color			=   ( 4 * sizeof( char ) ),
+        Normal			=   ( 3 * sizeof( float ) ),
+        Tangent			=   ( 3 * sizeof( float ) ),
+        Binormal		=   ( 3 * sizeof( float ) ),
+		Bone			=   ( 2 * sizeof( char ) ),
+		Weight			=   ( 2 * sizeof( float ) ),
+	};
+	// ------------------------------------------------------------------//	
+	enum class AttributeType : u32
 	{
-        k_Vertex_Attribute_Type_Position		=   ( GL_FLOAT ),
-        k_Vertex_Attribute_Type_TexCoord_0		=   ( GL_FLOAT ),
-        k_Vertex_Attribute_Type_TexCoord_1		=   ( GL_FLOAT ),
-        k_Vertex_Attribute_Type_TexCoord_2		=   ( GL_FLOAT ),
-        k_Vertex_Attribute_Type_TexCoord_3		=   ( GL_FLOAT ),
-        k_Vertex_Attribute_Type_Color			=   ( GL_UNSIGNED_BYTE ),
-        k_Vertex_Attribute_Type_Normal			=   ( GL_FLOAT ),
-        k_Vertex_Attribute_Type_Tangent			=   ( GL_FLOAT ),
-        k_Vertex_Attribute_Type_Binormal		=   ( GL_FLOAT ),
-        k_Vertex_Attribute_Type_Bone			=   ( GL_UNSIGNED_BYTE ),
-        k_Vertex_Attribute_Type_Weight			=   ( GL_FLOAT ),
+        Position		=   ( GL_FLOAT ),
+        TexCoord_0		=   ( GL_FLOAT ),
+        TexCoord_1		=   ( GL_FLOAT ),
+        TexCoord_2		=   ( GL_FLOAT ),
+        TexCoord_3		=   ( GL_FLOAT ),
+        Color			=   ( GL_UNSIGNED_BYTE ),
+        Normal			=   ( GL_FLOAT ),
+        Tangent			=   ( GL_FLOAT ),
+        Binormal		=   ( GL_FLOAT ),
+        Bone			=   ( GL_UNSIGNED_BYTE ),
+        Weight			=   ( GL_FLOAT ),
+	};
 
-
-	} K_VERTEX_ATTRIBUTE_TYPE;
-
+	enum { k_Vertex_Attributes_Count = 12 };
 	// ------------------------------------------------------------------//
 	
-	typedef enum
+	enum class Type : u32
 	{
-		k_Type_Line,
-		k_Type_LineStrip,
-		k_Type_Points,
-		k_Type_Triangle,
-		k_Type_TriangleStrip,
-
-	} K_TYPE;
+		Line,
+		LineStrip,
+		Points,
+		Triangle,
+		TriangleStrip,
+	};
 
 	// ------------------------------------------------------------------//
 
-	inline f32*							GetVboData() const		{ return m_vboData; }
-	inline u32							GetVboSize() const		{ return m_vboSize; }
-	inline u32							GetVertexStride() const	{ return m_vertexStride; }
-	inline u32							GetVertexFormat() const	{ return m_vertexFormat; }
-	inline K_TYPE						GetType() const			{ return m_type; }
-	inline u32							GetID()					{ return m_iD; }
+	inline f32*					GetVboData() const		{ return m_vboData; }
+	inline u32					GetVboSize() const		{ return m_vboSize; }
+	inline AttributeStride		GetVertexStride() const { return m_vertexStride; }
+	inline AttributeFormat		GetVertexFormat() const	{ return m_vertexFormat; }
+	inline Type					GetType() const			{ return m_type; }
+	inline u32					GetID()					{ return m_iD; }
 
-	u32									Generate();
+	u32							Generate();
 	// ------------------------------------------------------------------//
 
 protected:
 	// ------------------------------------------------------------------//
-	u32									m_iD;
+	u32							m_iD;
 
 public:
 	// ------------------------------------------------------------------//
-	u32									m_vertexStride;
-	u32									m_vertexFormat;
+	AttributeFormat				m_vertexFormat;
+	AttributeStride				m_vertexStride;
 
-	u32									m_vboSize;
-	f32*								m_vboData;
+	u32							m_vboSize;
+	f32*						m_vboData;
 
-	K_TYPE								m_type;
+	Type						m_type;
 	// ------------------------------------------------------------------//
 };
 
+// ----------------------------------------------------------------------//
+inline CVertexSource::AttributeFormat operator | (CVertexSource::AttributeFormat a1,
+	CVertexSource::AttributeFormat a2)
+{
+	return static_cast<CVertexSource::AttributeFormat> (
+		EnumValue(a1) | EnumValue(a2)
+		);
+}
+// ----------------------------------------------------------------------//
+inline CVertexSource::AttributeFormat operator & (CVertexSource::AttributeFormat a1, 
+	CVertexSource::AttributeFormat a2)
+{
+	return static_cast<CVertexSource::AttributeFormat> (
+		EnumValue(a1) & EnumValue(a2)
+		);
+}
+// ----------------------------------------------------------------------//
+inline CVertexSource::AttributeFormat operator ^ (CVertexSource::AttributeFormat a1, 
+	CVertexSource::AttributeFormat a2)
+{
+	return static_cast<CVertexSource::AttributeFormat> (
+		EnumValue(a1) ^ EnumValue(a2)
+		);
+}
+// ----------------------------------------------------------------------//
+inline CVertexSource::AttributeStride operator + (CVertexSource::AttributeStride a1,
+	CVertexSource::AttributeStride a2)
+{
+	return static_cast<CVertexSource::AttributeStride> (
+		EnumValue(a1) + EnumValue(a2)
+		);
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

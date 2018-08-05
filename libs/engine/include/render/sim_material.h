@@ -79,7 +79,7 @@ protected:
 	f32							    m_reflectivity;
 	f32							    m_shininess;
 
-	CTexture*						m_textures[ CDriver::k_Select_Texture_Count ];
+	CTexture*						m_textures[CDriver::k_Texture_Channels_Count];
 	CEffect*						m_effect;
 };
 

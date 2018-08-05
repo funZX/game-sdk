@@ -27,17 +27,17 @@ namespace rnr
 
 CShader::TAttrib CShader::Attributes[] =
 {
-	{ CShader::k_Attribute_Position,				"a_PositionL",	-1,		CVertexSource::k_Vertex_Attribute_Format_Position,		CVertexSource::k_Vertex_Attribute_Size_Position,	CVertexSource::k_Vertex_Attribute_Offset_Position,		CVertexSource::k_Vertex_Attribute_Type_Position,	 },
-	{ CShader::k_Attribute_TexCoord_0,				"a_TexCoord_0",	-1,		CVertexSource::k_Vertex_Attribute_Format_TexCoord_0,	CVertexSource::k_Vertex_Attribute_Size_TexCoord_0,	CVertexSource::k_Vertex_Attribute_Offset_TexCoord_0,	CVertexSource::k_Vertex_Attribute_Type_TexCoord_0,	 },
-	{ CShader::k_Attribute_TexCoord_1,				"a_TexCoord_1",	-1,		CVertexSource::k_Vertex_Attribute_Format_TexCoord_1,	CVertexSource::k_Vertex_Attribute_Size_TexCoord_1,	CVertexSource::k_Vertex_Attribute_Offset_TexCoord_1,	CVertexSource::k_Vertex_Attribute_Type_TexCoord_1,	 },
-	{ CShader::k_Attribute_TexCoord_2,				"a_TexCoord_2",	-1,		CVertexSource::k_Vertex_Attribute_Format_TexCoord_2,	CVertexSource::k_Vertex_Attribute_Size_TexCoord_2,	CVertexSource::k_Vertex_Attribute_Offset_TexCoord_2,	CVertexSource::k_Vertex_Attribute_Type_TexCoord_2,	 },
-	{ CShader::k_Attribute_TexCoord_3,				"a_TexCoord_3",	-1,		CVertexSource::k_Vertex_Attribute_Format_TexCoord_3,	CVertexSource::k_Vertex_Attribute_Size_TexCoord_3,	CVertexSource::k_Vertex_Attribute_Offset_TexCoord_3,	CVertexSource::k_Vertex_Attribute_Type_TexCoord_3,	 },
-	{ CShader::k_Attribute_Color,					"a_Color",		-1,		CVertexSource::k_Vertex_Attribute_Format_Color,			CVertexSource::k_Vertex_Attribute_Size_Color,		CVertexSource::k_Vertex_Attribute_Offset_Color,			CVertexSource::k_Vertex_Attribute_Type_Color,		 },
-	{ CShader::k_Attribute_Normal,					"a_NormalL",	-1,		CVertexSource::k_Vertex_Attribute_Format_Normal,		CVertexSource::k_Vertex_Attribute_Size_Normal,		CVertexSource::k_Vertex_Attribute_Offset_Normal,		CVertexSource::k_Vertex_Attribute_Type_Normal,		 },
-	{ CShader::k_Attribute_Tangent,					"a_TangentL",	-1,		CVertexSource::k_Vertex_Attribute_Format_Tangent,		CVertexSource::k_Vertex_Attribute_Size_Tangent,		CVertexSource::k_Vertex_Attribute_Offset_Tangent,		CVertexSource::k_Vertex_Attribute_Type_Tangent,		 },
-	{ CShader::k_Attribute_Binormal,				"a_BinormalL",	-1,		CVertexSource::k_Vertex_Attribute_Format_Binormal,		CVertexSource::k_Vertex_Attribute_Size_Binormal,	CVertexSource::k_Vertex_Attribute_Offset_Binormal,		CVertexSource::k_Vertex_Attribute_Type_Binormal,	 },
-	{ CShader::k_Attribute_Bone,					"a_Bone",		-1,		CVertexSource::k_Vertex_Attribute_Format_Bone,			CVertexSource::k_Vertex_Attribute_Size_Bone,		CVertexSource::k_Vertex_Attribute_Offset_Bone,			CVertexSource::k_Vertex_Attribute_Type_Bone,		 },
-	{ CShader::k_Attribute_Weight,					"a_Weight",		-1,		CVertexSource::k_Vertex_Attribute_Format_Weight,		CVertexSource::k_Vertex_Attribute_Size_Weight,		CVertexSource::k_Vertex_Attribute_Offset_Weight,		CVertexSource::k_Vertex_Attribute_Type_Weight,		 },
+	{ CShader::k_Attribute_Position,				"a_PositionL",	-1,		CVertexSource::AttributeFormat::Position,	CVertexSource::AttributeSize::Position,		CVertexSource::AttributeStride::Position,		CVertexSource::AttributeType::Position,		},
+	{ CShader::k_Attribute_TexCoord_0,				"a_TexCoord_0",	-1,		CVertexSource::AttributeFormat::TexCoord_0,	CVertexSource::AttributeSize::TexCoord_0,	CVertexSource::AttributeStride::TexCoord_0,		CVertexSource::AttributeType::TexCoord_0,	},
+	{ CShader::k_Attribute_TexCoord_1,				"a_TexCoord_1",	-1,		CVertexSource::AttributeFormat::TexCoord_1,	CVertexSource::AttributeSize::TexCoord_1,	CVertexSource::AttributeStride::TexCoord_1,		CVertexSource::AttributeType::TexCoord_1,	},
+	{ CShader::k_Attribute_TexCoord_2,				"a_TexCoord_2",	-1,		CVertexSource::AttributeFormat::TexCoord_2,	CVertexSource::AttributeSize::TexCoord_2,	CVertexSource::AttributeStride::TexCoord_2,		CVertexSource::AttributeType::TexCoord_2,	},
+	{ CShader::k_Attribute_TexCoord_3,				"a_TexCoord_3",	-1,		CVertexSource::AttributeFormat::TexCoord_3,	CVertexSource::AttributeSize::TexCoord_3,	CVertexSource::AttributeStride::TexCoord_3,		CVertexSource::AttributeType::TexCoord_3,	},
+	{ CShader::k_Attribute_Color,					"a_Color",		-1,		CVertexSource::AttributeFormat::Color,		CVertexSource::AttributeSize::Color,		CVertexSource::AttributeStride::Color,			CVertexSource::AttributeType::Color,		},
+	{ CShader::k_Attribute_Normal,					"a_NormalL",	-1,		CVertexSource::AttributeFormat::Normal,		CVertexSource::AttributeSize::Normal,		CVertexSource::AttributeStride::Normal,			CVertexSource::AttributeType::Normal,		},
+	{ CShader::k_Attribute_Tangent,					"a_TangentL",	-1,		CVertexSource::AttributeFormat::Tangent,	CVertexSource::AttributeSize::Tangent,		CVertexSource::AttributeStride::Tangent,		CVertexSource::AttributeType::Tangent,		},
+	{ CShader::k_Attribute_Binormal,				"a_BinormalL",	-1,		CVertexSource::AttributeFormat::Binormal,	CVertexSource::AttributeSize::Binormal,		CVertexSource::AttributeStride::Binormal,		CVertexSource::AttributeType::Binormal,		},
+	{ CShader::k_Attribute_Bone,					"a_Bone",		-1,		CVertexSource::AttributeFormat::Bone,		CVertexSource::AttributeSize::Bone,			CVertexSource::AttributeStride::Bone,			CVertexSource::AttributeType::Bone,			},
+	{ CShader::k_Attribute_Weight,					"a_Weight",		-1,		CVertexSource::AttributeFormat::Weight,		CVertexSource::AttributeSize::Weight,		CVertexSource::AttributeStride::Weight,			CVertexSource::AttributeType::Weight,		},
 };
 
 // ----------------------------------------------------------------------//

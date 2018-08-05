@@ -32,10 +32,10 @@ CVertexSource::CVertexSource()
 	m_vboData			= nullptr;
 	m_vboSize			= 0;
 
-	m_vertexStride		= 0;
-	m_vertexFormat 		= 0;
+	m_vertexStride		= AttributeStride::Position;
+	m_vertexFormat 		= AttributeFormat::Position;
 
-	m_type				= k_Type_Triangle;
+	m_type				= Type::Triangle;
 }
 // ----------------------------------------------------------------------//
 
@@ -62,7 +62,7 @@ u32 CVertexSource::Generate()
 {
 	glGenBuffers( 1, &m_iD );
 	glBindBuffer( GL_ARRAY_BUFFER, m_iD );
-	glBufferData( GL_ARRAY_BUFFER, m_vboSize * m_vertexStride, m_vboData, GL_DYNAMIC_DRAW);
+	glBufferData( GL_ARRAY_BUFFER, m_vboSize * EnumValue(m_vertexStride), m_vboData, GL_DYNAMIC_DRAW);
 	glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
 	SIM_CHECK_OPENGL();

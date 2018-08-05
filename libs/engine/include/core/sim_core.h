@@ -77,6 +77,15 @@ namespace sim
 	
 	static const int k_Pool_Size = 64;
 	
+	// ----------------------------------------------------------------------//
+	// easy cast typed enums to underlying type
+	template <typename E>
+	constexpr typename std::underlying_type<E>::type EnumValue(E e) noexcept {
+		static_assert(std::is_enum<E>::value, "template parameter is not an enum type");
+		return static_cast<typename std::underlying_type<E>::type>(e);
+	}
+	// ----------------------------------------------------------------------//
+
 }; // namespace sim
 
 #define SIM_ASSERT( x )				assert(x)

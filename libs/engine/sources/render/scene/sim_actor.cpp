@@ -43,8 +43,8 @@ CActor::CActor()
 {
 	m_mesh			            = nullptr;
 
-	m_properties.shape			= k_Shape_Box;
-	m_properties.type			= k_Type_Default;
+	m_properties.shape			= Shape::Box;
+	m_properties.type			= Type::Default;
 	m_properties.isVisible		= true;
 	m_properties.isCulled		= false;
 	m_properties.isPhysic		= false;
@@ -100,27 +100,27 @@ void CActor::AddPhysic(phy::CPhysic *physic)
 {
 	if (!IsPhysic())
 	{
-		switch( m_properties.shape )
+		switch(EnumValue(m_properties.shape))
 		{
-		case k_Shape_Box:
+		case Shape::Box:
 			{
 				m_collisionShape = SIM_NEW btBoxShape(btVector3(m_box.x, m_box.y, m_box.z));
 				break;
 			}
 
-		case k_Shape_Sphere:
+		case Shape::Sphere:
 			{
 				m_collisionShape = SIM_NEW btSphereShape(m_radius);
 				break;
 			}
 
-		case k_Shape_Cylinder:
+		case Shape::Cylinder:
 			{
 				m_collisionShape = SIM_NEW btCylinderShape(btVector3(m_box.x, m_box.y, m_box.z));
 				break;
 			}
 
-		case k_Shape_Cone:
+		case Shape::Cone:
 			{
 				m_collisionShape = SIM_NEW btConeShape(m_radius, m_box.y);
 				break;
@@ -206,17 +206,17 @@ void CActor::Update( f32 dt, void *userData )
 
 void CActor::Render( CDriver *driver )
 {
-	switch( m_properties.type )
+	switch(EnumValue(m_properties.type))
 	{
-	case k_Type_Default:
+	case Type::Default:
 		driver->EnableCulling( true );
 		break;
 
-	case k_Type_NotCulled:
+	case Type::NotCulled:
 		driver->EnableCulling( false );
 		break;
 
-	case k_Type_Billboard:
+	case Type::Billboard:
 		break;
 	}
 

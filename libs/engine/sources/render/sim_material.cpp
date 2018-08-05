@@ -71,12 +71,11 @@ void CMaterial::Render( CDriver *driver )
 	driver->SetMaterialSpecular( &m_specular );
 	driver->SetMaterialEmissive( &m_emissive );
 
-	for( u32 i = 0; i < CDriver::k_Select_Texture_Count; i++ )
+	for( u32 i = 0; i < CDriver::k_Texture_Channels_Count; i++ )
 	{
 		if ( m_textures[ i ] != nullptr )
 		{
-			driver->SelectTexture( ( CDriver::K_SELECT_TEXTURE ) i );
-
+			driver->SetTextureChannel( static_cast<CDriver::TextureChannel>(i) );
 			driver->BindTexture( m_textures[ i ]->GetID() );
 		}
 	}

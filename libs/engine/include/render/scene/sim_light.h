@@ -57,8 +57,8 @@ public:
 	inline f32							GetIntensity() { return m_intensity; }
 	inline void							SetIntensity( f32 intens ) { m_intensity = intens; }
 
-	inline void							SetChannel( CDriver::K_SELECT_LIGHT sel ) { m_channel = sel; };
-	inline CDriver::K_SELECT_LIGHT		GetChanel() { return m_channel; }
+	inline void							SetChannel( CDriver::LightChannel sel ) { m_channel = sel; };
+	inline CDriver::LightChannel		GetChanel() { return m_channel; }
 
 	inline void							SetDirection( TVec3 *dir ) { Vec3Copy( &m_direction, dir ); }
 	inline TVec3*						GetDirection() { return &m_direction; };
@@ -74,18 +74,18 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	CDriver::K_SELECT_LIGHT		m_channel;
+	CDriver::LightChannel				m_channel;
 
-	TVec4						m_ambient;
-	TVec4						m_diffuse;
-	TVec4						m_specular;
+	TVec4								m_ambient;
+	TVec4								m_diffuse;
+	TVec4								m_specular;
 
-	f32							    m_intensity;
+	f32									m_intensity;
 
-	TVec3						m_position;
-	TVec3						m_direction;
+	TVec3								m_position;
+	TVec3								m_direction;
 
-	bool							m_isVisible;
+	bool								m_isVisible;
 	// ------------------------------------------------------------------//
 };
 

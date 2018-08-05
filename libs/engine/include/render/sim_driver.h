@@ -48,82 +48,55 @@ public:
 	virtual ~CDriver( );
 
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class MatrixMode : u32
 	{
-		k_Select_Matrix_None = -1,
-
-		k_Select_Matrix_World,
-		k_Select_Matrix_View,
-		k_Select_Matrix_Projection,
-		k_Select_Matrix_Texture,
-
-		k_Select_Matrix_Count
-
-	} K_SELECT_MATRIX;
+		World,
+		View,
+		Projection,
+		Texture,
+	};
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class TextureChannel : u32
 	{
-		k_Select_Texture_None = -1,
-
-		k_Select_Texture_0,
-		k_Select_Texture_1,
-		k_Select_Texture_2,
-		k_Select_Texture_3,
-		k_Select_Texture_4,
-
-		k_Select_Texture_Count
-	} K_SELECT_TEXTURE;
+		Texture_0,
+		Texture_1,
+		Texture_2,
+		Texture_3,
+		Texture_4,
+	};
+	enum { k_Texture_Channels_Count = 5 };
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class CullingMode : u32
 	{
-		k_Select_Face_None = -1,
-
-		k_Select_Face_CW,
-		k_Select_Face_CCW,
-
-		k_Select_Face_Count
-
-	} K_SELECT_FACE;
+		CW,
+		CCW,
+	};
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class LightChannel : u32
 	{
-		k_Select_Light_None = -1,
-
-		k_Select_Light_0,
-		k_Select_Light_1,
-		k_Select_Light_2,
-		k_Select_Light_3,
-
-		k_Select_Light_Count
-
-	} K_SELECT_LIGHT;
+		Light_0,
+		Light_1,
+		Light_2,
+		Light_3,
+	};
+	enum { k_Light_Channels_Count = 4 };
 	// ------------------------------------------------------------------//
-	typedef enum
+	enum class FogMode : u32
 	{
-		k_Select_Fog_None = -1,
-
-		k_Select_Fog_Linear,
-		k_Select_Fog_Exp,
-		k_Select_Fog_Exp2,
-
-		k_Select_Fog_Count
-
-	} K_SELECT_FOG;
+		Linear,
+		Exp,
+		Exp2,
+	};
 	// ------------------------------------------------------------------//
 	
-	typedef enum
+	enum class Primitive : u32
 	{
-		k_Render_Type_None = -1,
-
-		k_Render_Type_Lines				= GL_LINES,
-		k_Render_Type_LineStrip			= GL_LINE_STRIP,
-		k_Render_Type_Points			= GL_POINTS,
-		k_Render_Type_Triangles			= GL_TRIANGLES,
-		k_Render_Type_TriangleStrips	= GL_TRIANGLE_STRIP,
-
-		k_Render_Type_Count
-
-	} K_RENDER_TYPE;
+		Lines			= GL_LINES,
+		LineStrip		= GL_LINE_STRIP,
+		Points			= GL_POINTS,
+		Triangles		= GL_TRIANGLES,
+		TriangleStrips	= GL_TRIANGLE_STRIP,
+	};
 
 	// ------------------------------------------------------------------//
 
@@ -189,10 +162,10 @@ public:
 	void						Flush2D();
 	// ------------------------------------------------------------------//
 
-	K_SELECT_TEXTURE			SelectTexture( K_SELECT_TEXTURE textureSelect );
-	K_SELECT_LIGHT				SelectLight( K_SELECT_LIGHT lightSelect );
-	K_SELECT_FACE				SelectFace( K_SELECT_FACE faceSelect );
-	K_SELECT_MATRIX				SelectMatrix( K_SELECT_MATRIX matrixSelect );
+	TextureChannel				SetTextureChannel( TextureChannel textureSelect );
+	LightChannel				SetLightChannel( LightChannel lightSelect );
+	CullingMode					SetCullingMode( CullingMode cullingMode );
+	MatrixMode					SetMatrixMode( MatrixMode matrixMode );
 	
 	u32							BindTexture ( u32 tex );
 	CRenderTexture*				BindRenderTexture( CRenderTexture* framebuffer );
@@ -250,7 +223,7 @@ public:
 	inline const TMatrix4*		GetViewMatrixInverseT()					{ return &m_viewInverseTMatrix; }
 
 	inline const TMatrix4*		GetProjectionMatrix()					{ return m_projectionStack.topmatrix; }
-	inline const TMatrix4*		GetTextureMatrix( K_SELECT_TEXTURE e )	{ return m_textureStack[ e ].topmatrix; }
+	inline const TMatrix4*		GetTextureMatrix( TextureChannel texChannel)	{ return m_textureStack[EnumValue(texChannel)].topmatrix; }
 
 	void						SetScreenSize(u32 width, u32 height);
 	void						SetViewport( u32 width, u32 height );
@@ -264,7 +237,7 @@ public:
 	void						SetFogColor( const TVec4 *col );
 	inline TVec4*				GetFogColor() { return &m_fogColor; }
 
-	void						SetFogMode( K_SELECT_FOG fogMode);
+	void						SetFogMode( FogMode fogMode);
 
 	void						SetFogStart( const f32 fogStart );
 	inline f32				    GetFogStart() { return m_fogStart; }
@@ -276,22 +249,22 @@ public:
 	inline f32				    GetFogDensity() { return m_fogDensity; }
 
 	void						SetLightPosition( const TVec3 *pos );
-	inline TVec3*				GetLightPosition() { return &m_lightParameters[ m_lightSelect ].m_position; }
+	inline TVec3*				GetLightPosition() { return &m_lightParameters[EnumValue(m_lightChannel)].m_position; }
 
 	void						SetLightDirection( const TVec3 *dir );
-	inline TVec3*				GetLightDirection() { return &m_lightParameters[ m_lightSelect ].m_direction; }
+	inline TVec3*				GetLightDirection() { return &m_lightParameters[EnumValue(m_lightChannel)].m_direction; }
 
 	void						SetLightAmbient( const TVec4 *col );
-	inline TVec4*				GetLightAmbient() { return &m_lightParameters[ m_lightSelect ].m_ambient; }
+	inline TVec4*				GetLightAmbient() { return &m_lightParameters[EnumValue(m_lightChannel)].m_ambient; }
 
 	void						SetLightDiffuse( const TVec4 *col );
-	inline TVec4*				GetLightDiffuse() { return &m_lightParameters[ m_lightSelect ].m_diffuse; }
+	inline TVec4*				GetLightDiffuse() { return &m_lightParameters[EnumValue(m_lightChannel)].m_diffuse; }
 
 	void						SetLightSpecular( const TVec4 *col );
-	inline TVec4*				GetLightSpecular() { return &m_lightParameters[ m_lightSelect ].m_specular; }
+	inline TVec4*				GetLightSpecular() { return &m_lightParameters[EnumValue(m_lightChannel)].m_specular; }
 
 	void						SetLightIntensity( f32 intens );
-	inline f32				    GetLightIntensity() { return m_lightParameters[ m_lightSelect ].m_intensity; }
+	inline f32				    GetLightIntensity() { return m_lightParameters[EnumValue(m_lightChannel)].m_intensity; }
 
 	inline f32				    GetMaterialReflectivity() { return m_materialReflectivity; }
 	inline void					SetMaterialReflectivity( f32 refl ) { m_materialReflectivity = refl; }
@@ -320,7 +293,7 @@ public:
 	void						SetDepthRange( f32 start, f32 end );
 
 	// ------------------------------------------------------------------//
-	void                        SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData, u32 vertexStride );
+	void                        SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData, CVertexSource::AttributeStride vertexStride );
     void                        EnableVertexAttribute( CShader::TAttrib* attrib );
     void                        DisableVertexAttribute( CShader::TAttrib* attrib );
 	// ------------------------------------------------------------------//
@@ -364,8 +337,8 @@ protected:
 
 	TMatrix4Stack*				m_activeStack;
 
-	TMatrix4Stack				m_textureStack[ k_Select_Texture_Count ];
-	K_SELECT_TEXTURE			m_textureSelect;
+	TMatrix4Stack				m_textureStack[k_Texture_Channels_Count];
+	TextureChannel				m_textureChannel;
 
 	TMatrix4					m_worldInverseMatrix;
 	TMatrix4					m_worldInverseTMatrix;
@@ -392,23 +365,23 @@ protected:
 	TMatrix3					m_normalMatrix;
 	bool						m_isNormalMatrixDirty;
 	bool						m_isActiveStackAlteringNormalMatrix;
-	K_SELECT_MATRIX				m_matrixSelect;
+	MatrixMode					m_matrixMode;
 
 	TMatrix4					m_skeletonMatrix[ k_Skeleton_Bones_Max ];
 
-	u32				            m_textureBind[ k_Select_Texture_Count ];
+	u32				            m_textureBind[k_Texture_Channels_Count];
 
     TVertexAttributeInfo        m_vertexAttributeInfo[ CShader::k_Attribute_Count ];
-	TLightParameters			m_lightParameters[ k_Select_Light_Count ];
-	K_SELECT_LIGHT				m_lightSelect;
+	TLightParameters			m_lightParameters[ k_Light_Channels_Count ];
+	LightChannel				m_lightChannel;
 
-	K_SELECT_FACE				m_faceSelect;
+	CullingMode					m_cullingMode;
 
 	TBlendFunc					m_blendFunc;
 	TDepthFunc					m_depthFunc;
 
 	TVec4						m_fogColor;
-	K_SELECT_FOG				m_fogMode;
+	FogMode						m_fogMode;
 	f32						    m_fogDensity;
 	f32						    m_fogStart;
 	f32						    m_fogEnd;

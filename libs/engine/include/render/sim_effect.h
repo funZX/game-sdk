@@ -89,7 +89,7 @@ protected:
 	// ------------------------------------------------------------------//
 	u32					m_iD;
 
-	CTexture*			m_textures[ CDriver::k_Select_Texture_Count ];
+	CTexture*			m_textures[ CDriver::k_Texture_Channels_Count ];
 
 	bool				m_isUsingWorldInverseMatrix;
 	bool				m_isUsingWorldInverseTMatrix;
