@@ -49,6 +49,7 @@
     <Compile Include="data\sprite.py" />
     <Compile Include="data\texture.py" />
     <Compile Include="make.py" />
+    <Compile Include="preprocess.py" />
     <Compile Include="utils.py" />
   </ItemGroup>
   <ItemGroup>

@@ -75,8 +75,6 @@ public:
 
 	void						AddAttribute( const std::string& name, int index );
 	void						AddUniform( const std::string& name, int index);
-
-	void						AddDefine( const std::string& define );
 	// ------------------------------------------------------------------//
 protected:
 	// ------------------------------------------------------------------//
@@ -107,8 +105,6 @@ protected:
 
 	s32							m_numAttrib;
 	CShader::TAttrib*			m_attributes;
-
-	stl::CList<std::string>		m_defines;
 
 	CShader*					m_vshader;
 	CShader*					m_pshader;

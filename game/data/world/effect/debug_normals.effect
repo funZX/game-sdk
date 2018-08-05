@@ -1,8 +1,8 @@
 {
 	"name": "debug/debug_normals",
-	"vsource": "effect/debug/vsource.debug_normals",
-	"psource": "effect/debug/psource.debug_normals",		
-	"defines": [],
+	"vsource": "effect/debug/vsource.debug_normals.cpp",
+	"psource": "effect/debug/psource.debug_normals.cpp",		
+	"defines": ["DEBUG", "LIB"],
 	
 	"technique":
 	{
@@ -26,7 +26,7 @@
 		"u_Color"
 	],
 	
-		"attributes":[
+	"attributes":[
 		"a_PositionL",
 		"a_NormalL"
 	],

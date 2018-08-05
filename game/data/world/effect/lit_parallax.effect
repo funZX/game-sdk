@@ -1,7 +1,7 @@
 {
 	"name": "lit/lit_parallax",
-	"vsource": "effect/lit/vsource.lit_parallax",
-	"psource": "effect/lit/psource.lit_parallax",
+	"vsource": "effect/lit/vsource.lit_parallax.cpp",
+	"psource": "effect/lit/psource.lit_parallax.cpp",
 	"defines": [],
 	
 	"technique":

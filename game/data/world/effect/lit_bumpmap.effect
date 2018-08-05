@@ -1,7 +1,7 @@
 {
 	"name": "lit/lit_bumpmap",
-	"vsource": "effect/lit/vsource.lit_bumpmap",
-	"psource": "effect/lit/psource.lit_bumpmap",
+	"vsource": "effect/lit/vsource.lit_bumpmap.cpp",
+	"psource": "effect/lit/psource.lit_bumpmap.cpp",
 	"defines": [],		
 	
 	"technique":

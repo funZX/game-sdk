@@ -1,7 +1,7 @@
 {
 	"name": "color/texture_color",
-	"vsource": "effect/color/vsource.texture_color",
-	"psource": "effect/color/psource.texture_color",	
+	"vsource": "effect/color/vsource.texture_color.cpp",
+	"psource": "effect/color/psource.texture_color.cpp",	
 	"defines": [],
 	
 	"technique":

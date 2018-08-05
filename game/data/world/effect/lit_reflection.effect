@@ -1,7 +1,7 @@
 {
 	"name": "lit/lit_reflection",
-	"vsource": "effect/lit/vsource.lit_reflection",
-	"psource": "effect/lit/psource.lit_reflection",
+	"vsource": "effect/lit/vsource.lit_reflection.cpp",
+	"psource": "effect/lit/psource.lit_reflection.cpp",
 	"defines": [],
 	
 	"technique":
