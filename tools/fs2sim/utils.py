@@ -18,7 +18,16 @@ def LOG(str):
 
 def failed(exc):
 	raise exc
-	
+
+#---------------------------------------------------------------------------------------
+
+def getWinPath(path):
+    str = path.replace('/c/', 'c:/')
+    str = str.replace('/d/', 'd:/')
+    str = str.replace('/e/', 'e:/')
+
+    return str
+
 #---------------------------------------------------------------------------------------
 
 def getListOfDirectories(path):

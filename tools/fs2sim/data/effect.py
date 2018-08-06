@@ -5,7 +5,6 @@ import os
 import time
 import glob
 import json
-import preprocess
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
@@ -72,26 +71,18 @@ def main(dirlist):
                     utils.newerFile(in_vsource, out_vsource) or
                     utils.newerFile(in_psource, out_psource) ):
                     
-                    D = ['preprocess']
-                    D.append('-f')
-                    D.append('-I')
-                    D.append(d);
+                    D = ' -P -I ' + d
                     for define in effect['defines']:
-                        D.append('-D')
-                        D.append(define+'=1')
+                        D = D + ' -D' + define+'=1'
 
-                    DV = D[:]
-                    DV.append('-o')
-                    DV.append(out_vsource)
-                    DV.append(in_vsource);
+                    DV = D[:] + ' -o ' + utils.getWinPath(out_vsource) + ' ' + utils.getWinPath(in_vsource)
+                    DP = D[:] + ' -o ' + utils.getWinPath(out_psource) + ' ' + utils.getWinPath(in_psource)
+                    
+                    command = config.EXE_MCPP + ' ' + DV
+                    utils.spawnProcess(command)
 
-                    DP = D[:]
-                    DP.append('-o')
-                    DP.append(out_psource)
-                    DP.append(in_psource);
-
-                    preprocess.main( DV )
-                    preprocess.main( DP )
+                    command = config.EXE_MCPP + ' ' + DP
+                    utils.spawnProcess(command)
 
                     effect['vsource'] = os.path.dirname(effect['vsource']) +'/'+out_vsource_name
                     effect['psource'] = os.path.dirname(effect['psource']) +'/'+out_psource_name

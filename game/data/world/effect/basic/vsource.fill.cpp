@@ -14,23 +14,26 @@ varying vec4 v_Color;
 void main()
 {
 	vec4 col = UNDEFINED_COLOR;
-	
 #if USE_CLEAR_COLOR	
-	v_Color			*= u_Color;
+	col = u_Color;
 #endif	
-	
 #if USE_VERTEX_COLOR	
-	v_Color			*= a_Color;
+#if !(USE_CLEAR_COLOR)
+	col = a_Color;
+#else
+	col *= a_Color;
 #endif	
-
+#endif	
 #if USE_MATERIAL_DIFFUSE	
-	v_Color			*= u_Material_Diffuse;
+#if !(USE_VERTEX_COLOR || USE_CLEAR_COLOR)
+	col = u_Material_Diffuse;
+#else	
+	col *= u_Material_Diffuse;
 #endif	
-
-#if USE_TEXTURE_COLOR
-	v_Tex0			= a_TexCoord_0;
 #endif
-	
+#if USE_TEXTURE_COLOR
+	v_Tex0 = a_TexCoord_0;
+#endif
 	v_Color 		= col;	
 	gl_Position		= a_PositionL * u_Matrix_WorldViewProjection;
 }	
