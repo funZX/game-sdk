@@ -78,7 +78,7 @@ def main(dirlist):
                     D.append(d);
                     for define in effect['defines']:
                         D.append('-D')
-                        D.append(define)
+                        D.append(define+'=1')
 
                     DV = D[:]
                     DV.append('-o')

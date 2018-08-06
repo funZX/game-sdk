@@ -2,7 +2,7 @@
 	"name": "color/fill",
 	"vsource": "effect/color/vsource.fill.cpp",
 	"psource": "effect/color/psource.fill.cpp",
-	"defines": ["USE_MATERIAL_DIFFUSE=1","USE_VERTEX_COLOR=1"],
+	"defines": ["USE_MATERIAL_DIFFUSE","USE_VERTEX_COLOR"],
 	
 	"technique":
 	{
