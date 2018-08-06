@@ -1,7 +1,6 @@
 {
-	"name": "lit/lit_reflection",
-	"vsource": "effect/lit/vsource.lit_reflection.cpp",
-	"psource": "effect/lit/psource.lit_reflection.cpp",
+	"vsource": "effect/basic/vsource.debugnormals.cpp",
+	"psource": "effect/basic/psource.debugnormals.cpp",		
 	"defines": [],
 	
 	"technique":
@@ -18,21 +17,16 @@
 			"src"			: "SRC_ALPHA", 
 			"dst"			: "ONE_MINUS_SRC_ALPHA"
 		},
-		"depthfunc"			: "GL_LESS"			
+		"depthfunc"			: "GL_LESS"		
 	},
 	
 	"uniforms":[
-		"u_Matrix_Projection",
-		"u_Matrix_WorldView",
-		"u_Matrix_Normal",
-		"u_Sampler_Tex_0",
-		"u_Sampler_Cube",
-		"u_Material_Reflectivity"
+		"u_Matrix_WorldViewProjection",
+		"u_Color"
 	],
 	
 	"attributes":[
 		"a_PositionL",
-		"a_TexCoord_0",
 		"a_NormalL"
 	],
 	

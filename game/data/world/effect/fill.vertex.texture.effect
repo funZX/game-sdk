@@ -1,7 +1,7 @@
 {
 	"vsource": "effect/basic/vsource.fill.cpp",
-	"psource": "effect/basic/psource.fill.cpp",
-	"defines": ["USE_CLEAR_COLOR"],
+	"psource": "effect/basic/psource.fill.cpp",			
+	"defines": ["USE_CLEAR_COLOR", "USE_VERTEX_COLOR", "USE_TEXTURE_COLOR"],
 	
 	"technique":
 	{
@@ -17,16 +17,19 @@
 			"src"			: "SRC_ALPHA", 
 			"dst"			: "ONE_MINUS_SRC_ALPHA"
 		},
-		"depthfunc"			: "GL_LESS"
+		"depthfunc"			: "GL_LESS"			
 	},
 	
 	"uniforms":[
 		"u_Matrix_WorldViewProjection",
-		"u_Color"
+		"u_Color",
+		"u_Sampler_Tex_0"
 	],
 	
 	"attributes":[
-		"a_PositionL"
+		"a_PositionL",
+		"a_TexCoord_0",
+		"a_Color"
 	],
 	
 	"textures": []

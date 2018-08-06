@@ -1,7 +1,7 @@
 {
 	"vsource": "effect/basic/vsource.fill.cpp",
 	"psource": "effect/basic/psource.fill.cpp",
-	"defines": ["USE_CLEAR_COLOR"],
+	"defines": ["USE_CLEAR_COLOR", "USE_MATERIAL_DIFFUSE"],
 	
 	"technique":
 	{
@@ -22,6 +22,7 @@
 	
 	"uniforms":[
 		"u_Matrix_WorldViewProjection",
+		"u_Material_Diffuse",
 		"u_Color"
 	],
 	

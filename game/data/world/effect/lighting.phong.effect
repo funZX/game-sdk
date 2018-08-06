@@ -1,7 +1,6 @@
 {
-	"name": "lit/lit_phong",
-	"vsource": "effect/lit/vsource.lit_phong.cpp",
-	"psource": "effect/lit/psource.lit_phong.cpp",
+	"vsource": "effect/lighting/vsource.phong.cpp",
+	"psource": "effect/lighting/psource.phong.cpp",
 	"defines": [],
 			
 	"technique":

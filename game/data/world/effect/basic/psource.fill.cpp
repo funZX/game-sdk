@@ -5,7 +5,7 @@ uniform sampler2D	u_Sampler_Tex_0;
 varying vec2 v_Tex0;
 varying vec4 v_Color;
 
-#include "../library/functions.h"
+#include "../include/func.h"
 
 void main()
 {

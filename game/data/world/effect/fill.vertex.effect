@@ -1,9 +1,8 @@
 {
-	"name": "color/fill_color_vertex_color_texture_color",
-	"vsource": "effect/color/vsource.fill_color_vertex_color_texture_color.cpp",
-	"psource": "effect/color/psource.fill_color_vertex_color_texture_color.cpp",			
-	"defines": [],
-	
+	"vsource": "effect/basic/vsource.fill.cpp",
+	"psource": "effect/basic/psource.fill.cpp",		
+	"defines": ["USE_CLEAR_COLOR", "USE_VERTEX_COLOR"],
+			
 	"technique":
 	{
 		"depthtest" 		: true,
@@ -23,13 +22,11 @@
 	
 	"uniforms":[
 		"u_Matrix_WorldViewProjection",
-		"u_Color",
-		"u_Sampler_Tex_0"
+		"u_Color"
 	],
 	
 	"attributes":[
 		"a_PositionL",
-		"a_TexCoord_0",
 		"a_Color"
 	],
 	

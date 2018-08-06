@@ -1,9 +1,8 @@
 {
-	"name": "lit/lit_parallax",
-	"vsource": "effect/lit/vsource.lit_parallax.cpp",
-	"psource": "effect/lit/psource.lit_parallax.cpp",
-	"defines": [],
-	
+	"vsource": "effect/basic/vsource.fill.cpp",
+	"psource": "effect/basic/psource.fill.cpp",		
+	"defines": ["USE_CLEAR_COLOR", "USE_VERTEX_COLOR", "USE_MATERIAL_DIFFUSE"],
+			
 	"technique":
 	{
 		"depthtest" 		: true,
@@ -23,19 +22,13 @@
 	
 	"uniforms":[
 		"u_Matrix_WorldViewProjection",
-		"u_Matrix_Normal",
-		"u_Light_Position_0",
-		"u_Sampler_Tex_0",
-		"u_Sampler_Tex_1",
-		"u_Sampler_Tex_2"
+		"u_Material_Diffuse",
+		"u_Color"
 	],
 	
 	"attributes":[
 		"a_PositionL",
-		"a_TexCoord_0",
-		"a_NormalL",
-		"a_TangentL",
-		"a_BinormalL"
+		"a_Color"
 	],
 	
 	"textures": []

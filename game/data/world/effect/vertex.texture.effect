@@ -1,8 +1,7 @@
 {
-	"name": "particle/particle_sprite",
-	"vsource": "effect/particle/vsource.particle_sprite.cpp",
-	"psource": "effect/particle/psource.particle_sprite.cpp",		
-	"defines": [],
+	"vsource": "effect/basic/vsource.fill.cpp",
+	"psource": "effect/basic/psource.fill.cpp",		
+	"defines": ["USE_VERTEX_COLOR", "USE_TEXTURE_COLOR"],
 	
 	"technique":
 	{
@@ -18,19 +17,19 @@
 			"src"			: "SRC_ALPHA", 
 			"dst"			: "ONE_MINUS_SRC_ALPHA"
 		},
-		"depthfunc"			: "GL_LESS"		
+		"depthfunc"			: "GL_LESS"			
 	},
 	
 	"uniforms":[
 		"u_Matrix_WorldViewProjection",
 		"u_Color",
-		"u_Sampler_Tex_0",
-		"u_Material_Diffuse",
-		"u_Point_Size"
+		"u_Sampler_Tex_0"
 	],
+	
 	"attributes":[
 		"a_PositionL",
-		"a_TexCoord_0"
+		"a_TexCoord_0",
+		"a_Color"
 	],
 	
 	"textures": []

@@ -1,9 +1,8 @@
 {
-	"name": "color/fill_color_vertex_color",
-	"vsource": "effect/color/vsource.fill_color_vertex_color.cpp",
-	"psource": "effect/color/psource.fill_color_vertex_color.cpp",		
+	"vsource": "effect/basic/vsource.fill.cpp",
+	"psource": "effect/basic/psource.fill.cpp",
 	"defines": [],
-			
+	
 	"technique":
 	{
 		"depthtest" 		: true,
@@ -18,17 +17,15 @@
 			"src"			: "SRC_ALPHA", 
 			"dst"			: "ONE_MINUS_SRC_ALPHA"
 		},
-		"depthfunc"			: "GL_LESS"			
+		"depthfunc"			: "GL_LESS"
 	},
 	
 	"uniforms":[
-		"u_Matrix_WorldViewProjection",
-		"u_Color"
+		"u_Matrix_WorldViewProjection"
 	],
 	
 	"attributes":[
-		"a_PositionL",
-		"a_Color"
+		"a_PositionL"
 	],
 	
 	"textures": []
