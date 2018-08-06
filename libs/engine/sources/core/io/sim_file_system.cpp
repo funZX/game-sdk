@@ -443,18 +443,7 @@ bool CFileSystem::LoadEffect(const json_t* jsonRoot, s32 index)
 	jsonValue = jm.GetRoot();
 
 	SIM_SAFE_DELETE_ARRAY(data);
-
-	json_t*  defines	= json_object_get(jsonValue, "defines");
-	SIM_ASSERT(json_is_array(defines));
-
-	u32 nDefines = json_array_size(defines);
-	for (s32 k = 0; k < (s32)nDefines; k++)
-	{
-		std::string define = json_string_value(json_array_get(defines, k));
-
-		effect->AddDefine(define);
-	}
-
+	
 	std::string vsource = json_string_value(json_object_get(jsonValue, "vsource"));
 	std::string psource = json_string_value(json_object_get(jsonValue, "psource"));
 
@@ -505,6 +494,9 @@ bool CFileSystem::LoadEffect(const json_t* jsonRoot, s32 index)
 
 	// Preprocess and load shaders
 	effect->Load(vdata, pdata);
+
+	SIM_SAFE_DELETE_ARRAY( vdata );
+	SIM_SAFE_DELETE_ARRAY( pdata );
 
 	CEffect::TTechnique technique;
 	json_t*  jsonTechnique = json_object_get( jsonValue, "technique" );

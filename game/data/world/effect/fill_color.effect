@@ -1,7 +1,7 @@
 {
 	"name": "color/fill_color",
-	"vsource": "effect/color/vsource.fill_color",
-	"psource": "effect/color/psource.fill_color",
+	"vsource": "effect/color/vsource.fill_color.cpp",
+	"psource": "effect/color/psource.fill_color.cpp",
 	"defines": [],
 	
 	"technique":

@@ -1,8 +1,8 @@
 {
-	"name": "color/vertex_color",
-	"vsource": "effect/color/vsource.vertex_color.cpp",
-	"psource": "effect/color/psource.vertex_color.cpp",
-	"defines": [],		
+	"name": "color/fill",
+	"vsource": "effect/color/vsource.fill.cpp",
+	"psource": "effect/color/psource.fill.cpp",
+	"defines": ["USE_MATERIAL_DIFFUSE=1","USE_VERTEX_COLOR=1"],
 	
 	"technique":
 	{
@@ -18,16 +18,16 @@
 			"src"			: "SRC_ALPHA", 
 			"dst"			: "ONE_MINUS_SRC_ALPHA"
 		},
-		"depthfunc"			: "GL_LESS"		
+		"depthfunc"			: "GL_LESS"
 	},
 	
 	"uniforms":[
-		"u_Matrix_WorldViewProjection"
+		"u_Matrix_WorldViewProjection",
+		"u_Color"
 	],
 	
 	"attributes":[
-		"a_PositionL",
-		"a_Color"
+		"a_PositionL"
 	],
 	
 	"textures": []

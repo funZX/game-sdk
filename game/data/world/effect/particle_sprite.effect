@@ -1,7 +1,7 @@
 {
 	"name": "particle/particle_sprite",
-	"vsource": "effect/particle/vsource.particle_sprite",
-	"psource": "effect/particle/psource.particle_sprite",		
+	"vsource": "effect/particle/vsource.particle_sprite.cpp",
+	"psource": "effect/particle/psource.particle_sprite.cpp",		
 	"defines": [],
 	
 	"technique":

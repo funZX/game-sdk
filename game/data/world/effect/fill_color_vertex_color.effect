@@ -1,7 +1,7 @@
 {
 	"name": "color/fill_color_vertex_color",
-	"vsource": "effect/color/vsource.fill_color_vertex_color",
-	"psource": "effect/color/psource.fill_color_vertex_color",		
+	"vsource": "effect/color/vsource.fill_color_vertex_color.cpp",
+	"psource": "effect/color/psource.fill_color_vertex_color.cpp",		
 	"defines": [],
 			
 	"technique":

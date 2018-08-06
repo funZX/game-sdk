@@ -16,7 +16,7 @@ void onStart()
 {
 #ifdef _DEBUG
 	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-	//_crtBreakAlloc = 18691;
+	//_crtBreakAlloc = 12950;
 #endif
 
 	atexit( onQuit );

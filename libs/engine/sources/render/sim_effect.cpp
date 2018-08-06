@@ -87,11 +87,6 @@ CEffect::~CEffect()
 }
 
 // ----------------------------------------------------------------------//
-void CEffect::AddDefine(const std::string& define)
-{
-	m_defines.AddToEnd(define);
-}
-// ----------------------------------------------------------------------//
 
 void CEffect::InitAttributes(unsigned int numAttrib)
 {
