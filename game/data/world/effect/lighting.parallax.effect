@@ -1,8 +1,7 @@
 {
-	"name": "debug/debug_normals",
-	"vsource": "effect/debug/vsource.debug_normals.cpp",
-	"psource": "effect/debug/psource.debug_normals.cpp",		
-	"defines": ["DEBUG", "LIB"],
+	"vsource": "effect/lighting/vsource.parallax.cpp",
+	"psource": "effect/lighting/psource.parallax.cpp",
+	"defines": [],
 	
 	"technique":
 	{
@@ -18,17 +17,24 @@
 			"src"			: "SRC_ALPHA", 
 			"dst"			: "ONE_MINUS_SRC_ALPHA"
 		},
-		"depthfunc"			: "GL_LESS"		
+		"depthfunc"			: "GL_LESS"			
 	},
 	
 	"uniforms":[
 		"u_Matrix_WorldViewProjection",
-		"u_Color"
+		"u_Matrix_Normal",
+		"u_Light_Position_0",
+		"u_Sampler_Tex_0",
+		"u_Sampler_Tex_1",
+		"u_Sampler_Tex_2"
 	],
 	
 	"attributes":[
 		"a_PositionL",
-		"a_NormalL"
+		"a_TexCoord_0",
+		"a_NormalL",
+		"a_TangentL",
+		"a_BinormalL"
 	],
 	
 	"textures": []

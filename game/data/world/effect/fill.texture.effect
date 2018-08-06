@@ -1,8 +1,7 @@
 {
-	"name": "color/fill_color_texture_color",
-	"vsource": "effect/color/vsource.fill_color_texture_color.cpp",
-	"psource": "effect/color/psource.fill_color_texture_color.cpp",		
-	"defines": [],
+	"vsource": "effect/basic/vsource.fill.cpp",
+	"psource": "effect/basic/psource.fill.cpp",		
+	"defines": ["USE_CLEAR_COLOR", "USE_TEXTURE_COLOR"],
 	
 	"technique":
 	{

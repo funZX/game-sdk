@@ -5,7 +5,7 @@
 	"emissive"	: [ 1.0, 1.0, 1.0, 1.0 ],
 	"reflectivity" : 0.0,
 	"shininess" : 0.05,
-	"effect": "fill_color_texture_color",
+	"effect": "fill.texture.diffuse",
 	
 	"texture" 	: [ 
 		{ "channel" : 0, "name" : "melonman/melonman.tga" }

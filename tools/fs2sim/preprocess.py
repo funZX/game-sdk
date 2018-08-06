@@ -278,8 +278,13 @@ def _evaluate(expr, defines):
     WARNING: This runs eval() on a user string. This is unsafe.
     """
     #interpolated = _interpolate(s, defines)
+    rv = expr
     try:
-        rv = eval(expr, {'defined':lambda v: v in defines}, defines)
+        if rv in defines:
+            rv = eval(expr, {'defined':lambda v: v in defines}, defines)
+        else:
+            defines[rv]=0
+            rv = eval(expr, {'defined':lambda v: v in defines}, defines)
     except Exception as ex:
         msg = str(ex)
         if msg.startswith("name '") and msg.endswith("' is not defined"):
@@ -460,6 +465,9 @@ def preprocess(infile, outfile=sys.stdout, defines={},
             if match:
                 break
         else:
+            for d in defines:
+                line=line.replace(d,str(defines[d]))
+            
             match = None
 
         if match:
@@ -470,11 +478,11 @@ def preprocess(infile, outfile=sys.stdout, defines={},
                     var, val = match.group("var", "val")
                     if val is None:
                         val = None
-                    else:
-                        try:
-                            val = eval(val, {}, {})
-                        except:
-                            pass
+                    #else:
+                    #    try:
+                    #        val = eval(val, {}, {})
+                    #    except:
+                    #        pass
                     defines[var] = val
             elif op == "undef":
                 if not (states and states[-1][0] == SKIP):
