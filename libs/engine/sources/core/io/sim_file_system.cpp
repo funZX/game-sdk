@@ -882,8 +882,6 @@ void CFileSystem::UnloadEffects()
 
 rnr::CEffect* CFileSystem::GetEffect( const std::string &name )
 {
-	m_effectList.Print(m_effectList.GetRoot(), 1);
-
 	auto item = m_effectList.Search(hash::Get(name));
 
 	return item ? item->GetData() : GetEffect("default");
