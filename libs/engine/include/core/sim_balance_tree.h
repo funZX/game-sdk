@@ -27,12 +27,6 @@ namespace sim
 namespace stl
 {
 // ----------------------------------------------------------------------//
-#define CTreeNode	CBinaryTreeNode<K, D>
-#define CTree		CBalanceTree<K, D>
-
-#define CNodeSetRed( x, c )				( ( CBalanceTreeNode<K, D>* ) (x) )->m_isRed = c
-#define CNodeIsRed( x )					( (x) && ( ( CBalanceTreeNode<K, D>* ) (x) )->m_isRed )
-
 template <class K, class D>
 class CBalanceTreeNode : public CBinaryTreeNode<K, D>
 {
@@ -82,16 +76,16 @@ protected:
 // ----------------------------------------------------------------------//
 
 #if SIM_DEBUG
-	void check_one( CTreeNode* subRoot )
+	void check_one( CBinaryTreeNode<K, D>* subRoot )
 	{
 		if ( subRoot == nullptr )
 			return;
 
-		if ( CNodeIsRed( subRoot ) )
+		if ( IsRedNode( subRoot ) )
 		{
-			SIM_ASSERT ( !subRoot->GetLeft()   || !CNodeIsRed( subRoot->GetLeft() ) );
-			SIM_ASSERT ( !subRoot->GetRight()  || !CNodeIsRed( subRoot->GetRight() ) );
-			SIM_ASSERT ( !subRoot->GetParent() || !CNodeIsRed( subRoot->GetParent() ) );
+			SIM_ASSERT ( !subRoot->GetLeft()   || !IsRedNode( subRoot->GetLeft() ) );
+			SIM_ASSERT ( !subRoot->GetRight()  || !IsRedNode( subRoot->GetRight() ) );
+			SIM_ASSERT ( !subRoot->GetParent() || !IsRedNode( subRoot->GetParent() ) );
 		}
 
 		check_one( subRoot->GetLeft() );
@@ -100,7 +94,7 @@ protected:
 
 // ----------------------------------------------------------------------//
 
-	void check_two_helper( CTreeNode* subRoot, s32 black_count, s32* path_black_count )
+	void check_two_helper( CBinaryTreeNode<K, D>* subRoot, s32 black_count, s32* path_black_count )
 	{
 		if ( !subRoot )
 		{
@@ -116,7 +110,7 @@ protected:
 			return;
 		}
 
-		if ( !CNodeIsRed( subRoot ) )
+		if ( !IsRedNode( subRoot ) )
 			black_count++;
 
 		check_two_helper( subRoot->GetLeft(),  black_count, path_black_count );
@@ -125,7 +119,7 @@ protected:
 
 // ----------------------------------------------------------------------//
 
-	void check_two( CTreeNode* subRoot )
+	void check_two( CBinaryTreeNode<K, D>* subRoot )
 	{
 		s32 black_count_path = -1;
 
@@ -134,12 +128,25 @@ protected:
 
 // ----------------------------------------------------------------------//
 
-	void check( CTreeNode* subRoot )
+	void check( CBinaryTreeNode<K, D>* subRoot )
 	{
 		check_one( subRoot );
 		check_two( subRoot );
 	}
 
+// ----------------------------------------------------------------------//
+
+	void SetNodeColor(CBinaryTreeNode<K, D>* node, bool isRed)
+	{
+		CBalanceTreeNode<K, D>* bnode = static_cast<CBalanceTreeNode<K, D>*>(node);
+		bnode->m_isRed = isRed;
+	}
+// ----------------------------------------------------------------------//
+	bool IsRedNode(CBinaryTreeNode<K, D>* node)
+	{
+		CBalanceTreeNode<K, D>* bnode = static_cast<CBalanceTreeNode<K, D>*>(node);
+		return bnode && bnode->m_isRed;
+	}
 // ----------------------------------------------------------------------//
 
 #endif
@@ -148,9 +155,9 @@ protected:
 public:
 // ----------------------------------------------------------------------//
 
-	void RotateLeft( CTreeNode* subRoot )
+	void RotateLeft( CBinaryTreeNode<K, D>* subRoot )
 	{
-		CTreeNode* subTree = subRoot->GetRight();
+		CBinaryTreeNode<K, D>* subTree = subRoot->GetRight();
 
 		subRoot->SetRight( subTree->GetLeft() );
 
@@ -174,9 +181,9 @@ public:
 
 	// ----------------------------------------------------------------------//
 
-	void RotateRight( CTreeNode* subRoot )
+	void RotateRight( CBinaryTreeNode<K, D>* subRoot )
 	{
-		CTreeNode* subTree = subRoot->GetLeft();
+		CBinaryTreeNode<K, D>* subTree = subRoot->GetLeft();
 
 		subRoot->SetLeft( subTree->GetRight() );
 
@@ -202,11 +209,11 @@ public:
 
 	// ----------------------------------------------------------------------//
 
-	virtual CTreeNode* Insert( K key, D data )
+	virtual CBinaryTreeNode<K, D>* Insert( K key, D data )
 	{
 		SIM_ASSERT( !Search( key ) );
 
-		CTreeNode* newNode		= CBinaryTree<K, D>::Insert( key, data );
+		CBinaryTreeNode<K, D>* newNode = CBinaryTree<K, D>::Insert( key, data );
 
 		if ( newNode == m_root )
 		{
@@ -214,22 +221,22 @@ public:
 			return newNode;
 		}
 
-		CTreeNode* subRoot		= newNode;
-		CNodeSetRed( subRoot, true );
+		CBinaryTreeNode<K, D>* subRoot = newNode;
+		SetNodeColor( subRoot, true );
 
-		while ( CNodeIsRed( subRoot->GetParent() ) )
+		while (IsRedNode( subRoot->GetParent() ) )
 		{
 		
 			if ( subRoot->GetParent()->IsLeft() )
 			{
-				CTreeNode* subTree = subRoot->GetGrandParent()->GetRight();
+				CBinaryTreeNode<K, D>* subTree = subRoot->GetGrandParent()->GetRight();
 
-				if ( CNodeIsRed( subTree ) )
+				if (IsRedNode( subTree ) )
 				{
-					CNodeSetRed( subRoot->GetGrandParent(), true );
+					SetNodeColor( subRoot->GetGrandParent(), true );
 
-					CNodeSetRed( subRoot->GetParent(), false );
-					CNodeSetRed( subTree, false );
+					SetNodeColor( subRoot->GetParent(), false );
+					SetNodeColor( subTree, false );
 
 					subRoot = subRoot->GetGrandParent();
 				}
@@ -241,16 +248,16 @@ public:
 
 						RotateLeft( subRoot );
 
-						CNodeSetRed( subRoot->GetGrandParent(), true );
-						CNodeSetRed( subRoot->GetParent(), false );
+						SetNodeColor( subRoot->GetGrandParent(), true );
+						SetNodeColor( subRoot->GetParent(), false );
 
 						RotateRight( subRoot->GetGrandParent() );
 					}
 					else
 					{
-						CNodeSetRed( subRoot->GetGrandParent(), true );
-						CNodeSetRed( subRoot->GetParent(), false );
-						CNodeSetRed( subRoot,  true );
+						SetNodeColor( subRoot->GetGrandParent(), true );
+						SetNodeColor( subRoot->GetParent(), false );
+						SetNodeColor( subRoot,  true );
 
 						RotateRight( subRoot->GetGrandParent() );
 					}
@@ -258,14 +265,14 @@ public:
 			}
 			else
 			{
-				CTreeNode* subTree = subRoot->GetGrandParent()->GetLeft();
+				CBinaryTreeNode<K, D>* subTree = subRoot->GetGrandParent()->GetLeft();
 
-				if ( CNodeIsRed( subTree ) )
+				if (IsRedNode( subTree ) )
 				{
-					CNodeSetRed( subRoot->GetGrandParent(), true );
+					SetNodeColor( subRoot->GetGrandParent(), true );
 
-					CNodeSetRed( subRoot->GetParent(), false );
-					CNodeSetRed( subTree, false );
+					SetNodeColor( subRoot->GetParent(), false );
+					SetNodeColor( subTree, false );
 
 					subRoot = subRoot->GetGrandParent();
 				}
@@ -277,16 +284,16 @@ public:
 
 						RotateRight( subRoot );
 
-						CNodeSetRed( subRoot->GetGrandParent(), true );
-						CNodeSetRed( subRoot->GetParent(), false );
+						SetNodeColor( subRoot->GetGrandParent(), true );
+						SetNodeColor( subRoot->GetParent(), false );
 
 						RotateLeft( subRoot->GetGrandParent() );
 					}
 					else
 					{
-						CNodeSetRed( subRoot->GetGrandParent(), true );
-						CNodeSetRed( subRoot->GetParent(), false );
-						CNodeSetRed( subRoot,  true );
+						SetNodeColor( subRoot->GetGrandParent(), true );
+						SetNodeColor( subRoot->GetParent(), false );
+						SetNodeColor( subRoot,  true );
 
 						RotateLeft( subRoot->GetGrandParent() );
 					}
@@ -294,7 +301,7 @@ public:
 			}
 		}
 
-		CNodeSetRed( m_root, false );
+		SetNodeColor( m_root, false );
 
 #if SIM_DEBUG
 		check( m_root );
@@ -307,14 +314,14 @@ public:
 
 	// ----------------------------------------------------------------------//
 
-	virtual D Delete( CTreeNode* subRoot )
+	virtual D Delete( CBinaryTreeNode<K, D>* subRoot )
 	{
-		CTreeNode *subTree = subRoot;
+		CBinaryTreeNode<K, D> *subTree = subRoot;
 
 		if ( subRoot->GetLeft() && subRoot->GetRight() )
 			subTree = Successor( subRoot );
 
-		CTreeNode *node = subTree->GetLeft() ?
+		CBinaryTreeNode<K, D> *node = subTree->GetLeft() ?
 							subTree->GetLeft() :
 							subTree->GetRight();
 
@@ -322,7 +329,7 @@ public:
 			node->SetParent( subTree->GetParent() );
 
 		bool isLeft			= false;
-		CTreeNode* nodeParent	= subTree->GetParent();
+		CBinaryTreeNode<K, D>* nodeParent	= subTree->GetParent();
 
 		if ( nodeParent )
 		{
@@ -343,7 +350,7 @@ public:
 			subRoot->SetData( subTree->GetData() );
 		}
 
-		if ( !CNodeIsRed( subTree ) )
+		if ( !IsRedNode( subTree ) )
 			DeleteFixUp( node, nodeParent, isLeft );
 
 #if SIM_DEBUG
@@ -361,7 +368,7 @@ public:
 
 	D Delete( K key )
 	{	
-		CTreeNode* node	= CTree::Search( key );
+		CBinaryTreeNode<K, D>* node	= CBalanceTree<K, D>::Search( key );
 
 		SIM_ASSERT( node );
 
@@ -370,49 +377,49 @@ public:
 
 	// ----------------------------------------------------------------------//
 
-	virtual void DeleteFixUp( CTreeNode* subRoot, CTreeNode* parent, bool isLeft )
+	virtual void DeleteFixUp( CBinaryTreeNode<K, D>* subRoot, CBinaryTreeNode<K, D>* parent, bool isLeft )
 	{
-		while ( subRoot != m_root && !CNodeIsRed( subRoot ) )
+		while ( subRoot != m_root && !IsRedNode( subRoot ) )
 		{
-			CTreeNode* subTree = nullptr;
+			CBinaryTreeNode<K, D>* subTree = nullptr;
 
 			if ( isLeft ) 
 			{
 				subTree = parent->GetRight();
 
-				if ( CNodeIsRed( subTree ) )
+				if (IsRedNode( subTree ) )
 				{
-					CNodeSetRed( subTree, false );
-					CNodeSetRed( parent, true );
+					SetNodeColor( subTree, false );
+					SetNodeColor( parent, true );
 
 					RotateLeft( parent );
 
 					subTree = parent->GetRight();
 				}
 
-				if ( !CNodeIsRed( subTree->GetLeft() ) && !CNodeIsRed( subTree->GetRight() ) )
+				if ( !IsRedNode( subTree->GetLeft() ) && !IsRedNode( subTree->GetRight() ) )
 				{
-					CNodeSetRed( subTree, true );
+					SetNodeColor( subTree, true );
 					subRoot = parent;
 					parent = subRoot->GetParent();
 				} 
 				else
 				{
-					if ( !CNodeIsRed( subTree->GetRight() ) )
+					if ( !IsRedNode( subTree->GetRight() ) )
 					{
-						CNodeSetRed( subTree->GetLeft(), false );
-						CNodeSetRed( subTree, true );
+						SetNodeColor( subTree->GetLeft(), false );
+						SetNodeColor( subTree, true );
 
 						RotateRight( subTree );
 
 						subTree = parent->GetRight();
 					}
 
-					CNodeSetRed( subTree, CNodeIsRed( parent ) );
-					CNodeSetRed( parent, false );
+					SetNodeColor( subTree, IsRedNode( parent ) );
+					SetNodeColor( parent, false );
 
 					if ( subTree->GetRight() ) 
-						CNodeSetRed( subTree->GetRight(), false );
+						SetNodeColor( subTree->GetRight(), false );
 
 					RotateLeft( parent );
 					subRoot		= m_root;
@@ -423,40 +430,40 @@ public:
 			{
 				subTree = parent->GetLeft();
 				
-				if ( CNodeIsRed( subTree ) )
+				if (IsRedNode( subTree ) )
 				{
-					CNodeSetRed( subTree, false );
-					CNodeSetRed( parent, true );
+					SetNodeColor( subTree, false );
+					SetNodeColor( parent, true );
 
 					RotateRight( parent );
 
 					subTree = parent->GetLeft();
 				}
 
-				if ( !CNodeIsRed( subTree->GetLeft() ) && !CNodeIsRed( subTree->GetRight() ) )
+				if ( !IsRedNode( subTree->GetLeft() ) && !IsRedNode( subTree->GetRight() ) )
 				{
-					CNodeSetRed( subTree, true );
+					SetNodeColor( subTree, true );
 
 					subRoot = parent;
 					parent	= subRoot->GetParent();
 				} 
 				else
 				{
-					if ( !CNodeIsRed( subTree->GetLeft() ) )
+					if ( !IsRedNode( subTree->GetLeft() ) )
 					{
-						CNodeSetRed( subTree->GetRight(), false );
-						CNodeSetRed( subTree, true );
+						SetNodeColor( subTree->GetRight(), false );
+						SetNodeColor( subTree, true );
 
 						RotateLeft( subTree );
 
 						subTree = parent->GetLeft();
 					}
 					
-					CNodeSetRed( subTree, CNodeIsRed( parent ) );
-					CNodeSetRed( parent,false );
+					SetNodeColor( subTree, IsRedNode( parent ) );
+					SetNodeColor( parent,false );
 
 					if ( subTree->GetLeft() )
-						CNodeSetRed( subTree->GetLeft(), false );
+						SetNodeColor( subTree->GetLeft(), false );
 
 					RotateRight( parent );
 
@@ -467,7 +474,7 @@ public:
 		}
 
 		if ( subRoot )
-			CNodeSetRed( subRoot, false );
+			SetNodeColor( subRoot, false );
 	}
 
 	// ----------------------------------------------------------------------//
@@ -487,13 +494,6 @@ public:
 // ----------------------------------------------------------------------//
 template <typename K, typename D>
 CMemoryPool<CBalanceTreeNode<K, D>, k_Pool_Size * sizeof(CBalanceTreeNode<K, D>)> CBalanceTree<K, D>::m_pool;
-// ----------------------------------------------------------------------//
-
-#undef CNodeSetRed
-#undef CNodeIsRed
-
-#undef CTree
-#undef CTreeNode
 // ----------------------------------------------------------------------//
 } // namespace stl;
 } // namespace sim;

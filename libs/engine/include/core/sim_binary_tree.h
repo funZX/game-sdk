@@ -17,9 +17,6 @@ namespace stl
 {
 // ----------------------------------------------------------------------//
 
-#define CTreeNode	CBinaryTreeNode<K, D>
-#define CTree		CBinaryTree<K, D>
-
 template <class K, class D> class CBinaryTreeNode
 {
 public:
@@ -45,14 +42,14 @@ public:
 	void				SetData( D data )			{ m_data = data; }
 	D					GetData()					{ return m_data; }
 
-	void				SetParent( CTreeNode *node ){ m_parent = node; }
-	CTreeNode*			GetParent()					{ return m_parent; }
+	void				SetParent( CBinaryTreeNode<K, D> *node ){ m_parent = node; }
+	CBinaryTreeNode<K, D>*			GetParent()					{ return m_parent; }
 
-	void				SetLeft( CTreeNode *node )	{ m_left = node; }
-	CTreeNode*			GetLeft()					{ return m_left; }
+	void				SetLeft( CBinaryTreeNode<K, D> *node )	{ m_left = node; }
+	CBinaryTreeNode<K, D>*			GetLeft()					{ return m_left; }
 
-	void				SetRight( CTreeNode *node )	{ m_right = node; }
-	CTreeNode*			GetRight()					{ return m_right; }
+	void				SetRight( CBinaryTreeNode<K, D> *node )	{ m_right = node; }
+	CBinaryTreeNode<K, D>*			GetRight()					{ return m_right; }
 
 	bool				IsLeft()					{ return m_parent->m_left == this; }
 	bool				IsRight()					{ return m_parent->m_right == this; }
@@ -62,7 +59,7 @@ public:
 
 // ----------------------------------------------------------------------//
 
-	CTreeNode* GetSibling()
+	CBinaryTreeNode<K, D>* GetSibling()
 	{
 		SIM_ASSERT ( GetParent() );
 
@@ -73,7 +70,7 @@ public:
 
 // ----------------------------------------------------------------------//
 
-	CTreeNode* GetUncle()
+	CBinaryTreeNode<K, D>* GetUncle()
 	{
 		SIM_ASSERT ( GetParent() );
 		SIM_ASSERT ( GetParent()->GetParent() );
@@ -83,7 +80,7 @@ public:
 
 // ----------------------------------------------------------------------//
 
-	CTreeNode* GetGrandParent()
+	CBinaryTreeNode<K, D>* GetGrandParent()
 	{
 		SIM_ASSERT ( GetParent() );
 		SIM_ASSERT ( GetParent()->GetParent() );
@@ -97,14 +94,14 @@ protected:
 	K					m_key;
 	D					m_data;
 
-	CTreeNode *			m_parent;
+	CBinaryTreeNode<K, D> *			m_parent;
 
-	CTreeNode*			m_left;
-	CTreeNode*			m_right;
+	CBinaryTreeNode<K, D>*			m_left;
+	CBinaryTreeNode<K, D>*			m_right;
 
 // ----------------------------------------------------------------------//
 
-	const CTreeNode& operator=( const CTreeNode& node )
+	const CBinaryTreeNode<K, D>& operator=( const CBinaryTreeNode<K, D>& node )
 	{
 		m_parent		= node.m_parent;
 
@@ -143,17 +140,17 @@ private:
 
 protected:
 	// ----------------------------------------------------------------------//	
-	CTreeNode*				m_root;
+	CBinaryTreeNode<K, D>*				m_root;
 	// ----------------------------------------------------------------------//	
 
 public:
 	// ----------------------------------------------------------------------//	
-	inline CTreeNode*		GetRoot() { return m_root;  }
+	inline CBinaryTreeNode<K, D>*		GetRoot() { return m_root;  }
 	// ----------------------------------------------------------------------//	
 
 	void DeleteAll()
 	{
-		CStack<CTreeNode*> stack;
+		CStack<CBinaryTreeNode<K, D>*> stack;
 		stack.Push( m_root );
 
 		while (stack.Count() > 0)
@@ -176,8 +173,8 @@ public:
 	// ----------------------------------------------------------------------//	
 	void RemoveAll()
 	{
-		CTreeNode* subRoot	= m_root;
-		CTreeNode* temp		= nullptr;
+		CBinaryTreeNode<K, D>* subRoot	= m_root;
+		CBinaryTreeNode<K, D>* temp		= nullptr;
 		
 		while( subRoot )
 		{		
@@ -211,9 +208,9 @@ public:
 
 // ----------------------------------------------------------------------//
 
-	inline CTreeNode* Search( K key ) const
+	inline CBinaryTreeNode<K, D>* Search( K key ) const
 	{
-		CTreeNode* subRoot = m_root;
+		CBinaryTreeNode<K, D>* subRoot = m_root;
 
 		while( subRoot && key != subRoot->GetKey() )
 
@@ -226,7 +223,7 @@ public:
 
 // ----------------------------------------------------------------------//
 
-	CTreeNode* Min( CTreeNode* subRoot ) const
+	CBinaryTreeNode<K, D>* Min( CBinaryTreeNode<K, D>* subRoot ) const
 	{	
 		while( subRoot && subRoot->GetLeft() )
 			subRoot = subRoot->GetLeft();
@@ -236,7 +233,7 @@ public:
 
 // ----------------------------------------------------------------------//
 
-	CTreeNode* Max( CTreeNode* subRoot ) const
+	CBinaryTreeNode<K, D>* Max( CBinaryTreeNode<K, D>* subRoot ) const
 	{	
 		while( subRoot && subRoot->GetRight() )
 			subRoot = subRoot->GetRight();
@@ -246,12 +243,12 @@ public:
 
 // ----------------------------------------------------------------------//
 
-	CTreeNode* Successor( CTreeNode* subRoot ) const
+	CBinaryTreeNode<K, D>* Successor( CBinaryTreeNode<K, D>* subRoot ) const
 	{
 		if( subRoot->GetRight() )
 			return Min( subRoot->GetRight() );
 
-		CTreeNode* subTree = subRoot->GetParent();
+		CBinaryTreeNode<K, D>* subTree = subRoot->GetParent();
 
 		while( subTree && subRoot == subTree->GetRight() )
 		{
@@ -264,12 +261,12 @@ public:
 
 // ----------------------------------------------------------------------//
 
-	CTreeNode* Predecessor( CTreeNode* subRoot ) const
+	CBinaryTreeNode<K, D>* Predecessor( CBinaryTreeNode<K, D>* subRoot ) const
 	{	
 		if( subRoot->GetLeft() )
 			return Max( subRoot->GetLeft() );
 
-		CTreeNode* subTree = subRoot->GetParent();
+		CBinaryTreeNode<K, D>* subTree = subRoot->GetParent();
 
 		while( subTree && subRoot == subTree->GetLeft() )
 		{
@@ -282,12 +279,12 @@ public:
 
 // ----------------------------------------------------------------------//
 
-	virtual CTreeNode* Insert( K key, D data )
+	virtual CBinaryTreeNode<K, D>* Insert( K key, D data )
 	{
 		SIM_ASSERT( !Search( key ) );
 
-		CTreeNode* node		= nullptr;
-		CTreeNode* subRoot	= m_root;
+		CBinaryTreeNode<K, D>* node		= nullptr;
+		CBinaryTreeNode<K, D>* subRoot	= m_root;
 
 		while( subRoot )
 		{
@@ -298,7 +295,7 @@ public:
 							subRoot->GetLeft();
 		}
 
-		CTreeNode* newNode	= CreateNode();
+		CBinaryTreeNode<K, D>* newNode	= CreateNode();
 		
 		newNode->SetKey( key );
 		newNode->SetData( data );
@@ -318,21 +315,21 @@ public:
 
 // ----------------------------------------------------------------------//
 
-	virtual D Delete( CTreeNode* subRoot )
+	virtual D Delete( CBinaryTreeNode<K, D>* subRoot )
 	{
-		CTreeNode *subTree = subRoot;
+		CBinaryTreeNode<K, D> *subTree = subRoot;
 
 		if ( subRoot->GetLeft() && subRoot->GetRight() )
 			subTree = Successor( subRoot );
 
-		CTreeNode *node = subTree->GetLeft() ?
+		CBinaryTreeNode<K, D> *node = subTree->GetLeft() ?
 							subTree->GetLeft() :
 							subTree->GetRight();
 
 		if ( node != nullptr )
 			node->SetParent( subTree->GetParent() );
 
-		CTreeNode* nodeParent	= subTree->GetParent();
+		CBinaryTreeNode<K, D>* nodeParent	= subTree->GetParent();
 
 		if ( subTree->GetParent() )
 		{
@@ -362,7 +359,7 @@ public:
 
 	D Delete( K key )
 	{	
-		CTreeNode* node	= CTree::Search( key );
+		CBinaryTreeNode<K, D>* node	= CBinaryTree<K, D>::Search( key );
 
 		SIM_ASSERT( node );
 
@@ -371,7 +368,7 @@ public:
 
 // ----------------------------------------------------------------------//
 
-	void Print( CTreeNode* subRoot, u32 indent )
+	void Print( CBinaryTreeNode<K, D>* subRoot, u32 indent )
 	{
 #if SIM_DEBUG
 		if( subRoot == nullptr )
@@ -415,11 +412,6 @@ protected:
 // ----------------------------------------------------------------------//
 template <typename K, typename D>
 CMemoryPool<CBinaryTreeNode<K,D>, k_Pool_Size * sizeof(CBinaryTreeNode<K, D>)> CBinaryTree<K,D>::m_pool;
-// ----------------------------------------------------------------------//
-
-#undef CTree
-#undef CTreeNode
-
 // ----------------------------------------------------------------------//
 } // namespace stl;
 } // namespace sim;
