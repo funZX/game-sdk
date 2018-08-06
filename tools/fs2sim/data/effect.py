@@ -73,6 +73,7 @@ def main(dirlist):
                     utils.newerFile(in_psource, out_psource) ):
                     
                     D = ['preprocess']
+                    D.append('-f')
                     D.append('-I')
                     D.append(d);
                     for define in effect['defines']:
@@ -86,8 +87,8 @@ def main(dirlist):
 
                     DP = D[:]
                     DP.append('-o')
-                    DP.append(out_vsource)
-                    DP.append(in_vsource);
+                    DP.append(out_psource)
+                    DP.append(in_psource);
 
                     preprocess.main( DV )
                     preprocess.main( DP )
