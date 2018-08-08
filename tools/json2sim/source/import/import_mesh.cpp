@@ -22,7 +22,7 @@ void GetBounds( mat::TVec3* box, mat::TVec3* center, f32* radius, const CVertexS
 	
 	for( u16 i = 0; i < vertexSource->GetVboSize(); i++ )
 	{
-		int ii		= i * vertexSource->GetVertexStride() / sizeof( f32 );
+		int ii		= i * EnumValue(vertexSource->GetVertexStride()) / sizeof( f32 );
 		f32* buffer = vertexSource->m_vboData;
 
 		// min
@@ -234,21 +234,21 @@ bool CImport::ParseMesh( CData* data )
 	json_t* jsonBones		= json_object_get( jsonSource, "bones" );
 	json_t* jsonWeights		= json_object_get( jsonSource, "weights" );
 
-	u32 format	= CVertexSource::k_Vertex_Attribute_Format_Position;
-	u32 stride	= CVertexSource::k_Vertex_Attribute_Offset_Position;
+	CVertexSource::AttributeFormat format	= CVertexSource::AttributeFormat::Position;
+	CVertexSource::AttributeStride stride	= CVertexSource::AttributeStride::Position;
 
 	if ( json_array_size( jsonTexcoord ) > 0 )
 	{
-		format	+= CVertexSource::k_Vertex_Attribute_Format_TexCoord_0;
-		stride	+= CVertexSource::k_Vertex_Attribute_Offset_TexCoord_0;
+		format	= format | CVertexSource::AttributeFormat::TexCoord_0;
+		stride	= stride + CVertexSource::AttributeStride::TexCoord_0;
 
 		tbn_texcoord = true;
 	}
 
 	if ( json_array_size( jsonNormals ) > 0 )
 	{
-		format  += CVertexSource::k_Vertex_Attribute_Format_Normal;
-		stride	+= CVertexSource::k_Vertex_Attribute_Offset_Normal;
+		format = format | CVertexSource::AttributeFormat::Normal;
+		stride = stride + CVertexSource::AttributeStride::Normal;
 
 		tbn_normals = true;
 	}
@@ -257,26 +257,26 @@ bool CImport::ParseMesh( CData* data )
 
 	if ( export_tbn )
 	{
-		format  += CVertexSource::k_Vertex_Attribute_Format_Tangent;
-		stride	+= CVertexSource::k_Vertex_Attribute_Offset_Tangent;
+		format = format | CVertexSource::AttributeFormat::Tangent;
+		stride = stride + CVertexSource::AttributeStride::Tangent;
 
-		format  += CVertexSource::k_Vertex_Attribute_Format_Binormal;
-		stride	+= CVertexSource::k_Vertex_Attribute_Offset_Binormal;
+		format = format | CVertexSource::AttributeFormat::Binormal;
+		stride = stride + CVertexSource::AttributeStride::Binormal;
 	}
 
 	if ( json_array_size( jsonColors ) > 0 )
 	{
-		format  += CVertexSource::k_Vertex_Attribute_Format_Color;
-		stride	+= CVertexSource::k_Vertex_Attribute_Offset_Color;
+		format  = format | CVertexSource::AttributeFormat::Color;
+		stride	= stride + CVertexSource::AttributeStride::Color;
 	}
 
 	if ( json_array_size( jsonBones ) > 0 && json_array_size( jsonWeights ) > 0 )
 	{
-		format  += CVertexSource::k_Vertex_Attribute_Format_Bone;
-		stride	+= CVertexSource::k_Vertex_Attribute_Offset_Bone;
+		format = format | CVertexSource::AttributeFormat::Bone;
+		stride = stride + CVertexSource::AttributeStride::Bone;
 
-		format  += CVertexSource::k_Vertex_Attribute_Format_Weight;
-		stride	+= CVertexSource::k_Vertex_Attribute_Offset_Weight;
+		format = format | CVertexSource::AttributeFormat::Weight;
+		stride = stride + CVertexSource::AttributeStride::Weight;
 	}
 
 	data->m_mesh = SIM_NEW CMesh( json_string_value( jsonName ) );
@@ -289,7 +289,7 @@ bool CImport::ParseMesh( CData* data )
 	vertexSource->m_vertexStride = stride;
 	vertexSource->m_vertexFormat = format;
 
-	u32 vertexSize = stride / sizeof( f32 );
+	u32 vertexSize = EnumValue(stride) / sizeof( f32 );
 	vertexSource->m_vboSize = vertices.size();
 	vertexSource->m_vboData = SIM_NEW f32[ vertexSize * vertexSource->m_vboSize ];
 
@@ -304,41 +304,41 @@ bool CImport::ParseMesh( CData* data )
 		curVertex[ vOff + 1 ] = vertex->y;
 		curVertex[ vOff + 2 ] = vertex->z;
 
-		vOff += CVertexSource::k_Vertex_Attribute_Size_Position;
+		vOff += EnumValue(CVertexSource::AttributeSize::Position);
 
-		if ( 0 != ( format & CVertexSource::k_Vertex_Attribute_Format_TexCoord_0 ) )
+		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_0 ) )
 		{
 			curVertex[ vOff + 0 ] = vertex->u;
 			curVertex[ vOff + 1 ] = vertex->v;
 
-			vOff += CVertexSource::k_Vertex_Attribute_Size_TexCoord_0;
+			vOff += EnumValue(CVertexSource::AttributeSize::TexCoord_0);
 		}
 
-		if ( 0 != ( format & CVertexSource::k_Vertex_Attribute_Format_TexCoord_1 ) )
-			vOff += CVertexSource::k_Vertex_Attribute_Size_TexCoord_1;
+		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_1 ) )
+			vOff += EnumValue(CVertexSource::AttributeSize::TexCoord_1);
 
-		if ( 0 != ( format & CVertexSource::k_Vertex_Attribute_Format_TexCoord_2 ) )
-			vOff += CVertexSource::k_Vertex_Attribute_Size_TexCoord_2;
+		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_2 ) )
+			vOff += EnumValue(CVertexSource::AttributeSize::TexCoord_2);
 
-		if ( 0 != ( format & CVertexSource::k_Vertex_Attribute_Format_TexCoord_3 ) )
-			vOff += CVertexSource::k_Vertex_Attribute_Size_TexCoord_3;
+		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_3 ) )
+			vOff += EnumValue(CVertexSource::AttributeSize::TexCoord_3);
 
-		if ( 0 != ( format & CVertexSource::k_Vertex_Attribute_Format_Normal ) )
+		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::Normal ) )
 		{
 			curVertex[ vOff + 0 ] = vertex->nx;
 			curVertex[ vOff + 1 ] = vertex->ny;
 			curVertex[ vOff + 2 ] = vertex->nz;
 		
-			vOff += CVertexSource::k_Vertex_Attribute_Size_Normal;
+			vOff += EnumValue(CVertexSource::AttributeSize::Normal);
 		}
 
-		if ( 0 != ( format & CVertexSource::k_Vertex_Attribute_Format_Tangent ) )
-			vOff += CVertexSource::k_Vertex_Attribute_Size_Tangent;
+		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::Tangent ) )
+			vOff += EnumValue(CVertexSource::AttributeSize::Tangent);
 
-		if ( 0 != ( format & CVertexSource::k_Vertex_Attribute_Format_Binormal ) )
-			vOff += CVertexSource::k_Vertex_Attribute_Size_Binormal;
+		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::Binormal ) )
+			vOff += EnumValue(CVertexSource::AttributeSize::Binormal);
 
-		if ( 0 != ( format & CVertexSource::k_Vertex_Attribute_Format_Color ) )
+		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::Color ) )
 		{
 			mat::TVec4  v4;
 			col::TColor col;
@@ -348,14 +348,14 @@ bool CImport::ParseMesh( CData* data )
 
 			curVertex[ vOff + 0 ] = *((f32*)&col);
 
-			vOff += CVertexSource::k_Vertex_Attribute_Size_Color;
+			vOff = vOff + EnumValue(CVertexSource::AttributeSize::Color);
 		}
 
-		if ( 0 != ( format & CVertexSource::k_Vertex_Attribute_Format_Bone ) )
-			vOff += CVertexSource::k_Vertex_Attribute_Size_Bone;
+		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::Bone ) )
+			vOff += EnumValue(CVertexSource::AttributeSize::Bone);
 
-		if ( 0 != ( format & CVertexSource::k_Vertex_Attribute_Format_Weight ) )
-			vOff += CVertexSource::k_Vertex_Attribute_Size_Bone;
+		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::Weight ) )
+			vOff += EnumValue(CVertexSource::AttributeSize::Bone);
 	}
 
 	// group
@@ -399,9 +399,9 @@ bool CImport::ParseMesh( CData* data )
 		C.y = v2[ 1 ]; 
 		C.z = v2[ 2 ];
 
-		u32 vOff = CVertexSource::k_Vertex_Attribute_Size_Position;
+		u32 vOff = EnumValue(CVertexSource::AttributeSize::Position);
 
-		if ( 0 != ( format & CVertexSource::k_Vertex_Attribute_Format_TexCoord_0 ) )
+		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_0 ) )
 		{
 			H.x = v0[ vOff + 0 ];
 			H.y = v0[ vOff + 1 ];
@@ -412,19 +412,19 @@ bool CImport::ParseMesh( CData* data )
 			L.x = v2[ vOff + 0 ];
 			L.y = v2[ vOff + 1 ];
 
-			vOff += CVertexSource::k_Vertex_Attribute_Size_TexCoord_0;
+			vOff = vOff + EnumValue(CVertexSource::AttributeSize::TexCoord_0);
 		}
 
-		if ( 0 != ( format & CVertexSource::k_Vertex_Attribute_Format_TexCoord_1 ) )
-			vOff += CVertexSource::k_Vertex_Attribute_Size_TexCoord_1;
+		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_1 ) )
+			vOff = vOff + EnumValue(CVertexSource::AttributeSize::TexCoord_1);
 
-		if ( 0 != ( format & CVertexSource::k_Vertex_Attribute_Format_TexCoord_2 ) )
-			vOff += CVertexSource::k_Vertex_Attribute_Size_TexCoord_2;
+		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_2 ) )
+			vOff = vOff + EnumValue(CVertexSource::AttributeSize::TexCoord_2);
 
-		if ( 0 != ( format & CVertexSource::k_Vertex_Attribute_Format_TexCoord_3 ) )
-			vOff += CVertexSource::k_Vertex_Attribute_Size_TexCoord_2;
+		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_3 ) )
+			vOff = vOff + EnumValue(CVertexSource::AttributeSize::TexCoord_2);
 
-		if ( 0 != ( format & CVertexSource::k_Vertex_Attribute_Format_Normal ) )
+		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::Normal ) )
 		{
 			f32* n0	= &vertexSource->m_vboData[ vi0 + vOff ];
 			NA.x = n0[ 0 ]; 
@@ -441,7 +441,7 @@ bool CImport::ParseMesh( CData* data )
 			NC.y = n2[ 1 ]; 
 			NC.z = n2[ 2 ];
 
-			vOff += CVertexSource::k_Vertex_Attribute_Size_Normal;
+			vOff = vOff + EnumValue(CVertexSource::AttributeSize::Normal);
 		}
 
 		if ( export_tbn )
@@ -472,8 +472,7 @@ bool CImport::ParseMesh( CData* data )
 			vertexSource->m_vboData[ ti2 + 1 ] = TC.y;
 			vertexSource->m_vboData[ ti2 + 2 ] = TC.z;
 
-			vOff += CVertexSource::k_Vertex_Attribute_Size_Tangent;
-
+			vOff = vOff + EnumValue(CVertexSource::AttributeSize::Tangent);
 			// write binormals
 			u16 bi0 = vi0 + vOff;
 			vertexSource->m_vboData[ bi0 + 0 ] = BA.x;
@@ -490,7 +489,7 @@ bool CImport::ParseMesh( CData* data )
 			vertexSource->m_vboData[ bi2 + 1 ] = BC.y;
 			vertexSource->m_vboData[ bi2 + 2 ] = BC.z;
 
-			vOff += CVertexSource::k_Vertex_Attribute_Size_Binormal;
+			vOff = vOff + EnumValue(CVertexSource::AttributeSize::Binormal);
 		}
 	}
 

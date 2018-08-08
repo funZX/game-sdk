@@ -134,22 +134,22 @@ protected:
 		check_two( subRoot );
 	}
 
-// ----------------------------------------------------------------------//
+#endif
+
+	// ----------------------------------------------------------------------//
 
 	void SetNodeColor(CBinaryTreeNode<K, D>* node, bool isRed)
 	{
 		CBalanceTreeNode<K, D>* bnode = static_cast<CBalanceTreeNode<K, D>*>(node);
 		bnode->m_isRed = isRed;
 	}
-// ----------------------------------------------------------------------//
+	// ----------------------------------------------------------------------//
 	bool IsRedNode(CBinaryTreeNode<K, D>* node)
 	{
 		CBalanceTreeNode<K, D>* bnode = static_cast<CBalanceTreeNode<K, D>*>(node);
 		return bnode && bnode->m_isRed;
 	}
-// ----------------------------------------------------------------------//
-
-#endif
+	// ----------------------------------------------------------------------//
 
 // ----------------------------------------------------------------------//
 public:
