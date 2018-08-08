@@ -98,62 +98,62 @@ void CActor::BindSize()
 
 void CActor::AddPhysic(phy::CPhysic *physic)
 {
-	if (!IsPhysic())
+	if (IsPhysic())
+		return;
+
+	switch (EnumValue(m_properties.shape))
 	{
-		switch(EnumValue(m_properties.shape))
-		{
-		case Shape::Box:
-			{
-				m_collisionShape = SIM_NEW btBoxShape(btVector3(m_box.x, m_box.y, m_box.z));
-				break;
-			}
-
-		case Shape::Sphere:
-			{
-				m_collisionShape = SIM_NEW btSphereShape(m_radius);
-				break;
-			}
-
-		case Shape::Cylinder:
-			{
-				m_collisionShape = SIM_NEW btCylinderShape(btVector3(m_box.x, m_box.y, m_box.z));
-				break;
-			}
-
-		case Shape::Cone:
-			{
-				m_collisionShape = SIM_NEW btConeShape(m_radius, m_box.y);
-				break;
-			}
-		}
-
-		btScalar mass(m_mass);
-		btScalar restitution(m_restitution);
-		btScalar friction(m_friction);
-		btVector3 inertia(0.0f, 0.0f, 0.0f);
-
-		if (mass != 0.0f)
-		{
-			m_collisionShape->calculateLocalInertia(mass, inertia);
-
-			m_inertia.x = inertia.getX();
-			m_inertia.y = inertia.getY();
-			m_inertia.z = inertia.getZ();
-		}
-
-		btTransform groundTransform;
-		groundTransform.setIdentity();
-		groundTransform.setOrigin( btVector3(0.0f, 0.0f, 0.0f) );
-
-		btDefaultMotionState* motionState = new btDefaultMotionState(groundTransform);
-		btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, m_collisionShape, inertia);
-
-		m_rigidBody = SIM_NEW btRigidBody(rbInfo);
-
-		physic->Add(this);
-
-		m_properties.isPhysic = true;
+	case Shape::Box:
+	{
+		m_collisionShape = SIM_NEW btBoxShape(btVector3(m_box.x, m_box.y, m_box.z));
+		break;
 	}
+
+	case Shape::Sphere:
+	{
+		m_collisionShape = SIM_NEW btSphereShape(m_radius);
+		break;
+	}
+
+	case Shape::Cylinder:
+	{
+		m_collisionShape = SIM_NEW btCylinderShape(btVector3(m_box.x, m_box.y, m_box.z));
+		break;
+	}
+
+	case Shape::Cone:
+	{
+		m_collisionShape = SIM_NEW btConeShape(m_radius, m_box.y);
+		break;
+	}
+	}
+
+	btScalar mass(m_mass);
+	btScalar restitution(m_restitution);
+	btScalar friction(m_friction);
+	btVector3 inertia(0.0f, 0.0f, 0.0f);
+
+	if (mass != 0.0f)
+	{
+		m_collisionShape->calculateLocalInertia(mass, inertia);
+
+		m_inertia.x = inertia.getX();
+		m_inertia.y = inertia.getY();
+		m_inertia.z = inertia.getZ();
+	}
+
+	btTransform groundTransform;
+	groundTransform.setIdentity();
+	groundTransform.setOrigin(btVector3(0.0f, 0.0f, 0.0f));
+
+	btDefaultMotionState* motionState = new btDefaultMotionState(groundTransform);
+	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, m_collisionShape, inertia);
+
+	m_rigidBody = SIM_NEW btRigidBody(rbInfo);
+
+	physic->Add(this);
+
+	m_properties.isPhysic = true;
 }
 
 // ----------------------------------------------------------------------//
