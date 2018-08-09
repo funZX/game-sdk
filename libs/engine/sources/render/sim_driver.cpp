@@ -256,15 +256,16 @@ bool  CDriver::EnableDepthMask( bool val )
 
 void CDriver::Tick( const f32 dt )
 {
-	m_timerRot += dt * 3.6f;
+	m_timerRot += (dt * 1000.0f) / 360.0f;
 
-	while ( m_timerRot > 360.0f )
-		m_timerRot -= 360.0f;
+	f32 angle = 100.0f * m_timerRot;
+	while (m_timerRot > 360.0f )
+		angle -= 360.0f;
 
-	f32 toRad	= SIM_DEG2RAD( m_timerRot );
+	f32 toRad	= SIM_DEG2RAD(angle);
 
-	m_timerSin	= sinf( toRad );
-	m_timerCos	= cosf( toRad );
+	m_timerSin	= sinf(toRad);
+	m_timerCos	= cosf(toRad);
 
 	m_timer += dt; 
 }
