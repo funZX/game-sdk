@@ -259,7 +259,7 @@ void CDriver::Tick( const f32 dt )
 	m_timerRot += (dt * 1000.0f) / 360.0f;
 
 	f32 angle = 100.0f * m_timerRot;
-	while (m_timerRot > 360.0f )
+	while (angle > 360.0f )
 		angle -= 360.0f;
 
 	f32 toRad	= SIM_DEG2RAD(angle);
