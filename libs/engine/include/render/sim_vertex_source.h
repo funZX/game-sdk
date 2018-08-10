@@ -98,7 +98,6 @@ public:
         Binormal		=   ( 3 ),
 		Bone			=	( 2 ),
 		Weight			=	( 2 ),
-
 	};
 	// ------------------------------------------------------------------//
 	enum class AttributeStride : u32
@@ -176,7 +175,7 @@ inline CVertexSource::AttributeFormat operator | (CVertexSource::AttributeFormat
 	CVertexSource::AttributeFormat a2)
 {
 	return static_cast<CVertexSource::AttributeFormat> (
-		EnumValue(a1) | EnumValue(a2)
+		Value(a1) | Value(a2)
 		);
 }
 // ----------------------------------------------------------------------//
@@ -184,7 +183,7 @@ inline CVertexSource::AttributeFormat operator & (CVertexSource::AttributeFormat
 	CVertexSource::AttributeFormat a2)
 {
 	return static_cast<CVertexSource::AttributeFormat> (
-		EnumValue(a1) & EnumValue(a2)
+		Value(a1) & Value(a2)
 		);
 }
 // ----------------------------------------------------------------------//
@@ -192,7 +191,7 @@ inline CVertexSource::AttributeFormat operator ^ (CVertexSource::AttributeFormat
 	CVertexSource::AttributeFormat a2)
 {
 	return static_cast<CVertexSource::AttributeFormat> (
-		EnumValue(a1) ^ EnumValue(a2)
+		Value(a1) ^ Value(a2)
 		);
 }
 // ----------------------------------------------------------------------//
@@ -200,7 +199,7 @@ inline CVertexSource::AttributeStride operator + (CVertexSource::AttributeStride
 	CVertexSource::AttributeStride a2)
 {
 	return static_cast<CVertexSource::AttributeStride> (
-		EnumValue(a1) + EnumValue(a2)
+		Value(a1) + Value(a2)
 		);
 }
 // ----------------------------------------------------------------------//

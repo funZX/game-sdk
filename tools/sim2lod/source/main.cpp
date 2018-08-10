@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
 
 	for (u32 i = 0; i < vertexGroup->GetVboSize(); i += 3)
 	{
-		u32 vOffset = EnumValue(vertexSource->m_vertexStride) / sizeof(f32);
+		u32 vOffset = Value(vertexSource->m_vertexStride) / sizeof(f32);
 
 		u16 i0  = vertexGroup->m_vboData[i + 0]; 
 		u16 i1  = vertexGroup->m_vboData[i + 1];

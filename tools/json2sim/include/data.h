@@ -8,7 +8,6 @@ class CData
 // ----------------------------------------------------------------------//
 	friend class CImport;
 	friend class CExport;
-	friend class CLodder;
 // ----------------------------------------------------------------------//
 
 
@@ -20,7 +19,6 @@ public:
 	{
 		k_Data_Type_Material,
 		k_Data_Type_Mesh,
-		k_Data_Type_MeshLOD,
 		k_Data_Type_Actor,
 		k_Data_Type_Light,
 		k_Data_Type_Camera,
@@ -52,7 +50,6 @@ protected:
 	CScene*						m_scene;
 
 	TInfo*						m_info;
-	CLodder*					m_lodder;
 };
 
 #endif // __SIM_DATA_H

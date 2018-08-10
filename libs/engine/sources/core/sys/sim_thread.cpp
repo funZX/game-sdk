@@ -67,7 +67,7 @@ s32	CThread::GetSystemPrio( Priority prio )
 
 	const s32 pArray[] = { minPrio, lowPrio, normalPrio, highPrio, maxPrio };
 
-	return pArray[EnumValue(prio)];
+	return pArray[Value(prio)];
 }
 
 // ----------------------------------------------------------------------//

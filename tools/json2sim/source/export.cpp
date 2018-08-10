@@ -25,9 +25,6 @@ bool CExport::Save( CData* data )
 	if ( data->m_mesh != NULL )
 		return SaveMesh( data, file );
 
-	if ( data->m_lodder != NULL )
-		return SaveMeshLOD( data, file );
-
 	if ( data->m_actor != NULL )
 		return SaveActor( data, file );
 

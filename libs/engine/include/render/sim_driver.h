@@ -223,7 +223,7 @@ public:
 	inline const TMatrix4*		GetViewMatrixInverseT()					{ return &m_viewInverseTMatrix; }
 
 	inline const TMatrix4*		GetProjectionMatrix()					{ return m_projectionStack.topmatrix; }
-	inline const TMatrix4*		GetTextureMatrix( TextureChannel texChannel)	{ return m_textureStack[EnumValue(texChannel)].topmatrix; }
+	inline const TMatrix4*		GetTextureMatrix( TextureChannel texChannel)	{ return m_textureStack[Value(texChannel)].topmatrix; }
 
 	void						SetScreenSize(u32 width, u32 height);
 	void						SetViewport( u32 width, u32 height );
@@ -249,22 +249,22 @@ public:
 	inline f32				    GetFogDensity() { return m_fogDensity; }
 
 	void						SetLightPosition( const TVec3 *pos );
-	inline TVec3*				GetLightPosition() { return &m_lightParameters[EnumValue(m_lightChannel)].m_position; }
+	inline TVec3*				GetLightPosition() { return &m_lightParameters[Value(m_lightChannel)].m_position; }
 
 	void						SetLightDirection( const TVec3 *dir );
-	inline TVec3*				GetLightDirection() { return &m_lightParameters[EnumValue(m_lightChannel)].m_direction; }
+	inline TVec3*				GetLightDirection() { return &m_lightParameters[Value(m_lightChannel)].m_direction; }
 
 	void						SetLightAmbient( const TVec4 *col );
-	inline TVec4*				GetLightAmbient() { return &m_lightParameters[EnumValue(m_lightChannel)].m_ambient; }
+	inline TVec4*				GetLightAmbient() { return &m_lightParameters[Value(m_lightChannel)].m_ambient; }
 
 	void						SetLightDiffuse( const TVec4 *col );
-	inline TVec4*				GetLightDiffuse() { return &m_lightParameters[EnumValue(m_lightChannel)].m_diffuse; }
+	inline TVec4*				GetLightDiffuse() { return &m_lightParameters[Value(m_lightChannel)].m_diffuse; }
 
 	void						SetLightSpecular( const TVec4 *col );
-	inline TVec4*				GetLightSpecular() { return &m_lightParameters[EnumValue(m_lightChannel)].m_specular; }
+	inline TVec4*				GetLightSpecular() { return &m_lightParameters[Value(m_lightChannel)].m_specular; }
 
 	void						SetLightIntensity( f32 intens );
-	inline f32				    GetLightIntensity() { return m_lightParameters[EnumValue(m_lightChannel)].m_intensity; }
+	inline f32				    GetLightIntensity() { return m_lightParameters[Value(m_lightChannel)].m_intensity; }
 
 	inline f32				    GetMaterialReflectivity() { return m_materialReflectivity; }
 	inline void					SetMaterialReflectivity( f32 refl ) { m_materialReflectivity = refl; }

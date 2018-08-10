@@ -41,9 +41,6 @@ bool CImport::Parse( CData* data )
 	case CData::k_Data_Type_Mesh:
 		return ParseMesh( data );
 
-	case CData::k_Data_Type_MeshLOD:
-		return ParseMeshLOD( data );
-
 	case CData::k_Data_Type_Actor:
 		return ParseActor( data );
 

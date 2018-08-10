@@ -62,7 +62,7 @@ u32 CVertexSource::Generate()
 {
 	glGenBuffers( 1, &m_iD );
 	glBindBuffer( GL_ARRAY_BUFFER, m_iD );
-	glBufferData( GL_ARRAY_BUFFER, m_vboSize * EnumValue(m_vertexStride), m_vboData, GL_DYNAMIC_DRAW);
+	glBufferData( GL_ARRAY_BUFFER, m_vboSize * Value(m_vertexStride), m_vboData, GL_DYNAMIC_DRAW);
 	glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
 	SIM_CHECK_OPENGL();

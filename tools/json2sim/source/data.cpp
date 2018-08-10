@@ -24,12 +24,10 @@ CData::CData()
 	m_scene		= NULL;
 
 	m_info		= NULL;
-	m_lodder	= NULL;
 }
 
 CData::~CData()
 {
-	SIM_SAFE_DELETE( m_lodder );
 	SIM_SAFE_DELETE( m_info );
 
 	SIM_SAFE_DELETE( m_material );

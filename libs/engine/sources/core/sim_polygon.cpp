@@ -202,7 +202,7 @@ void CPolygon::Render( rnr::CDriver *driver, rnr::CMaterial *mtl )
 	vg.m_vertexSource->m_vertexStride	= CVertexSource::AttributeStride::Position;
 	vg.m_vertexSource->m_vboSize		= nVerts;
 
-	s32 vtxSize		= EnumValue(vg.m_vertexSource->m_vertexStride) / sizeof( f32 );
+	s32 vtxSize		= Value(vg.m_vertexSource->m_vertexStride) / sizeof( f32 );
 	s32 newFloats 	= nVerts * vtxSize;
 
 	vg.m_vertexSource->m_vboData	= SIM_NEW f32[ newFloats ];

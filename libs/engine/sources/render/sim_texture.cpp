@@ -275,7 +275,7 @@ void CTexture::GenerateMipmapsPVR( u8 *buf, u32 maxLevel )
 		glCompressedTexImage2D(
 			GL_TEXTURE_2D, 
 			level,
-			EnumValue(m_format),
+			Value(m_format),
 			w, 
 			h,
 			0,
@@ -327,11 +327,11 @@ void CTexture::GenerateMipmapsMIP( u8 *buf, u32 maxLevel )
 	{
 		glTexImage2D( GL_TEXTURE_2D,
 			level,
-			EnumValue(format),
+			Value(format),
 			w,
 			h,
 			0,
-			EnumValue(format),
+			Value(format),
 			type,
 			mip );
 		
@@ -442,11 +442,11 @@ u32 CTexture::Generate(   u8 *buf,
 		{
 			glTexImage2D( GL_TEXTURE_2D,
 				0,
-				EnumValue(m_format),
+				Value(m_format),
 				m_width,
 				m_height,
 				0,
-				EnumValue(m_format),
+				Value(m_format),
 				GL_UNSIGNED_BYTE,
 				&buf[ 0 ] );
 

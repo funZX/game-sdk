@@ -7,7 +7,10 @@
 
 #include "data.h"
 #include "import.h"
+#include "lodder.h"
 
+// ----------------------------------------------------------------------//
+CLodder lodder;
 // ----------------------------------------------------------------------//
 
 void GetBounds( mat::TVec3* box, mat::TVec3* center, f32* radius, const CVertexSource* vertexSource )
@@ -22,7 +25,7 @@ void GetBounds( mat::TVec3* box, mat::TVec3* center, f32* radius, const CVertexS
 	
 	for( u16 i = 0; i < vertexSource->GetVboSize(); i++ )
 	{
-		int ii		= i * EnumValue(vertexSource->GetVertexStride()) / sizeof( f32 );
+		int ii		= i * Value(vertexSource->GetVertexStride()) / sizeof( f32 );
 		f32* buffer = vertexSource->m_vboData;
 
 		// min
@@ -95,10 +98,10 @@ u16 AddVertex( std::vector<TVertex>& vertices, const TVertex* v)
 	{
 		TVertex* crt = &vertices[ k ];
 
-		if ( crt->x  == v->x  && crt->y  == v->y   && crt->z  == v->z &&
+		if ( crt->x  == v->x  && crt->y  == v->y   && crt->z  == v->z)/* &&
 			 crt->u  == v->u  && crt->v  == v->v   &&
 			 crt->nx == v->nx && crt->ny == v->ny  && crt->nz == v->nz &&
-			 crt->r  == v->r  && crt->g  == v->g   && crt->b  == v->b  && crt->a == v->a )
+			 crt->r  == v->r  && crt->g  == v->g   && crt->b  == v->b  && crt->a == v->a )*/
 
 			return k;
 	}
@@ -289,7 +292,7 @@ bool CImport::ParseMesh( CData* data )
 	vertexSource->m_vertexStride = stride;
 	vertexSource->m_vertexFormat = format;
 
-	u32 vertexSize = EnumValue(stride) / sizeof( f32 );
+	u32 vertexSize = Value(stride) / sizeof( f32 );
 	vertexSource->m_vboSize = vertices.size();
 	vertexSource->m_vboData = SIM_NEW f32[ vertexSize * vertexSource->m_vboSize ];
 
@@ -304,24 +307,24 @@ bool CImport::ParseMesh( CData* data )
 		curVertex[ vOff + 1 ] = vertex->y;
 		curVertex[ vOff + 2 ] = vertex->z;
 
-		vOff += EnumValue(CVertexSource::AttributeSize::Position);
+		vOff += Value(CVertexSource::AttributeSize::Position);
 
 		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_0 ) )
 		{
 			curVertex[ vOff + 0 ] = vertex->u;
 			curVertex[ vOff + 1 ] = vertex->v;
 
-			vOff += EnumValue(CVertexSource::AttributeSize::TexCoord_0);
+			vOff += Value(CVertexSource::AttributeSize::TexCoord_0);
 		}
 
 		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_1 ) )
-			vOff += EnumValue(CVertexSource::AttributeSize::TexCoord_1);
+			vOff += Value(CVertexSource::AttributeSize::TexCoord_1);
 
 		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_2 ) )
-			vOff += EnumValue(CVertexSource::AttributeSize::TexCoord_2);
+			vOff += Value(CVertexSource::AttributeSize::TexCoord_2);
 
 		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_3 ) )
-			vOff += EnumValue(CVertexSource::AttributeSize::TexCoord_3);
+			vOff += Value(CVertexSource::AttributeSize::TexCoord_3);
 
 		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::Normal ) )
 		{
@@ -329,14 +332,14 @@ bool CImport::ParseMesh( CData* data )
 			curVertex[ vOff + 1 ] = vertex->ny;
 			curVertex[ vOff + 2 ] = vertex->nz;
 		
-			vOff += EnumValue(CVertexSource::AttributeSize::Normal);
+			vOff += Value(CVertexSource::AttributeSize::Normal);
 		}
 
 		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::Tangent ) )
-			vOff += EnumValue(CVertexSource::AttributeSize::Tangent);
+			vOff += Value(CVertexSource::AttributeSize::Tangent);
 
 		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::Binormal ) )
-			vOff += EnumValue(CVertexSource::AttributeSize::Binormal);
+			vOff += Value(CVertexSource::AttributeSize::Binormal);
 
 		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::Color ) )
 		{
@@ -348,14 +351,14 @@ bool CImport::ParseMesh( CData* data )
 
 			curVertex[ vOff + 0 ] = *((f32*)&col);
 
-			vOff = vOff + EnumValue(CVertexSource::AttributeSize::Color);
+			vOff = vOff + Value(CVertexSource::AttributeSize::Color);
 		}
 
 		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::Bone ) )
-			vOff += EnumValue(CVertexSource::AttributeSize::Bone);
+			vOff += Value(CVertexSource::AttributeSize::Bone);
 
 		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::Weight ) )
-			vOff += EnumValue(CVertexSource::AttributeSize::Bone);
+			vOff += Value(CVertexSource::AttributeSize::Bone);
 	}
 
 	// group
@@ -399,7 +402,7 @@ bool CImport::ParseMesh( CData* data )
 		C.y = v2[ 1 ]; 
 		C.z = v2[ 2 ];
 
-		u32 vOff = EnumValue(CVertexSource::AttributeSize::Position);
+		u32 vOff = Value(CVertexSource::AttributeSize::Position);
 
 		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_0 ) )
 		{
@@ -412,17 +415,17 @@ bool CImport::ParseMesh( CData* data )
 			L.x = v2[ vOff + 0 ];
 			L.y = v2[ vOff + 1 ];
 
-			vOff = vOff + EnumValue(CVertexSource::AttributeSize::TexCoord_0);
+			vOff = vOff + Value(CVertexSource::AttributeSize::TexCoord_0);
 		}
 
 		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_1 ) )
-			vOff = vOff + EnumValue(CVertexSource::AttributeSize::TexCoord_1);
+			vOff = vOff + Value(CVertexSource::AttributeSize::TexCoord_1);
 
 		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_2 ) )
-			vOff = vOff + EnumValue(CVertexSource::AttributeSize::TexCoord_2);
+			vOff = vOff + Value(CVertexSource::AttributeSize::TexCoord_2);
 
 		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::TexCoord_3 ) )
-			vOff = vOff + EnumValue(CVertexSource::AttributeSize::TexCoord_2);
+			vOff = vOff + Value(CVertexSource::AttributeSize::TexCoord_2);
 
 		if (CVertexSource::AttributeFormat::None != ( format & CVertexSource::AttributeFormat::Normal ) )
 		{
@@ -441,7 +444,7 @@ bool CImport::ParseMesh( CData* data )
 			NC.y = n2[ 1 ]; 
 			NC.z = n2[ 2 ];
 
-			vOff = vOff + EnumValue(CVertexSource::AttributeSize::Normal);
+			vOff = vOff + Value(CVertexSource::AttributeSize::Normal);
 		}
 
 		if ( export_tbn )
@@ -472,7 +475,7 @@ bool CImport::ParseMesh( CData* data )
 			vertexSource->m_vboData[ ti2 + 1 ] = TC.y;
 			vertexSource->m_vboData[ ti2 + 2 ] = TC.z;
 
-			vOff = vOff + EnumValue(CVertexSource::AttributeSize::Tangent);
+			vOff = vOff + Value(CVertexSource::AttributeSize::Tangent);
 			// write binormals
 			u16 bi0 = vi0 + vOff;
 			vertexSource->m_vboData[ bi0 + 0 ] = BA.x;
@@ -489,7 +492,7 @@ bool CImport::ParseMesh( CData* data )
 			vertexSource->m_vboData[ bi2 + 1 ] = BC.y;
 			vertexSource->m_vboData[ bi2 + 2 ] = BC.z;
 
-			vOff = vOff + EnumValue(CVertexSource::AttributeSize::Binormal);
+			vOff = vOff + Value(CVertexSource::AttributeSize::Binormal);
 		}
 	}
 
@@ -501,13 +504,6 @@ bool CImport::ParseMesh( CData* data )
 	data->m_mesh->SetCenter( &center );
 	data->m_mesh->SetRadius( radius );
 
-	return true;
-}
-
-// ----------------------------------------------------------------------//
-
-bool CImport::ParseMeshLOD( CData* data )
-{
 	return true;
 }
 

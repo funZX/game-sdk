@@ -24,7 +24,6 @@ int main(int argc, char* argv[])
 	std::map<std::string, CData::K_DATA_TYPE> ops;
 	ops["material"]		= CData::k_Data_Type_Material;
 	ops["mesh"]			= CData::k_Data_Type_Mesh;
-	ops["lod"]			= CData::k_Data_Type_MeshLOD;
 	ops["actor"]		= CData::k_Data_Type_Actor;
 	ops["light"]		= CData::k_Data_Type_Light;
 	ops["camera"]		= CData::k_Data_Type_Camera;

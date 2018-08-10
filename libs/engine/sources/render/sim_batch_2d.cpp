@@ -85,7 +85,7 @@ void CBatch2D::AddQuad( CMaterial *material, const f32* v0, const f32* v1, const
 		m_vertexGroup->SetMaterial( material );
 	}
 
-	s32 vtxSize		= EnumValue(m_vertexGroup->m_vertexSource->m_vertexStride) / sizeof( f32 );
+	s32 vtxSize		= Value(m_vertexGroup->m_vertexSource->m_vertexStride) / sizeof( f32 );
 	s32 currIndex	= 4 * vtxSize * m_numQuads;
 
 	const f32 *vertices[] = { v0, v1, v2, v3 };
@@ -129,7 +129,7 @@ void CBatch2D::Render( CDriver *driver )
 
 void CBatch2D::AllocateQuads( s32 numQuads )
 {
-	s32 vtxSize						= EnumValue(m_vertexGroup->m_vertexSource->m_vertexStride) / sizeof( f32 );
+	s32 vtxSize						= Value(m_vertexGroup->m_vertexSource->m_vertexStride) / sizeof( f32 );
 	s32 newFloats 					= 4 * numQuads * vtxSize;
 	s32 newIndices					= 6 * numQuads;
 
