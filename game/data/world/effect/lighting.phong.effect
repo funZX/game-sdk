@@ -1,6 +1,6 @@
 {
-	"vsource": "effect/lighting/vsource.phong.cpp",
-	"psource": "effect/lighting/psource.phong.cpp",
+	"vsource": "effect/lighting/v.phong.source",
+	"psource": "effect/lighting/p.phong.source",
 	"defines": [],
 			
 	"technique":

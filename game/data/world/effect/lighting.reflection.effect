@@ -1,6 +1,6 @@
 {
-	"vsource": "effect/lighting/vsource.reflection.cpp",
-	"psource": "effect/lighting/psource.reflection.cpp",
+	"vsource": "effect/lighting/v.reflection.source",
+	"psource": "effect/lighting/p.reflection.source",
 	"defines": [],
 	
 	"technique":

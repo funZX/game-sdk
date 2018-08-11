@@ -1,6 +1,6 @@
 {
-	"vsource": "effect/basic/vsource.debugnormals.cpp",
-	"psource": "effect/basic/psource.debugnormals.cpp",		
+	"vsource": "effect/basic/v.debugnormals.source",
+	"psource": "effect/basic/p.debugnormals.source",		
 	"defines": [],
 	
 	"technique":

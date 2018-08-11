@@ -1,6 +1,6 @@
 {
-	"vsource": "effect/lighting/vsource.bumpmap.cpp",
-	"psource": "effect/lighting/psource.bumpmap.cpp",
+	"vsource": "effect/lighting/v.bumpmap.source",
+	"psource": "effect/lighting/p.bumpmap.source",
 	"defines": [],		
 	
 	"technique":
