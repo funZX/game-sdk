@@ -16,11 +16,8 @@ TOOL_DIR					=	os.path.abspath(PRJ_DIR + '/tools')
 
 EXE_7Z						=	os.path.abspath(TOOL_DIR + '/7z.exe')
 EXE_PVRTEX					=   os.path.abspath(TOOL_DIR + '/PVRTexToolCLI.exe')
-EXE_JSON2SIM				=	os.path.abspath(TOOL_DIR + '/json2sim.exe')
 EXE_SQ2SIM					=	os.path.abspath(TOOL_DIR + '/sq2sim.exe')
-
-EXE_SIM2MIP					= 	os.path.abspath(TOOL_DIR + '/sim2mip.exe')
-EXE_SIM2LOD				    =	os.path.abspath(TOOL_DIR + '/sim2lod.exe')
+EXE_MIP2SIM					= 	os.path.abspath(TOOL_DIR + '/mip2sim.exe')
 
 EXE_MCPP                    = 	os.path.abspath(TOOL_DIR + '/mcpp.exe')
 
