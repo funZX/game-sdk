@@ -131,7 +131,7 @@ CShader::TUniform CShader::Uniforms[] =
 
 CShader::CShader( Type type )
 {
-	m_iD = glCreateShader( EnumValue(type) );
+	m_iD = glCreateShader( Value(type) );
 }
 
 // ----------------------------------------------------------------------//

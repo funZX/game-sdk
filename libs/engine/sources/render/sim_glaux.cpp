@@ -54,7 +54,7 @@ TSphere*	gluNewSphere( s32 numSlices, f32 radius )
 	sphere->vertexGroup->m_vertexSource->m_vertexStride	= CVertexSource::AttributeStride::Position + CVertexSource::AttributeStride::TexCoord_0 + CVertexSource::AttributeStride::Normal;
 	sphere->vertexGroup->m_vertexSource->m_vboSize		= numVertices;
 
-	s32 vtxSize							= EnumValue(sphere->vertexGroup->m_vertexSource->m_vertexStride) / sizeof( f32 );
+	s32 vtxSize							= Value(sphere->vertexGroup->m_vertexSource->m_vertexStride) / sizeof( f32 );
 	s32 newFloats 						= numVertices * vtxSize;
 	s32 vboOff							= 0;
 
@@ -325,7 +325,7 @@ TCube* gluNewCube( f32 sideSize )
 	cube->vertexGroup->m_vertexSource->m_vertexStride	= CVertexSource::AttributeStride::Position + CVertexSource::AttributeStride::TexCoord_0 + CVertexSource::AttributeStride::Normal;
 	cube->vertexGroup->m_vertexSource->m_vboSize	= numVertices;
 
-	s32 vtxSize							= EnumValue(cube->vertexGroup->m_vertexSource->m_vertexStride) / sizeof( f32 );
+	s32 vtxSize							= Value(cube->vertexGroup->m_vertexSource->m_vertexStride) / sizeof( f32 );
 	s32 newFloats 						= numVertices * vtxSize;
 	s32 vboOff							= 0;
 

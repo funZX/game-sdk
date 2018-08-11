@@ -63,7 +63,8 @@ CWidgetDrawable::~CWidgetDrawable()
 
 void CWidgetDrawable::OnResize()
 {
-	SIM_SAFE_DELETE( m_rendertexture );
+	if (m_rendertexture)
+		return;
 
 	m_rendertexture = SIM_NEW CRenderTexture();
 	m_rendertexture->Generate( (u32)m_size.x, (u32)m_size.y );

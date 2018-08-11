@@ -51,6 +51,10 @@ CState_Game::~CState_Game()
 // ----------------------------------------------------------------------//
 void CState_Game::Update( f32 dt, void *userData )
 {
+	f32 ds = 3.0f * O.game->GetDriver()->GetTimerSin();
+	f32 dc = 3.0f * O.game->GetDriver()->GetTimerCos();
+	
+	m_drawable->Zoom(ds, dc);
 	O.world->Update( dt, userData );
 }
 // ----------------------------------------------------------------------//
@@ -60,7 +64,7 @@ void CState_Game::Render2D( CDriver *driver )
 
 	static CEffect* fill	= m_fs->GetEffect("fill");
 	static CEffect* filltex = m_fs->GetEffect("fill.texture");
-	f32 dr = 20.0f * driver->GetTimerRot();
+	f32 dr = 10.0f * driver->GetTimerRot();
 
 	CMaterial m;
 	CRect2D r;
@@ -82,10 +86,10 @@ void CState_Game::Render2D( CDriver *driver )
 	filltex->CopyTechnique(&techique);
 	filltex->m_technique.depthtest = false;
 
+	m_drawable->Rotate(dr);
 	m_drawable->SetMaterial(&m);
 	m.SetEffect(filltex);
 	m.SetTexture(m_drawable->GetTexture(), 0);
-	m_drawable->Rotate(dr);
 	m_drawable->Render(driver);
 
 	filltex->SetTechnique(&techique);
@@ -95,15 +99,6 @@ void CState_Game::Render2D( CDriver *driver )
 void CState_Game::Render3D( CDriver *driver )
 {
 	O.world->Render( driver );
-
-	f32 dr = driver->GetTimerRot();
-
-	driver->MatrixPush();
-	{
-
-	}
-	driver->MatrixPop();
-
 	m_drawable->Draw(driver);
 }
 

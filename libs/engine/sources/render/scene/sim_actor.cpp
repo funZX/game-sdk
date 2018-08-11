@@ -101,7 +101,7 @@ void CActor::AddPhysic(phy::CPhysic *physic)
 	if (IsPhysic())
 		return;
 
-	switch (EnumValue(m_properties.shape))
+	switch (Value(m_properties.shape))
 	{
 	case Shape::Box:
 	{
@@ -206,7 +206,7 @@ void CActor::Update( f32 dt, void *userData )
 
 void CActor::Render( CDriver *driver )
 {
-	switch(EnumValue(m_properties.type))
+	switch(Value(m_properties.type))
 	{
 	case Type::Default:
 		driver->EnableCulling( true );

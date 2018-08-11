@@ -264,7 +264,7 @@ void CRect2D::GetCenter( TVec2 *loc ) const
 
 void CRect2D::AlignTo( CRect2D *c, Align align )
 {
-	switch (EnumValue(align))
+	switch (Value(align))
 	{
 	case Align::InRight:
 		m_position.x = c->Right() - m_size.x;

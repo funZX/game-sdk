@@ -67,7 +67,7 @@ s32	CThread::GetSystemPrio( Priority prio )
 
 	const s32 pArray[] = { minPrio, lowPrio, normalPrio, highPrio, maxPrio };
 
-	return pArray[EnumValue(prio)];
+	return pArray[Value(prio)];
 }
 
 // ----------------------------------------------------------------------//
@@ -87,7 +87,7 @@ void CThread::Stop()
 {
 	if( m_isRunning )
 	{
-		void *ret;
+		void *ret = nullptr;
 
 		m_isRunning = false;
 		pthread_join( m_thread, &ret );

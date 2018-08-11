@@ -309,12 +309,12 @@ void CEffect::Bind( CDriver *driver, CVertexSource *vertexSource )
 			driver->SetVertexAttribute( crtAttrib, vertexData, vertexStride );
 			driver->EnableVertexAttribute( crtAttrib );
 
-			vboOff += EnumValue(attribStride);
+			vboOff += Value(attribStride);
 		}
 		else
 		{
 			if ( CVertexSource::AttributeFormat::None  != (vertexFormat & attribFormat ) )
-				vboOff += EnumValue(attribStride);
+				vboOff += Value(attribStride);
 
 			driver->DisableVertexAttribute( crtAttrib );
 		}
