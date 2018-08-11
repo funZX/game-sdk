@@ -89,9 +89,9 @@ public:
 	{
         Position		=   ( 3 ),
         TexCoord_0		=   ( 2 ),
-        TexCoord_1		=   ( 2 ),
-        TexCoord_2		=   ( 2 ),
-        TexCoord_3		=   ( 2 ),
+		TexCoord_1 = (2),
+		TexCoord_2 = (2),
+		TexCoord_3 = (2),
         Color			=   ( 4 ),
         Normal			=   ( 3 ),
         Tangent			=   ( 3 ),

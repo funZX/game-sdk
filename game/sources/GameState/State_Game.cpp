@@ -52,8 +52,9 @@ CState_Game::~CState_Game()
 void CState_Game::Update( f32 dt, void *userData )
 {
 	f32 ds = 3.0f * O.game->GetDriver()->GetTimerSin();
+	f32 dc = 3.0f * O.game->GetDriver()->GetTimerCos();
 	
-	m_drawable->Zoom(ds, ds);
+	m_drawable->Zoom(ds, dc);
 	O.world->Update( dt, userData );
 }
 // ----------------------------------------------------------------------//
