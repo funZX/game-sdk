@@ -20,6 +20,7 @@
 #define __SIM_FONT_NODE_H
 
 #include <core/sim_pool.h>
+#include <core/sim_core.h>
 #include <render/sim_render.h>
 
 namespace sim
@@ -41,7 +42,8 @@ public:
 	bool									Add( CFontChar* fontChar );
 	bool									IsEmpty() const { return m_leaf1 == nullptr && m_leaf2 == nullptr; }
 
-	static stl::CPool<CFontNode>&			GetPool()  { return m_pool; }
+	static stl::CPool<CFontNode>*			NewPool();
+	static void								DelPool();
 	// ------------------------------------------------------------------//
 
 protected:
@@ -57,7 +59,7 @@ protected:
 	CFontNode*								m_leaf1;
 	CFontNode*								m_leaf2;
 
-	static stl::CPool<CFontNode> 			m_pool;
+	static stl::CPool<CFontNode>*			m_pool;
 	// ---------------------------------	---------------------------------//
 };
 

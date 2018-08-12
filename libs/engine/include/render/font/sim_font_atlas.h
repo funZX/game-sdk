@@ -19,6 +19,8 @@
 #ifndef __SIM_FONT_ATLAS_H
 #define __SIM_FONT_ATLAS_H
 
+#include <core/sim_pool.h>
+#include <core/sim_core.h>
 #include <core/sim_interfaces.h>
 #include <render/sim_render.h>
 
@@ -33,6 +35,7 @@ namespace rnr
 
 class CFontChar;
 class CFont;
+class CFontNode;
 class CMaterial;
 class CTexture;
 class CEffect;
@@ -59,7 +62,7 @@ protected:
 	// ------------------------------------------------------------------//
 	void								InitEffect();
 	void								InitMaterial();
-	bool								BinPack( s32 width, s32 height );
+	bool								BinPack(stl::CPool<CFontNode>* pool, s32 width, s32 height );
 	void								ReleaseLibrary();
 	// ------------------------------------------------------------------//
 

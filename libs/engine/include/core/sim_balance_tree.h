@@ -16,6 +16,7 @@
 *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <core/sim_pool.h>
 #include <core/sim_core.h>
 #include <core/sim_binary_tree.h>
 
@@ -27,53 +28,58 @@ namespace sim
 namespace stl
 {
 // ----------------------------------------------------------------------//
-template <class K, class D>
-class CBalanceTreeNode : public CBinaryTreeNode<K, D>
-{
-public:
-	CBalanceTreeNode() : CBinaryTreeNode<K, D>()
-	{
-		m_isRed		= false;
-	}
-
-	virtual ~CBalanceTreeNode() {}
-
-#if SIM_DEBUG
-	virtual const std::string N()
-	{
-		return m_isRed ? "(R)" : "(B)";
-	}
-#endif
-
-public:
-	u32		m_isRed;
-};
-
 template <class K, class D> 
 class CBalanceTree : public CBinaryTree<K, D>
 {
+protected:
+	// ----------------------------------------------------------------------//
+	template <class K, class D>
+	class CBalanceTreeNode : public CBinaryTreeNode<K, D>
+	{
+	public:
+		CBalanceTreeNode(K key, D* data) : 
+			CBinaryTreeNode<K, D>(key, data)
+		{
+			m_isRed = false;
+		}
+
+		virtual ~CBalanceTreeNode() {}
+
+#if SIM_DEBUG
+		virtual const std::string N()
+		{
+			return m_isRed ? "(R)" : "(B)";
+		}
+#endif
+
+	public:
+		bool		m_isRed;
+	};
+	// ----------------------------------------------------------------------//
 public:
-// ----------------------------------------------------------------------//
 	CBalanceTree() 
 		: CBinaryTree<K, D>()
 	{
-				m_count = 0;
+		m_count			= 0;
+		m_nodepool		= nullptr;
 	}
 
-	~CBalanceTree()
+	virtual ~CBalanceTree()
 	{
 
 	}
-
 	inline u32 GetCount() { return m_count; }
+
 private:
-	// ----------------------------------------------------------------------//
-	static CMemoryPool<CBalanceTreeNode<K, D>, k_Pool_Size * sizeof(CBalanceTreeNode<K, D>)>	 m_pool;
-	// ----------------------------------------------------------------------//
-// ----------------------------------------------------------------------//
+	// ----------------------------------------------------------------------//	
+	CPool<CBalanceTreeNode<K, D>>*	m_nodepool;
+	// ----------------------------------------------------------------------//	
+
+
 protected:
-	u32			m_count;
-// ----------------------------------------------------------------------//
+	// ----------------------------------------------------------------------//
+	u32								m_count;
+	// ----------------------------------------------------------------------//
 
 #if SIM_DEBUG
 	void check_one( CBinaryTreeNode<K, D>* subRoot )
@@ -314,7 +320,7 @@ public:
 
 	// ----------------------------------------------------------------------//
 
-	virtual D Delete( CBinaryTreeNode<K, D>* subRoot )
+	virtual D* Delete( CBinaryTreeNode<K, D>* subRoot )
 	{
 		CBinaryTreeNode<K, D> *subTree = subRoot;
 
@@ -342,12 +348,12 @@ public:
 		else
 			m_root = node;
 
-		D data = subRoot->GetData();
+		D* data = subRoot->m_data;
 
 		if ( subRoot != subTree )
 		{
-			subRoot->SetKey( subTree->GetKey() );
-			subRoot->SetData( subTree->GetData() );
+			subRoot->m_key = subTree->m_key;
+			subRoot->m_data = subTree->m_data;
 		}
 
 		if ( !IsRedNode( subTree ) )
@@ -357,7 +363,7 @@ public:
 		check( m_root );
 #endif
 
-		DestroyNode( subTree );
+		DelNode( subTree );
 
 		--m_count;
 
@@ -366,7 +372,7 @@ public:
 
 // ----------------------------------------------------------------------//
 
-	D Delete( K key )
+	D* Delete( K key )
 	{	
 		CBinaryTreeNode<K, D>* node	= CBalanceTree<K, D>::Search( key );
 
@@ -479,21 +485,24 @@ public:
 
 	// ----------------------------------------------------------------------//
 
-	virtual CBinaryTreeNode<K, D>* CreateNode()
+	virtual CBinaryTreeNode<K, D>* NewNode(K key, D data ) override
 	{
-		return m_pool.New();
+		if (m_nodepool == nullptr)
+		{
+			m_nodepool = SIM_NEW CPool<CBalanceTreeNode<K, D>>();
+			m_datapool = SIM_NEW CPool<D>();
+		}
+		
+		return m_nodepool->New(key, m_datapool->New(data));
 	}
 
-	virtual void DestroyNode(CBinaryTreeNode<K, D>* node)
+	virtual void DelNode(CBinaryTreeNode<K, D>* node) override
 	{
-		m_pool.Delete(reinterpret_cast<CBalanceTreeNode<K, D>*>(node));
+		m_datapool->Delete(node->m_data);
+		m_nodepool->Delete(reinterpret_cast<CBalanceTreeNode<K, D>*>(node));
 	}
 // ----------------------------------------------------------------------//
 };
-
-// ----------------------------------------------------------------------//
-template <typename K, typename D>
-CMemoryPool<CBalanceTreeNode<K, D>, k_Pool_Size * sizeof(CBalanceTreeNode<K, D>)> CBalanceTree<K, D>::m_pool;
 // ----------------------------------------------------------------------//
 } // namespace stl;
 } // namespace sim;

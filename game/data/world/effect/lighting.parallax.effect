@@ -1,6 +1,6 @@
 {
-	"vsource": "effect/lighting/vsource.parallax.cpp",
-	"psource": "effect/lighting/psource.parallax.cpp",
+	"vsource": "effect/lighting/v.parallax.source",
+	"psource": "effect/lighting/p.parallax.source",
 	"defines": [],
 	
 	"technique":

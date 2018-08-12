@@ -833,7 +833,7 @@ rnr::CFont* CFileSystem::GetFont( const std::string &name )
 {
 	auto item = m_fontList.Search(hash::Get(name));
 
-	return item ? item->GetData() : nullptr;
+	return item ? *(item->m_data) : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -850,7 +850,7 @@ rnr::CTexture* CFileSystem::GetTexture( const std::string &name )
 {
 	auto item = m_textureList.Search(hash::Get(name));
 
-	return item ? item->GetData() : nullptr;
+	return item ? *(item->m_data) : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -867,7 +867,7 @@ rnr::CSkyBox* CFileSystem::GetSkybox( const std::string &name )
 {
 	auto item = m_skyboxList.Search(hash::Get(name));
 
-	return item ? item->GetData() : nullptr;
+	return item ? *(item->m_data) : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -884,7 +884,7 @@ rnr::CEffect* CFileSystem::GetEffect( const std::string &name )
 {
 	auto item = m_effectList.Search(hash::Get(name));
 
-	return item ? item->GetData() : GetEffect("default");
+	return item ? *(item->m_data) : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -901,7 +901,7 @@ rnr::CMaterial* CFileSystem::GetMaterial( const std::string &name )
 {
 	auto item = m_materialList.Search(hash::Get(name));
 
-	return item ? item->GetData() : GetMaterial("default");
+	return item ? *(item->m_data) : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -918,7 +918,7 @@ rnr::CMesh* CFileSystem::GetMesh( const std::string &name )
 {
 	auto item = m_meshList.Search(hash::Get(name));
 
-	return item ? item->GetData() : nullptr;
+	return item ? *(item->m_data) : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -935,7 +935,7 @@ rnr::CActor* CFileSystem::GetActor( const std::string &name )
 {
 	auto item = m_actorList.Search(hash::Get(name));
 
-	return item ? item->GetData() : nullptr;
+	return item ? *(item->m_data) : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -952,7 +952,7 @@ rnr::CLight* CFileSystem::GetLight( const std::string &name )
 {
 	auto item = m_lightList.Search(hash::Get(name));
 
-	return item ? item->GetData() : nullptr;
+	return item ? *(item->m_data) : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -969,7 +969,7 @@ rnr::CCamera* CFileSystem::GetCamera( const std::string &name )
 {
 	auto item = m_cameraList.Search(hash::Get(name));
 
-	return item ? item->GetData() : nullptr;
+	return item ? *(item->m_data) : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -986,7 +986,7 @@ rnr::CSpriteTexture* CFileSystem::GetSprite( const std::string &name )
 {
 	auto item = m_spriteList.Search(hash::Get(name));
 
-	return item ? item->GetData() : nullptr;
+	return item ? *(item->m_data) : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -1003,7 +1003,7 @@ snd::CSoundData* CFileSystem::GetSound( const std::string &name )
 {
 	auto item = m_soundList.Search(hash::Get(name));
 
-	return item ? item->GetData() : nullptr;
+	return item ? *(item->m_data) : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -1020,7 +1020,7 @@ vm::CScript* CFileSystem::GetScript( const std::string &name )
 {
 	auto item = m_scriptList.Search(hash::Get(name));
 
-	return item ? item->GetData() : nullptr;
+	return item ? *(item->m_data) : nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -1037,7 +1037,7 @@ rnr::CScene* CFileSystem::GetScene( const std::string &name )
 {
 	auto item = m_sceneList.Search(hash::Get(name));
 
-	return item ? item->GetData() : nullptr;
+	return item ? *(item->m_data) : nullptr;
 }
 
 // ----------------------------------------------------------------------//

@@ -1,6 +1,6 @@
 {
-	"vsource": "effect/basic/vsource.fill.cpp",
-	"psource": "effect/basic/psource.fill.cpp",
+	"vsource": "effect/basic/v.fill.source",
+	"psource": "effect/basic/p.fill.source",
 	"defines": ["USE_VERTEX_COLOR"],		
 	
 	"technique":

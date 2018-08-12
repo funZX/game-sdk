@@ -24,6 +24,7 @@
 
 #include <algorithm>
 
+#include <core/sim_pool.h>
 #include <render/font/sim_font_atlas.h>
 #include <render/font/sim_font_char.h>
 #include <render/font/sim_font_node.h>
@@ -212,16 +213,14 @@ void CFontAtlas::Create()
     }
 
 	sort( m_listBitmapChar.begin(), m_listBitmapChar.end(), GreaterSize );
-	CFontNode::GetPool().Resize( ( s32 )( m_listBitmapChar.size() + 1 ) * 2 );
-
-    while( !BinPack( texWidth, texHeight ) )
+	
+	stl::CPool<CFontNode>* pool = CFontNode::NewPool();
+	while( !BinPack( pool, texWidth, texHeight ) )
     {
-		CFontNode::GetPool().Clear();
 		GetNextTextureSize(texWidth, texHeight, ixSize);
 		ixSize++;
 	}
-
-	CFontNode::GetPool().Release();
+	CFontNode::DelPool();
 
 	u32 dataSize	= texWidth * texHeight;
 	u8* data		= SIM_NEW u8[ dataSize ];
@@ -259,11 +258,9 @@ void CFontAtlas::Create()
 
 // ----------------------------------------------------------------------//
 
-bool CFontAtlas::BinPack( s32 texWidth, s32 texHeight )
+bool CFontAtlas::BinPack(stl::CPool<CFontNode>* pool, s32 texWidth, s32 texHeight )
 {
-	CFontNode* treeNode = CFontNode::GetPool().New();
-
-	treeNode->Set( 0, 0, texWidth, texHeight );
+	CFontNode* treeNode = pool->New(0, 0, texWidth, texHeight );
 
     for( s32 n = 0; n < (s32)m_listBitmapChar.size(); n++ )
 	{

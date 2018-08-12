@@ -23,9 +23,10 @@ namespace sim
 {
 namespace rnr
 {
-// ----------------------------------------------------------------------//
 
-stl::CPool<CFontNode> CFontNode::m_pool;
+// ----------------------------------------------------------------------//
+stl::CPool<CFontNode>*			CFontNode::m_pool = nullptr;
+// ----------------------------------------------------------------------//
 
 CFontNode::CFontNode()
 {
@@ -61,6 +62,22 @@ void CFontNode::Set( s32 x, s32 y, s32 width, s32 height )
 
 CFontNode::~CFontNode()
 {
+
+}
+
+// ----------------------------------------------------------------------//
+
+stl::CPool<CFontNode>* CFontNode::NewPool()
+{
+	m_pool = SIM_NEW stl::CPool<CFontNode>();
+	return m_pool;
+}
+
+// ----------------------------------------------------------------------//
+
+void CFontNode::DelPool()
+{
+	SIM_SAFE_DELETE(m_pool);
 }
 
 // ----------------------------------------------------------------------//
@@ -76,12 +93,12 @@ void CFontNode::CreateBranches( CFontChar* fontChar )
 	if( dx < dy )
 	{
 		//	split so the top is cut in half and the rest is one big rect below
-		m_leaf1 = m_pool.New();
+		m_leaf1 = m_pool->New();
 		m_leaf1->Set(m_x + fontChar->GetWidth(), m_y,
 					 m_width - fontChar->GetWidth(),
 					 fontChar->GetHeight());
 
-		m_leaf2 = m_pool.New();
+		m_leaf2 = m_pool->New();
 		m_leaf2->Set(m_x, m_y + fontChar->GetHeight(),
 					 m_width,
 		             m_height - fontChar->GetHeight());
@@ -89,13 +106,13 @@ void CFontNode::CreateBranches( CFontChar* fontChar )
 	else
 	{
 		//	m_leaf1 = left (cut in half)
-		m_leaf1 = m_pool.New();
+		m_leaf1 = m_pool->New();
 		m_leaf1->Set(m_x, m_y + fontChar->GetHeight(),
 					 fontChar->GetWidth(),
 		             m_height - fontChar->GetHeight());
 
 		// m_leaf2 = right (not cut)
-		m_leaf2 = m_pool.New();
+		m_leaf2 = m_pool->New();
 		m_leaf2->Set(m_x + fontChar->GetWidth(), m_y,
 					 m_width - fontChar->GetWidth(),
 		             m_height);

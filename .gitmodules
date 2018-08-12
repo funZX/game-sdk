@@ -1,3 +1,4 @@
-[submodule "libs/boost"]
-	path = libs/boost
-	url = git@github.com:boostorg/boost.git
+[submodule "tools/libs/collada-dom"]
+	path = tools/libs/collada-dom
+	url = git@github.com:funZX/collada-dom.git
+	ignore=dirty

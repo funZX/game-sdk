@@ -28,7 +28,7 @@ def main(dirlist):
 		
 		if os.path.exists(src_dir):
 
-			files = utils.getListOfFiles(src_dir, 'json')			
+			files = utils.getListOfFiles(src_dir, 'mesh')			
 			
 			if files and not os.path.exists(dst_dir):
 				os.makedirs(dst_dir)
@@ -45,37 +45,15 @@ def main(dirlist):
 				os.makedirs(dst_subdir)
 
 			file = (d.split(src_dir, 1)[1])
-
-			lodsfile = d + file + '.lods'
-
-			if os.path.exists(lodsfile):
-			    with open(lodsfile) as lods_data: 
-			        lods = json.load(lods_data)
-
 			file = (file.split('/', 1)[1] + '/' + n)
 
-			name 		= file.split('.json', 1)[0]
-			temp  		= name + '.sim'
-			temp2       = name + '.lod.sim'
-			out_file 	= dst_dir + '/' + temp
-			out_file2 	= dst_dir + '/' + temp2
+			in_file 	= d + '/' + n
+			out_file 	= dst_dir + '/' + file
 			
-			if utils.newerFile(d + '/' + n, out_file):
-				command = config.EXE_JSON2SIM + ' mesh ' + file + ' ' + temp
+			if utils.newerFile(in_file, out_file):
+				utils.updateFile(in_file, out_file)
 
-				os.chdir(src_dir)
-				utils.spawnProcess(command)
-				
-				if n in lods:
-					
-					command = config.EXE_SIM2LOD + ' ' + temp + ' ' + temp2
-					utils.spawnProcess(command)
-					temp        = temp2
-					out_file    = out_file2
-
-				utils.updateFile(temp, out_file)
-
-			meshes.append({'name' : name, 'file': ('mesh/' + temp)});
+			meshes.append({'name' : file.replace('.mesh',''), 'file': ('mesh/' + file)});
 				
 		if meshes:
 			with open(dst_dir + '/content.json', 'wb') as f:

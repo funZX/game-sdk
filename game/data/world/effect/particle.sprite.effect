@@ -1,6 +1,6 @@
 {
-	"vsource": "effect/basic/vsource.particlesprite.cpp",
-	"psource": "effect/basic/psource.particlesprite.cpp",		
+	"vsource": "effect/basic/v.particlesprite.source",
+	"psource": "effect/basic/p.particlesprite.source",		
 	"defines": [],
 	
 	"technique":
