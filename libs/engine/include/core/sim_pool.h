@@ -51,6 +51,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 #include <cstddef>
 #include <type_traits>
 
+#pragma warning( disable : 4624)
+
 namespace sim
 {
 namespace stl
@@ -342,5 +344,6 @@ CPool<T, BlockSize>::Delete(pointer p)
 } // namespace stl;
 } // namespace sim
 
+#pragma warning(default:4624)
 
 #endif // SIM_POOL_H
