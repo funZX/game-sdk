@@ -20,6 +20,8 @@
 #define __SIM_FONT_H_
 
 #include <core/sim_interfaces.h>
+
+#include <math/sim_vec4.h>
 #include <render/sim_render.h>
 
 struct FT_FaceRec_;
@@ -44,7 +46,7 @@ public:
 	// ------------------------------------------------------------------//
 	void						Load(const std::string& fileName);
 
-	s32							DrawString( CDriver* driver, s32 x, s32 y, const std::string &text );
+	s32							DrawString( CDriver* driver, s32 x, s32 y, const std::string &text, mat::TVec4* color);
 
 	s32							GetWidth( const char* text );
 

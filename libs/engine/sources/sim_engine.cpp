@@ -452,7 +452,7 @@ void CEngine::Off3D()
 
 void  CEngine::Print( CDriver* driver, s32 x, s32 y, const std::string &text )
 {
-	m_font->DrawString( driver, x, y, text );	
+	m_font->DrawString( driver, x, y, text, &col::Green);
 }
 
 // ----------------------------------------------------------------------//
@@ -467,7 +467,7 @@ void  CEngine::Print( CDriver* driver, s32 x, s32 y, char *format, ... )
 	vsnprintf( buf, CBatch2D::MaxQuads, format, args );
 	va_end( args );
 
-	m_font->DrawString( driver, x, y, buf );	
+	m_font->DrawString( driver, x, y, buf, &col::Green);
 }
 // ----------------------------------------------------------------------//
 

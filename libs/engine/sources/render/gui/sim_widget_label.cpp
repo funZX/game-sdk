@@ -65,7 +65,7 @@ void CWidgetLabel::Render( CDriver *driver )
 		s32 x = ( s32 ) Left();
 		s32 y = ( s32 ) Top();
 
-		m_font->DrawString( driver, x, y, m_string );
+		m_font->DrawString( driver, x, y, m_string, &col::White);
 	}
 
 	CWidget::Render(driver);

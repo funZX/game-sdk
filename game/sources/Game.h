@@ -29,8 +29,6 @@ protected:
 
 typedef struct 
 {
-	const char*					fsDir;
-
 	CGame*						game;
 
 	CDriver*					driver;	
@@ -40,8 +38,91 @@ typedef struct
 
 	CMaterial*					material;
 
-	CFont*						font;
-	CEffect*					effect;
+	struct 
+	{
+		CFont*					engine;
+
+		struct 
+		{
+			CFont*				bold12;
+			CFont*				bold14;
+			CFont*				bold16;
+
+			CFont*				italic12;
+			CFont*				italic14;
+			CFont*				italic16;
+
+			CFont*				light12;
+			CFont*				light14;
+			CFont*				light16;
+
+			CFont*				medium12;
+			CFont*				medium14;
+			CFont*				medium16;
+
+			CFont*				regular12;
+			CFont*				regular14;
+			CFont*				regular16;
+
+			CFont*				thin12;
+			CFont*				thin14;
+			CFont*				thin16;
+
+		} roboto;
+	} font;
+	
+	struct 
+	{
+		CEffect*				engine;
+
+		CEffect*				color;
+		CEffect*				vertex;
+		CEffect*				texture;
+
+		struct
+		{
+			CEffect*			normals;
+		} debug;
+
+		struct 
+		{
+			CEffect*			texture;
+
+			struct 
+			{
+				CEffect*		color;
+				CEffect*		texture;
+			} vertex;
+
+		} fill;
+
+		struct 
+		{
+			CEffect*			color;
+			CEffect*			texture;
+
+			struct
+			{
+				CEffect*		color;
+				CEffect*		texture;
+			} vertex;
+
+		} diffuse;
+
+		struct
+		{
+			CEffect*			bumpmap;
+			CEffect*			parallax;
+			CEffect*			phong;
+			CEffect*			reflection;
+		} lighting;
+
+		struct
+		{
+			CEffect*			sprite;
+		} particle;
+
+	} effect;
 	
 
 } TGlobal;

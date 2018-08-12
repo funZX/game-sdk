@@ -4,6 +4,8 @@
 
 #include <render/gui/sim_widget_drawable.h>
 
+
+#include <render/font/sim_font.h>
 #include <render/sim_canvas.h>
 #include <render/sim_texture.h>
 #include <render/sim_material.h>
@@ -71,8 +73,9 @@ void CState_Game::Render2D( CDriver *driver )
 {
 	O.world->Render2D(driver);
 
-	static CEffect* fill	= m_fs->GetEffect("fill");
-	static CEffect* filltex = m_fs->GetEffect("fill.texture");
+	CEffect* fill = O.effect.color;
+	CEffect* filltex = O.effect.fill.texture;
+
 	f32 dr = 10.0f * driver->GetTimerRot();
 
 	CMaterial m;
@@ -103,6 +106,11 @@ void CState_Game::Render2D( CDriver *driver )
 
 	filltex->SetTechnique(&techique);
 	driver->EnableBatch2D(isBatchEnabled);
+
+	O.font.roboto.medium16->DrawString(driver,
+		10,
+		(s32)(O.canvas->Height() - 2 * O.font.roboto.medium16->GetHeight()),
+		"The quick brown fox jumps over the lazy dog! :;.,'\"(?)+=*/=1234567890", &col::Magenta);
 }
 // ----------------------------------------------------------------------//
 void CState_Game::Render3D( CDriver *driver )
