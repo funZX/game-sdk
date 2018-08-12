@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\async++">
+      <UniqueIdentifier>{e759d404-854e-434c-a236-930a0e4c367d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\async++.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\async++\aligned_alloc.h">
+      <Filter>Header Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\async++\cancel.h">
+      <Filter>Header Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\async++\continuation_vector.h">
+      <Filter>Header Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\async++\parallel_for.h">
+      <Filter>Header Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\async++\parallel_invoke.h">
+      <Filter>Header Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\async++\parallel_reduce.h">
+      <Filter>Header Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\async++\partitioner.h">
+      <Filter>Header Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\async++\range.h">
+      <Filter>Header Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\async++\ref_count.h">
+      <Filter>Header Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\async++\scheduler.h">
+      <Filter>Header Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\async++\scheduler_fwd.h">
+      <Filter>Header Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\async++\task.h">
+      <Filter>Header Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\async++\task_base.h">
+      <Filter>Header Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\async++\traits.h">
+      <Filter>Header Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\async++\when_all_any.h">
+      <Filter>Header Files\async++</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\fifo_queue.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\internal.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\singleton.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\task_wait_event.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\work_steal_queue.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\sources\scheduler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\threadpool_scheduler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
