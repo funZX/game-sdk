@@ -1,8 +1,8 @@
 #ifndef __SIM_BINARY_TREE_H
 #define __SIM_BINARY_TREE_H
 
+#include <core/sim_pool.h>
 #include <core/sim_core.h>
-#include <core/sim_memory_pool.h>
 #include <core/sim_stack.h>
 
 
@@ -16,133 +16,131 @@ namespace sim
 namespace stl
 {
 // ----------------------------------------------------------------------//
-
-template <class K, class D> class CBinaryTreeNode
-{
-public:
-// ----------------------------------------------------------------------//
-	CBinaryTreeNode()
-	{
-		m_parent		= nullptr;
-
-		m_left			= nullptr;
-		m_right			= nullptr;
-
-		m_data			= nullptr;
-		m_key			= 0;
-	}
-
-	virtual ~CBinaryTreeNode()
-	{
-	}
-
-	void				SetKey( K key )				{ m_key = key; }
-	K					GetKey()					{ return m_key; }
-
-	void				SetData( D data )			{ m_data = data; }
-	D					GetData()					{ return m_data; }
-
-	void				SetParent( CBinaryTreeNode<K, D> *node ){ m_parent = node; }
-	CBinaryTreeNode<K, D>*			GetParent()					{ return m_parent; }
-
-	void				SetLeft( CBinaryTreeNode<K, D> *node )	{ m_left = node; }
-	CBinaryTreeNode<K, D>*			GetLeft()					{ return m_left; }
-
-	void				SetRight( CBinaryTreeNode<K, D> *node )	{ m_right = node; }
-	CBinaryTreeNode<K, D>*			GetRight()					{ return m_right; }
-
-	bool				IsLeft()					{ return m_parent->m_left == this; }
-	bool				IsRight()					{ return m_parent->m_right == this; }
-	bool				IsParent()					{ return m_left || m_right; }
-
-
-
-// ----------------------------------------------------------------------//
-
-	CBinaryTreeNode<K, D>* GetSibling()
-	{
-		SIM_ASSERT ( GetParent() );
-
-		return	IsLeft() ? 
-					GetRight() : 
-					GetLeft();
-	}
-
-// ----------------------------------------------------------------------//
-
-	CBinaryTreeNode<K, D>* GetUncle()
-	{
-		SIM_ASSERT ( GetParent() );
-		SIM_ASSERT ( GetParent()->GetParent() );
-
-		return Sibling( GetParent() );	
-	}
-
-// ----------------------------------------------------------------------//
-
-	CBinaryTreeNode<K, D>* GetGrandParent()
-	{
-		SIM_ASSERT ( GetParent() );
-		SIM_ASSERT ( GetParent()->GetParent() );
-
-		return GetParent()->GetParent();	
-	}
-
-//----------------------------------------------------------------------//
-protected:
-// ----------------------------------------------------------------------//
-	K					m_key;
-	D					m_data;
-
-	CBinaryTreeNode<K, D> *			m_parent;
-
-	CBinaryTreeNode<K, D>*			m_left;
-	CBinaryTreeNode<K, D>*			m_right;
-
-// ----------------------------------------------------------------------//
-
-	const CBinaryTreeNode<K, D>& operator=( const CBinaryTreeNode<K, D>& node )
-	{
-		m_parent		= node.m_parent;
-
-		m_left			= node.m_left;
-		m_right			= node.m_right;
-
-		m_data			= node.m_data;
-		m_key			= node.m_key;
-
-		return *this;
-	}
-
-// ----------------------------------------------------------------------//
-};
-
-// ----------------------------------------------------------------------//
-
 template <class K, class D> 
 class CBinaryTree
 {
+protected:
+	// ----------------------------------------------------------------------//
+	template <class K, class D> class CBinaryTreeNode
+	{
+	public:
+		// ----------------------------------------------------------------------//
+		CBinaryTreeNode(K key, D* data)
+		{
+			m_parent	= nullptr;
+
+			m_left		= nullptr;
+			m_right		= nullptr;
+
+			m_key		= key;
+			m_data		= data;
+
+			SIM_MEMCPY(m_data, data, sizeof(D));
+		}
+
+		virtual ~CBinaryTreeNode()
+		{
+		}
+
+		void				SetParent(CBinaryTreeNode<K, D> *node) { m_parent = node; }
+		CBinaryTreeNode<K, D>*			GetParent() { return m_parent; }
+
+		void				SetLeft(CBinaryTreeNode<K, D> *node) { m_left = node; }
+		CBinaryTreeNode<K, D>*			GetLeft() { return m_left; }
+
+		void				SetRight(CBinaryTreeNode<K, D> *node) { m_right = node; }
+		CBinaryTreeNode<K, D>*			GetRight() { return m_right; }
+
+		bool				IsLeft() { return m_parent->m_left == this; }
+		bool				IsRight() { return m_parent->m_right == this; }
+		bool				IsParent() { return m_left || m_right; }
+
+
+
+		// ----------------------------------------------------------------------//
+
+		CBinaryTreeNode<K, D>* GetSibling()
+		{
+			SIM_ASSERT(GetParent());
+
+			return	IsLeft() ?
+				GetRight() :
+				GetLeft();
+		}
+
+		// ----------------------------------------------------------------------//
+
+		CBinaryTreeNode<K, D>* GetUncle()
+		{
+			SIM_ASSERT(GetParent());
+			SIM_ASSERT(GetParent()->GetParent());
+
+			return Sibling(GetParent());
+		}
+
+		// ----------------------------------------------------------------------//
+
+		CBinaryTreeNode<K, D>* GetGrandParent()
+		{
+			SIM_ASSERT(GetParent());
+			SIM_ASSERT(GetParent()->GetParent());
+
+			return GetParent()->GetParent();
+		}
+
+		//----------------------------------------------------------------------//
+		K								m_key;
+		D*								m_data;
+		// ----------------------------------------------------------------------//
+	protected:
+		CBinaryTreeNode<K, D> *			m_parent;
+
+		CBinaryTreeNode<K, D>*			m_left;
+		CBinaryTreeNode<K, D>*			m_right;
+
+		// ----------------------------------------------------------------------//
+
+		const CBinaryTreeNode<K, D>& operator=(const CBinaryTreeNode<K, D>& node)
+		{
+			m_parent = node.m_parent;
+
+			m_left = node.m_left;
+			m_right = node.m_right;
+
+			m_data = node.m_data;
+			m_key = node.m_key;
+
+			return *this;
+		}
+
+		// ----------------------------------------------------------------------//
+	};
+	
+	// ----------------------------------------------------------------------//
 public:
-// ----------------------------------------------------------------------//
 	CBinaryTree()
 	{
 		m_root		= nullptr;
+		m_nodepool	= nullptr;
+		m_datapool	= nullptr;
 	}
-	~CBinaryTree()
+
+	virtual ~CBinaryTree()
 	{
-		RemoveAll();
+		SIM_SAFE_DELETE(m_datapool);
+		SIM_SAFE_DELETE(m_nodepool);
 	}
 
 private:
-	// ----------------------------------------------------------------------//
-	static CMemoryPool<CBinaryTreeNode<K, D>, k_Pool_Size * sizeof(CBinaryTreeNode<K, D>)>	 m_pool;
-	// ----------------------------------------------------------------------//
-
+	// ----------------------------------------------------------------------//	
+	CPool<CBinaryTreeNode<K, D>>*	m_nodepool;
+	// ----------------------------------------------------------------------//	
 protected:
 	// ----------------------------------------------------------------------//	
-	CBinaryTreeNode<K, D>*				m_root;
+	CBinaryTreeNode<K, D>*			m_root;
+	CPool<D>*						m_datapool;
 	// ----------------------------------------------------------------------//	
-
+	
 public:
 	// ----------------------------------------------------------------------//	
 	inline CBinaryTreeNode<K, D>*		GetRoot() { return m_root;  }
@@ -161,7 +159,7 @@ public:
 			if (node == nullptr)
 				continue;
 
-			SIM_DELETE(node->GetData());
+			SIM_DELETE(*(node->m_data));
 
 			stack.Push(node->GetLeft());
 			stack.Push(node->GetRight());
@@ -199,7 +197,7 @@ public:
 				
 				subRoot = subRoot->GetParent();
 
-				DestroyNode( temp );
+				DelNode( temp );
 			}
 		}
 
@@ -212,9 +210,9 @@ public:
 	{
 		CBinaryTreeNode<K, D>* subRoot = m_root;
 
-		while( subRoot && key != subRoot->GetKey() )
+		while( subRoot && key != subRoot->m_key )
 
-			subRoot =	subRoot->GetKey() > key ? 
+			subRoot =	subRoot->m_key > key ? 
 								subRoot->GetRight() : 
 								subRoot->GetLeft();
 
@@ -290,20 +288,18 @@ public:
 		{
 			node = subRoot;
 
-			subRoot = subRoot->GetKey() > key ?
+			subRoot = subRoot->m_key > key ?
 							subRoot->GetRight() :
 							subRoot->GetLeft();
 		}
 
-		CBinaryTreeNode<K, D>* newNode	= CreateNode();
+		CBinaryTreeNode<K, D>* newNode	= NewNode(key, data);
 		
-		newNode->SetKey( key );
-		newNode->SetData( data );
 		newNode->SetParent( node );
 
 		if ( node )
 		{
-			node->GetKey() > key ?
+			node->m_key > key ?
 				node->SetRight( newNode ):
 				node->SetLeft( newNode );
 		}
@@ -315,7 +311,7 @@ public:
 
 // ----------------------------------------------------------------------//
 
-	virtual D Delete( CBinaryTreeNode<K, D>* subRoot )
+	virtual D* Delete( CBinaryTreeNode<K, D>* subRoot )
 	{
 		CBinaryTreeNode<K, D> *subTree = subRoot;
 
@@ -342,22 +338,22 @@ public:
 		else
 			m_root = node;
 
-		D data = subRoot->GetData();
+		D* data = subRoot->m_data;
 
 		if ( subRoot != subTree )
 		{
-			subRoot->SetKey( subTree->GetKey() );
-			subRoot->SetData( subTree->GetData() );
+			subRoot->m_key = subTree->m_key;
+			subRoot->m_data = subTree->m_data;
 		}
 		
-		DestroyNode( subTree );
+		DelNode( subTree );
 
 		return data;
 	}
 
 // ----------------------------------------------------------------------//
 
-	D Delete( K key )
+	D* Delete( K key )
 	{	
 		CBinaryTreeNode<K, D>* node	= CBinaryTree<K, D>::Search( key );
 
@@ -383,7 +379,7 @@ public:
 		if ( subRoot->GetRight()) 
 			std::cout<<" /\n" << std::setw(indent) << ' ';
 
-		IEngineItem* item = dynamic_cast<IEngineItem*>(subRoot->GetData());
+		IEngineItem* item = dynamic_cast<IEngineItem*>(*(subRoot->m_data));
 		if (item != nullptr)
 			std::cout << item->GetName().c_str() << "\n ";
 
@@ -398,20 +394,24 @@ public:
 // ----------------------------------------------------------------------//
 
 protected:
-	virtual CBinaryTreeNode<K, D>* CreateNode()
+	virtual CBinaryTreeNode<K, D>* NewNode( K key, D data )
 	{
-		return m_pool.New();
+		if (m_nodepool == nullptr)
+		{
+			m_nodepool = SIM_NEW CPool<CBinaryTreeNode<K, D>>();
+			m_datapool = SIM_NEW CPool<D>();
+		}
+
+		return m_nodepool->New(key, m_datapool->New(data));
 	}
 
-	virtual void DestroyNode(CBinaryTreeNode<K, D>* node)
+	virtual void DelNode(CBinaryTreeNode<K, D>* node)
 	{
-		m_pool.Delete( node );
+		m_datapool->Delete(node->m_data);
+		m_nodepool->Delete(node);
 	}
 };
 
-// ----------------------------------------------------------------------//
-template <typename K, typename D>
-CMemoryPool<CBinaryTreeNode<K,D>, k_Pool_Size * sizeof(CBinaryTreeNode<K, D>)> CBinaryTree<K,D>::m_pool;
 // ----------------------------------------------------------------------//
 } // namespace stl;
 } // namespace sim;

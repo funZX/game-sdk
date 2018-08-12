@@ -17,17 +17,17 @@
 */
 #include <sigcxx/sigcxx.hpp>
 
+#include <core/sim_pool.h>
 #include <core/sim_interfaces.h>
-#include <core/sim_memory_pool.h>
 #include <core/sim_balance_tree.h>
 #include <core/sim_core.h>
 
 #include <math/sim_vec3.h>
 
-using namespace sim::mat;
-
 #ifndef __SIM_OCTREE_H
 #define __SIM_OCTREE_H
+
+using namespace sim::mat;
 
 namespace sim
 {
@@ -137,51 +137,29 @@ protected:
 };
 
 
-
+// ----------------------------------------------------------------------//
 
 class COctree
 {
 public:
 	// ----------------------------------------------------------------------//
-	COctree()
-	{
-		m_root = nullptr;
-	}
-
-	~COctree()
-	{
-		if ( m_root != nullptr )
-			DestroyNode( m_root );
-	}
+	COctree();
+	virtual ~COctree();
 	// ----------------------------------------------------------------------//
-	void Insert( COctreeVolume* volume );
-	void Delete( COctreeVolume* volume );
-	// ----------------------------------------------------------------------//
-
-private:
-	// ----------------------------------------------------------------------//
-	static CMemoryPool<COctreeNode, k_Pool_Size * sizeof(COctreeNode)>	 m_pool;
+	void			Insert(COctreeVolume* volume);
+	void			Delete(COctreeVolume* volume);
 	// ----------------------------------------------------------------------//
 
 protected:
 	// ----------------------------------------------------------------------//
-	COctreeNode*		m_root;
+	COctreeNode*				m_root;
+	CPool<COctreeNode>*			m_pool;
 	// ----------------------------------------------------------------------//
-	void Expand(COctreeVolume* volume, u32 axis);
-	void Shrink();
+	void			Expand(COctreeVolume* volume, u32 axis);
+	void			Shrink();
 
-	virtual COctreeNode* CreateNode()
-	{
-		return m_pool.New();
-	}
-
-	virtual void DestroyNode ( COctreeNode* node )
-	{
-		for ( int k = 0; k < 8; k++ )
-			m_pool.Delete( node->m_octreenodes[k] );
-
-		return m_pool.Delete( node );
-	}
+	COctreeNode*	NewNode();
+	void			DelNode(COctreeNode* node);
 
 // ----------------------------------------------------------------------//
 };

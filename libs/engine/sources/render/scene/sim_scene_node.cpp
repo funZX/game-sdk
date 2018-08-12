@@ -84,21 +84,17 @@ void CSceneNode::AddChild( CSceneNode* child )
 
 void CSceneNode::DelChild( CSceneNode* child )
 {
-	CSceneNode* node = m_children->Delete( child->GetID() );
-
-	if ( node )
-		child->SetParent( nullptr );
+	m_children->Delete( child->GetID() );
+	child->SetParent( nullptr );
 }
 
 // ----------------------------------------------------------------------//
 
 CSceneNode* CSceneNode::GetChild( const std::string& name )
 {
-	u32 h = hash::Get( name );
+	auto node = m_children->Search(hash::Get(name));
 
-	auto node = m_children->Search( h );
-
-	return node ? node->GetData() : nullptr;
+	return node ? *(node->m_data) : nullptr;
 }
 
 // ----------------------------------------------------------------------//

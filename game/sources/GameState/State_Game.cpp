@@ -13,6 +13,9 @@
 
 #include <core/io/sim_file_system.h>
 #include <core/sim_list.h>
+#include <core/sim_binary_tree.h>
+#include <core/sim_balance_tree.h>
+
 #include <render/sim_material.h>
 
 #include <render/sim_canvas.h>
@@ -42,6 +45,12 @@ CState_Game::CState_Game()
 
 	CScript* script = O.world->GetFs()->GetScript("dt/deltatime");
 	script->Run();
+	/*
+	CBinaryTree<u32, CScript> bt;
+	bt.Insert(0, *script);
+	CBalanceTree<u32, CScript> br;
+	br.Insert(0, *script);
+	*/
 }
 // ----------------------------------------------------------------------//
 CState_Game::~CState_Game()

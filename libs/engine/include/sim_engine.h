@@ -127,7 +127,6 @@ namespace sim
 };
 //////////////////////////////////////////////////
 #include <core/sim_core.h>
-#include <core/sim_pool.h>
 #include <core/sim_interfaces.h>
 #include <core/sim_list.h>
 #include <core/sim_binary_tree.h>

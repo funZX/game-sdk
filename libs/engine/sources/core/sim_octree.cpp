@@ -61,9 +61,31 @@ void COctreeNode::DelVolume(COctreeVolume* volume)
 }
 
 
-
 // ----------------------------------------------------------------------//
-CMemoryPool<COctreeNode, k_Pool_Size * sizeof(COctreeNode)> COctree::m_pool;
+COctree::COctree()
+{
+	m_root = nullptr;
+	m_pool = SIM_NEW CPool<COctreeNode>();
+}
+// ----------------------------------------------------------------------//
+COctree::~COctree()
+{
+	SIM_SAFE_DELETE(m_pool);
+}
+// ----------------------------------------------------------------------//
+COctreeNode* COctree::NewNode()
+{
+	return m_pool->New();
+}
+// ----------------------------------------------------------------------//
+void COctree::DelNode(COctreeNode* node)
+{
+	for (int k = 0; k < 8; k++)
+		m_pool->Delete(node->m_octreenodes[k]);
+
+	m_pool->Delete(node);
+}
+
 // ----------------------------------------------------------------------//
 void COctree::Insert(COctreeVolume* volume)
 {
@@ -71,7 +93,7 @@ void COctree::Insert(COctreeVolume* volume)
 
 	if (!m_root)
 	{
-		m_root = CreateNode();
+		m_root = NewNode();
 
 		m_root->m_radius = Vec3Max(volume->GetBox());
 		Vec3Copy(&m_root->m_center, volume->GetCenter());
@@ -99,7 +121,7 @@ void COctree::Delete(COctreeVolume* volume)
 // ----------------------------------------------------------------------//
 void COctree::Expand(COctreeVolume* volume, u32 axis)
 {
-	COctreeNode* newRoot = CreateNode();
+	COctreeNode* newRoot = NewNode();
 
 	newRoot->m_radius = m_root->m_radius * 2.0f;
 	m_root = newRoot;
@@ -122,14 +144,14 @@ void COctree::Shrink()
 	{
 		for (u32 k = 0; k < 8; k++)
 			if (k != full)
-				DestroyNode(m_root->m_octreenodes[k]);
+				DelNode(m_root->m_octreenodes[k]);
 
 		m_root = m_root->m_octreenodes[full];
 	}
 	else
 	{
 		if (count == 0)
-			DestroyNode(m_root);
+			DelNode(m_root);
 	}
 }
 // ----------------------------------------------------------------------//

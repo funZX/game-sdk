@@ -73,10 +73,6 @@ namespace sim
 		u32							Get();
 	};
 
-
-	
-	static const int k_Pool_Size = 64;
-	
 	// ----------------------------------------------------------------------//
 	// easy cast typed enums to underlying type
 	template <typename E>
