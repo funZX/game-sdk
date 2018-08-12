@@ -30,20 +30,19 @@ TGlobal		O = {0};
 CGame::CGame( const std::string& fsDir )
 	: CEngine()
 {
+	m_fsDir = fsDir;
+
 	SIM_MEMSET( &m_downKeys, 0, sizeof( m_downKeys ) );
 
-	m_fsDir				= fsDir;
-
 	O.game				= this;
-	O.fsDir				= m_fsDir.c_str();
 
 	O.driver			= m_driver;
 	O.canvas			= m_canvas;
 	O.camera			= m_camera;
 	O.material			= m_material;
 
-	O.font				= m_font;
-	O.effect			= m_effect;
+	O.font.engine		= m_font;
+	O.effect.engine		= m_effect;
 
 	m_world				= SIM_NEW CWorld();
 	m_world->SetVisible( false );
