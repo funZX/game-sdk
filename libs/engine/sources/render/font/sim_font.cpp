@@ -20,6 +20,7 @@
 #include <render/font/sim_font_atlas.h>
 #include <render/font/sim_font_char.h>
 
+#include <render/sim_material.h>
 #include <render/sim_driver.h>
 
 #include <ft2build.h>
@@ -122,7 +123,7 @@ s32 CFont::GetCharWidth( s32 charCode )
 
 // ----------------------------------------------------------------------//
 
-s32 CFont::DrawString( CDriver* driver, s32 x, s32 y, const std::string &text )
+s32 CFont::DrawString( CDriver* driver, s32 x, s32 y, const std::string &text, mat::TVec4* color)
 {
 	u16 c;
 	s32 currX 	= x;
@@ -136,6 +137,9 @@ s32 CFont::DrawString( CDriver* driver, s32 x, s32 y, const std::string &text )
 	if( m_ftFace ) {
 		hasKerning = FT_HAS_KERNING( m_ftFace ) != 0;
 	}
+
+	CMaterial* material = m_fontAtlas->GetMaterial();
+	material->SetDiffuse(color);
 
 	while( text[ n ] != 0 )
 	{
@@ -156,7 +160,7 @@ s32 CFont::DrawString( CDriver* driver, s32 x, s32 y, const std::string &text )
 				ixGlyphPrev = ixGlyph;
 			}
 
-			bitmap->second->Draw( driver, m_fontAtlas->GetMaterial(), currX, y );
+			bitmap->second->Draw( driver, material, currX, y );
 			currX += bitmap->second->GetXAdvance();
 		}
 		n++;
