@@ -17,7 +17,7 @@ CState_AppLoad::CState_AppLoad()
 {
 	m_fsui = SIM_NEW CFileSystem( O.game->GetFsPath("ui.7z") );
 	m_fsworld = O.world->GetFs();
-	m_fsCrt = m_fsworld;
+	m_fsCrt = m_fsui;
 }
 // ----------------------------------------------------------------------//
 CState_AppLoad::~CState_AppLoad()
@@ -53,14 +53,14 @@ void CState_AppLoad::Render3D( CDriver *driver )
 // ----------------------------------------------------------------------//
 void CState_AppLoad::OnEnter()
 {
-	//m_fsui->Open();
+	m_fsui->Open();
 	m_fsworld->Open();
 }
 // ----------------------------------------------------------------------//
 void CState_AppLoad::OnExit()
 {
 	m_fsworld->Close();
-	//m_fsui->Close();
+	m_fsui->Close();
 
 	O.world->SetEnabled( true );
 	O.world->SetVisible( true );
