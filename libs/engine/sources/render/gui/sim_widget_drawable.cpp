@@ -86,13 +86,11 @@ void CWidgetDrawable::Draw( CDriver *driver )
 	CRenderTexture* fb =
 	driver->BindRenderTexture(m_rendertexture);
 	driver->ClearColor( &m_fillcolor);
-
 	engine->SetCamera( m_camera );
 
 	OnDraw.Emit( driver );
 	
 	engine->SetCamera( 0 );
-
 	driver->BindRenderTexture( 0 );
 }
 

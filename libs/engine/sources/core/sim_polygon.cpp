@@ -186,7 +186,7 @@ CPolygon* CPolygon::Intersects( TPolygonList* polygonList )
 	return nullptr;
 }
 // ----------------------------------------------------------------------//
-void CPolygon::Render( rnr::CDriver *driver, rnr::CMaterial *mtl )
+void CPolygon::Render( rnr::CDriver *driver, rnr::CMaterial *material )
 {
 	CVertexGroup vg;
 	CVertexSource vs;
@@ -226,7 +226,7 @@ void CPolygon::Render( rnr::CDriver *driver, rnr::CMaterial *mtl )
 		vg.m_vboData[ k ] = k++;
 	};
 
-	vg.SetMaterial( mtl );
+	vg.SetMaterial( material );
 
 	driver->Render( &vg );
 
