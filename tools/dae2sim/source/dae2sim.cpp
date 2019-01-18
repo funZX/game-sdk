@@ -1,4 +1,5 @@
 #include <iostream>
+#include <dae.h>
 
 void onStart();
 
@@ -6,7 +7,14 @@ int main(int argc, char** argv)
 {
 	onStart();
 	
+	DAE dae;
+	daeElement* root = dae.open("simpleImport.dae");
 	
+	if (!root)
+	{
+		std::cout << "Document import failed.\n";
+		return 0;
+	}
 
 	return 0;
 }
