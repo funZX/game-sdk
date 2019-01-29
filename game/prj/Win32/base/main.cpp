@@ -79,5 +79,5 @@ int main(int argc, char *argv[])
 	SimulatorSetKeyCallback( key );
 	SimulatorSetQuitCallback( quit );
 
-	SimulatorRun( 800, 600 );
+	SimulatorRun( 960, 640 );
 }

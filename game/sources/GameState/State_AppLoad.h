@@ -20,6 +20,7 @@ public:
 	void				OnExit();
 
 protected:
+	void				InitO();
 	CFileSystem*		m_fsui;
 	CFileSystem*		m_fsworld;
 	CFileSystem*		m_fsCrt;

@@ -51,7 +51,7 @@ def main(dirlist):
 			utils.updateFile(src_dir + '/' + file, dst_dir + '/' + file)
 			
 			for k in range(0, 3):
-				size = (12 + k * 2)				
+				size = (12 + k * 4)				
 				name = file.split('.ttf', 1)[0] + str(size)
 				
 				fonts.append({'name' : name, 'file': ('font/' + file), 'size' : size});

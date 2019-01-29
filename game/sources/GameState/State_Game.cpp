@@ -107,9 +107,9 @@ void CState_Game::Render2D( CDriver *driver )
 	filltex->SetTechnique(&techique);
 	driver->EnableBatch2D(isBatchEnabled);
 
-	O.font.roboto.medium16->DrawString(driver,
+	O.font.roboto.bold20->DrawString(driver,
 		10,
-		(s32)(O.canvas->Height() - 2 * O.font.roboto.medium16->GetHeight()),
+		(s32)(O.canvas->Height() - 2 * O.font.roboto.bold20->GetHeight()),
 		"The quick brown fox jumps over the lazy dog! :;.,'\"(?)+=*/=1234567890", &col::Magenta);
 }
 // ----------------------------------------------------------------------//

@@ -169,10 +169,12 @@ void CEngine::InitEffect()
 	m_effect->m_technique.cullface = true;
 	m_effect->m_technique.alphatest = false;
 
-	m_effect->m_technique.blending = true;
+	m_effect->m_technique.blending = false;
 	m_effect->m_technique.blendfunc.equation = GL_FUNC_ADD;
 	m_effect->m_technique.blendfunc.src = GL_SRC_ALPHA;
 	m_effect->m_technique.blendfunc.dst = GL_ONE_MINUS_SRC_ALPHA;
+
+	m_effect->m_technique.depthfunc.equation = GL_LESS;
 }
 // ----------------------------------------------------------------------//
 
