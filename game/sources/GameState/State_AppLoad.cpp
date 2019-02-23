@@ -16,20 +16,23 @@
 CState_AppLoad::CState_AppLoad()
 {
 	m_fsui = SIM_NEW CFileSystem( O.game->GetFsPath("ui.7z") );
+	m_fsstrawberry = SIM_NEW CFileSystem(O.game->GetFsPath("strawberry.7z"));
 	m_fsworld = O.world->GetFs();
+
 	m_fsCrt = m_fsui;
 }
 // ----------------------------------------------------------------------//
 CState_AppLoad::~CState_AppLoad()
 {
 	SIM_SAFE_DELETE( m_fsui );
+	SIM_SAFE_DELETE( m_fsstrawberry );
 	SIM_PRINT("~CState_AppLoad");
 }
 // ----------------------------------------------------------------------//
 void CState_AppLoad::Update( f32 dt, void *userData )
 {
 	if (!m_fsCrt->LoadNext())
-		m_fsCrt = (m_fsCrt == m_fsworld ? NULL : m_fsworld);
+		m_fsCrt = (m_fsCrt == m_fsui ? m_fsstrawberry : (m_fsCrt == m_fsworld ? NULL : m_fsworld));
 
 	if (m_fsCrt == NULL)
 		O.game->GoNext(SIM_NEW CState_MenuMain());
