@@ -5,6 +5,7 @@ import os
 import time
 import glob
 import json
+import subprocess
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
@@ -37,26 +38,27 @@ def main(dirlist):
 			d	= file['dir']
 			n 	= file['file']
 			
-			src_subdir = d.split(src_dir, 1)[1]
-			dst_subdir = dst_dir + src_subdir
-			
-			if not os.path.exists(dst_subdir):
-				os.makedirs(dst_subdir)
+			if not os.path.exists(dst_dir):
+				os.makedirs(dst_dir)
 
-			file = (d.split(src_dir, 1)[1])
-			file = (file.split('/', 1)[1] + '/' + n)
+			name = n
+			name = name.split('.', 1)[0]
 			
-			name 		= file.split('.nut', 1)[0]
-			temp  		= name + '.bnut'
-			out_file 	= dst_dir + '/' + temp
-			
-			if utils.newerFile(d + '/' + n, out_file):
-				command = config.EXE_SQ2SIM + ' ' + file + ' ' + temp
-				os.chdir(src_dir)
+			in_file     = d + '/' + n
+			out_file 	= dst_dir + '/' + n + 't'
+
+			if utils.newerFile(in_file, out_file):
+
+				in_temp = os.path.basename(in_file)
+				out_temp = os.path.basename(out_file)
+				command = config.EXE_SQ2SIM + ' ' + in_temp + ' ' + out_temp
+
+				os.chdir(d)
 				utils.spawnProcess(command)
-				utils.updateFile(temp, out_file)
+				utils.updateFile(out_temp, out_file)
+				out_file = out_temp
 
-			scripts.append({'name' : name, 'file': ('script/' + temp)});
+			scripts.append({'name' : name, 'file': ('script/' + n + 't')});
 				
 		if scripts:
 			with open(dst_dir + '/content.json', 'wb') as f:

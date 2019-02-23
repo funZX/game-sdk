@@ -37,7 +37,7 @@
 CState_Game::CState_Game()
 {
 	m_fs = O.world->GetFs();
-	m_mesh = m_fs->GetMesh("melonman/melonman");
+	m_mesh = m_fs->GetMesh("melonman");
 
 	m_drawable = SIM_NEW CWidgetDrawable();
 	m_drawable->MoveTo(100.0f, 100.0f);
@@ -45,7 +45,7 @@ CState_Game::CState_Game()
 	m_drawable->SetColor(&col::Blueish);
 	m_drawable->OnDraw.Connect(this, &CState_Game::DrawToWidget);
 
-	CScript* script = O.world->GetFs()->GetScript("dt/deltatime");
+	CScript* script = O.world->GetFs()->GetScript("deltatime");
 	script->Run();
 	/*
 	CBinaryTree<u32, CScript> bt;

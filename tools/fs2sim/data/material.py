@@ -43,13 +43,11 @@ def main(dirlist):
 			if not os.path.exists(dst_subdir):
 				os.makedirs(dst_subdir)
 
-			file = (d.split(src_dir, 1)[1])
-			file = (file.split('/', 1)[1] + '/' + n)
+			utils.updateFile(src_dir + '/' + n, dst_dir + '/' + n)
 			
-			utils.updateFile(src_dir + '/' + file, dst_dir + '/' + file)
-			
-			name = file.split('.json', 1)[0]
-			materials.append({'name' : name, 'file': ('material/' + file)});
+			name = n
+			name = name.split('.', 1)[0]
+			materials.append({'name' : name, 'file': ('material/' + n)});
 
 		if materials:
 			with open(dst_dir + '/content.json', 'wb') as f:
