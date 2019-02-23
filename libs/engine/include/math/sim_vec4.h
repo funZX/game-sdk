@@ -20,6 +20,7 @@
 #define __SIM_VEC4_H
 
 #include <math/sim_math.h>
+#include <jansson.h>
 
 namespace sim
 {

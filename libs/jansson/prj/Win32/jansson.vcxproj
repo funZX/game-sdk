@@ -33,7 +33,7 @@
     <ClCompile Include="..\..\sources\value.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F45D79D0-9A8D-4B06-9488-7A2FC171D922}</ProjectGuid>
+    <ProjectGuid>{F750179A-11DA-424B-AF19-4ACEC75BEF98}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>jansson</RootNamespace>
   </PropertyGroup>

@@ -75,3 +75,15 @@ int export_dae2sim(daeDatabase* db, const char* folder)
 	return 0;
 }
 // ----------------------------------------------------------------------//
+
+void Vec4ToJson(json_t* root, const sim::mat::TVec4* v)
+{
+	SIM_ASSERT(root);
+
+	json_array_insert(root, 0, json_real(v->x));
+	json_array_insert(root, 1, json_real(v->y));
+	json_array_insert(root, 2, json_real(v->z));
+	json_array_insert(root, 3, json_real(v->w));
+}
+// ----------------------------------------------------------------------//
+
