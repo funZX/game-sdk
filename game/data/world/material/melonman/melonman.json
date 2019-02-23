@@ -3,8 +3,9 @@
 	"diffuse"	: [ 1.0, 1.0, 1.0, 1.0 ],
 	"specular"	: [ 1.0, 1.0, 1.0, 1.0 ],
 	"emissive"	: [ 1.0, 1.0, 1.0, 1.0 ],
-	"reflectivity" : 0.0,
+	"reflective" : [ 0.0, 0.0, 0.0, 1.0 ],
 	"shininess" : 0.05,
+	"refraction" : 0.0,
 	"effect": "fill.texture.diffuse",
 	
 	"texture" 	: [ 

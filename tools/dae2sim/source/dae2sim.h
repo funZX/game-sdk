@@ -6,6 +6,8 @@
 #include <dom/domConstants.h>
 #include <dom/domCOLLADA.h>
 
+#include <jansson.h>
+
 // ----------------------------------------------------------------------//
 using namespace ColladaDOM150;
 

@@ -87,8 +87,9 @@ public:
 		Material_Diffuse,
 		Material_Specular,
 		Material_Emissive,
+		Material_Reflective,
 		Material_Shininess,
-		Material_Reflectivity,
+		Material_Refraction,
 
 		Light_Enable_0,
 		Light_Position_0,

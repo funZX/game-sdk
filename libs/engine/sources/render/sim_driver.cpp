@@ -103,9 +103,14 @@ CDriver::CDriver()
 	m_depthStart			= 0.0f;
 	m_depthEnd				= 0.0f;
 
+	Vec4ToWhite(&m_color);
+	Vec4ToWhite(&m_materialReflective);
 	Vec4ToZero( &m_materialAmbient );
 	Vec4ToZero( &m_materialDiffuse );
 	Vec4ToZero( &m_materialSpecular );
+
+	m_materialShininess		= 0.0f;
+	m_materialRefraction	= 0.0f;
 
 	m_timer					= 0.0f;
 	m_timerSin				= 0.0f;
@@ -113,10 +118,6 @@ CDriver::CDriver()
 	m_timerRot				= 0.0f;
 
 	m_pointSize				= 1.0f;
-	Vec4ToOne( &m_color );
-
-	m_materialReflectivity	= 0.0f;
-	m_materialShininess		= 0.0f;
 
 	m_isCullingEnabled		= true;
 	m_isBlendingEnabled		= false;
@@ -1273,13 +1274,17 @@ void CDriver::InitUniform()
 	m_uniformInfo[ Value(CShader::UniformIndex::Material_Emissive)  ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Material_Emissive)  ].m_callback = &CDriver::SetUniform4fv;
 
+	m_uniformInfo[Value(CShader::UniformIndex::Material_Reflective)].m_value = &m_materialReflective;
+	m_uniformInfo[Value(CShader::UniformIndex::Material_Reflective)].m_count = 1;
+	m_uniformInfo[Value(CShader::UniformIndex::Material_Reflective)].m_callback = &CDriver::SetUniform4fv;
+
 	m_uniformInfo[ Value(CShader::UniformIndex::Material_Shininess) ].m_value = &m_materialShininess;
 	m_uniformInfo[ Value(CShader::UniformIndex::Material_Shininess) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Material_Shininess) ].m_callback = &CDriver::SetUniform1f;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Material_Reflectivity) ].m_value = &m_materialReflectivity;
-	m_uniformInfo[ Value(CShader::UniformIndex::Material_Reflectivity) ].m_count = 1;
-	m_uniformInfo[ Value(CShader::UniformIndex::Material_Reflectivity) ].m_callback = &CDriver::SetUniform1f;
+	m_uniformInfo[Value(CShader::UniformIndex::Material_Refraction)].m_value = &m_materialRefraction;
+	m_uniformInfo[Value(CShader::UniformIndex::Material_Refraction)].m_count = 1;
+	m_uniformInfo[Value(CShader::UniformIndex::Material_Refraction)].m_callback = &CDriver::SetUniform1f;
 
 	// -----------------------------------------
 

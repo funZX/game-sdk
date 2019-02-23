@@ -48,11 +48,27 @@ static inline void Vec4ToZero( TVec4 *_this )
 	_this->w = 0.0f;
 }
 
-static inline void Vec4ToOne( TVec4 *_this )
+static inline void Vec4ToOne(TVec4 *_this)
 {
 	_this->x = 1.0f;
 	_this->y = 1.0f;
 	_this->z = 1.0f;
+	_this->w = 1.0f;
+}
+
+static inline void Vec4ToWhite(TVec4 *_this)
+{
+	_this->x = 1.0f;
+	_this->y = 1.0f;
+	_this->z = 1.0f;
+	_this->w = 1.0f;
+}
+
+static inline void Vec4ToBlack(TVec4 *_this)
+{
+	_this->x = 0.0f;
+	_this->y = 0.0f;
+	_this->z = 0.0f;
 	_this->w = 1.0f;
 }
 

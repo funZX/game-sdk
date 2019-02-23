@@ -28,13 +28,14 @@ namespace sim
 
 CMaterial::CMaterial()
 {
-	Vec4ToOne( &m_ambient );
-	Vec4ToOne( &m_diffuse );
-	Vec4ToOne( &m_specular );
-	Vec4ToOne( &m_emissive );
+	Vec4ToWhite( &m_ambient );
+	Vec4ToWhite( &m_diffuse );
+	Vec4ToWhite( &m_specular );
+	Vec4ToWhite( &m_emissive );
+	Vec4ToBlack( &m_reflective );
 
-	m_reflectivity		= 0.0f;
-	m_shininess			= 0.0f;
+	m_shininess	 = 0.0f;
+	m_refraction = 0.0f;
 
 	SIM_MEMSET( m_textures, 0, sizeof( m_textures ) );
 }
@@ -63,13 +64,14 @@ void CMaterial::Update( f32 dt, void *userData )
 
 void CMaterial::Render( CDriver *driver )
 {
-	driver->SetMaterialReflectivity( m_reflectivity );
-	driver->SetMaterialShininess( m_shininess );
-
 	driver->SetMaterialAmbient( &m_ambient );
 	driver->SetMaterialDiffuse( &m_diffuse );
 	driver->SetMaterialSpecular( &m_specular );
 	driver->SetMaterialEmissive( &m_emissive );
+	driver->SetMaterialReflective( &m_reflective );
+
+	driver->SetMaterialShininess( m_shininess );
+	driver->SetMaterialRefraction( m_refraction );
 
 	for( u32 i = 0; i < CDriver::k_Texture_Channels_Count; i++ )
 	{

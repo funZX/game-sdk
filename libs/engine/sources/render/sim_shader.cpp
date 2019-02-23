@@ -91,8 +91,9 @@ CShader::TUniform CShader::Uniforms[] =
 	{ "u_Material_Diffuse",			-1,		CShader::UniformIndex::Material_Diffuse },
 	{ "u_Material_Specular",		-1,		CShader::UniformIndex::Material_Specular },
 	{ "u_Material_Emissive",		-1,		CShader::UniformIndex::Material_Emissive },
+	{ "u_Material_Reflective",		-1,		CShader::UniformIndex::Material_Reflective },
 	{ "u_Material_Shininess",		-1,		CShader::UniformIndex::Material_Shininess },
-	{ "u_Material_Reflectivity",	-1,		CShader::UniformIndex::Material_Reflectivity },
+	{ "u_Material_Refraction",		-1,		CShader::UniformIndex::Material_Refraction },
 
 	{ "u_Light_Enable_0",			-1,		CShader::UniformIndex::Light_Enable_0 },
 	{ "u_Light_Position_0",			-1,		CShader::UniformIndex::Light_Position_0 },

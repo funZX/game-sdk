@@ -1,4 +1,7 @@
 #include <iostream>
+
+#include <render/sim_mesh.h>
+
 #include <dae.h>
 
 #include "dae2sim.h"
