@@ -651,7 +651,7 @@ bool CFileSystem::LoadMaterial(const json_t* jsonRoot, s32 index)
 	d.y = (f32)json_real_value( json_array_get( diffuse, 1 ) );
 	d.z = (f32)json_real_value( json_array_get( diffuse, 2 ) );
 	d.w = (f32)json_real_value( json_array_get( diffuse, 3 ) );
-	material->SetDiffuse( &a );
+	material->SetDiffuse( &d );
 
 	json_t*  emissive	= json_object_get( jmr, "emissive" );
 	SIM_ASSERT( json_is_array(emissive) && 4 == json_array_size(emissive) );
@@ -661,7 +661,7 @@ bool CFileSystem::LoadMaterial(const json_t* jsonRoot, s32 index)
 	e.y = (f32)json_real_value( json_array_get( emissive, 1 ) );
 	e.z = (f32)json_real_value( json_array_get( emissive, 2 ) );
 	e.w = (f32)json_real_value( json_array_get( emissive, 3 ) );
-	material->SetEmissive( &a );
+	material->SetEmissive( &e );
 
 	json_t*  specular	= json_object_get( jmr, "specular" );
 	SIM_ASSERT( json_is_array(specular) && 4 == json_array_size(specular) );
@@ -671,11 +671,17 @@ bool CFileSystem::LoadMaterial(const json_t* jsonRoot, s32 index)
 	s.y = (f32)json_real_value( json_array_get( specular, 1 ) );
 	s.z = (f32)json_real_value( json_array_get( specular, 2 ) );
 	s.w = (f32)json_real_value( json_array_get( specular, 3 ) );
-	material->SetSpecular( &a );
+	material->SetSpecular( &s );
 
-	f32	r;
-	r = (f32)json_real_value( json_object_get( jmr, "reflectivity" ) );
-	material->SetReflectivity( r );
+	json_t*  reflective = json_object_get(jmr, "reflective");
+	SIM_ASSERT(json_is_array(reflective) && 4 == json_array_size(reflective));
+
+	TVec4 r;
+	r.x = (f32)json_real_value(json_array_get(reflective, 0));
+	r.y = (f32)json_real_value(json_array_get(reflective, 1));
+	r.z = (f32)json_real_value(json_array_get(reflective, 2));
+	r.w = (f32)json_real_value(json_array_get(reflective, 3));
+	material->SetReflective( &r );
 
 
 	f32	h;

@@ -266,11 +266,11 @@ public:
 	void						SetLightIntensity( f32 intens );
 	inline f32				    GetLightIntensity() { return m_lightParameters[Value(m_lightChannel)].m_intensity; }
 
-	inline f32				    GetMaterialReflectivity() { return m_materialReflectivity; }
-	inline void					SetMaterialReflectivity( f32 refl ) { m_materialReflectivity = refl; }
-
 	inline void					SetMaterialShininess( f32 shine ) { m_materialShininess = shine; }
 	inline f32				    GetMaterialShininess() { return m_materialShininess; }
+
+	inline void					SetMaterialRefraction(f32 refraction) { m_materialRefraction = refraction; }
+	inline f32				    GetMaterialRefraction() { return m_materialRefraction; }
 
 	inline TVec4*				GetMaterialAmbient() { return &m_materialAmbient; }
 	inline void					SetMaterialAmbient( const TVec4 *col ) { Vec4Copy( &m_materialAmbient, col ); }
@@ -283,6 +283,10 @@ public:
 
 	inline TVec4*				GetMaterialEmissive() { return &m_materialEmissive; }
 	inline void					SetMaterialEmissive( const TVec4 *col ) { Vec4Copy( &m_materialEmissive, col ); }
+
+	inline TVec4*				GetMaterialReflective() { return &m_materialReflective; }
+	inline void					SetMaterialReflective( const TVec4 *col ) { Vec4Copy( &m_materialReflective, col ); }
+
 
 	inline void					SetEyePosition( const TVec3 *pos ) { Vec3Copy( &m_eyePosition, pos ); }
 	inline TVec3*				GetEyePosition() { return &m_eyePosition; }
@@ -389,12 +393,13 @@ protected:
 	f32							m_depthStart;
 	f32							m_depthEnd;
 
-	f32						    m_materialReflectivity;
 	f32						    m_materialShininess;
+	f32						    m_materialRefraction;
 	TVec4						m_materialAmbient;
 	TVec4						m_materialDiffuse;
 	TVec4						m_materialSpecular;
 	TVec4						m_materialEmissive;
+	TVec4					    m_materialReflective;
 
 	TVec3						m_eyePosition;
 	TVec3						m_eyeDirection;

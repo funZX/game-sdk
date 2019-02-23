@@ -135,13 +135,14 @@ void CSkyBox::Render( CDriver *driver )
 {
 	driver->SetDepthRange( 0.99f, 1.0f );
 
-	driver->SetMaterialReflectivity( m_material->GetReflectivity() );
-	driver->SetMaterialShininess( m_material->GetShininess() );
-
 	driver->SetMaterialAmbient( m_material->GetAmbient() );
 	driver->SetMaterialDiffuse( m_material->GetDiffuse() );
 	driver->SetMaterialSpecular( m_material->GetSpecular() );
 	driver->SetMaterialEmissive( m_material->GetEmissive() );
+	driver->SetMaterialReflective(m_material->GetReflective());
+
+	driver->SetMaterialShininess(m_material->GetShininess());
+	driver->SetMaterialRefraction(m_material->GetRefraction());
 
 	CDriver::TextureChannel tex =
 	driver->SetTextureChannel( CDriver::TextureChannel::Texture_4 );

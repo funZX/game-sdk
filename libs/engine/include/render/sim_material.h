@@ -55,11 +55,14 @@ public:
 	inline TVec4*					GetSpecular()				{ return &m_specular; }
 	inline void						SetSpecular( TVec4 *col )	{ Vec4Copy( &m_specular, col ); }
 
+	inline TVec4*				    GetReflective()				{ return &m_reflective; }
+	inline void						SetReflective(TVec4 *col)	{ Vec4Copy(&m_reflective, col);; }
+
 	inline f32					    GetShininess()				{ return m_shininess; }
 	inline void						SetShininess( f32 shine )	{ m_shininess = shine; }
 
-	inline f32					    GetReflectivity()			{ return m_reflectivity; }
-	inline void						SetReflectivity( f32 refl ) { m_reflectivity = refl; }
+	inline f32					    GetRefraction() { return m_refraction; }
+	inline void						SetRefraction(f32 refraction) { m_refraction = refraction; }
 
 	inline CEffect*					GetEffect()					{ return m_effect; }
 	inline void						SetEffect( CEffect* effect ){ m_effect = effect; }
@@ -75,9 +78,10 @@ protected:
 	TVec4							m_diffuse;
 	TVec4							m_specular;
 	TVec4							m_emissive;
+	TVec4							m_reflective;
 
-	f32							    m_reflectivity;
 	f32							    m_shininess;
+	f32							    m_refraction;
 
 	CTexture*						m_textures[CDriver::k_Texture_Channels_Count];
 	CEffect*						m_effect;

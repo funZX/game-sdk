@@ -67,8 +67,8 @@ class CFileSystem
 	typedef stl::CBalanceTree<u32, rnr::CCamera*>					TCameraList;
 	typedef stl::CBalanceTree<u32, rnr::CSpriteTexture*>			TSpriteList;
 	typedef stl::CBalanceTree<u32, snd::CSoundData*>				TSoundList;
-	typedef stl::CBalanceTree<u32, vm::CScript*>					TScriptList;
 	typedef stl::CBalanceTree<u32, rnr::CScene*>					TSceneList;
+	typedef stl::CBalanceTree<u32, vm::CScript*>					TScriptList;
 
 public:
 

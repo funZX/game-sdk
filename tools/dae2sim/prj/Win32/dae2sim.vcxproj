@@ -12,6 +12,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\dae2sim.cpp" />
+    <ClCompile Include="..\..\source\export_animations.cpp" />
+    <ClCompile Include="..\..\source\export_cameras.cpp" />
+    <ClCompile Include="..\..\source\export_curves.cpp" />
+    <ClCompile Include="..\..\source\export_meshes.cpp" />
+    <ClCompile Include="..\..\source\export_lights.cpp" />
+    <ClCompile Include="..\..\source\export_materials.cpp" />
+    <ClCompile Include="..\..\source\export_scenes.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\dae\Strawberry.dae">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\dae2sim.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BD4FFC08-AD8C-4C28-8286-891589C4D235}</ProjectGuid>
@@ -59,12 +74,12 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>NO_BOOST;HAVE_STRUCT_TIMESPEC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../../libs/collada-dom/include;../../../../libs/engine/include;../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../libs/collada-dom/include;../../../../libs/opengles/include;../../../../libs/sigcxx/include;../../../../libs/pthread/include;../../../../libs/jansson/include;../../../../libs/engine/include;../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>../../../libs/collada-dom/external/pcre/bin/Win32/Debug/pcre.lib;../../../libs/collada-dom/external/pcre/bin/Win32/Debug/pcrecpp.lib;../../../libs/collada-dom/external/minizip/bin/Win32/Debug/minizip.lib;../../../libs/collada-dom/external/tinyxml2/bin/Win32/Debug/tinyxml2.lib;../../../libs/collada-dom/bin/Win32/Debug/collada-dom.lib;../../../../libs/engine/bin/Win32/Debug/engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../../libs/collada-dom/external/pcre/bin/Win32/Debug/pcre.lib;../../../libs/collada-dom/external/pcre/bin/Win32/Debug/pcrecpp.lib;../../../libs/collada-dom/external/minizip/bin/Win32/Debug/minizip.lib;../../../libs/collada-dom/external/tinyxml2/bin/Win32/Debug/tinyxml2.lib;../../../libs/collada-dom/bin/Win32/Debug/collada-dom.lib;../../../../libs/engine/bin/Win32/Debug/engine.lib;../../../../libs/jansson/bin/Win32/Debug/jansson.lib;../../../../libs/opengles/bin/libEGL.lib;../../../../libs/opengles/bin/libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -76,7 +91,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NO_BOOST;HAVE_STRUCT_TIMESPEC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../../libs/collada-dom/include;../../../../libs/engine/include;../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../../libs/collada-dom/include;../../../../libs/opengles/include;../../../../libs/sigcxx/include;../../../../libs/pthread/include;../../../../libs/jansson/include;../../../../libs/engine/include;../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -84,7 +99,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>../../../libs/collada-dom/external/pcre/bin/Win32/Release/pcre.lib;../../../libs/collada-dom/external/pcre/bin/Win32/Release/pcrecpp.lib;../../../libs/collada-dom/external/minizip/bin/Win32/Release/minizip.lib;../../../libs/collada-dom/external/tinyxml2/bin/Win32/Release/tinyxml2.lib;../../../libs/collada-dom/bin/Win32/Release/collada-dom.lib;../../../../libs/engine/bin/Win32/Release/engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>../../../libs/collada-dom/external/pcre/bin/Win32/Release/pcre.lib;../../../libs/collada-dom/external/pcre/bin/Win32/Release/pcrecpp.lib;../../../libs/collada-dom/external/minizip/bin/Win32/Release/minizip.lib;../../../libs/collada-dom/external/tinyxml2/bin/Win32/Release/tinyxml2.lib;../../../libs/collada-dom/bin/Win32/Release/collada-dom.lib;../../../../libs/engine/bin/Win32/Release/engine.lib;../../../../libs/jansson/bin/Win32/Release/jansson.lib;../../../../libs/opengles/bin/libEGL.lib;../../../../libs/opengles/bin/libGLESv2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
