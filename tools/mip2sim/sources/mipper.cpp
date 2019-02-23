@@ -265,14 +265,14 @@ int main(int argc, char** argv)
 		printf("____________________________________________________________________\n");
 		printf("|  *****************     IMPORTANT NOTES      **********************|\n");
 		printf("|___________________________________________________________________|\n");
-		printf("| \"mipper\" detects if the original texture had alpha channel     \n");
-		printf("| and if it didn't but the format to export contains alpha channel  \n");
-		printf("| it will export to the same memory footprint texture format        \n");
-		printf("| without the alpha channel:                                        \n");
-		printf("|		-RGBA8 converts to RGB8                                     \n");
-		printf("|		-RGBA4 converts to RGB565                                   \n");
-		printf("|		-RGB5A1 converts to RGB565                                  \n");
-		printf("|___________________________________________________________________\n");
+		printf("| \"mipper\" detects if the original texture had alpha channel      |\n");
+		printf("| and if it didn't but the format to export contains alpha channel  |\n");
+		printf("| it will export to the same memory footprint texture format        |\n");
+		printf("| without the alpha channel:                                        |\n");
+		printf("|		-RGBA8 converts to RGB8                                     |\n");
+		printf("|		-RGBA4 converts to RGB565                                   |\n");
+		printf("|		-RGB5A1 converts to RGB565                                  |\n");
+		printf("|___________________________________________________________________|\n");
 
 		return 1;
 	}	

@@ -13,7 +13,7 @@ void export_materials(daeDatabase* db, const std::string& path)
 	
 	daeElement* elem = NULL;
 
-	for (auto material : all_materials)
+	for (daeElement* material : all_materials)
 	{
 		std::string material_name = material->getAttribute("name");
 		domInstance_effect* effect_instance = (domInstance_effect*)material->getDescendant("instance_effect");		
