@@ -56,7 +56,7 @@ public:
 	inline void						SetSpecular( TVec4 *col )	{ Vec4Copy( &m_specular, col ); }
 
 	inline TVec4*				    GetReflective()				{ return &m_reflective; }
-	inline void						SetReflective(TVec4 *col)	{ Vec4Copy(&m_reflective, col);; }
+	inline void						SetReflective(TVec4 *col)	{ Vec4Copy(&m_reflective, col); }
 
 	inline f32					    GetShininess()				{ return m_shininess; }
 	inline void						SetShininess( f32 shine )	{ m_shininess = shine; }

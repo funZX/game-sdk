@@ -110,7 +110,7 @@ public:
 		TVec4	m_diffuse;
 		TVec4	m_specular;
 
-		f32	m_intensity;
+		f32		m_intensity;
 	} TLightParameters;
 	
 	// ------------------------------------------------------------------//

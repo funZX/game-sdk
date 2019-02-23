@@ -2,7 +2,7 @@ precision highp float;
 
 uniform sampler2D u_Sampler_Tex_0;
 uniform samplerCube u_Sampler_Cube;
-uniform float u_Material_Reflectivity;
+uniform vec4 u_Material_Reflective;
 
 varying vec2 v_Tex0;
 varying vec3 v_NormalW;
@@ -16,5 +16,5 @@ void main()
 	vec4 tex0	= texture2D( u_Sampler_Tex_0, v_Tex0.xy );
 	vec4 tex1	= textureCube( u_Sampler_Cube, reflect( toEyeV, norW ) );
 	
-	gl_FragColor = mix( tex0, tex1, u_Material_Reflectivity );
+	gl_FragColor = mix( tex0, tex1, u_Material_Reflective.a );
 }
