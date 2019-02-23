@@ -124,7 +124,7 @@ public:
 		Light_Intensity_3,
 	};
 
-	enum { k_Uniform_Count = 67  };
+	enum { k_Uniform_Count = 69  }; //yeah... sixtynine
 	// ------------------------------------------------------------------//
 	struct TUniform
 	{

@@ -100,9 +100,9 @@ def main(dirlist):
             with open(dst_dir + '/content.json', 'wb') as f:
                 json.dump(effects, f)
             
-        content['id'] 	= dir['id']
-        content['name'] = 'effect'
-        content['file'] = 'effect/content.json'
+            content['id'] 	= dir['id']
+            content['name'] = 'effect'
+            content['file'] = 'effect/content.json'
 
     return content
 
