@@ -4,13 +4,13 @@
 
 void onStart();
 
-int export_dae2sim(daeElement* root, const char* folder);
+int export_dae2sim(daeDatabase* db, const char* folder);
 
 int main(int argc, char** argv)
 {
 	onStart();
 
-	if (argc < 3)
+	if (argc != 3)
 	{
 		std::cout << "dae2sim INPUT_FILE_V1.5.dae OUTPUT_FOLDER";
 		return 0;
@@ -25,7 +25,9 @@ int main(int argc, char** argv)
 		return 0;
 	}
 
-	return export_dae2sim(root, argv[2]);
+	std::string path(argv[2]);
+
+	return export_dae2sim(root->getDocument()->getDatabase(), path.c_str());
 }
 
 
@@ -49,24 +51,26 @@ void onStart()
 }
 
 // ----------------------------------------------------------------------//
-void export_materials(const daeElement* root, const char* folder);
-void export_meshes(const daeElement* root, const char* folder);
-void export_cameras(const daeElement* root, const char* folder);
-void export_lights(const daeElement* root, const char* folder);
-void export_scenes(const daeElement* root, const char* folder);
-void export_animations(const daeElement* root, const char* folder);
-void export_curves(const daeElement* root, const char* folder);
+void export_materials(daeDatabase* db, const std::string& path);
+void export_meshes(daeDatabase* db, const std::string& path);
+void export_cameras(daeDatabase* db, const std::string& path);
+void export_lights(daeDatabase* db, const std::string& path);
+void export_scenes(daeDatabase* db, const std::string& path);
+void export_animations(daeDatabase* dbt, const std::string& path);
+void export_curves(daeDatabase* db, const std::string& path);
 
 // ----------------------------------------------------------------------//
-int export_dae2sim(daeElement* root, const char* folder)
+int export_dae2sim(daeDatabase* db, const char* folder)
 {
-	export_materials(root, folder);
-	export_meshes(root, folder);
-	export_cameras(root, folder);
-	export_lights(root, folder);
-	export_scenes(root, folder);
-	export_animations(root, folder);
-	export_curves(root, folder);
+	std::string path(folder);
+
+	export_materials(db, path + "/material");
+	export_meshes(db, path + "/mesh");
+	export_cameras(db, path + "/camera");
+	export_lights(db, path + "/light");
+	export_scenes(db, path + "/scene");
+	export_animations(db, path + "/animation");
+	export_curves(db, path + "/curve");
 
 	return 0;
 }

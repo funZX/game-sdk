@@ -3,7 +3,7 @@
 
 #include "dae2sim.h"
 
-void export_animations(const daeElement* root, const char* folder)
+void export_animations(daeDatabase* db, const std::string& path)
 {
 
 }

@@ -3,7 +3,7 @@
 
 #include "dae2sim.h"
 
-void export_lights(const daeElement* root, const char* folder)
+void export_lights(daeDatabase* db, const std::string& path)
 {
 
 }

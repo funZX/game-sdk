@@ -11,7 +11,6 @@ sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 import config
 import utils
 #---------------------------------------------------------------------------------------
-
 def main(dirlist):
 
 	StartTime = time.clock()
@@ -23,11 +22,11 @@ def main(dirlist):
 		src_dir = dir['src'] + '/texture'
 		dst_dir = dir['dst'] + '/texture'
 		
-		files 		= []
+		files = []
 		
 		if os.path.exists(src_dir):
 
-			files  = utils.getListOfFiles(src_dir, 'mip')
+			files = utils.getListOfFiles(src_dir, 'mip')
 			files += utils.getListOfFiles(src_dir, 'pvr')
 			files += utils.getListOfFiles(src_dir, 'tga')
 			
@@ -36,8 +35,8 @@ def main(dirlist):
 			
 		
 		for file in files:
-			d	= file['dir']
-			n 	= file['file']
+			d = file['dir']
+			n = file['file']
 			
 			src_subdir = d.split(src_dir, 1)[1]
 			dst_subdir = dst_dir + src_subdir
@@ -51,13 +50,13 @@ def main(dirlist):
 			utils.updateFile(src_dir + '/' + file, dst_dir + '/' + file)
 			
 			name = file.split('.json', 1)[0]
-			textures.append({'name' : name, 'file': ('texture/' + file), 'wrap' : 'clamp', 'filter' : 'linear'});
+			textures.append({'name' : name, 'file': ('texture/' + file), 'wrap' : 'clamp', 'filter' : 'linear'})
 
 		if textures:
 			with open(dst_dir + '/content.json', 'wb') as f:
 				json.dump(textures, f)
 				
-			content['id'] 	= dir['id']
+			content['id'] = dir['id']
 			content['name'] = 'texture'
 			content['file'] = 'texture/content.json'
 	
@@ -67,16 +66,15 @@ def main(dirlist):
 	return content
 
 #---------------------------------------------------------------------------------------
-
 if __name__ == "__main__":
 
-	dirlist = config.clonedDataDir();	
+	dirlist = config.clonedDataDir()	
 	ret = main(dirlist)
 	
 	for dir in dirlist:	
 		dst_dir = dir['dst'] + '/'
 		
-		sim 	= '../../' + dir['id'] + '.7z'
+		sim = '../../' + dir['id'] + '.7z'
 		command = config.EXE_7Z + ' u -t7z -ms=1m ' + sim + ' *'
 
 		os.chdir(dst_dir)

@@ -3,7 +3,7 @@
 
 #include "dae2sim.h"
 
-void export_meshes(const daeElement* root, const char* folder)
+void export_meshes(daeDatabase* db, const std::string& path)
 {
 
 }

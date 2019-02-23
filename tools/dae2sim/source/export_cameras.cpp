@@ -3,7 +3,7 @@
 
 #include "dae2sim.h"
 
-void export_cameras(const daeElement* root, const char* folder)
+void export_cameras(daeDatabase* db, const std::string& path)
 {
 
 }
