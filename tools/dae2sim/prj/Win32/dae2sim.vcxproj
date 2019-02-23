@@ -12,6 +12,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\dae2sim.cpp" />
+    <ClCompile Include="..\..\source\export_animations.cpp" />
+    <ClCompile Include="..\..\source\export_cameras.cpp" />
+    <ClCompile Include="..\..\source\export_curves.cpp" />
+    <ClCompile Include="..\..\source\export_meshes.cpp" />
+    <ClCompile Include="..\..\source\export_lights.cpp" />
+    <ClCompile Include="..\..\source\export_materials.cpp" />
+    <ClCompile Include="..\..\source\export_scenes.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\dae\Strawberry.dae">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\dae2sim.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BD4FFC08-AD8C-4C28-8286-891589C4D235}</ProjectGuid>

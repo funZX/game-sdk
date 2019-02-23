@@ -10,6 +10,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dae2sim", "dae2sim.vcxproj"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "collada-dom", "..\..\..\libs\collada-dom\prj\Win32\collada-dom.vcxproj", "{F45D79D0-9A8D-4B06-9488-7A2FC171D922}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "engine", "..\..\..\..\libs\engine\prj\Win32\engine.vcxproj", "{CED2AAC1-80AE-427E-BDAB-D920211C9F8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -24,6 +26,10 @@ Global
 		{F45D79D0-9A8D-4B06-9488-7A2FC171D922}.Debug|Win32.Build.0 = Debug|Win32
 		{F45D79D0-9A8D-4B06-9488-7A2FC171D922}.Release|Win32.ActiveCfg = Release|Win32
 		{F45D79D0-9A8D-4B06-9488-7A2FC171D922}.Release|Win32.Build.0 = Release|Win32
+		{CED2AAC1-80AE-427E-BDAB-D920211C9F8B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CED2AAC1-80AE-427E-BDAB-D920211C9F8B}.Debug|Win32.Build.0 = Debug|Win32
+		{CED2AAC1-80AE-427E-BDAB-D920211C9F8B}.Release|Win32.ActiveCfg = Release|Win32
+		{CED2AAC1-80AE-427E-BDAB-D920211C9F8B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

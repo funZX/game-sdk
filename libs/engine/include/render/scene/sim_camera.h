@@ -46,52 +46,52 @@ public:
 	CCamera( const std::string &name );
 	virtual ~CCamera();
 	// ------------------------------------------------------------------//
-	void							SetPerspective( CRect2D *canvas );
-	void							SetOrthographic( CRect2D *canvas );
+	void						SetPerspective( CRect2D *canvas );
+	void						SetOrthographic( CRect2D *canvas );
 
-	inline TMatrix4*				GetPerspectiveMatrix() { return &m_perspectiveMatrix; }
-	inline TMatrix4*				GetOrthographicMatrix() { return &m_orthographicMatrix; }
+	inline TMatrix4*			GetPerspectiveMatrix() { return &m_perspectiveMatrix; }
+	inline TMatrix4*			GetOrthographicMatrix() { return &m_orthographicMatrix; }
 
-	inline TMatrix4*				GetOrientationMatrix() { return &m_orientationMatrix; }
-	inline TMatrix4*				GetViewMatrix() { return &m_viewMatrix; }
+	inline TMatrix4*			GetOrientationMatrix() { return &m_orientationMatrix; }
+	inline TMatrix4*			GetViewMatrix() { return &m_viewMatrix; }
 
-	inline void						SetDirection( TVec3 *dir )
-									{  m_direction.x = dir->x; m_direction.y = dir->y; m_direction.z = dir->z; };
+	inline void					SetDirection( TVec3 *dir )
+								{  m_direction.x = dir->x; m_direction.y = dir->y; m_direction.z = dir->z; };
 
-	inline TVec3*					GetDirection() { return &m_direction; };
+	inline TVec3*				GetDirection() { return &m_direction; };
 
-	inline void						SetPosition( TVec3 *pos )
-									{  m_position.x = pos->x; m_position.y = pos->y; m_position.z = pos->z; };
+	inline void					SetPosition( TVec3 *pos )
+								{  m_position.x = pos->x; m_position.y = pos->y; m_position.z = pos->z; };
 
-	inline TVec3*					GetPosition()	{ return &m_position; };
+	inline TVec3*				GetPosition()	{ return &m_position; };
 
-	inline void						SetFieldOfView( f32 fov ) { m_fieldOfView = fov ; }
-	inline f32						GetFieldOfView()		{ return m_fieldOfView; }
+	inline void					SetFieldOfView( f32 fov ) { m_fieldOfView = fov ; }
+	inline f32					GetFieldOfView()		{ return m_fieldOfView; }
 
-	inline void						SetSpeed( f32 spd ) { m_speed = spd ; }
-	inline f32						GetSpeed()		{ return m_speed; }
+	inline void					SetSpeed( f32 spd ) { m_speed = spd ; }
+	inline f32					GetSpeed()		{ return m_speed; }
 
-	inline void						SetNearPlane( f32 nearPlane ) { m_nearPlane = nearPlane; }
-	inline f32						GetNearPlane()	{ return m_nearPlane; }
+	inline void					SetNearPlane( f32 nearPlane ) { m_nearPlane = nearPlane; }
+	inline f32					GetNearPlane()	{ return m_nearPlane; }
 
-	inline void						SetFarPlane( f32 farPlane ) { m_farPlane = farPlane; }
-	inline f32						GetFarPlane()		{ return m_farPlane; };
+	inline void					SetFarPlane( f32 farPlane ) { m_farPlane = farPlane; }
+	inline f32					GetFarPlane()		{ return m_farPlane; };
 
-	void							Move( f32 dt, bool forward );
-	void							Strafe( f32 dt, bool left );
+	void						Move( f32 dt, bool forward );
+	void						Strafe( f32 dt, bool left );
 
-	void							LookAt( TVec3 *look )		{ Vec3Copy( &m_lookAt, look ); }
-	void							LookAt( f32 x, f32 y, f32 z )	{ Vec3Set( &m_lookAt, x, y, z ); }
+	void						LookAt( TVec3 *look )		{ Vec3Copy( &m_lookAt, look ); }
+	void						LookAt( f32 x, f32 y, f32 z )	{ Vec3Set( &m_lookAt, x, y, z ); }
 
-	void							ExtractClipPlanes();
-	bool							SphereIn( const TVec3 *pos, const f32 rad ) const;
-	bool							PointIn( const TVec3 *pos ) const;
+	void						ExtractClipPlanes();
+	bool						SphereIn( const TVec3 *pos, const f32 rad ) const;
+	bool						PointIn( const TVec3 *pos ) const;
 
-	bool							BoxIn( const TVec3 *pos, const TVec3 *bounds );
-	bool							BoxIn( const TVec3 *pos, const TVec3 *bounds, const TMatrix4 *orientMat );
+	bool						BoxIn( const TVec3 *pos, const TVec3 *bounds );
+	bool						BoxIn( const TVec3 *pos, const TVec3 *bounds, const TMatrix4 *orientMat );
 
-	virtual void					Update( f32 dt, void *userData );
-	virtual void					Render( CDriver *driver );
+	virtual void				Update( f32 dt, void *userData );
+	virtual void				Render( CDriver *driver );
 	// ------------------------------------------------------------------//
 
 protected:
@@ -114,11 +114,11 @@ protected:
 	TVec3						m_direction;
 	TVec3						m_lookAt;
 
-	f32								m_fieldOfView;
-	f32								m_nearPlane;
-	f32								m_farPlane;
+	f32							m_fieldOfView;
+	f32							m_nearPlane;
+	f32							m_farPlane;
 
-	f32								m_speed;
+	f32							m_speed;
 	// ------------------------------------------------------------------//
 };
 
