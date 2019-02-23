@@ -145,6 +145,7 @@ void export_materials(daeDatabase* db, const std::string& path)
 
 
 		filesystem::path material_path(path);
+		material_path /= material_name;
 		filesystem::create_directories(material_path);
 		material_path /= material_name + ".json";
 

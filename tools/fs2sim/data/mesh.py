@@ -44,16 +44,16 @@ def main(dirlist):
 			if not os.path.exists(dst_subdir):
 				os.makedirs(dst_subdir)
 
-			file = (d.split(src_dir, 1)[1])
-			file = (file.split('/', 1)[1] + '/' + n)
+			name = n
+			name = name.split('.', 1)[0]
 
 			in_file 	= d + '/' + n
-			out_file 	= dst_dir + '/' + file
+			out_file 	= dst_dir + '/' + n
 			
 			if utils.newerFile(in_file, out_file):
 				utils.updateFile(in_file, out_file)
 
-			meshes.append({'name' : file.replace('.mesh',''), 'file': ('mesh/' + file)});
+			meshes.append({'name' : name, 'file': ('mesh/' + n)});
 				
 		if meshes:
 			with open(dst_dir + '/content.json', 'wb') as f:

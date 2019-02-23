@@ -31,8 +31,14 @@ CState_AppLoad::~CState_AppLoad()
 // ----------------------------------------------------------------------//
 void CState_AppLoad::Update( f32 dt, void *userData )
 {
-	if (!m_fsCrt->LoadNext())
-		m_fsCrt = (m_fsCrt == m_fsui ? m_fsstrawberry : (m_fsCrt == m_fsworld ? NULL : m_fsworld));
+	if (m_fsCrt == m_fsui && !m_fsCrt->LoadNext())
+		m_fsCrt = m_fsworld;
+
+	else if (m_fsCrt == m_fsworld && !m_fsCrt->LoadNext())
+		m_fsCrt = m_fsstrawberry;
+
+	else if (m_fsCrt == m_fsstrawberry && !m_fsCrt->LoadNext())
+		m_fsCrt = NULL;
 
 	if (m_fsCrt == NULL)
 		O.game->GoNext(SIM_NEW CState_MenuMain());
@@ -58,10 +64,12 @@ void CState_AppLoad::OnEnter()
 {
 	m_fsui->Open();
 	m_fsworld->Open();
+	m_fsstrawberry->Open();
 }
 // ----------------------------------------------------------------------//
 void CState_AppLoad::OnExit()
 {
+	m_fsstrawberry->Close();
 	m_fsworld->Close();
 	m_fsui->Close();
 
