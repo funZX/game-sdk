@@ -194,6 +194,13 @@ bool CFileSystem::LoadNext( void )
 	if ( stepDone )
 		++m_crtStep;
 
+	if (m_crtStep == m_lastStep)
+	{
+		CScript* on_load = GetScript("on_load");
+		if (on_load)
+			on_load->Run();
+	}
+
 	return ( m_crtStep != m_lastStep );
 }
 

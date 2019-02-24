@@ -35,14 +35,13 @@ void export_materials(daeDatabase* db, const std::string& path)
 
 			outPath = outPath.parent_path();
 			outPath /= "texture";
-			outPath /= material_name;
 
 			filesystem::create_directories(outPath);
 
 			outPath /= inPath.filename().string();
 
 			filesystem::copy_file(inPath, outPath, filesystem::copy_options::overwrite_existing);
-			material_textures.push_back(material_name + "/" + inPath.filename().string());
+			material_textures.push_back(inPath.filename().string());
 
 			std::cout << "Export image src:" << inPath.string() << " dst:" << outPath.string() << std::endl;
 		}
@@ -145,7 +144,6 @@ void export_materials(daeDatabase* db, const std::string& path)
 
 
 		filesystem::path material_path(path);
-		material_path /= material_name;
 		filesystem::create_directories(material_path);
 		material_path /= material_name + ".json";
 
