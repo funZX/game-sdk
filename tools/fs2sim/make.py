@@ -88,7 +88,7 @@ def main(argv):
 				json.dump(dir_content, f)	
 
 			sim 	= '../../' + dir['id'] + '.7z'
-			command = config.EXE_7Z + ' u -t7z -mx0 -mmt ' + sim + ' *'
+			command = config.EXE_7Z + ' u -t7z -mtm=off -mta=off -mtc=off -mx0 -mmt ' + sim + ' *'
 			
 			os.chdir(dst_dir)
 			utils.spawnProcess(command)
