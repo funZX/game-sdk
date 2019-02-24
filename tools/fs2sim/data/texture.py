@@ -94,7 +94,7 @@ def main(dirlist):
 			if file_format == None:
 			    continue
 			
-			mipmaps_count = max(16, min(1, int(file_format[1])))
+			mipmaps_count = max(16, min(0, int(file_format[1])))
 			out_format = file_format[2]
 			texture_wrap = file_format[3]
 			texture_filter = file_format[4]
@@ -102,19 +102,27 @@ def main(dirlist):
 
 			if utils.newerFile(in_file, out_file):
 			    in_temp = os.path.basename(in_file)
-			    out_temp = os.path.basename(out_file) + '.temp'
+			    out_temp = os.path.basename(out_file) + '.pvr'
 
 			    if out_format == 'mip':
-			        command = config.EXE_MIP2SIM + ' -f RGBA4 -k lanczos -w ' + texture_wrap + ' ' + in_temp + ' ' + out_temp
+			        command = config.EXE_MIP2SIM 
+			        if mipmaps_count > 1:
+			            command += ' -m '
+			        command += ' -f RGBA4 -k lanczos -w ' + texture_wrap + ' ' + in_temp + ' ' + out_temp
 			    elif out_format=='pvr':
-			        command = config.EXE_PVRTEX + ' ' + in_temp + ' ' + out_temp
-			    elif out_format=='tga':
-			        command = config.EXE_MIP2SIM + ' ' + in_temp + ' ' + out_temp
-			        
-			    os.chdir(d)
-			    utils.spawnProcess(command)
-			    utils.updateFile(out_temp, out_file)
-			    os.remove(out_temp)
+			        command = config.EXE_PVRTEX + ' -legacypvr'
+			        if mipmaps_count > 1:
+			            command += ' -m ' + str(mipmaps_count) + ' -mfilter cubic'
+			        command += ' -f PVRTC2_4'
+			        command += ' -i ' + in_temp + ' -o ' + out_temp
+			    
+			    if out_format=='tga':
+			        utils.updateFile(in_file, out_file)
+			    else:    
+			        os.chdir(d)
+			        utils.spawnProcess(command)
+			        utils.updateFile(out_temp, out_file)
+			        os.remove(out_temp)
 			
 			textures.append({'name' : n, 'file': ('texture/' + n), 'wrap' : texture_wrap, 'filter' : texture_filter})
 
