@@ -25,6 +25,7 @@
 */
 
 #include <render/animation/sim_bone_hierarchy.h>
+#include <core/io/sim_mem_stream.h>
 
 namespace sim
 {
@@ -32,13 +33,11 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CBoneHierarchy::CBoneHierarchy( u32 nBones )
+CBoneHierarchy::CBoneHierarchy()
 {
-	m_nBones = nBones;
+	m_nBones = 0;
 
-	SIM_ASSERT( nBones > 0 );
-
-	m_bones = SIM_NEW CBone[ nBones ];
+	m_bones = nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -46,6 +45,26 @@ CBoneHierarchy::CBoneHierarchy( u32 nBones )
 CBoneHierarchy::~CBoneHierarchy()
 {
 	SIM_SAFE_DELETE_ARRAY( m_bones );
+}
+
+// ----------------------------------------------------------------------//
+
+void CBoneHierarchy::Load(io::CMemStream* ms)
+{
+	m_nBones = ms->ReadU16();
+
+	SIM_ASSERT(m_nBones > 0);
+
+	m_bones = SIM_NEW CBone[m_nBones];
+}
+
+// ----------------------------------------------------------------------//
+
+void CBoneHierarchy::Save(io::CMemStream* ms)
+{
+	ms->WriteU16(m_nBones);
+
+
 }
 
 // ----------------------------------------------------------------------//

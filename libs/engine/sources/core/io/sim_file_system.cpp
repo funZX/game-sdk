@@ -307,13 +307,16 @@ bool CFileSystem::LoadTexture(const json_t* jsonRoot, s32 index)
 	CTexture::Wrap	 w;
 	CTexture::Filter f;
 
-	std::string ext(file.c_str() + (file.length() - 4));
+	// TEXTURE NAME FORMAT: name.mipmaps_count.output_format.texture_wrap.texture_filter.extension
+	std::vector<std::string> tex_file_format = util::StringSplit(name, ".");
+	SIM_ASSERT( tex_file_format.size() == 6 );
+	const std::string& file_format = tex_file_format[2];
 
-	if ( ext == ".tga" )
+	if ( file_format == "tga" )
 		t = CTexture::Type::TGA;
-	if ( ext == ".pvr" )
+	if ( file_format == "pvr" )
 		t = CTexture::Type::PVR;
-	if ( ext == ".mip" )
+	if ( file_format == "mip" )
 		t = CTexture::Type::MIP;
 
 	if ( wrap == "clamp" )
@@ -345,6 +348,7 @@ bool CFileSystem::LoadTexture(const json_t* jsonRoot, s32 index)
 
 	m_lzmaStream->CloseCurrent(&m_buffer);
 	m_buffer = nullptr;
+	ms.Drop();
 
 	m_textureList.Insert( hash::Get( name ), texture);
 

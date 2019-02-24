@@ -214,8 +214,6 @@ u8*	CTexture::LoadPVR( io::CMemStream* memstream, u32 *width, u32 *height, u32 *
         
 	*bits	= header->dwAlphaBitMask ? 4 : 3;
 
-    buf = ( u8* ) memstream->Drop();
-
 	if( formatFlags == FlagTypePVR2 )
 		*format = Format::Compressed2Bpp;
 	
@@ -238,8 +236,6 @@ u8*	CTexture::LoadMIP( io::CMemStream* memstream, u32 *width, u32 *height, u32 *
 	*height = header->dwHeight;
 	*bits	= header->dwBits;
 	*format = ( Format) header->dwFormat;
-
-	buf		= ( u8* ) memstream->Drop();
 
 	return buf;
 }
@@ -501,7 +497,9 @@ u32 CTexture::Generate( io::CMemStream* memstream, Type type, Wrap wrap, Filter 
 	if( buf )
 	{
 		Generate( buf, m_width, m_height, type, wrap, filter, m_format );
-		SIM_SAFE_DELETE_ARRAY( buf );
+
+		if (type == Type::TGA)
+			SIM_SAFE_DELETE_ARRAY( buf );
 	}
 
 	return m_iD;

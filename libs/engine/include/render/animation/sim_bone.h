@@ -66,6 +66,9 @@ public:
 	// ------------------------------------------------------------------//
 	inline void						SetParent( s32 parent )				{ m_parent = parent; }
 	inline s32						GetParent()							{ return m_parent; }
+
+	inline void						SetID(s32 iD) { m_iD = iD; }
+	inline s32						GetID() { return m_iD; }
 	// ------------------------------------------------------------------//
 
 protected:

@@ -6,9 +6,8 @@
 	"reflective" : [ 0.0, 0.0, 0.0, 1.0 ],
 	"shininess" : 0.05,
 	"refraction" : 0.0,
-	"effect": "fill.texture.diffuse",
+	"effect": "default",
 	
-	"texture" 	: [ 
-		{ "channel" : 0, "name" : "melonman" }
+	"texture" 	: [
 	]
 }

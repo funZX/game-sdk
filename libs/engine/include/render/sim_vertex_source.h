@@ -71,7 +71,6 @@ public:
 		Normal,
 		Tangent,
 		Binormal,
-		Bone,
 		Weight,
 	};
 
@@ -89,22 +88,20 @@ public:
         Normal			=   ( 1 <<  6 ),
         Tangent			=   ( 1 <<  7 ),
         Binormal		=   ( 1 <<  8 ),
-		Bone			=	( 1 <<  9),
-		Weight			=	( 1 << 10),
+		Weight			=	( 1 <<  9),
 	};
 	// ------------------------------------------------------------------//
 	enum class AttributeSize : u32
 	{
         Position		=   ( 3 ),
         TexCoord_0		=   ( 2 ),
-		TexCoord_1 = (2),
-		TexCoord_2 = (2),
-		TexCoord_3 = (2),
+		TexCoord_1		=	( 2 ),
+		TexCoord_2		=	( 2 ),
+		TexCoord_3		=	( 2 ),
         Color			=   ( 4 ),
         Normal			=   ( 3 ),
         Tangent			=   ( 3 ),
         Binormal		=   ( 3 ),
-		Bone			=	( 2 ),
 		Weight			=	( 2 ),
 	};
 	// ------------------------------------------------------------------//
@@ -119,7 +116,6 @@ public:
         Normal			=   ( 3 * sizeof( float ) ),
         Tangent			=   ( 3 * sizeof( float ) ),
         Binormal		=   ( 3 * sizeof( float ) ),
-		Bone			=   ( 2 * sizeof( char ) ),
 		Weight			=   ( 2 * sizeof( float ) ),
 	};
 	// ------------------------------------------------------------------//	
@@ -134,11 +130,10 @@ public:
         Normal			=   ( GL_FLOAT ),
         Tangent			=   ( GL_FLOAT ),
         Binormal		=   ( GL_FLOAT ),
-        Bone			=   ( GL_UNSIGNED_BYTE ),
         Weight			=   ( GL_FLOAT ),
 	};
 
-	enum { k_Vertex_Attributes_Count = 12 };
+	enum { k_Vertex_Attributes_Count = 10 };
 	// ------------------------------------------------------------------//
 	
 	enum class Type : u32

@@ -45,7 +45,6 @@ CShader::TAttrib CShader::Attributes[CVertexSource::k_Vertex_Attributes_Count] =
 	{ "a_NormalL",		-1,		CVertexSource::AttributeIndex::Normal,		CVertexSource::AttributeFormat::Normal,		CVertexSource::AttributeSize::Normal,		CVertexSource::AttributeStride::Normal,			CVertexSource::AttributeType::Normal, },
 	{ "a_TangentL",		-1,		CVertexSource::AttributeIndex::Tangent,		CVertexSource::AttributeFormat::Tangent,	CVertexSource::AttributeSize::Tangent,		CVertexSource::AttributeStride::Tangent,		CVertexSource::AttributeType::Tangent, },
 	{ "a_BinormalL",	-1,		CVertexSource::AttributeIndex::Binormal,	CVertexSource::AttributeFormat::Binormal,	CVertexSource::AttributeSize::Binormal,		CVertexSource::AttributeStride::Binormal,		CVertexSource::AttributeType::Binormal, },
-	{ "a_Bone",			-1,		CVertexSource::AttributeIndex::Bone,		CVertexSource::AttributeFormat::Bone,		CVertexSource::AttributeSize::Bone,			CVertexSource::AttributeStride::Bone,			CVertexSource::AttributeType::Bone, },
 	{ "a_Weight",		-1,		CVertexSource::AttributeIndex::Weight,		CVertexSource::AttributeFormat::Weight,		CVertexSource::AttributeSize::Weight,		CVertexSource::AttributeStride::Weight,			CVertexSource::AttributeType::Weight,		},
 };
 

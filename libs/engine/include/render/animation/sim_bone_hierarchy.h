@@ -32,6 +32,12 @@
 
 namespace sim
 {
+// ----------------------------------------------------------------------//
+namespace io
+{
+	class CMemStream;
+}
+// ----------------------------------------------------------------------//
 namespace rnr
 {
 // ----------------------------------------------------------------------//
@@ -43,12 +49,15 @@ class CBoneHierarchy
 	friend class CBoneAnimation;
 
 public:
-	CBoneHierarchy( u32 nBones );
+	CBoneHierarchy();
 	virtual ~CBoneHierarchy();
 
 	// ------------------------------------------------------------------//
 	u32			GetBonesCount()			{ return m_nBones; }
 	CBone*		GetBone( u32 index )	{ return &m_bones[index]; }
+
+	void		Load( io::CMemStream* ms );
+	void		Save( io::CMemStream* ms );
 	// ------------------------------------------------------------------//
 
 protected:
