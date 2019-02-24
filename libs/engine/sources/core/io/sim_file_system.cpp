@@ -51,6 +51,7 @@
 
 #include <sound/sim_sound_data.h>
 #include <vm/sim_script.h>
+#include <vm/sim_squirrel.h>
 
 namespace sim
 {
@@ -202,11 +203,17 @@ bool CFileSystem::LoadNext( void )
 	if ( stepDone )
 		++m_crtStep;
 
-	if (m_crtStep == m_lastStep)
+	if ( m_crtStep == m_lastStep )
 	{
-		CScript* on_load = GetScript("on_load");
-		if (on_load)
+		CScript* on_load = GetScript( "on_load" );
+		if ( on_load )
+		{
+			CEngine* engine = CEngine::GetSingletonPtr();
+			CSquirrel* sq = engine->GetVM();
+			
+			sq->GetRootTable().SetInstance( "filesystem", this );
 			on_load->Run();
+		}
 	}
 
 	return ( m_crtStep != m_lastStep );
@@ -1065,6 +1072,18 @@ rnr::CScene* CFileSystem::GetScene( const std::string &name )
 	return item ? *(item->m_data) : nullptr;
 }
 
+// ----------------------------------------------------------------------//
+void CFileSystem::LinkEffect(const char* effect, const char* material)
+{
+	CEffect* e = GetEffect( effect );
+	CMaterial* m = GetMaterial( material );
+
+	SIM_ASSERT( e );
+	SIM_ASSERT( m );
+
+	if ( m && e )
+		m->SetEffect( e );
+}
 // ----------------------------------------------------------------------//
 }; // namespace io
 }; // namespace sim

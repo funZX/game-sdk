@@ -36,7 +36,7 @@ namespace vm
 // ----------------------------------------------------------------------//
 	
 CScript::CScript(CSquirrel* sq)
-	:Sqrat::Script( sq->GetVM() )
+	:Sqrat::Script( sq->GetSQVM() )
 {
 }
 

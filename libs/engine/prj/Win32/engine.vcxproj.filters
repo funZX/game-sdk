@@ -284,6 +284,9 @@
     <ClCompile Include="..\..\sources\core\sim_octree.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\sources\sim_engine_vm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\math\sim_math.h">
