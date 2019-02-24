@@ -51,6 +51,7 @@
 
 #include <sound/sim_sound_data.h>
 #include <vm/sim_script.h>
+#include <vm/sim_squirrel.h>
 
 namespace sim
 {
@@ -202,11 +203,17 @@ bool CFileSystem::LoadNext( void )
 	if ( stepDone )
 		++m_crtStep;
 
-	if (m_crtStep == m_lastStep)
+	if ( m_crtStep == m_lastStep )
 	{
-		CScript* on_load = GetScript("on_load");
-		if (on_load)
+		CScript* on_load = GetScript( "on_load" );
+		if ( on_load )
+		{
+			CEngine* engine = CEngine::GetSingletonPtr();
+			CSquirrel* sq = engine->GetVM();
+			
+			sq->GetRootTable().SetInstance( "filesystem", this );
 			on_load->Run();
+		}
 	}
 
 	return ( m_crtStep != m_lastStep );
@@ -307,13 +314,16 @@ bool CFileSystem::LoadTexture(const json_t* jsonRoot, s32 index)
 	CTexture::Wrap	 w;
 	CTexture::Filter f;
 
-	std::string ext(file.c_str() + (file.length() - 4));
+	// TEXTURE NAME FORMAT: name.mipmaps_count.output_format.texture_wrap.texture_filter.extension
+	std::vector<std::string> tex_file_format = util::StringSplit(name, ".");
+	SIM_ASSERT( tex_file_format.size() == 6 );
+	const std::string& file_format = tex_file_format[2];
 
-	if ( ext == ".tga" )
+	if ( file_format == "tga" )
 		t = CTexture::Type::TGA;
-	if ( ext == ".pvr" )
+	if ( file_format == "pvr" )
 		t = CTexture::Type::PVR;
-	if ( ext == ".mip" )
+	if ( file_format == "mip" )
 		t = CTexture::Type::MIP;
 
 	if ( wrap == "clamp" )
@@ -345,6 +355,7 @@ bool CFileSystem::LoadTexture(const json_t* jsonRoot, s32 index)
 
 	m_lzmaStream->CloseCurrent(&m_buffer);
 	m_buffer = nullptr;
+	ms.Drop();
 
 	m_textureList.Insert( hash::Get( name ), texture);
 
@@ -1061,6 +1072,18 @@ rnr::CScene* CFileSystem::GetScene( const std::string &name )
 	return item ? *(item->m_data) : nullptr;
 }
 
+// ----------------------------------------------------------------------//
+void CFileSystem::LinkEffect(const char* effect, const char* material)
+{
+	CEffect* e = GetEffect( effect );
+	CMaterial* m = GetMaterial( material );
+
+	SIM_ASSERT( e );
+	SIM_ASSERT( m );
+
+	if ( m && e )
+		m->SetEffect( e );
+}
 // ----------------------------------------------------------------------//
 }; // namespace io
 }; // namespace sim

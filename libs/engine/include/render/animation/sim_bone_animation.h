@@ -44,8 +44,8 @@ class CAnimationFrame;
 class CBoneAnimation : public IEngineItem
 {
 public:
-	CBoneAnimation();
-	CBoneAnimation( const std::string &name );
+	CBoneAnimation(CBoneHierarchy* hierarchy);
+	CBoneAnimation( const std::string &namehierarchy, CBoneHierarchy* hierarchy);
 	virtual ~CBoneAnimation();
 	// ------------------------------------------------------------------//
 	inline u32						GetNumFrames()			{ return m_nFrames; }

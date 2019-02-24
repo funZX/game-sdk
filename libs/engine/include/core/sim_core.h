@@ -70,6 +70,11 @@ namespace sim
 		void						Wait( u64 micro );
 	};
 
+	namespace util
+	{
+		std::vector<std::string>	StringSplit(const std::string& source, const std::string& delimiter);
+	};
+
 	namespace hash
 	{
 		u32							Get( const std::string& str );

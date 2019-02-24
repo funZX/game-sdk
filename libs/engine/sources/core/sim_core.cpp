@@ -30,6 +30,31 @@
 
 namespace sim
 {
+namespace util
+{
+	// ----------------------------------------------------------------------//
+	std::vector<std::string> StringSplit(const std::string& source, const std::string& delimiter)
+	{
+		std::vector<std::string> result;
+		std::string s = source;
+		std::string token;
+		size_t pos = 0;
+		
+		while (  (pos = s.find( delimiter ) ) != std::string::npos )
+		{
+			token = s.substr( 0, pos );
+			result.push_back( token );
+			s.erase( 0, pos + delimiter.length() );
+		}
+
+		result.push_back(s);
+
+		return result;
+	}
+	// ----------------------------------------------------------------------//
+} // namespace util
+  // ----------------------------------------------------------------------//
+
 // ----------------------------------------------------------------------//
 namespace hash
 {

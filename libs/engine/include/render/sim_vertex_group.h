@@ -52,6 +52,7 @@ class CBatch2D;
 class CBatch3D;
 class CFontChar;
 class CVertexSource;
+class CBoneHierarchy;
 
 class CVertexGroup
 {
@@ -62,8 +63,8 @@ public:
 	CVertexGroup();
 	virtual ~CVertexGroup();
 	// ------------------------------------------------------------------//
-	inline u16						GetVboSize() const		{ return m_detail->m_vboSize; }
-	inline u16*						GetVboData() const		{ return m_detail->m_vboData; }
+	inline u16						GetVboSize() const		{ return m_vboSize; }
+	inline u16*						GetVboData() const		{ return m_vboData; }
 
 	CMaterial*						GetMaterial()			{ return m_material; }
 	void							SetMaterial( CMaterial *mtl );
@@ -73,8 +74,6 @@ public:
 
 	inline u32						GetID()					{ return m_iD; }
 	u32								Generate();
-
-	void							SetDetail( u32 detail );
 	// ------------------------------------------------------------------//
 
 	void							Load( io::CMemStream* ms );
@@ -91,8 +90,7 @@ public:
 	u16								m_vboSize;
 	u16*							m_vboData;
 
-	CVertexGroup*					m_lod;
-	CVertexGroup*					m_detail;
+	CBoneHierarchy*					m_boneHierarchy;
 };
 
 // ----------------------------------------------------------------------//

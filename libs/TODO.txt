@@ -1,6 +1,5 @@
 
-- fix mesh lod tool & engine's mesh detail
-- tool: exporter: texture, material, camera, light, actor, scene, animation
+- tool: exporter: camera, light, actor, scene, animation
 - tool: data builder - tex converter
 
 1.

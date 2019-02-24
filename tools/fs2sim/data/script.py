@@ -56,7 +56,7 @@ def main(dirlist):
 				os.chdir(d)
 				utils.spawnProcess(command)
 				utils.updateFile(out_temp, out_file)
-				out_file = out_temp
+				os.remove(out_temp)
 
 			scripts.append({'name' : name, 'file': ('script/' + n + 't')});
 				

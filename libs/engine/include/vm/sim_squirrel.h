@@ -69,7 +69,7 @@ public:
     CSquirrel();
     ~CSquirrel();
 	// ------------------------------------------------------------------//
-    HSQUIRRELVM						GetVM() { return m_vm; }
+    HSQUIRRELVM						GetSQVM() { return m_vm; }
 	Sqrat::RootTable&				GetRootTable() { return *m_rootTable; }
 	Sqrat::ConstTable&				GetConstTable() { return *m_constTable; }
 

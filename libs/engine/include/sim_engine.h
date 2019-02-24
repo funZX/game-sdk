@@ -173,6 +173,10 @@ public:
 	
 	inline CDriver*					GetDriver()		{ return m_driver; }
 	inline CSquirrel*				GetVM()			{ return m_vm; }
+
+	// ------------------------------------------------------------------//
+	template<class V>
+	void							SetScriptObject(const char* name, V* val);
 	// ------------------------------------------------------------------//
 
 	virtual void					Start( int width, int height );
@@ -215,7 +219,7 @@ protected:
 	void							InitFont();
 	void							InitEffect();
 	void							InitMaterial();
-	void							InitVirtualMachine();
+	void							InitVM();
 
 protected:
 

@@ -103,7 +103,7 @@ void CEngine::Initialize()
 	InitFont();
 	InitEffect();
 	InitMaterial();
-	InitVirtualMachine();
+	InitVM();
 }
 
 // ----------------------------------------------------------------------//
@@ -540,18 +540,6 @@ void CEngine::ShowStats( CDriver* driver )
 
 	prevDrawCount = drawCount;
 	prevVrtxCount = vrtxCount;
-}
-
-// ----------------------------------------------------------------------//
-
-void CEngine::InitVirtualMachine()
-{
-	Sqrat::Class<CEngine> CEngine( m_vm->GetVM(), "CEngine" );
-
-	CEngine.Func("GetTime",			&CEngine::GetTime);
-	CEngine.Func("GetDeltaTime",	&CEngine::GetDeltaTime);
-
-	m_vm->GetRootTable().SetInstance("engine", this);
 }
 
 // ----------------------------------------------------------------------//

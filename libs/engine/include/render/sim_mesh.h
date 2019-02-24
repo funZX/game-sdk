@@ -74,7 +74,6 @@ public:
 	inline void			            SetRadius( f32 radius )						{ m_radius = radius; }
 	inline f32			            GetRadius() const							{ return m_radius; }
 
-	void							SetDetail( u32 detail );
 	void					        Render( CDriver *driver );
 
 	void							Load( io::CMemStream* ms );

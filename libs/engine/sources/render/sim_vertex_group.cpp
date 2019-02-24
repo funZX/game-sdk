@@ -29,6 +29,7 @@
 #include <render/sim_material.h>
 
 #include <render/sim_vertex_group.h>
+#include <render/animation/sim_bone_hierarchy.h>
 
 namespace sim
 {
@@ -47,14 +48,15 @@ CVertexGroup::CVertexGroup()
 
 	m_material      = nullptr;
 
-	m_lod			= nullptr;
-	m_detail		= this;
+	m_boneHierarchy = nullptr;
 }
 
 // ----------------------------------------------------------------------//
 
 CVertexGroup::~CVertexGroup()
 {
+	SIM_SAFE_DELETE( m_boneHierarchy );
+
 	if( m_iD != 0 )
 	{
 		glDeleteBuffers( 1, &m_iD );
@@ -62,7 +64,6 @@ CVertexGroup::~CVertexGroup()
 		SIM_CHECK_OPENGL();
 	}
 
-	SIM_SAFE_DELETE( m_lod );
 	SIM_SAFE_DELETE_ARRAY( m_vboData );
 }
 
@@ -87,9 +88,6 @@ u32 CVertexGroup::Generate()
 void CVertexGroup::SetMaterial( CMaterial *material )
 {
 	m_material = material;
-
-	if ( m_lod != nullptr )
-		m_lod->SetMaterial( material );
 }
 
 void CVertexGroup::Load( io::CMemStream* ms )
@@ -104,11 +102,8 @@ void CVertexGroup::Load( io::CMemStream* ms )
 
 	if ( ms->ReadU8() )
 	{
-		CVertexGroup* lod = SIM_NEW CVertexGroup();
-
-		lod->Load( ms );
-
-		m_lod = lod;
+		m_boneHierarchy = SIM_NEW CBoneHierarchy();
+		m_boneHierarchy->Load( ms );
 	}
 }
 
@@ -117,27 +112,13 @@ void CVertexGroup::Save( io::CMemStream* ms )
 	ms->WriteU16( m_vboSize );
 	ms->Write( ( void* ) m_vboData, m_vboSize * sizeof( u16 ) );
 
-	if ( m_lod != nullptr )
+	if (m_boneHierarchy != nullptr )
 	{
 		ms->WriteU8( 1 );
-
-		m_lod->Save( ms );
+		m_boneHierarchy->Save( ms );
 	}
 	else
 		ms->WriteU8( 0 );
-}
-
-// ----------------------------------------------------------------------//
-
-void CVertexGroup::SetDetail( u32 detail )
-{
-	CVertexGroup* lod = this;
-
-	for ( u32 k = 0; k < detail; k++ )
-		if ( lod->m_lod )
-			lod = lod->m_lod;
-
-	m_detail = lod;
 }
 
 // ----------------------------------------------------------------------//

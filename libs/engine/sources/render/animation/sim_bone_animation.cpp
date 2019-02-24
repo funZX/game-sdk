@@ -37,9 +37,9 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CBoneAnimation::CBoneAnimation()
+CBoneAnimation::CBoneAnimation(CBoneHierarchy* hierarchy)
 {
-	m_hierarchy		= nullptr;
+	m_hierarchy		= hierarchy;
 
 	m_nFrames		= 0;
 	m_frames		= nullptr;
@@ -48,8 +48,8 @@ CBoneAnimation::CBoneAnimation()
 }
 // ----------------------------------------------------------------------//
 
-CBoneAnimation::CBoneAnimation( const std::string &name )
-	: CBoneAnimation()
+CBoneAnimation::CBoneAnimation( const std::string &name, CBoneHierarchy* hierarchy)
+	: CBoneAnimation(hierarchy)
 {
 	m_name = name;
 }
@@ -59,20 +59,12 @@ CBoneAnimation::CBoneAnimation( const std::string &name )
 CBoneAnimation::~CBoneAnimation()
 {
 	SIM_SAFE_DELETE_ARRAY( m_frames );
-	SIM_SAFE_DELETE_ARRAY( m_hierarchy );
 }
 
 // ----------------------------------------------------------------------//
 
 void CBoneAnimation::Load( io::CMemStream* memstream )
 {
-	u32 nBones	= memstream->ReadU32();
-
-	m_hierarchy = SIM_NEW CBoneHierarchy( nBones );
-
-	for ( u32 k = 0; k < nBones; k++ )
-		m_hierarchy->m_bones[ k ].m_parent = memstream->ReadS16();
-
 	u32 nFrames = memstream->ReadU32();
 
 	SIM_ASSERT( nFrames > 1 );
@@ -83,9 +75,9 @@ void CBoneAnimation::Load( io::CMemStream* memstream )
 	{
 		CAnimationFrame* frame = &m_frames[ k ];
 
-		frame->m_pose = SIM_NEW CAnimationPose( nBones );
+		frame->m_pose = SIM_NEW CAnimationPose( m_hierarchy->GetBonesCount() );
 
-		for ( u32 j = 0; j < nBones; j++ )
+		for ( u32 j = 0; j < m_hierarchy->GetBonesCount(); j++ )
 		{
 			CBone::TTransform* bone = &frame->m_pose->m_bones[ j ];
 

@@ -122,6 +122,9 @@ void CState_Game::Render3D( CDriver *driver )
 // ----------------------------------------------------------------------//
 void CState_Game::DrawToWidget(CDriver* driver, sigcxx::SLOT slot)
 {
+	if (!m_mesh)
+		return;
+
 	f32 dr = driver->GetTimerRot();
 
 	driver->MatrixPush();

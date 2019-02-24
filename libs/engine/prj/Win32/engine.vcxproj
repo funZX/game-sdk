@@ -69,6 +69,7 @@
     <ClCompile Include="..\..\sources\render\sim_vertex_group.cpp" />
     <ClCompile Include="..\..\sources\render\sim_vertex_source.cpp" />
     <ClCompile Include="..\..\sources\sim_engine.cpp" />
+    <ClCompile Include="..\..\sources\sim_engine_vm.cpp" />
     <ClCompile Include="..\..\sources\sound\sim_sound.cpp" />
     <ClCompile Include="..\..\sources\sound\sim_sound_data.cpp" />
     <ClCompile Include="..\..\sources\sound\sim_sound_source.cpp" />

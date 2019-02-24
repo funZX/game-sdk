@@ -86,13 +86,6 @@ void CMesh::Render( CDriver *driver )
 
 // ----------------------------------------------------------------------//
 
-void CMesh::SetDetail( u32 detail )
-{
-	m_vertexGroup->SetDetail( detail ); 
-}
-
-// ----------------------------------------------------------------------//
-
 void CMesh::Load( io::CMemStream* ms )
 {
 	m_box.x = ms->ReadF32();
