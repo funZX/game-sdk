@@ -107,6 +107,8 @@ public:
 	};
 
 	// ------------------------------------------------------------------//
+	enum { k_Animation_Bones_Max = 64 };
+	// ------------------------------------------------------------------//
 
 	typedef struct
 	{
@@ -378,9 +380,9 @@ protected:
 	bool						m_isActiveStackAlteringNormalMatrix;
 	MatrixMode					m_matrixMode;
 
-	TMatrix4					m_boneArrayMatrix[ CVertexSource::k_AnimationBones_Max ];
+	TMatrix4					m_boneArrayMatrix[ k_Animation_Bones_Max ];
 
-	u32				            m_textureBind[k_Texture_Channels_Count];
+	u32				            m_textureBind[ k_Texture_Channels_Count ];
 
     TVertexAttributeInfo        m_vertexAttributeInfo[ CVertexSource::k_Vertex_Attributes_Count ];
 	TLightParameters			m_lightParameters[ k_Light_Channels_Count ];

@@ -57,7 +57,7 @@ CDriver::CDriver()
 	for( s32 i = 0; i < k_Texture_Channels_Count; i++ )
 		Matrix4StackClear( &m_textureStack[ i ] );
 
-	for( s32 i = 0; i < CVertexSource::k_AnimationBones_Max; i++ )
+	for( s32 i = 0; i < k_Animation_Bones_Max; i++ )
 		Matrix4ToIdentity( &m_boneArrayMatrix[ i ] );
 
 	Matrix4ToIdentity( &m_worldInverseMatrix );
@@ -1174,7 +1174,7 @@ void CDriver::InitUniform()
 	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Normal) ].m_callback = &CDriver::SetUniformMatrix3fv;
 
 	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_BoneArray) ].m_value = &m_boneArrayMatrix;
-	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_BoneArray) ].m_count = CVertexSource::k_AnimationBones_Max;
+	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_BoneArray) ].m_count = k_Animation_Bones_Max;
 	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_BoneArray) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
 	// -----------------------------------------
