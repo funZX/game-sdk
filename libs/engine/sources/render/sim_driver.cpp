@@ -54,13 +54,11 @@ CDriver::CDriver()
 	Matrix4StackClear( &m_viewStack );
 	Matrix4StackClear( &m_projectionStack );
 
-	for( s32 i = 0; i < k_Texture_Channels_Count; i++ ) {
+	for( s32 i = 0; i < k_Texture_Channels_Count; i++ )
 		Matrix4StackClear( &m_textureStack[ i ] );
-	}
 
-	for( s32 i = 0; i < k_AnimationBones_Max; i++ ) {
-		Matrix4ToIdentity( &m_boneAnimationMatrix[ i ] );
-	}
+	for( s32 i = 0; i < CVertexSource::k_AnimationBones_Max; i++ )
+		Matrix4ToIdentity( &m_boneArrayMatrix[ i ] );
 
 	Matrix4ToIdentity( &m_worldInverseMatrix );
 	Matrix4ToIdentity( &m_worldInverseTMatrix );
@@ -1175,9 +1173,9 @@ void CDriver::InitUniform()
 	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Normal) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Normal) ].m_callback = &CDriver::SetUniformMatrix3fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Bone) ].m_value = &m_boneAnimationMatrix;
-	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Bone) ].m_count = k_AnimationBones_Max;
-	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Bone) ].m_callback = &CDriver::SetUniformMatrix4fv;
+	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_BoneArray) ].m_value = &m_boneArrayMatrix;
+	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_BoneArray) ].m_count = CVertexSource::k_AnimationBones_Max;
+	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_BoneArray) ].m_callback = &CDriver::SetUniformMatrix4fv;
 
 	// -----------------------------------------
 	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Tex_0) ].m_value = nullptr;

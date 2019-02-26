@@ -18,7 +18,6 @@
 
 #include "World/World.h"
 
-#include "Options.h"
 #include "Game.h"
 
 #include <sim_engine.h>

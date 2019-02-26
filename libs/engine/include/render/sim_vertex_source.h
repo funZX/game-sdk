@@ -71,7 +71,8 @@ public:
 		Normal,
 		Tangent,
 		Binormal,
-		Weight,
+		WeightArraySize,
+		WeightArray,
 	};
 
 	// ------------------------------------------------------------------//
@@ -88,9 +89,12 @@ public:
         Normal			=   ( 1 <<  6 ),
         Tangent			=   ( 1 <<  7 ),
         Binormal		=   ( 1 <<  8 ),
-		Weight			=	( 1 <<  9),
+		WeightArraySize =	( 1 <<  9 ),
+		WeightArray		=	( 1 << 10 ),
 	};
 	// ------------------------------------------------------------------//
+	enum { k_AnimationBones_Max = 16 };
+
 	enum class AttributeSize : u32
 	{
         Position		=   ( 3 ),
@@ -102,7 +106,8 @@ public:
         Normal			=   ( 3 ),
         Tangent			=   ( 3 ),
         Binormal		=   ( 3 ),
-		Weight			=	( 2 ),
+		WeightArraySize =   ( 1 ),
+		WeightArray		=	( k_AnimationBones_Max ),
 	};
 	// ------------------------------------------------------------------//
 	enum class AttributeStride : u32
@@ -116,7 +121,8 @@ public:
         Normal			=   ( 3 * sizeof( float ) ),
         Tangent			=   ( 3 * sizeof( float ) ),
         Binormal		=   ( 3 * sizeof( float ) ),
-		Weight			=   ( 2 * sizeof( float ) ),
+		WeightArraySize =	( 1 * sizeof( GL_UNSIGNED_BYTE ) ),
+		WeightArray		=   ( k_AnimationBones_Max * sizeof( float ) ),
 	};
 	// ------------------------------------------------------------------//	
 	enum class AttributeType : u32
@@ -130,10 +136,11 @@ public:
         Normal			=   ( GL_FLOAT ),
         Tangent			=   ( GL_FLOAT ),
         Binormal		=   ( GL_FLOAT ),
-        Weight			=   ( GL_FLOAT ),
+		WeightArraySize =	( GL_UNSIGNED_BYTE ),
+		WeightArray		=   ( GL_FLOAT ),
 	};
 
-	enum { k_Vertex_Attributes_Count = 10 };
+	enum { k_Vertex_Attributes_Count = 11 };
 	// ------------------------------------------------------------------//
 	
 	enum class Type : u32

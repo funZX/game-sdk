@@ -13,7 +13,6 @@
 #include <physic/sim_physic.h>
 
 #include "../Debug/Debug.h"
-#include "../Options.h"
 #include "../Game.h"
 #include "World.h"
 
