@@ -1,8 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{207B61C9-A5F7-4BBB-9EC8-58C3EFA0B153}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{A0B58AF0-94CC-49E1-AB09-840AB4672D5C}"
+EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "game", "game.vcxproj", "{DB534BF3-2A50-5376-E65B-552D41D6C3D4}"
 	ProjectSection(ProjectDependencies) = postProject
 		{BD4FFC08-AD8C-4C28-8286-891589C4D235} = {BD4FFC08-AD8C-4C28-8286-891589C4D235}
@@ -36,10 +40,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "box2D", "..\..\..\libs\box2D\prj\Win32\box2D.vcxproj", "{37D2EBD0-FAF7-4012-A462-E103C6B3EFA7}"
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "fs2sim", "..\..\..\tools\fs2sim\fs2sim.pyproj", "{CA532191-637D-411D-923D-1C8AE6BD1F94}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{207B61C9-A5F7-4BBB-9EC8-58C3EFA0B153}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libs", "libs", "{A0B58AF0-94CC-49E1-AB09-840AB4672D5C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sq2sim", "..\..\..\tools\sq2sim\prj\Win32\sq2sim.vcxproj", "{BD4FFC08-AD8C-4C28-8286-891589C4D235}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -181,5 +181,8 @@ Global
 		{6003DA6E-35BE-4BF3-BBD0-004CF0D6043A} = {A0B58AF0-94CC-49E1-AB09-840AB4672D5C}
 		{4AECC26B-18D3-485F-929C-983E59FB71B1} = {207B61C9-A5F7-4BBB-9EC8-58C3EFA0B153}
 		{66B317EE-035D-4C2E-9BBD-22D5AB3592C2} = {A0B58AF0-94CC-49E1-AB09-840AB4672D5C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A5E0C41A-2679-42F0-A379-6E6E935FF877}
 	EndGlobalSection
 EndGlobal
