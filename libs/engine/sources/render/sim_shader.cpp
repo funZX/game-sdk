@@ -45,7 +45,8 @@ CShader::TAttrib CShader::Attributes[CVertexSource::k_Vertex_Attributes_Count] =
 	{ "a_NormalL",		-1,		CVertexSource::AttributeIndex::Normal,		CVertexSource::AttributeFormat::Normal,		CVertexSource::AttributeSize::Normal,		CVertexSource::AttributeStride::Normal,			CVertexSource::AttributeType::Normal, },
 	{ "a_TangentL",		-1,		CVertexSource::AttributeIndex::Tangent,		CVertexSource::AttributeFormat::Tangent,	CVertexSource::AttributeSize::Tangent,		CVertexSource::AttributeStride::Tangent,		CVertexSource::AttributeType::Tangent, },
 	{ "a_BinormalL",	-1,		CVertexSource::AttributeIndex::Binormal,	CVertexSource::AttributeFormat::Binormal,	CVertexSource::AttributeSize::Binormal,		CVertexSource::AttributeStride::Binormal,		CVertexSource::AttributeType::Binormal, },
-	{ "a_Weight",		-1,		CVertexSource::AttributeIndex::Weight,		CVertexSource::AttributeFormat::Weight,		CVertexSource::AttributeSize::Weight,		CVertexSource::AttributeStride::Weight,			CVertexSource::AttributeType::Weight,		},
+	{ "a_WeightArraySize",-1,	CVertexSource::AttributeIndex::WeightArraySize,	CVertexSource::AttributeFormat::WeightArraySize, CVertexSource::AttributeSize::WeightArraySize, CVertexSource::AttributeStride::WeightArraySize, CVertexSource::AttributeType::WeightArraySize, },
+	{ "a_WeightArray",	-1,		CVertexSource::AttributeIndex::WeightArray,	CVertexSource::AttributeFormat::WeightArray,CVertexSource::AttributeSize::WeightArray,		CVertexSource::AttributeStride::WeightArray,CVertexSource::AttributeType::WeightArray, },
 };
 
 // ----------------------------------------------------------------------//
@@ -70,7 +71,7 @@ CShader::TUniform CShader::Uniforms[] =
 	{ "u_Matrix_ViewProjection",	-1,		CShader::UniformIndex::Matrix_ViewProjection },
 	{ "u_Matrix_WorldViewProjection",-1,	CShader::UniformIndex::Matrix_WorldViewProjection },
 	{ "u_Matrix_Normal",			-1,		CShader::UniformIndex::Matrix_Normal },
-	{ "u_Matrix_Skeleton",			-1,		CShader::UniformIndex::Matrix_Bone },
+	{ "u_Matrix_BoneArray",			-1,		CShader::UniformIndex::Matrix_BoneArray },
 
 	{ "u_Matrix_Tex_0",				-1,		CShader::UniformIndex::Matrix_Tex_0 },
 	{ "u_Matrix_Tex_1",				-1,		CShader::UniformIndex::Matrix_Tex_1 },

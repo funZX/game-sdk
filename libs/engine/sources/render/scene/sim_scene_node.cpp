@@ -48,9 +48,9 @@ CSceneNode::CSceneNode()
 	Vec3ToZero( &m_transform.rotation );
 	Vec3ToOne( &m_transform.scale );
 
-	Vec3ToDirX( &m_transform.axis.side);
-	Vec3ToDirY( &m_transform.axis.up);
-	Vec3ToDirZ( &m_transform.axis.direction);
+	Vec3ToDirX( &m_transform.axis.side );
+	Vec3ToDirY( &m_transform.axis.up );
+	Vec3ToDirZ( &m_transform.axis.direction );
 
 	QuatReset( &m_transform.quaternion);
 	Matrix4ToIdentity( &m_transform.matrix.orientation );

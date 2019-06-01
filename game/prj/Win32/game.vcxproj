@@ -17,7 +17,6 @@
     <ClCompile Include="..\..\sources\GameState\State_AppLoad.cpp" />
     <ClCompile Include="..\..\sources\GameState\State_Game.cpp" />
     <ClCompile Include="..\..\sources\GameState\State_MenuMain.cpp" />
-    <ClCompile Include="..\..\sources\Options.cpp" />
     <ClCompile Include="..\..\sources\World\World.cpp" />
     <ClCompile Include="base\main.cpp" />
     <ClCompile Include="base\simulator\SimulatorWindow.cpp" />
@@ -29,7 +28,6 @@
     <ClInclude Include="..\..\sources\GameState\State_AppLoad.h" />
     <ClInclude Include="..\..\sources\GameState\State_Game.h" />
     <ClInclude Include="..\..\sources\GameState\State_MenuMain.h" />
-    <ClInclude Include="..\..\sources\Options.h" />
     <ClInclude Include="..\..\sources\World\World.h" />
     <ClInclude Include="base\simulator.h" />
     <ClInclude Include="base\simulator\SimulatorWindow.h" />
@@ -46,14 +44,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">

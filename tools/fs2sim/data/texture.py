@@ -35,15 +35,16 @@ def parse_texture_name(file_name):
 	is_valid = out_format == 'tga' or out_format == 'mip' or out_format == 'pvr'
 
 	if not is_valid:
+	    print '\n OUTPUT FORMAT: ' + out_format + ' not supported.'
 	    print_error_parse_texture_name(file_name)
 	    return None
 
 	if out_format == 'mip' and not (in_format == 'tga' or in_format == 'mip'):
-	    print '\n Texture error for: ' + file_name + '. Only tga images can be converted to mip.'
+	    print '\n Texture error for: ' + file_name + '. Only tga images can be imported to mip format.'
 	    return None
 
 	if out_format == 'tga' and in_format != 'tga':
-	    print '\n Texture error for: ' + file_name + '. Only tga images can be converted to tga.'
+	    print '\n Texture error for: ' + file_name + '. Only tga images can be imported to tga format.'
 	    return None
 
 	return file_format

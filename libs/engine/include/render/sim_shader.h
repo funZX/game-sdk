@@ -66,7 +66,7 @@ public:
 		Matrix_ViewProjection,
 		Matrix_WorldViewProjection,
 		Matrix_Normal,
-		Matrix_Bone,
+		Matrix_BoneArray,
 
 		Matrix_Tex_0,
 		Matrix_Tex_1,

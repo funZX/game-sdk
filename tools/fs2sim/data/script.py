@@ -51,7 +51,7 @@ def main(dirlist):
 
 				in_temp = os.path.basename(in_file)
 				out_temp = os.path.basename(out_file)
-				command = config.EXE_SQ2SIM + ' ' + in_temp + ' ' + out_temp
+				command = config.EXE_SQ + ' -c -o ' + out_temp + ' ' + in_temp
 
 				os.chdir(d)
 				utils.spawnProcess(command)

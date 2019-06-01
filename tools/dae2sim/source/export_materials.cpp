@@ -19,31 +19,33 @@ void export_materials(daeDatabase* db, const std::string& path)
 		domInstance_effect* effect_instance = (domInstance_effect*)material->getDescendant("instance_effect");		
 		daeElement* effect = effect_instance->getUrl().getElement();
 
-		elem = effect->getDescendant("sampler2D");
-
-		domInstance_image_Array images;
-		elem->getChildrenByType(images);
-
 		std::vector<std::string> material_textures;
-		for (size_t k = 0; k < images.getCount(); ++k)
+		elem = effect->getDescendant("sampler2D");
+		if (elem)
 		{
-			daeElement* image = images[k]->getUrl().getElement();
-			domImage_source* image_source = ((domImage*)image)->getInit_from();
+			domInstance_image_Array images;
+			elem->getChildrenByType(images);
 
-			filesystem::path inPath(cdom::uriToNativePath(image_source->getRef()->getValue().str()));
-			filesystem::path outPath(path);
+			for (size_t k = 0; k < images.getCount(); ++k)
+			{
+				daeElement* image = images[k]->getUrl().getElement();
+				domImage_source* image_source = ((domImage*)image)->getInit_from();
 
-			outPath = outPath.parent_path();
-			outPath /= "texture";
+				filesystem::path inPath(cdom::uriToNativePath(image_source->getRef()->getValue().str()));
+				filesystem::path outPath(path);
 
-			filesystem::create_directories(outPath);
+				outPath = outPath.parent_path();
+				outPath /= "texture";
 
-			outPath /= inPath.filename().string();
+				filesystem::create_directories(outPath);
 
-			filesystem::copy_file(inPath, outPath, filesystem::copy_options::overwrite_existing);
-			material_textures.push_back(inPath.filename().string());
+				outPath /= inPath.filename().string();
 
-			std::cout << "Export image src:" << inPath.string() << " dst:" << outPath.string() << std::endl;
+				filesystem::copy_file(inPath, outPath, filesystem::copy_options::overwrite_existing);
+				material_textures.push_back(inPath.filename().string());
+
+				std::cout << "Export image src:" << inPath.string() << " dst:" << outPath.string() << std::endl;
+			}
 		}
 		
 		domFx_common_color_or_texture* color = NULL;

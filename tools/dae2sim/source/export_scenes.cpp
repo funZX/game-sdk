@@ -7,7 +7,10 @@
 
 #include "dae2sim.h"
 
+void export_materials(daeDatabase* db, const std::string& path);
+
 void export_scenes(daeDatabase* db, const std::string& path)
 {
+	export_materials(db, path + "/material");
 
 }

@@ -15,17 +15,13 @@ namespace filesystem = std::experimental::filesystem::v1;
 
 struct Options
 {
-	bool materials;
-	bool meshes;
-	bool animations;
-	bool lights;
-	bool cameras;
-	bool curves;
-	bool scenes;
+	bool			animations;
 
-	const char* in_dae_file;
-	const char* out_folder;
+	const char*		in_dae_file;
+	const char*		out_folder;
 } ;
+
+extern Options options;
 
 // ----------------------------------------------------------------------//
 

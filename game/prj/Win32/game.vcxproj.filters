@@ -31,7 +31,6 @@
     <ClCompile Include="..\..\sources\Debug\Debug.cpp">
       <Filter>Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sources\Options.cpp" />
     <ClCompile Include="..\..\sources\GameState\State_AppLoad.cpp">
       <Filter>GameState</Filter>
     </ClCompile>
@@ -59,7 +58,6 @@
     <ClInclude Include="..\..\sources\Debug\Debug.h">
       <Filter>Debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sources\Options.h" />
     <ClInclude Include="..\..\sources\GameState\State_AppInit.h">
       <Filter>GameState</Filter>
     </ClInclude>

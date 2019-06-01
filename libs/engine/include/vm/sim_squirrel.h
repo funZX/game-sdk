@@ -81,8 +81,10 @@ public:
 
     K_ERROR							Exec( vm::CScript* script );
 
+#if SIM_DEBUG
 	void							DebuggerStart();
 	void							DebuggerStop();
+#endif // SIM_DEBUG
 	// ------------------------------------------------------------------//
 protected:
 	// ------------------------------------------------------------------//
@@ -101,7 +103,10 @@ protected:
 	Sqrat::ConstTable*				m_constTable;
     static Sqrat::string			m_lastErrorMsg;
 
+#if SIM_DEBUG
+	bool							m_isDebuggerEnabled;
 	HSQREMOTEDBG					m_debugger;
+#endif // SIM_DEBUG
 	// ------------------------------------------------------------------//
 };
 
