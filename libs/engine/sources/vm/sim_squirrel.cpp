@@ -58,10 +58,15 @@ CSquirrel::CSquirrel()
     SetPrintFunc( PrintFunc, PrintFunc );
     SetErrorHandler( RuntimeErrorHandler, CompilerErrorHandler );
 
+
 #if SIM_DEBUG
+	HSQREMOTEDBG rdbg = sq_rdbg_init(m_vm, 28000, SQTrue);
+
 	sq_enabledebuginfo(m_vm, SQTrue);
-	m_debugger = sq_rdbg_init( m_vm, 28000, SQTrue );
-	m_isDebuggerEnabled = false;
+
+	auto rdbg_task = async::spawn([&, rdbg] {
+		sq_rdbg_waitforconnections(rdbg);
+	});
 #endif // SIM_DEBUG
 }
 
@@ -69,11 +74,6 @@ CSquirrel::CSquirrel()
 
 CSquirrel::~CSquirrel()
 {
-#if SIM_DEBUG
-	SIM_SAFE_DELETE(m_debugger);
-	sq_enabledebuginfo(m_vm, SQFalse);
-#endif // SIM_DEBUG
-
 	SIM_DELETE( m_constTable );
     SIM_DELETE( m_rootTable );
     sq_close(m_vm);
@@ -153,28 +153,6 @@ CSquirrel::K_ERROR CSquirrel::Exec( vm::CScript* script )
 	return script->Run( msg ) ? k_Error_None : k_Error_Runtime;
 }
 
-// ----------------------------------------------------------------------//
-#if SIM_DEBUG
-void CSquirrel::DebuggerStart()
-{
-	if (!m_isDebuggerEnabled)
-	{
-		sq_rdbg_waitforconnections(m_debugger);
-		m_isDebuggerEnabled = true;
-	}
-}
-
-// ----------------------------------------------------------------------//
-
-void CSquirrel::DebuggerStop()
-{
-	if (m_isDebuggerEnabled)
-	{
-		sq_rdbg_shutdown(m_debugger);
-		m_isDebuggerEnabled = false;
-	}
-}
-#endif //SIM_DEBUG
 // ----------------------------------------------------------------------//
 }; // namespace vm
 }; // namespace sim
