@@ -19,6 +19,7 @@ HSQREMOTEDBG sq_rdbg_init(HSQUIRRELVM v,unsigned short port,SQBool autoupdate)
 	}	
 #endif 
 	SQDbgServer *rdbg = new SQDbgServer(v);
+	rdbg->_v = v;
 	rdbg->_autoupdate = autoupdate?true:false;
 	rdbg->_accept = socket(AF_INET,SOCK_STREAM,0);
 	bindaddr.sin_family = AF_INET;

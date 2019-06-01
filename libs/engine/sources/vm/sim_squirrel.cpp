@@ -58,17 +58,21 @@ CSquirrel::CSquirrel()
     SetPrintFunc( PrintFunc, PrintFunc );
     SetErrorHandler( RuntimeErrorHandler, CompilerErrorHandler );
 
+#if SIM_DEBUG
+	sq_enabledebuginfo(m_vm, SQTrue);
 	m_debugger = sq_rdbg_init( m_vm, 28000, SQTrue );
-	sq_enabledebuginfo( m_vm, SQTrue );
+	m_isDebuggerEnabled = false;
+#endif // SIM_DEBUG
 }
 
 // ----------------------------------------------------------------------//
 
 CSquirrel::~CSquirrel()
 {
-	sq_enabledebuginfo( m_vm, SQFalse );
-
+#if SIM_DEBUG
 	SIM_SAFE_DELETE(m_debugger);
+	sq_enabledebuginfo(m_vm, SQFalse);
+#endif // SIM_DEBUG
 
 	SIM_DELETE( m_constTable );
     SIM_DELETE( m_rootTable );
@@ -150,19 +154,27 @@ CSquirrel::K_ERROR CSquirrel::Exec( vm::CScript* script )
 }
 
 // ----------------------------------------------------------------------//
-
+#if SIM_DEBUG
 void CSquirrel::DebuggerStart()
 {
-	sq_rdbg_waitforconnections( m_debugger );
+	if (!m_isDebuggerEnabled)
+	{
+		sq_rdbg_waitforconnections(m_debugger);
+		m_isDebuggerEnabled = true;
+	}
 }
 
 // ----------------------------------------------------------------------//
 
 void CSquirrel::DebuggerStop()
 {
-	sq_rdbg_shutdown( m_debugger );
+	if (m_isDebuggerEnabled)
+	{
+		sq_rdbg_shutdown(m_debugger);
+		m_isDebuggerEnabled = false;
+	}
 }
-
+#endif //SIM_DEBUG
 // ----------------------------------------------------------------------//
 }; // namespace vm
 }; // namespace sim

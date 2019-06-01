@@ -30,6 +30,7 @@ CGame::CGame( const std::string& fsDir )
 	: CEngine()
 {
 	m_fsDir = fsDir;
+	m_enableScriptDebugger = false;
 
 	SIM_MEMSET( &m_downKeys, 0, sizeof( m_downKeys ) );
 
@@ -82,6 +83,14 @@ void CGame::Update( f32 dt, void *userData )
 void CGame::KeyPress( u8 key, bool isDown )
 {
 	m_downKeys[ key ] = isDown;
+
+	switch (key)
+	{
+	case '0':
+		m_enableScriptDebugger ? m_vm->DebuggerStart() : m_vm->DebuggerStop();
+		m_enableScriptDebugger = !m_enableScriptDebugger;
+		break;
+	}
 
 	std::cout << "KeyPress: " << key << ", " << isDown << std::endl;
 }
