@@ -536,6 +536,7 @@ void SQDbgServer::Break(HSQUIRRELVM v,SQInteger line,const SQChar *src,const SQC
 	}
 }
 
+
 void SQDbgServer::SerializeState(HSQUIRRELVM v)
 {
 	sq_pushnull(v);

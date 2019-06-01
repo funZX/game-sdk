@@ -90,7 +90,6 @@ public:
 	void Send(const SQChar *s,...);
 	void SendChunk(const SQChar *chunk);
 	void Break(HSQUIRRELVM v,SQInteger line,const SQChar *src,const SQChar *type,const SQChar *error=NULL);
-	
 
 	void SerializeState(HSQUIRRELVM v);
 	//COMMANDS
