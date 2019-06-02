@@ -54,7 +54,7 @@ def main(dirlist):
 			if utils.newerFile(in_file, out_file):
 				out_temp = cygwin.cygpath(out_file, 'w')
 				in_temp = cygwin.cygpath(in_file, 'w')
-				command = config.EXE_SQ + ' -c -d -o ' + out_temp.replace('\\','/') + ' ' + in_temp.replace('\\','/')
+				command = config.EXE_SQ + ' -c -d -o ' + out_temp.replace('\\','/').lower() + ' ' + in_temp.replace('\\','/').lower()
 				#command = config.EXE_SQ + ' -c -o ' + out_temp + ' ' + in_temp
 				print('a' + in_file + 'b' + out_file )
 				utils.spawnProcess(command)
