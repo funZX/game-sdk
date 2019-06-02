@@ -78,6 +78,7 @@ SQInteger attribute(HSQUIRRELVM v)
 
 SQDbgServer::SQDbgServer(HSQUIRRELVM v)
 {
+	_terminate = false;
 	_ready = false;
 	//_nestedcalls = 0;
 	_autoupdate = false;
@@ -101,10 +102,6 @@ SQDbgServer::~SQDbgServer()
 	sq_pushobject(_v,_debugroot);
 	sq_clear(_v,-1);
 	sq_release(_v,&_debugroot);
-	if(_accept != INVALID_SOCKET)
-		sqdbg_closesocket(_accept);
-	if(_endpoint != INVALID_SOCKET)
-		sqdbg_closesocket(_endpoint);
 }
 
 bool SQDbgServer::Init()
@@ -377,6 +374,7 @@ void SQDbgServer::ParseMsg(const char *msg)
 			break;
 		case MSG_ID('t','r'):
 			scprintf(_SC("terminate from user\n"));
+			_terminate = true;
 			break;
 		case MSG_ID('r','d'):
 			scprintf(_SC("ready\n"));
@@ -478,7 +476,7 @@ void SQDbgServer::RemoveWatch(SQInteger id)
 		BeginElement(_SC("error"));
 			Attribute(_SC("desc"),_SC("the watch does not exists"));
 		EndElement(_SC("error"));
-	EndDocument();
+		EndDocument();
 	}
 	else{
 		_watches.erase(itor);

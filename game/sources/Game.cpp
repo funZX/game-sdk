@@ -85,7 +85,13 @@ void CGame::KeyPress( u8 key, bool isDown )
 
 	switch (key)
 	{
+	case '9':
+		m_vm->DebuggerStart();
+		std::cout << "Debugger Start" << std::endl;
+		break;
 	case '0':
+		m_vm->DebuggerStop();
+		std::cout << "Debugger Stop" << std::endl;
 		break;
 	}
 

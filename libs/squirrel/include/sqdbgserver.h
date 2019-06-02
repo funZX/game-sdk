@@ -130,6 +130,7 @@ public:
 	//int _recursionlevel; 
 	//int _maxrecursion;
 	
+	bool _terminate;
 	bool _ready;
 	bool _autoupdate;
 	HSQOBJECT _serializefunc;

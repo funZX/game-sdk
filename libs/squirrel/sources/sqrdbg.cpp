@@ -39,6 +39,16 @@ HSQREMOTEDBG sq_rdbg_init(HSQUIRRELVM v,unsigned short port,SQBool autoupdate)
     return rdbg;
 }
 
+void sq_rdbg_term(HSQREMOTEDBG rdbg)
+{
+	if (rdbg->_accept != INVALID_SOCKET)
+		sqdbg_closesocket(rdbg->_accept);
+	if (rdbg->_endpoint != INVALID_SOCKET)
+		sqdbg_closesocket(rdbg->_endpoint);
+
+	rdbg->_terminate = true;
+}
+
 SQRESULT sq_rdbg_waitforconnections(HSQREMOTEDBG rdbg)
 {
 	if(SQ_FAILED(sq_compilebuffer(rdbg->_v,serialize_state_nut,(SQInteger)scstrlen(serialize_state_nut),_SC("SERIALIZE_STATE"),SQFalse))) {
@@ -161,6 +171,7 @@ SQInteger error_handler(HSQUIRRELVM v)
 SQRESULT sq_rdbg_shutdown(HSQREMOTEDBG rdbg)
 {
 	delete rdbg;
+
 #ifdef _WIN32
 	WSACleanup();
 #endif

@@ -60,13 +60,7 @@ CSquirrel::CSquirrel()
 
 
 #if SIM_DEBUG
-	HSQREMOTEDBG rdbg = sq_rdbg_init(m_vm, 28000, SQTrue);
-
-	sq_enabledebuginfo(m_vm, SQTrue);
-
-	auto rdbg_task = async::spawn([&, rdbg] {
-		sq_rdbg_waitforconnections(rdbg);
-	});
+	m_rdbg = nullptr;
 #endif // SIM_DEBUG
 }
 
@@ -74,6 +68,11 @@ CSquirrel::CSquirrel()
 
 CSquirrel::~CSquirrel()
 {
+#if SIM_DEBUG
+	if (m_rdbg)
+		DebuggerStop();
+#endif // SIM_DEBUG
+
 	SIM_DELETE( m_constTable );
     SIM_DELETE( m_rootTable );
     sq_close(m_vm);
@@ -152,6 +151,40 @@ CSquirrel::K_ERROR CSquirrel::Exec( vm::CScript* script )
     Sqrat::string msg;
 	return script->Run( msg ) ? k_Error_None : k_Error_Runtime;
 }
+
+// ----------------------------------------------------------------------//
+#if SIM_DEBUG
+void CSquirrel::DebuggerStart()
+{
+	if (!m_rdbg)
+	{
+		m_rdbg = sq_rdbg_init(m_vm, 20900, SQTrue);
+
+		sq_enabledebuginfo(m_vm, SQTrue);
+
+		auto start_task = async::spawn([&, this] {
+			sq_rdbg_waitforconnections(m_rdbg);
+		});
+
+		auto stop_task = start_task.then([&, this] {
+
+			while (!m_rdbg->_terminate);
+
+			sq_rdbg_shutdown(m_rdbg);
+			m_rdbg = nullptr;
+		});
+	}
+}
+
+void CSquirrel::DebuggerStop()
+{
+	if (m_rdbg)
+	{
+		sq_rdbg_term(m_rdbg);
+		sq_enabledebuginfo(m_vm, SQFalse);
+	}
+}
+#endif // SIM_DEBUG
 
 // ----------------------------------------------------------------------//
 }; // namespace vm
