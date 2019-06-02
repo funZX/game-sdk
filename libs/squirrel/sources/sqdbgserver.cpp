@@ -1,5 +1,6 @@
 #include <squirrel.h>
 #include <assert.h>
+#include <algorithm>
 #include <sqstdblob.h>
 #include "sqrdbg.h"
 #include "sqdbgserver.h"
@@ -454,13 +455,15 @@ void SQDbgServer::BreakExecution()
 //COMMANDS
 void SQDbgServer::AddBreakpoint(BreakPoint &bp)
 {
-	_breakpoints.insert(bp);
 	BeginDocument();
 		BeginElement(_SC("addbreakpoint"));
 			Attribute(_SC("line"),IntToString(bp._line));
 			Attribute(_SC("src"),bp._src.c_str());
 		EndElement(_SC("addbreakpoint"));
 	EndDocument();
+
+	std::replace(bp._src.begin(), bp._src.end(), '\\', '/');
+	_breakpoints.insert(bp);
 }
 
 void SQDbgServer::AddWatch(Watch &w)
