@@ -83,14 +83,14 @@ public:
 
     K_ERROR							Exec( vm::CScript* script );
 
+	// ------------------------------------------------------------------//
+protected:
+	// ------------------------------------------------------------------//
 #if SIM_DEBUG
 	void							DebuggerStart();
 	void							DebuggerStop();
 #endif // SIM_DEBUG
 
-	// ------------------------------------------------------------------//
-protected:
-	// ------------------------------------------------------------------//
     static void						PrintFunc(HSQUIRRELVM v, const SQChar *s, ...);
     static SQInteger				RuntimeErrorHandler(HSQUIRRELVM v);
     static void						CompilerErrorHandler(HSQUIRRELVM v,

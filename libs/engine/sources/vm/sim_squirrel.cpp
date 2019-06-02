@@ -173,7 +173,9 @@ void CSquirrel::DebuggerStart()
 				sq_rdbg_update(m_rdbg);
 
 			sq_rdbg_shutdown(m_rdbg);
+
 			m_rdbg = nullptr;
+			DebuggerStart();
 		});
 	}
 }
