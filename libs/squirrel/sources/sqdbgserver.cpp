@@ -489,7 +489,10 @@ void SQDbgServer::RemoveWatch(SQInteger id)
 
 void SQDbgServer::RemoveBreakpoint(BreakPoint &bp)
 {
-	BreakPointSetItor itor=_breakpoints.find(bp);
+	BreakPoint _bp = bp;
+	std::replace(_bp._src.begin(), _bp._src.end(), '\\', '/');
+
+	BreakPointSetItor itor=_breakpoints.find(_bp);
 	if(itor==_breakpoints.end()){
 		BeginDocument();
 			BeginElement(_SC("break"));
