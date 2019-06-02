@@ -61,6 +61,7 @@ CSquirrel::CSquirrel()
 
 #if SIM_DEBUG
 	m_rdbg = nullptr;
+	DebuggerStart();
 #endif // SIM_DEBUG
 }
 
@@ -168,7 +169,8 @@ void CSquirrel::DebuggerStart()
 
 		auto stop_task = start_task.then([&, this] {
 
-			while (!m_rdbg->_terminate);
+			while (!m_rdbg->_terminate)
+				sq_rdbg_update(m_rdbg);
 
 			sq_rdbg_shutdown(m_rdbg);
 			m_rdbg = nullptr;
