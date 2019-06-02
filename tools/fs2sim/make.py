@@ -6,7 +6,7 @@ import time
 import config
 import utils
 import shutil
-import json
+import simplejson as json
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data'))
 
@@ -84,7 +84,7 @@ def main(argv):
 
 
 		if dir_content:
-			with open(dst_dir + '/content.json', 'wb') as f:
+			with open(dst_dir + '/content.json', 'w') as f:
 				json.dump(dir_content, f)	
 
 			sim 	= '../../' + dir['id'] + '.7z'
@@ -95,7 +95,7 @@ def main(argv):
 	
 
 	ElapsedTime = time.clock() - StartTime
-	print '\nElapsed Time: %0.3fs' % (ElapsedTime)
+	print ('\nElapsed Time: %0.3fs' % (ElapsedTime))
 	
 	return 0
 

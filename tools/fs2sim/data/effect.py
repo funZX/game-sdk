@@ -4,7 +4,7 @@ import sys
 import os
 import time
 import glob
-import json
+import simplejson as json
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
@@ -97,7 +97,7 @@ def main(dirlist):
                 effects.append({'name' : n.split('.effect',1)[0], 'file': ('effect/' + n)});
 
         if effects:
-            with open(dst_dir + '/content.json', 'wb') as f:
+            with open(dst_dir + '/content.json', 'w') as f:
                 json.dump(effects, f)
             
             content['id'] 	= dir['id']

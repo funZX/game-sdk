@@ -47,6 +47,8 @@
 #include <core/sim_singleton.h>
 #include <core/sys/sim_mutex.h>
 
+#include <async++.h>
+
 namespace sim
 {
 namespace vm
@@ -81,13 +83,14 @@ public:
 
     K_ERROR							Exec( vm::CScript* script );
 
+	// ------------------------------------------------------------------//
+protected:
+	// ------------------------------------------------------------------//
 #if SIM_DEBUG
 	void							DebuggerStart();
 	void							DebuggerStop();
 #endif // SIM_DEBUG
-	// ------------------------------------------------------------------//
-protected:
-	// ------------------------------------------------------------------//
+
     static void						PrintFunc(HSQUIRRELVM v, const SQChar *s, ...);
     static SQInteger				RuntimeErrorHandler(HSQUIRRELVM v);
     static void						CompilerErrorHandler(HSQUIRRELVM v,
@@ -104,8 +107,7 @@ protected:
     static Sqrat::string			m_lastErrorMsg;
 
 #if SIM_DEBUG
-	bool							m_isDebuggerEnabled;
-	HSQREMOTEDBG					m_debugger;
+	HSQREMOTEDBG					m_rdbg;
 #endif // SIM_DEBUG
 	// ------------------------------------------------------------------//
 };

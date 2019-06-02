@@ -24,8 +24,6 @@ protected:
 
 	std::string					m_fsDir;
 	CWorld*						m_world;
-
-	bool						m_enableScriptDebugger;
 };
 
 

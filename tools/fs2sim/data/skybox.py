@@ -37,7 +37,7 @@ def main(dirlist):
 				content['file'] = 'skybox/content.json'	
 	
 	ElapsedTime = time.clock() - StartTime
-	print '\nElapsed Time: %0.3fs' % (ElapsedTime)
+	print ('\nElapsed Time: %0.3fs' % (ElapsedTime))
 
 	return content
 
