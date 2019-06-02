@@ -6,8 +6,7 @@
     <ProjectGuid>ca532191-637d-411d-923d-1c8ae6bd1f94</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>make.py</StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>..\fs2sim</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>blend2sim</Name>

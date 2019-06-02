@@ -4,7 +4,7 @@ import sys
 import os
 import time
 import glob
-import json
+import simplejson as json
 import subprocess
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
@@ -62,7 +62,7 @@ def main(dirlist):
 			scripts.append({'name' : name, 'file': ('script/' + n + 't')});
 				
 		if scripts:
-			with open(dst_dir + '/content.json', 'wb') as f:
+			with open(dst_dir + '/content.json', 'w') as f:
 				json.dump(scripts, f)
 				
 			content['id'] 	= dir['id']
@@ -70,9 +70,7 @@ def main(dirlist):
 			content['file'] = 'script/content.json'
 
 	ElapsedTime = time.clock() - StartTime
-	print '\nElapsed Time: %0.3fs' % (ElapsedTime)
-	
-	print content
+	print ('\nElapsed Time: %0.3fs' % (ElapsedTime))
 	
 	return content
 

@@ -86,14 +86,12 @@ def newerFile(src, dst):
 def moveFile(src, dst):
 	if newerFile(src, dst):
 		shutil.move(src, dst)
-		os.chmod(dst, 0664)
 
 #---------------------------------------------------------------------------------------
 	
 def updateFile(src, dst):
 	if newerFile(src, dst):
 		shutil.copy2(src, dst)
-		os.chmod(dst, 0664)
 		LOG ('UPDATED: ' + dst )
 
 #---------------------------------------------------------------------------------------

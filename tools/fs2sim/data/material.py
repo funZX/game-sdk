@@ -4,7 +4,7 @@ import sys
 import os
 import time
 import glob
-import json
+import simplejson as json
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
@@ -50,7 +50,7 @@ def main(dirlist):
 			materials.append({'name' : name, 'file': ('material/' + n)});
 
 		if materials:
-			with open(dst_dir + '/content.json', 'wb') as f:
+			with open(dst_dir + '/content.json', 'w') as f:
 				json.dump(materials, f)
 				
 			content['id'] 	= dir['id']
@@ -59,7 +59,7 @@ def main(dirlist):
 
 
 	ElapsedTime = time.clock() - StartTime
-	print '\nElapsed Time: %0.3fs' % (ElapsedTime)
+	print ('\nElapsed Time: %0.3fs' % (ElapsedTime))
 	
 	return content
 

@@ -7,12 +7,6 @@
     </folder>
 </folders>
 
-<breakpoints>
-    <breakpoint>
-        <file>D:\Work\game-sdk\game\data\strawberry\script\on_load.nut</file>
-        <line>1</line>
-        <enabled>1</enabled>
-    </breakpoint>
-</breakpoints>
+<breakpoints/>
 
 <watches/>

@@ -4,7 +4,7 @@ import sys
 import os
 import time
 import glob
-import json
+import simplejson as json
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
@@ -13,13 +13,13 @@ import utils
 
 #---------------------------------------------------------------------------------------
 def print_error_parse_texture_name(file_name):
-	print '\n TEXTURE NAME: ' + file_name + ' invalid.'
-	print '\n TEXTURE NAME FORMAT: name.mipmaps_count.output_format.texture_wrap.texture_filter.extension'
-	print '\n mipmaps_count of integer type'
-	print '\n output_format: tga, pvr, mip'
-	print '\n texture_wrap: clamp, repeat'
-	print '\n texture_filter: nearest, linear, bilinear, trilinear, quadlinear'
-	print '\n extension: mip, pvr, tga, png, jpg, jpeg'
+	print ('\n TEXTURE NAME: ' + file_name + ' invalid.')
+	print ('\n TEXTURE NAME FORMAT: name.mipmaps_count.output_format.texture_wrap.texture_filter.extension')
+	print ('\n mipmaps_count of integer type')
+	print ('\n output_format: tga, pvr, mip')
+	print ('\n texture_wrap: clamp, repeat')
+	print ('\n texture_filter: nearest, linear, bilinear, trilinear, quadlinear')
+	print ('\n extension: mip, pvr, tga, png, jpg, jpeg')
 #---------------------------------------------------------------------------------------
 def parse_texture_name(file_name):
 	file_format = file_name.split('.')
@@ -35,16 +35,16 @@ def parse_texture_name(file_name):
 	is_valid = out_format == 'tga' or out_format == 'mip' or out_format == 'pvr'
 
 	if not is_valid:
-	    print '\n OUTPUT FORMAT: ' + out_format + ' not supported.'
+	    print ('\n OUTPUT FORMAT: ' + out_format + ' not supported.')
 	    print_error_parse_texture_name(file_name)
 	    return None
 
 	if out_format == 'mip' and not (in_format == 'tga' or in_format == 'mip'):
-	    print '\n Texture error for: ' + file_name + '. Only tga images can be imported to mip format.'
+	    print ('\n Texture error for: ' + file_name + '. Only tga images can be imported to mip format.')
 	    return None
 
 	if out_format == 'tga' and in_format != 'tga':
-	    print '\n Texture error for: ' + file_name + '. Only tga images can be imported to tga format.'
+	    print ('\n Texture error for: ' + file_name + '. Only tga images can be imported to tga format.')
 	    return None
 
 	return file_format
@@ -128,7 +128,7 @@ def main(dirlist):
 			textures.append({'name' : n, 'file': ('texture/' + n), 'wrap' : texture_wrap, 'filter' : texture_filter})
 
 		if textures:
-			with open(dst_dir + '/content.json', 'wb') as f:
+			with open(dst_dir + '/content.json', 'w') as f:
 				json.dump(textures, f)
 				
 			content['id'] = dir['id']
@@ -136,7 +136,7 @@ def main(dirlist):
 			content['file'] = 'texture/content.json'
 	
 	ElapsedTime = time.clock() - StartTime
-	print '\nElapsed Time: %0.3fs' % (ElapsedTime)
+	print ('\nElapsed Time: %0.3fs' % (ElapsedTime))
 
 	return content
 
