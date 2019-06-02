@@ -6,6 +6,8 @@ import time
 import glob
 import simplejson as json
 import subprocess
+import cygwin;
+
 
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
@@ -24,6 +26,8 @@ def main(dirlist):
 		src_dir = dir['src'] + '/script'
 		dst_dir = dir['dst'] + '/script'
 		
+		print ('src: ' + src_dir)
+
 		files 		= []
 		
 		if os.path.exists(src_dir):
@@ -48,16 +52,12 @@ def main(dirlist):
 			out_file 	= dst_dir + '/' + n + 't'
 
 			if utils.newerFile(in_file, out_file):
-
-				in_temp = os.path.basename(in_file)
-				out_temp = os.path.basename(out_file)
-				#command = config.EXE_SQ + ' -c -d -o ' + out_temp + ' ' + in_temp
-				command = config.EXE_SQ + ' -c -o ' + out_temp + ' ' + in_temp
-
-				os.chdir(d)
+				out_temp = cygwin.cygpath(out_file, 'w')
+				in_temp = cygwin.cygpath(in_file, 'w')
+				command = config.EXE_SQ + ' -c -d -o ' + out_temp.replace('\\','/') + ' ' + in_temp.replace('\\','/')
+				#command = config.EXE_SQ + ' -c -o ' + out_temp + ' ' + in_temp
+				print('a' + in_file + 'b' + out_file )
 				utils.spawnProcess(command)
-				utils.updateFile(out_temp, out_file)
-				os.remove(out_temp)
 
 			scripts.append({'name' : name, 'file': ('script/' + n + 't')});
 				
