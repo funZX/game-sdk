@@ -33,24 +33,17 @@ namespace sim
 {
 // ----------------------------------------------------------------------//
 
-void CEngine::InitVM()
+void CSquirrel::ExportSymbols()
 {
-	Sqrat::Class<CEngine> CEngine(m_vm->GetSQVM(), "CEngine");
+	Sqrat::Class<CEngine> CEngine(m_vm, "CEngine");
 
 	CEngine.Func("GetTime", &CEngine::GetTime);
 	CEngine.Func("GetDeltaTime", &CEngine::GetDeltaTime);
 
-	m_vm->GetRootTable().SetInstance("engine", this);
+	m_rootTable->SetInstance("engine", CEngine::GetSingletonPtr());
 
-	Sqrat::Class<CFileSystem> CFileSystem(m_vm->GetSQVM(), "CFileSystem");
+	Sqrat::Class<CFileSystem> CFileSystem(m_vm, "CFileSystem");
 	CFileSystem.Func("LinkEffect", &CFileSystem::LinkEffect);
-}
-
-// ----------------------------------------------------------------------//
-template<class V>
-void CEngine::SetScriptObject(const char* name, V* val)
-{
-	m_vm->GetRootTable().SetInstance(name, val);
 }
 
 // ----------------------------------------------------------------------//

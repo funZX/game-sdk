@@ -71,9 +71,14 @@ public:
     CSquirrel();
     ~CSquirrel();
 	// ------------------------------------------------------------------//
-    HSQUIRRELVM						GetSQVM() { return m_vm; }
-	Sqrat::RootTable&				GetRootTable() { return *m_rootTable; }
-	Sqrat::ConstTable&				GetConstTable() { return *m_constTable; }
+	HSQUIRRELVM						GetSQVM() { return m_vm; }
+
+	template<class V>
+	void							AddRootSlot(const char* name, V* val);
+
+	template<class V>
+	void							AddConstSlot(const char* name, V* val);
+
 
     Sqrat::string					GetLastErrorMsg() { return m_lastErrorMsg; }
     void							SetLastErrorMsg(const Sqrat::string& str) { m_lastErrorMsg = str; }
@@ -90,6 +95,11 @@ protected:
 	void							DebuggerStart();
 	void							DebuggerStop();
 #endif // SIM_DEBUG
+
+	// ------------------------------------------------------------------//
+	void							ExportSymbols();
+	// ------------------------------------------------------------------//
+
 
     static void						PrintFunc(HSQUIRRELVM v, const SQChar *s, ...);
     static SQInteger				RuntimeErrorHandler(HSQUIRRELVM v);
@@ -111,6 +121,20 @@ protected:
 #endif // SIM_DEBUG
 	// ------------------------------------------------------------------//
 };
+
+// ----------------------------------------------------------------------//
+template<class V>
+void CSquirrel::AddRootSlot(const char* name, V* val)
+{
+	m_rootTable->SetInstance(name, val);
+}
+
+// ----------------------------------------------------------------------//
+template<class V>
+void CSquirrel::AddConstSlot(const char* name, V* val)
+{
+	m_constTable->SetInstance(name, val);
+}
 
 // ----------------------------------------------------------------------//
 }; // namespace vm
