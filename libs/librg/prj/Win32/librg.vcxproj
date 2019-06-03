@@ -11,36 +11,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\async++.h" />
-    <ClInclude Include="..\..\include\async++\aligned_alloc.h" />
-    <ClInclude Include="..\..\include\async++\cancel.h" />
-    <ClInclude Include="..\..\include\async++\continuation_vector.h" />
-    <ClInclude Include="..\..\include\async++\parallel_for.h" />
-    <ClInclude Include="..\..\include\async++\parallel_invoke.h" />
-    <ClInclude Include="..\..\include\async++\parallel_reduce.h" />
-    <ClInclude Include="..\..\include\async++\partitioner.h" />
-    <ClInclude Include="..\..\include\async++\range.h" />
-    <ClInclude Include="..\..\include\async++\ref_count.h" />
-    <ClInclude Include="..\..\include\async++\scheduler.h" />
-    <ClInclude Include="..\..\include\async++\scheduler_fwd.h" />
-    <ClInclude Include="..\..\include\async++\task.h" />
-    <ClInclude Include="..\..\include\async++\task_base.h" />
-    <ClInclude Include="..\..\include\async++\traits.h" />
-    <ClInclude Include="..\..\include\async++\when_all_any.h" />
-    <ClInclude Include="..\..\sources\fifo_queue.h" />
-    <ClInclude Include="..\..\sources\internal.h" />
-    <ClInclude Include="..\..\sources\singleton.h" />
-    <ClInclude Include="..\..\sources\task_wait_event.h" />
-    <ClInclude Include="..\..\sources\work_steal_queue.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\sources\scheduler.cpp" />
-    <ClCompile Include="..\..\sources\threadpool_scheduler.cpp" />
+    <ClCompile Include="..\..\include\enet.h" />
+    <ClCompile Include="..\..\include\librg.h" />
+    <ClCompile Include="..\..\include\zpl.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{66B317EE-035D-4C2E-9BBD-22D5AB3592C2}</ProjectGuid>
+    <ProjectGuid>{680BA01E-9667-4D85-A82F-AC20A1DF1182}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>jansson</RootNamespace>
+    <RootNamespace>librg</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

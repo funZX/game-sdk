@@ -1,5 +1,5 @@
 #include <squirrel.h>
-#include <winsock.h>
+#include <librg.h>
 #include <squirrel.h>
 #include <squirrel.h>
 #include "sqrdbg.h"

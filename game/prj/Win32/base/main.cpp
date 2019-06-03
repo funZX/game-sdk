@@ -24,8 +24,6 @@ void onStart()
 
 void resizeFromLayer( int width, int height )
 {
-	timeBeginPeriod( 1 );
-
 	game = new CGame("../../blob/");
 	game->Start( width, height );
 }
@@ -34,8 +32,6 @@ void quit( void )
 {
 	game->Quit();
 	delete game;
-
-	timeEndPeriod( 1 );
 }
 
 void key( unsigned char key, bool isDown )
