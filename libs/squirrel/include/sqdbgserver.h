@@ -8,7 +8,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <winsock.h>
+#include <librg.h>
 
 typedef std::basic_string<SQChar> SQDBGString;
 

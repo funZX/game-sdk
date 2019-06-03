@@ -103,7 +103,6 @@ void CEngine::Initialize()
 	InitFont();
 	InitEffect();
 	InitMaterial();
-	InitVM();
 }
 
 // ----------------------------------------------------------------------//

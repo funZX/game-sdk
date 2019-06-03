@@ -211,7 +211,7 @@ bool CFileSystem::LoadNext( void )
 			CEngine* engine = CEngine::GetSingletonPtr();
 			CSquirrel* sq = engine->GetVM();
 			
-			sq->GetRootTable().SetInstance( "filesystem", this );
+			sq->AddRootSlot( "filesystem", this );
 			on_load->Run();
 		}
 	}

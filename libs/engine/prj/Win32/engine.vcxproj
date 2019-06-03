@@ -69,12 +69,12 @@
     <ClCompile Include="..\..\sources\render\sim_vertex_group.cpp" />
     <ClCompile Include="..\..\sources\render\sim_vertex_source.cpp" />
     <ClCompile Include="..\..\sources\sim_engine.cpp" />
-    <ClCompile Include="..\..\sources\sim_engine_vm.cpp" />
     <ClCompile Include="..\..\sources\sound\sim_sound.cpp" />
     <ClCompile Include="..\..\sources\sound\sim_sound_data.cpp" />
     <ClCompile Include="..\..\sources\sound\sim_sound_source.cpp" />
     <ClCompile Include="..\..\sources\vm\sim_script.cpp" />
     <ClCompile Include="..\..\sources\vm\sim_squirrel.cpp" />
+    <ClCompile Include="..\..\sources\vm\sim_squirrel_bindings.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\core\io\sim_file_stream.h" />
@@ -205,8 +205,8 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;HAVE_STRUCT_TIMESPEC;GL_GLEXT_PROTOTYPES;SIM_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../include;../../../async/include;../../../jansson/include;../../../freetype/include;../../../pthread/include;../../../openal/include;../../../opengles/include;../../../squirrel/include;../../../bullet/sources;../../../lzma/include;../../../detour/include;../../../recast/include;../../../sigcxx/include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;WIN32_LEAN_AND_MEAN;HAVE_STRUCT_TIMESPEC;GL_GLEXT_PROTOTYPES;SIM_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../include;../../../include;../../../async/include;../../../jansson/include;../../../freetype/include;../../../pthread/include;../../../openal/include;../../../opengles/include;../../../librg/include;../../../squirrel/include;../../../bullet/sources;../../../lzma/include;../../../detour/include;../../../recast/include;../../../sigcxx/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -221,8 +221,8 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>HAVE_STRUCT_TIMESPEC;WIN32;NDEBUG;_LIB;GL_GLEXT_PROTOTYPES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../include;../../../async/include;../../../jansson/include;../../../freetype/include;../../../pthread/include;../../../openal/include;../../../opengles/include;../../../squirrel/include;../../../bullet/sources;../../../lzma/include;../../../detour/include;../../../recast/include;../../../sigcxx/include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HAVE_STRUCT_TIMESPEC;WIN32;NDEBUG;_LIB;WIN32_LEAN_AND_MEAN;GL_GLEXT_PROTOTYPES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../include;../../../include;../../../async/include;../../../jansson/include;../../../freetype/include;../../../pthread/include;../../../openal/include;../../../opengles/include;../../../librg/include;../../../squirrel/include;../../../bullet/sources;../../../lzma/include;../../../detour/include;../../../recast/include;../../../sigcxx/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

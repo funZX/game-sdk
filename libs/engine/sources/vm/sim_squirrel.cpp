@@ -58,6 +58,7 @@ CSquirrel::CSquirrel()
     SetPrintFunc( PrintFunc, PrintFunc );
     SetErrorHandler( RuntimeErrorHandler, CompilerErrorHandler );
 
+	ExportSymbols();
 
 #if SIM_DEBUG
 	m_rdbg = nullptr;
