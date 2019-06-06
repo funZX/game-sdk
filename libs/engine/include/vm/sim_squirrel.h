@@ -118,6 +118,7 @@ protected:
 
 #if SIM_DEBUG
 	HSQREMOTEDBG					m_rdbg;
+    bool                            m_rdbg_shutdown;
 #endif // SIM_DEBUG
 	// ------------------------------------------------------------------//
 };
