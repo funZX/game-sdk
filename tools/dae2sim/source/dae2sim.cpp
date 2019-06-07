@@ -19,7 +19,6 @@ int main(int argc, char** argv)
 		if (strcmp("-animation", argv[i]) == 0)
 		{
 			if (i + 1 == argc) break;
-			i++;
 
 			options.animations = true;
 		}
@@ -82,13 +81,13 @@ void onStart()
 }
 
 // ----------------------------------------------------------------------//
-void export_scenes(daeDatabase* db, const std::string& path);
+void export_scene(daeDatabase* db, const std::string& path);
 // ----------------------------------------------------------------------//
 int export_dae2sim(daeDatabase* db, const char* folder)
 {
 	std::string path(folder);
 
-	export_scenes(db, path);
+	export_scene(db, path);
 
 	return 0;
 }

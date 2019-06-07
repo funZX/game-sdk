@@ -12,25 +12,25 @@
     <ClCompile Include="..\..\source\dae2sim.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\export_animations.cpp">
+    <ClCompile Include="..\..\source\export_scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\export_cameras.cpp">
+    <ClCompile Include="..\..\source\export_material.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\export_lights.cpp">
+    <ClCompile Include="..\..\source\export_light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\export_materials.cpp">
+    <ClCompile Include="..\..\source\export_curve.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\export_scenes.cpp">
+    <ClCompile Include="..\..\source\export_camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\export_meshes.cpp">
+    <ClCompile Include="..\..\source\export_animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\export_curves.cpp">
+    <ClCompile Include="..\..\source\export_geometry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -12,13 +12,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\dae2sim.cpp" />
-    <ClCompile Include="..\..\source\export_animations.cpp" />
-    <ClCompile Include="..\..\source\export_cameras.cpp" />
-    <ClCompile Include="..\..\source\export_curves.cpp" />
-    <ClCompile Include="..\..\source\export_meshes.cpp" />
-    <ClCompile Include="..\..\source\export_lights.cpp" />
-    <ClCompile Include="..\..\source\export_materials.cpp" />
-    <ClCompile Include="..\..\source\export_scenes.cpp" />
+    <ClCompile Include="..\..\source\export_animation.cpp" />
+    <ClCompile Include="..\..\source\export_camera.cpp" />
+    <ClCompile Include="..\..\source\export_curve.cpp" />
+    <ClCompile Include="..\..\source\export_geometry.cpp" />
+    <ClCompile Include="..\..\source\export_light.cpp" />
+    <ClCompile Include="..\..\source\export_material.cpp" />
+    <ClCompile Include="..\..\source\export_scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\dae\Strawberry.dae">

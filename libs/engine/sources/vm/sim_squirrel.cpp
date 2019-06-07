@@ -58,10 +58,11 @@ CSquirrel::CSquirrel()
     SetPrintFunc( PrintFunc, PrintFunc );
     SetErrorHandler( RuntimeErrorHandler, CompilerErrorHandler );
 
-	ExportSymbols();
+	BindAll();
 
 #if SIM_DEBUG
 	m_rdbg = nullptr;
+    m_rdbg_shutdown = false;
 	DebuggerStart();
 #endif // SIM_DEBUG
 }
@@ -71,10 +72,11 @@ CSquirrel::CSquirrel()
 CSquirrel::~CSquirrel()
 {
 #if SIM_DEBUG
+    m_rdbg_shutdown = true;
 	if (m_rdbg)
 		DebuggerStop();
+    while (m_rdbg);
 #endif // SIM_DEBUG
-
 	SIM_DELETE( m_constTable );
     SIM_DELETE( m_rootTable );
     sq_close(m_vm);
@@ -176,7 +178,8 @@ void CSquirrel::DebuggerStart()
 			sq_rdbg_shutdown(m_rdbg);
 
 			m_rdbg = nullptr;
-			DebuggerStart();
+            if(!m_rdbg_shutdown)
+			    DebuggerStart();
 		});
 	}
 }

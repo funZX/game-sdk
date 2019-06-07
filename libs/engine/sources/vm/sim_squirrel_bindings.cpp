@@ -33,7 +33,7 @@ namespace sim
 {
 // ----------------------------------------------------------------------//
 
-void CSquirrel::ExportSymbols()
+void CSquirrel::BindAll()
 {
 	Sqrat::Class<CEngine> CEngine(m_vm, "CEngine");
 

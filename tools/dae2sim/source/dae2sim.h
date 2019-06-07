@@ -9,7 +9,7 @@
 #include <jansson.h>
 #include <math/sim_vec4.h>
 // ----------------------------------------------------------------------//
-using namespace ColladaDOM150;
+using namespace ColladaDOM141;
 
 namespace filesystem = std::experimental::filesystem::v1;
 
