@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dae2sim", "dae2sim.vcxproj", "{BD4FFC08-AD8C-4C28-8286-891589C4D235}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -10,6 +10,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dae2sim", "dae2sim.vcxproj"
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "collada-dom", "..\..\..\libs\collada-dom\prj\Win32\collada-dom.vcxproj", "{F45D79D0-9A8D-4B06-9488-7A2FC171D922}"
+	ProjectSection(ProjectDependencies) = postProject
+		{84C33ED6-FE1A-4F11-9B05-22D22369E620} = {84C33ED6-FE1A-4F11-9B05-22D22369E620}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "engine", "..\..\..\..\libs\engine\prj\Win32\engine.vcxproj", "{CED2AAC1-80AE-427E-BDAB-D920211C9F8B}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -17,6 +20,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "engine", "..\..\..\..\libs\
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jansson", "..\..\..\..\libs\jansson\prj\Win32\jansson.vcxproj", "{F750179A-11DA-424B-AF19-4ACEC75BEF98}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tinyxml2", "..\..\..\libs\collada-dom\external\tinyxml2\prj\Win32\tinyxml2.vcxproj", "{84C33ED6-FE1A-4F11-9B05-22D22369E620}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,8 +45,15 @@ Global
 		{F750179A-11DA-424B-AF19-4ACEC75BEF98}.Debug|Win32.Build.0 = Debug|Win32
 		{F750179A-11DA-424B-AF19-4ACEC75BEF98}.Release|Win32.ActiveCfg = Release|Win32
 		{F750179A-11DA-424B-AF19-4ACEC75BEF98}.Release|Win32.Build.0 = Release|Win32
+		{84C33ED6-FE1A-4F11-9B05-22D22369E620}.Debug|Win32.ActiveCfg = Debug|Win32
+		{84C33ED6-FE1A-4F11-9B05-22D22369E620}.Debug|Win32.Build.0 = Debug|Win32
+		{84C33ED6-FE1A-4F11-9B05-22D22369E620}.Release|Win32.ActiveCfg = Release|Win32
+		{84C33ED6-FE1A-4F11-9B05-22D22369E620}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BF75C706-D1D6-4AD8-B2BE-B4D11D6A81B8}
 	EndGlobalSection
 EndGlobal
