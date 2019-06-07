@@ -7,7 +7,7 @@
 #include <dom/domCOLLADA.h>
 
 #include <jansson.h>
-#include <math/sim_vec4.h>
+#include <sim_engine.h>
 // ----------------------------------------------------------------------//
 using namespace ColladaDOM141;
 
@@ -23,8 +23,12 @@ struct Options
 
 extern Options options;
 
+daeElement* daeGetUrl(daeDocument* doc, daeElement* elem);
+std::vector<daeElement*> daeGetChildrenOfType(daeElement* elem, daeInt daeType);
+std::vector<daeElement*> daeGetChildrenOfType(daeElement* elem, domNodeType domType);
+
 // ----------------------------------------------------------------------//
 
-void Vec4ToJson(json_t* root, const sim::mat::TVec4* v);
+void ArrayToJson(json_t* root, const sim::f32* v, const unsigned size);
 
 // ----------------------------------------------------------------------//

@@ -40,7 +40,8 @@ CSceneNode::CSceneNode()
 	m_parent	= nullptr;
 	m_children	= SIM_NEW TChildren();
 
-	m_radius = 1.0f;
+	m_radius    = 1.0f;
+
 	Vec3ToZero( &m_box );
 	Vec3ToZero( &m_center );
 
@@ -55,6 +56,16 @@ CSceneNode::CSceneNode()
 	QuatReset( &m_transform.quaternion);
 	Matrix4ToIdentity( &m_transform.matrix.orientation );
 	Matrix4ToIdentity( &m_transform.matrix.world );
+
+    m_state.shape = Shape::Box;
+    m_state.type = Type::Default;
+    m_state.isVisible = true;
+    m_state.isCulled = false;
+    m_state.isPhysic = false;
+    m_state.mass = 0.0f;
+    m_state.restitution = 0.0f;
+    m_state.friction = 0.0f;
+    Vec3ToZero(&m_state.inertia);
 }
 
 // ----------------------------------------------------------------------//

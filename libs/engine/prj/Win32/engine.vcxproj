@@ -47,6 +47,7 @@
     <ClCompile Include="..\..\sources\render\gui\sim_widget_sprite.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_actor.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_camera.cpp" />
+    <ClCompile Include="..\..\sources\render\scene\sim_curve.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_light.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_scene.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_scene_node.cpp" />
@@ -127,6 +128,7 @@
     <ClInclude Include="..\..\include\render\gui\sim_widget_sprite.h" />
     <ClInclude Include="..\..\include\render\scene\sim_actor.h" />
     <ClInclude Include="..\..\include\render\scene\sim_camera.h" />
+    <ClInclude Include="..\..\include\render\scene\sim_curve.h" />
     <ClInclude Include="..\..\include\render\scene\sim_light.h" />
     <ClInclude Include="..\..\include\render\scene\sim_scene.h" />
     <ClInclude Include="..\..\include\render\scene\sim_scene_node.h" />

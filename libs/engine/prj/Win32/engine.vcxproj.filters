@@ -287,6 +287,9 @@
     <ClCompile Include="..\..\sources\vm\sim_squirrel_bindings.cpp">
       <Filter>Source Files\vm</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\sources\render\scene\sim_curve.cpp">
+      <Filter>Source Files\render\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\math\sim_math.h">
@@ -519,6 +522,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\core\sim_pool.h">
       <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\scene\sim_curve.h">
+      <Filter>Header Files\render\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

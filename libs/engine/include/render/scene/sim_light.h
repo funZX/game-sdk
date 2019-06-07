@@ -51,8 +51,6 @@ public:
 	virtual ~CLight();
 
 	// ------------------------------------------------------------------//
-	inline bool							IsVisible()			{ return m_isVisible; }
-
 	inline TVec4*						GetAmbient()		{ return &m_ambient; }
 	inline void							SetAmbient( TVec4 *col ) { Vec4Copy( &m_ambient, col ); }
 
@@ -68,13 +66,6 @@ public:
 	inline void							SetChannel( CDriver::LightChannel sel ) { m_channel = sel; };
 	inline CDriver::LightChannel		GetChanel() { return m_channel; }
 
-	inline void							SetDirection( TVec3 *dir ) { Vec3Copy( &m_direction, dir ); }
-	inline TVec3*						GetDirection() { return &m_direction; };
-
-	inline void							SetPosition( TVec3 *pos ) { Vec3Copy( &m_position, pos ); }
-
-	inline TVec3*						GetPosition() { return &m_position; };
-
 	virtual void						Update( f32 dt, void *userData );
 	virtual void						Render( CDriver *driver );
 	// ------------------------------------------------------------------//
@@ -89,11 +80,6 @@ protected:
 	TVec4								m_specular;
 
 	f32									m_intensity;
-
-	TVec3								m_position;
-	TVec3								m_direction;
-
-	bool								m_isVisible;
 	// ------------------------------------------------------------------//
 };
 

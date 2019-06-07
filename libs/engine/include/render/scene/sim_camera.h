@@ -59,19 +59,7 @@ public:
 
 	inline TMatrix4*			GetPerspectiveMatrix() { return &m_perspectiveMatrix; }
 	inline TMatrix4*			GetOrthographicMatrix() { return &m_orthographicMatrix; }
-
-	inline TMatrix4*			GetOrientationMatrix() { return &m_orientationMatrix; }
-	inline TMatrix4*			GetViewMatrix() { return &m_viewMatrix; }
-
-	inline void					SetDirection( TVec3 *dir )
-								{  m_direction.x = dir->x; m_direction.y = dir->y; m_direction.z = dir->z; };
-
-	inline TVec3*				GetDirection() { return &m_direction; };
-
-	inline void					SetPosition( TVec3 *pos )
-								{  m_position.x = pos->x; m_position.y = pos->y; m_position.z = pos->z; };
-
-	inline TVec3*				GetPosition()	{ return &m_position; };
+    inline TMatrix4*            GetViewMatrix() { return &m_viewMatrix; }
 
 	inline void					SetFieldOfView( f32 fov ) { m_fieldOfView = fov ; }
 	inline f32					GetFieldOfView()		{ return m_fieldOfView; }
@@ -87,9 +75,6 @@ public:
 
 	void						Move( f32 dt, bool forward );
 	void						Strafe( f32 dt, bool left );
-
-	void						LookAt( TVec3 *look )		{ Vec3Copy( &m_lookAt, look ); }
-	void						LookAt( f32 x, f32 y, f32 z )	{ Vec3Set( &m_lookAt, x, y, z ); }
 
 	void						ExtractClipPlanes();
 	bool						SphereIn( const TVec3 *pos, const f32 rad ) const;
@@ -115,12 +100,7 @@ protected:
 	TMatrix4					m_perspectiveMatrix;
 	TMatrix4					m_orthographicMatrix;
 
-	TMatrix4					m_orientationMatrix;
 	TMatrix4					m_viewMatrix;
-
-	TVec3						m_position;
-	TVec3						m_direction;
-	TVec3						m_lookAt;
 
 	f32							m_fieldOfView;
 	f32							m_nearPlane;

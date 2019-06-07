@@ -848,6 +848,24 @@ bool CFileSystem::LoadScript(const json_t* jsonRoot, s32 index)
 
 bool CFileSystem::LoadScene(const json_t* jsonRoot, s32 index)
 {
+    json_t* jsonValue = json_array_get(jsonRoot, index);
+
+    std::string name = json_string_value(json_object_get(jsonValue, "name"));
+    std::string file = json_string_value(json_object_get(jsonValue, "file"));
+
+    CScene* scene = SIM_NEW CScene(name);
+
+
+
+    m_sceneList.Insert(hash::Get(name), scene);
+
+    m_loadMessage.clear();
+    m_loadMessage = "Loading scene ";
+    m_loadMessage.append("\"");
+    m_loadMessage.append(name);
+    m_loadMessage.append("\"");
+    m_loadMessage.append("...");
+
 	return NextStep(jsonRoot);
 }
 

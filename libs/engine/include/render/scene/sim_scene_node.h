@@ -47,7 +47,22 @@ class CSceneNode: public stl::COctreeVolume, public IUpdatable, public IRenderab
 {
 public:
 	// ------------------------------------------------------------------//
-	
+        // ------------------------------------------------------------------//
+    enum class Shape : u32
+    {
+        Box,
+        Sphere,
+        Cylinder,
+        Cone,
+    };
+    // ------------------------------------------------------------------//
+    enum class Type : u32
+    {
+        Default,
+        NotCulled,
+        Billboard,
+    };
+    // ------------------------------------------------------------------//
 	typedef struct
 	{
 		TVec3				translation;
@@ -71,6 +86,21 @@ public:
 		} matrix;
 	
 	} TTransform;
+
+    // ------------------------------------------------------------------//
+    typedef struct
+    {
+        Shape					shape;
+        Type					type;
+        bool					isVisible;
+        bool					isCulled;
+        bool					isPhysic;
+        f32						mass;
+        f32						restitution;
+        f32						friction;
+        TVec3					inertia;
+
+    } TState;
 
 	// ------------------------------------------------------------------//
 	typedef stl::CBalanceTree<u32, CSceneNode*>			TChildren;
@@ -117,6 +147,15 @@ public:
 	inline TMatrix4*				GetOrientationMatrix()				{ return &m_transform.matrix.orientation; }
 	inline TMatrix4*				GetWorldMatrix()					{ return &m_transform.matrix.world; }
 
+    inline void					    SetShape(Shape shape) { m_state.shape = shape; }
+    inline Shape				    GetShape() { return m_state.shape; }
+
+    inline void					    SetVisible(bool vis) { m_state.isVisible = vis; }
+
+    inline bool					    IsVisible() { return m_state.isVisible; }
+    inline bool					    IsCulled() { return m_state.isCulled; }
+    inline bool					    IsPhysic() { return m_state.isPhysic; }
+
 	// ------------------------------------------------------------------//
 
 #if SIM_DEBUG
@@ -135,6 +174,8 @@ protected:
 	TChildren*						m_children;
 
 	TTransform						m_transform;
+
+    TState					        m_state;
 	// ------------------------------------------------------------------//
 };
 

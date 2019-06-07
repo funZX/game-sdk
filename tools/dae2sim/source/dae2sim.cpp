@@ -89,16 +89,61 @@ int export_dae2sim(daeDocument* doc, const char* folder)
 
 	return export_scenes(doc, path);
 }
+
 // ----------------------------------------------------------------------//
 
-void Vec4ToJson(json_t* root, const sim::mat::TVec4* v)
+daeElement* daeGetUrl(daeDocument* doc, daeElement* elem)
+{
+    std::string url = elem->getAttribute("url");
+    url.erase(0, 1);
+
+    return doc->getDatabase()->idLookup(url, doc);
+}
+
+// ----------------------------------------------------------------------//
+
+std::vector<daeElement*> daeGetChildrenOfType(daeElement* elem, daeInt daeType)
+{
+    std::vector<daeElement*> ret;
+
+    auto children = elem->getChildren();
+    for (unsigned i = 0; i < children.getCount(); i++)
+    {
+        daeElement* child = children[i];
+        domNode* dom = (domNode*)child;
+        if (daeType == dom->getElementType())
+            ret.push_back(child);
+    }
+
+    return ret;
+}
+
+// ----------------------------------------------------------------------//
+
+std::vector<daeElement*> daeGetChildrenOfType(daeElement* elem, domNodeType domType)
+{
+    std::vector<daeElement*> ret;
+
+    auto children = elem->getChildren();
+    for (unsigned i = 0; i < children.getCount(); i++)
+    {
+        daeElement* child = children[i];
+        domNode* dom = (domNode*)child;
+        if (domType == dom->getType())
+            ret.push_back(child);
+    }
+
+    return ret;
+}
+
+// ----------------------------------------------------------------------//
+
+void ArrayToJson(json_t* root, const sim::f32* v, const unsigned count)
 {
 	SIM_ASSERT(root);
 
-	json_array_insert(root, 0, json_real(v->x));
-	json_array_insert(root, 1, json_real(v->y));
-	json_array_insert(root, 2, json_real(v->z));
-	json_array_insert(root, 3, json_real(v->w));
+    for (unsigned i = 0; i < count; i++)
+        json_array_append(root, json_real(v[i]));
 }
 // ----------------------------------------------------------------------//
 

@@ -45,14 +45,7 @@ CCamera::CCamera()
 	Matrix4ToIdentity( &m_perspectiveMatrix );
 	Matrix4ToIdentity( &m_orthographicMatrix );
 
-	Matrix4ToIdentity( &m_orientationMatrix );
 	Matrix4ToIdentity( &m_viewMatrix );
-
-	Matrix4GetFront( &m_orientationMatrix, &m_direction );
-
-	Vec3Invert( &m_direction );
-	Vec3ToZero( &m_position );
-	Vec3Copy( &m_lookAt, &Vec3Front );
 
 	m_speed			= 1.0f;
 
@@ -109,8 +102,8 @@ void CCamera::Move( f32 dt, bool forward )
 	    speed = -speed;
 	}
 
-	Vec3Scale( &v, &m_direction, speed );
-	Vec3Add( &m_position, &v );
+	Vec3Scale( &v, &m_transform.axis.direction, speed );
+	Vec3Add( &m_transform.translation, &v );
 }
 
 // ----------------------------------------------------------------------//
@@ -124,9 +117,9 @@ void CCamera::Strafe( f32 dt, bool left )
 	    speed = -speed;
 	}
 
-	Matrix4GetSide( &m_orientationMatrix, &v );
+	Matrix4GetSide( &m_transform.matrix.orientation, &v );
 	Vec3Scale( &v, speed );
-	Vec3Add( &m_position, &m_position, &v );
+	Vec3Add( &m_transform.translation, &m_transform.translation, &v );
 }
 
 // ----------------------------------------------------------------------//
@@ -135,11 +128,11 @@ void CCamera::Update( f32 dt, void *userData )
 {
 	TVec3 minusPos;
 
-	Vec3Copy( &minusPos, &m_position );
+	Vec3Copy( &minusPos, &m_transform.translation );
 	Vec3Invert( &minusPos );
 
-	Matrix4FromDirectionNoRoll( &m_orientationMatrix, &m_direction );
-	Matrix4Copy( &m_viewMatrix, &m_orientationMatrix );
+	Matrix4FromDirectionNoRoll( &m_transform.matrix.orientation, &m_transform.axis.direction );
+	Matrix4Copy( &m_viewMatrix, &m_transform.matrix.orientation);
 	Matrix4Translate( &m_viewMatrix, &minusPos );
 
 	ExtractClipPlanes();
@@ -149,8 +142,8 @@ void CCamera::Update( f32 dt, void *userData )
 
 void CCamera::Render( CDriver *driver )
 {
-	driver->SetEyePosition( &m_position );
-	driver->SetEyeDirection( &m_direction );
+	driver->SetEyePosition( &m_transform.translation );
+	driver->SetEyeDirection( &m_transform.axis.direction );
 }
 
 // ----------------------------------------------------------------------//

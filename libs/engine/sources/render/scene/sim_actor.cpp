@@ -49,21 +49,10 @@ namespace rnr
 CActor::CActor()
 	: CSceneNode()
 {
-	m_mesh			            = nullptr;
-
-	m_properties.shape			= Shape::Box;
-	m_properties.type			= Type::Default;
-	m_properties.isVisible		= true;
-	m_properties.isCulled		= false;
-	m_properties.isPhysic		= false;
+	m_mesh			        = nullptr;
 
 	m_collisionShape			= nullptr;
 	m_rigidBody					= nullptr;
-
-	m_mass						= 0.0f;
-	m_restitution				= 0.0f;
-	m_friction					= 0.0f;
-	Vec3ToZero( &m_inertia );
 }
 // ----------------------------------------------------------------------//
 
@@ -109,7 +98,7 @@ void CActor::AddPhysic(phy::CPhysic *physic)
 	if (IsPhysic())
 		return;
 
-	switch (Value(m_properties.shape))
+	switch (Value(m_state.shape))
 	{
 	case Shape::Box:
 	{
@@ -136,18 +125,18 @@ void CActor::AddPhysic(phy::CPhysic *physic)
 	}
 	}
 
-	btScalar mass(m_mass);
-	btScalar restitution(m_restitution);
-	btScalar friction(m_friction);
+	btScalar mass(m_state.mass);
+	btScalar restitution(m_state.restitution);
+	btScalar friction(m_state.friction);
 	btVector3 inertia(0.0f, 0.0f, 0.0f);
 
 	if (mass != 0.0f)
 	{
 		m_collisionShape->calculateLocalInertia(mass, inertia);
 
-		m_inertia.x = inertia.getX();
-		m_inertia.y = inertia.getY();
-		m_inertia.z = inertia.getZ();
+        m_state.inertia.x = inertia.getX();
+        m_state.inertia.y = inertia.getY();
+        m_state.inertia.z = inertia.getZ();
 	}
 
 	btTransform groundTransform;
@@ -161,7 +150,7 @@ void CActor::AddPhysic(phy::CPhysic *physic)
 
 	physic->Add(this);
 
-	m_properties.isPhysic = true;
+	m_state.isPhysic = true;
 }
 
 // ----------------------------------------------------------------------//
@@ -179,10 +168,10 @@ void CActor::Update( f32 dt, void *userData )
 	if ( IsVisible() )
 	{
 		CCamera *camera = (CCamera*) userData;
-		m_properties.isCulled = !camera->SphereIn( &m_transform.translation, m_radius );
+		m_state.isCulled = !camera->SphereIn( &m_transform.translation, m_radius );
 
-		if( !m_properties.isCulled )
-			m_properties.isCulled = !camera->BoxIn( &m_transform.translation, &m_box, &m_transform.matrix.orientation );
+		if( !m_state.isCulled )
+			m_state.isCulled = !camera->BoxIn( &m_transform.translation, &m_box, &m_transform.matrix.orientation );
 	}
 
 	if ( IsPhysic() )
@@ -214,7 +203,7 @@ void CActor::Update( f32 dt, void *userData )
 
 void CActor::Render( CDriver *driver )
 {
-	switch(Value(m_properties.type))
+	switch(Value(m_state.type))
 	{
 	case Type::Default:
 		driver->EnableCulling( true );
