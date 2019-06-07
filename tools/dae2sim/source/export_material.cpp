@@ -7,7 +7,7 @@
 
 #include "dae2sim.h"
 
-void export_material(daeElement* material, const std::string& path)
+int export_material(daeElement* material, const std::string& path)
 {
     /*
     std::string material_name = material->getAttribute("name");
@@ -148,4 +148,6 @@ void export_material(daeElement* material, const std::string& path)
 
     std::cout << "Export material id:" << material->getID() << "   name:" << material_name << std::endl;
     */
+
+    return 0;
 }

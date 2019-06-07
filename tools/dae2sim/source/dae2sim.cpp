@@ -3,7 +3,7 @@
 #include "dae2sim.h"
 
 void onStart();
-int export_dae2sim(daeDatabase* db, const char* folder);
+int export_dae2sim(daeDocument* doc, const char* folder);
 
 Options options;
 
@@ -57,7 +57,7 @@ int main(int argc, char** argv)
 
 	std::string path(options.out_folder);
 
-	return export_dae2sim(root->getDocument()->getDatabase(), path.c_str());
+	return export_dae2sim(root->getDocument(), path.c_str());
 }
 
 
@@ -81,15 +81,13 @@ void onStart()
 }
 
 // ----------------------------------------------------------------------//
-void export_scene(daeDatabase* db, const std::string& path);
+int export_scenes(daeDocument* doc, const std::string& path);
 // ----------------------------------------------------------------------//
-int export_dae2sim(daeDatabase* db, const char* folder)
+int export_dae2sim(daeDocument* doc, const char* folder)
 {
 	std::string path(folder);
 
-	export_scene(db, path);
-
-	return 0;
+	return export_scenes(doc, path);
 }
 // ----------------------------------------------------------------------//
 
