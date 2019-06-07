@@ -6,7 +6,7 @@
 
 #include "dae2sim.h"
 
-void export_animations(daeDatabase* db, const std::string& path)
+void export_animation(daeElement* animation, const std::string& path)
 {
 
 }

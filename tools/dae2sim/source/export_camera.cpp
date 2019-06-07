@@ -5,7 +5,7 @@
 
 #include "dae2sim.h"
 
-void export_cameras(daeDatabase* db, const std::string& path)
+void export_camera(daeElement* camera, const std::string& path)
 {
 
 }

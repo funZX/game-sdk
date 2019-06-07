@@ -3,7 +3,7 @@
 
 #include "dae2sim.h"
 
-void export_curves(daeDatabase* db, const std::string& path)
+void export_curve(daeElement* curve, const std::string& path)
 {
 
 }
