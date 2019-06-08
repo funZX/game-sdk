@@ -120,7 +120,14 @@ CSceneNode* CSceneNode::GetChild( const std::string& name )
 
 void CSceneNode::Update( f32 dt, void *userData )
 {
+    //Matrix4FromQuat( &m_orientationMatrix, &m_quaternion );
+    BindOrientationMatrix();
+    BindWorldMatrix();
 
+    Matrix4GetSide(&m_transform.matrix.orientation, &m_transform.axis.side);
+    Matrix4GetUp(&m_transform.matrix.orientation, &m_transform.axis.up);
+    Matrix4GetFront(&m_transform.matrix.orientation, &m_transform.axis.direction);
+    //QuatGetDir( &m_quaternion, &m_direction );
 }
 
 // ----------------------------------------------------------------------//

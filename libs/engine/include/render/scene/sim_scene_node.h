@@ -141,9 +141,6 @@ public:
 
 	inline TVec3*					GetScale()							{ return &m_transform.scale; };
 
-	void							BindOrientationMatrix();
-	void							BindWorldMatrix();
-
 	inline TMatrix4*				GetOrientationMatrix()				{ return &m_transform.matrix.orientation; }
 	inline TMatrix4*				GetWorldMatrix()					{ return &m_transform.matrix.world; }
 
@@ -165,6 +162,9 @@ public:
 	// ------------------------------------------------------------------//
 
 protected:
+    void							BindOrientationMatrix();
+    void							BindWorldMatrix();
+
 	virtual void					OnResize();
 	virtual void					OnMove();
 	// ------------------------------------------------------------------//

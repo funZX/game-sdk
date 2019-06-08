@@ -58,7 +58,7 @@ CCurve::~CCurve()
 
 void CCurve::Update( f32 dt, void *userData )
 {
-
+    CSceneNode::Update(dt, userData);
 }
 
 // ----------------------------------------------------------------------//

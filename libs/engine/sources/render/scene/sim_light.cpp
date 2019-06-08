@@ -64,7 +64,7 @@ CLight::~CLight()
 
 void CLight::Update( f32 dt, void *userData )
 {
-
+    CSceneNode::Update(dt, userData);
 }
 
 // ----------------------------------------------------------------------//

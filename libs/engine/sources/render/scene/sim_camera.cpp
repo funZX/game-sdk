@@ -47,6 +47,9 @@ CCamera::CCamera()
 
 	Matrix4ToIdentity( &m_viewMatrix );
 
+    Matrix4GetFront(&m_transform.matrix.orientation, &m_transform.axis.direction);
+    Vec3Invert(&m_transform.axis.direction);
+
 	m_speed			= 1.0f;
 
 	m_fieldOfView	= 60.0f;
@@ -134,6 +137,8 @@ void CCamera::Update( f32 dt, void *userData )
 	Matrix4FromDirectionNoRoll( &m_transform.matrix.orientation, &m_transform.axis.direction );
 	Matrix4Copy( &m_viewMatrix, &m_transform.matrix.orientation);
 	Matrix4Translate( &m_viewMatrix, &minusPos );
+
+    BindWorldMatrix();
 
 	ExtractClipPlanes();
 }

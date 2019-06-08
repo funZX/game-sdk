@@ -186,14 +186,7 @@ void CActor::Update( f32 dt, void *userData )
 		QuatSet( &m_transform.quaternion, quat.getX(), quat.getY(), quat.getZ(), quat.getW() );
 		QuatGetRot( &m_transform.quaternion, &m_transform.rotation );
 
-		//Matrix4FromQuat( &m_orientationMatrix, &m_quaternion );
-		BindOrientationMatrix();
-		BindWorldMatrix();
-
-		Matrix4GetSide( &m_transform.matrix.orientation, &m_transform.axis.side );
-		Matrix4GetUp( &m_transform.matrix.orientation, &m_transform.axis.up );
-		Matrix4GetFront( &m_transform.matrix.orientation, &m_transform.axis.direction );
-		//QuatGetDir( &m_quaternion, &m_direction );
+        CSceneNode::Update(dt, userData);
 
 		CSceneNode::OnMove();
 	}
