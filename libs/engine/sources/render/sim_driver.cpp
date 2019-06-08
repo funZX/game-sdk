@@ -344,7 +344,7 @@ void CDriver::ComputeNormalMatrix()
 {
 	Mat4 m;
 
-    zpl_mat4_mul( GetViewMatrix(), GetWorldMatrix(), &m );
+    zpl_mat4_mul( GetViewMatrix(), &m, GetWorldMatrix());
     zpl_mat4_inverse( &m, &m );
     zpl_mat4_transpose( &m );
 
@@ -765,7 +765,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 	if( m_isWorldViewMatrixDirty )
 	{
 		if ( effect->m_isUsingWorldViewMatrix )
-			zpl_mat4_mul( &m_worldViewMatrix, GetViewMatrix(), GetWorldMatrix() );
+			zpl_mat4_mul( &m_worldViewMatrix, GetWorldMatrix(), GetViewMatrix());
 
 		m_isWorldViewMatrixDirty = false;
 	}
@@ -773,7 +773,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 	if( m_isViewProjectionMatrixDirty )
 	{
 		if ( effect->m_isUsingViewProjectionMatrix )
-            zpl_mat4_mul( &m_viewProjectionMatrix, GetProjectionMatrix(), GetViewMatrix() );
+            zpl_mat4_mul( &m_viewProjectionMatrix, GetViewMatrix(), GetProjectionMatrix());
 
 		m_isViewProjectionMatrixDirty = false;
 	}
@@ -784,8 +784,8 @@ void CDriver::UpdateUniforms( CEffect *effect )
 		{
 			static Mat4 m;
 
-            zpl_mat4_mul( &m, GetProjectionMatrix(), GetViewMatrix() );
-            zpl_mat4_mul( &m_worldViewProjectionMatrix, &m, GetWorldMatrix() );
+            zpl_mat4_mul( &m, GetViewMatrix(), GetProjectionMatrix());
+            zpl_mat4_mul( &m_worldViewProjectionMatrix,  GetWorldMatrix(), &m);
 		}
 
 		m_isWorldViewProjectionMatrixDirty = false;

@@ -70,7 +70,7 @@ void CCamera::SetPerspective( CRect2D *rect )
 	size.x = ( f32 ) rect->Width();
 	size.y = ( f32 ) rect->Height();
 
-    zpl_mat4_perspective( &m_perspectiveMatrix, m_fieldOfView, size.x / size.y, m_nearPlane, m_farPlane );
+    zpl_mat4_perspective( &m_perspectiveMatrix, zpl_to_radians(m_fieldOfView), size.x / size.y, m_nearPlane, m_farPlane );
 }
 
 // ----------------------------------------------------------------------//
@@ -81,7 +81,7 @@ void CCamera::SetOrthographic( CRect2D *rect)
 	size.x = ( f32 ) rect->Width();
 	size.y = ( f32 ) rect->Height();
 
-    zpl_mat4_ortho2d( &m_orthographicMatrix, rect->Left(), rect->Right(), rect->Bottom(), rect->Top() );
+    zpl_mat4_ortho3d( &m_orthographicMatrix, rect->Left(), rect->Right(), rect->Bottom(), rect->Top(), -1.0f, 1.0f );
 }
 
 // ----------------------------------------------------------------------//
@@ -95,7 +95,6 @@ void CCamera::Update( f32 dt, void *userData )
     zpl_mat4_from_quat( &m_matrix, m_transform.quaternion );
     
     m_matrix.w.xyz = minusPos;
-    m_matrix.w.w   = 1;
 
 	ExtractClipPlanes();
 }
@@ -114,7 +113,7 @@ void CCamera::ExtractClipPlanes( void )
 {
 	static Mat4 projViewMatrix;
 
-    zpl_mat4_mul( &projViewMatrix, &m_perspectiveMatrix, &m_matrix );
+    zpl_mat4_mul( &projViewMatrix, &m_matrix , &m_perspectiveMatrix );
 
 	register Plane *fp;
 	register f32 *pv = (f32*) &projViewMatrix;

@@ -78,7 +78,7 @@ namespace sim
 
     static inline void Mat4StackMultiply( Mat4Stack* m4s, Mat4* m )
     {
-        zpl_mat4_mul( m4s->topmatrix, m4s->topmatrix, m );
+        zpl_mat4_mul( m4s->topmatrix, m, m4s->topmatrix);
     }
 
     static inline void Mat4StackTranslate( Mat4Stack* m4s, Vec3 translation )
