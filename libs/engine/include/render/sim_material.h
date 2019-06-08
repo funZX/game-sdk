@@ -27,8 +27,9 @@
 #ifndef __SIM_MATERIAL_H
 #define __SIM_MATERIAL_H
 
+#include <core/sim_core.h>
 #include <core/sim_interfaces.h>
-#include <math/sim_vec4.h>
+
 #include <render/sim_render.h>
 #include <render/sim_driver.h>
 
@@ -48,32 +49,32 @@ public:
 	CMaterial( const std::string &name );
 	virtual ~CMaterial();
 
-	inline CTexture*				GetTexture( u32 channel )	{ return m_textures[ channel ]; }
-	inline void						SetTexture( CTexture *tex, u32 channel ) { m_textures[ channel ] = tex; }
+    inline CTexture*                GetTexture(u32 channel);
+    inline void						SetTexture(CTexture* tex, u32 channel);
 
-	inline TVec4*					GetAmbient()				{ return &m_ambient; }
-	inline void						SetAmbient( TVec4 *col )	{ Vec4Copy( &m_ambient, col ); }
+    inline Vec4				        GetAmbient();
+    inline void						SetAmbient(Vec4 ambient);
 
-	inline TVec4*					GetDiffuse()				{ return &m_diffuse; }
-	inline void						SetDiffuse( TVec4 *col )	{ Vec4Copy( &m_diffuse, col ); }
+    inline Vec4				        GetDiffuse();
+    inline void						SetDiffuse(Vec4 diffuse);
 
-	inline TVec4*					GetEmissive()				{ return &m_emissive; }
-	inline void						SetEmissive( TVec4 *col )	{ Vec4Copy( &m_emissive, col ); }
+    inline Vec4				        GetEmissive();
+    inline void						SetEmissive(Vec4 emissive);
 
-	inline TVec4*					GetSpecular()				{ return &m_specular; }
-	inline void						SetSpecular( TVec4 *col )	{ Vec4Copy( &m_specular, col ); }
+    inline Vec4				        GetSpecular();
+    inline void						SetSpecular(Vec4 specular);
 
-	inline TVec4*				    GetReflective()				{ return &m_reflective; }
-	inline void						SetReflective(TVec4 *col)	{ Vec4Copy(&m_reflective, col); }
+    inline Vec4				        GetReflective();
+    inline void						SetReflective(Vec4 reflective);
 
-	inline f32					    GetShininess()				{ return m_shininess; }
-	inline void						SetShininess( f32 shine )	{ m_shininess = shine; }
+    inline f32					    GetShininess();
+    inline void						SetShininess(f32 shininess);
 
-	inline f32					    GetRefraction() { return m_refraction; }
-	inline void						SetRefraction(f32 refraction) { m_refraction = refraction; }
+    inline f32					    GetRefraction();
+    inline void						SetRefraction(f32 refraction);
 
-	inline CEffect*					GetEffect()					{ return m_effect; }
-	inline void						SetEffect( CEffect* effect ){ m_effect = effect; }
+    inline CEffect*                 GetEffect();
+    inline void						SetEffect(CEffect* effect);
 
 	virtual void					Update( f32 dt, void *userData );
 	virtual void					Render( CDriver *driver );
@@ -82,11 +83,11 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	TVec4							m_ambient;
-	TVec4							m_diffuse;
-	TVec4							m_specular;
-	TVec4							m_emissive;
-	TVec4							m_reflective;
+	Vec4							m_ambient;
+	Vec4							m_diffuse;
+	Vec4							m_specular;
+	Vec4							m_emissive;
+	Vec4							m_reflective;
 
 	f32							    m_shininess;
 	f32							    m_refraction;
@@ -95,6 +96,96 @@ protected:
 	CEffect*						m_effect;
 };
 
+
+inline CTexture* CMaterial::GetTexture(u32 channel) 
+{
+    return m_textures[channel]; 
+}
+
+inline void CMaterial::SetTexture(CTexture* tex, u32 channel)
+{ 
+    m_textures[channel] = tex;
+}
+
+inline Vec4 CMaterial::GetAmbient() 
+{ 
+    return m_ambient;
+}
+
+inline void CMaterial::SetAmbient(Vec4 ambient)
+{
+    m_ambient = ambient;
+}
+
+inline Vec4 CMaterial::GetDiffuse()
+{ 
+    return m_diffuse; 
+}
+
+inline void CMaterial::SetDiffuse(Vec4 diffuse) 
+{ 
+    m_diffuse = diffuse;
+}
+
+inline Vec4 CMaterial::GetEmissive()
+{ 
+    return m_emissive;
+}
+
+inline void CMaterial::SetEmissive(Vec4 emissive)
+{
+    m_emissive = emissive;
+}
+
+inline Vec4 CMaterial::GetSpecular() 
+{ 
+    return m_specular;
+}
+
+inline void CMaterial::SetSpecular(Vec4 specular) 
+{ 
+    m_specular = specular;
+}
+
+inline Vec4 CMaterial::GetReflective() 
+{ 
+    return m_reflective;
+}
+
+inline void CMaterial::SetReflective(Vec4 reflective)
+{ 
+    m_reflective = reflective; 
+}
+
+inline f32 CMaterial::GetShininess()
+{
+    return m_shininess;
+}
+
+inline void CMaterial::SetShininess(f32 shine)
+{ 
+    m_shininess = shine; 
+}
+
+inline f32 CMaterial::GetRefraction() 
+{ 
+    return m_refraction;
+}
+
+inline void CMaterial::SetRefraction(f32 refraction)
+{
+    m_refraction = refraction; 
+}
+
+inline CEffect* CMaterial::GetEffect()
+{ 
+    return m_effect;
+}
+
+inline void CMaterial::SetEffect(CEffect* effect)
+{ 
+    m_effect = effect;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

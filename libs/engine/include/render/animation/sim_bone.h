@@ -30,11 +30,6 @@
 #include <core/sim_interfaces.h>
 #include <render/sim_render.h>
 
-#include <math/sim_vec3.h>
-#include <math/sim_quat.h>
-
-using namespace sim::mat;
-
 namespace sim
 {
 namespace rnr
@@ -50,9 +45,9 @@ public:
 
 	typedef struct
 	{
-		TVec3 v;
-		TVec3 s;
-		TQuat q;
+		Vec3 v;
+		Vec3 s;
+		Quat q;
 
 	} TTransform;
 

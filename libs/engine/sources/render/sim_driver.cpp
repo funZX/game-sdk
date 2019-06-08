@@ -24,7 +24,7 @@
 *    SOFTWARE.
 */
 
-#include <math/sim_math.h>
+#include <core/sim_core.h>
 
 #include <render/sim_render.h>
 
@@ -50,39 +50,39 @@ CDriver::CDriver()
 {
 	m_batch2D	= SIM_NEW CBatch2D( "Driver", this );
 
-	Matrix4StackClear( &m_worldStack );
-	Matrix4StackClear( &m_viewStack );
-	Matrix4StackClear( &m_projectionStack );
+	Mat4StackClear( &m_worldStack );
+	Mat4StackClear( &m_viewStack );
+	Mat4StackClear( &m_projectionStack );
 
 	for( s32 i = 0; i < k_Texture_Channels_Count; i++ )
-		Matrix4StackClear( &m_textureStack[ i ] );
+		Mat4StackClear( &m_textureStack[ i ] );
 
 	for( s32 i = 0; i < k_Animation_Bones_Max; i++ )
-		Matrix4ToIdentity( &m_boneArrayMatrix[ i ] );
+		zpl_mat4_identity( &m_boneArrayMatrix[ i ] );
 
-	Matrix4ToIdentity( &m_worldInverseMatrix );
-	Matrix4ToIdentity( &m_worldInverseTMatrix );
+	zpl_mat4_identity( &m_worldInverseMatrix );
+	zpl_mat4_identity( &m_worldInverseTMatrix );
 	m_isWorldMatrixDirty = true;
 	m_isActiveStackAlteringWorldMatrix = true;
 
-	Matrix4ToIdentity( &m_viewInverseMatrix );
-	Matrix4ToIdentity( &m_viewInverseTMatrix );
+	zpl_mat4_identity( &m_viewInverseMatrix );
+	zpl_mat4_identity( &m_viewInverseTMatrix );
 	m_isViewMatrixDirty = true;
 	m_isActiveStackAlteringViewMatrix = true;
 
-	Matrix4ToIdentity( &m_worldViewMatrix );
+	zpl_mat4_identity( &m_worldViewMatrix );
 	m_isWorldViewMatrixDirty = true;
 	m_isActiveStackAlteringWorldViewMatrix = true;
 
-	Matrix4ToIdentity( &m_viewProjectionMatrix );
+	zpl_mat4_identity( &m_viewProjectionMatrix );
 	m_isViewProjectionMatrixDirty = true;
 	m_isActiveStackAlteringViewProjectionMatrix = true;
 
-	Matrix4ToIdentity( &m_worldViewProjectionMatrix );
+	zpl_mat4_identity( &m_worldViewProjectionMatrix );
 	m_isWorldViewProjectionMatrixDirty = true;
 	m_isActiveStackAlteringWorldViewProjectionMatrix = true;
 
-	Matrix3ToIdentity( &m_normalMatrix );
+    zpl_mat3_identity( &m_normalMatrix );
 	m_isNormalMatrixDirty	= true;
 	m_isActiveStackAlteringNormalMatrix = true;
 
@@ -104,16 +104,17 @@ CDriver::CDriver()
 	m_fogDensity	        = 0.0f;
 	m_fogStart		        = 0.0f;
 	m_fogEnd		        = 0.0f;
-	Vec4ToZero( &m_fogColor );
+    m_fogColor              = col::Black;
 	
 	m_depthStart			= 0.0f;
 	m_depthEnd				= 0.0f;
 
-	Vec4ToWhite(&m_color);
-	Vec4ToWhite(&m_materialReflective);
-	Vec4ToZero( &m_materialAmbient );
-	Vec4ToZero( &m_materialDiffuse );
-	Vec4ToZero( &m_materialSpecular );
+
+	m_color                 = col::White;
+	m_materialAmbient       = col::White;
+	m_materialDiffuse       = col::White;
+	m_materialSpecular      = col::White;
+    m_materialReflective    = col::Black;
 
 	m_materialShininess		= 0.0f;
 	m_materialRefraction	= 0.0f;
@@ -261,7 +262,7 @@ bool  CDriver::EnableDepthMask( bool val )
 
 // ----------------------------------------------------------------------//
 
-void CDriver::Tick( const f32 dt )
+void CDriver::Tick( f32 dt )
 {
 	m_timerRot += (dt * 1000.0f) / 360.0f;
 
@@ -269,10 +270,10 @@ void CDriver::Tick( const f32 dt )
 	while (angle > 360.0f )
 		angle -= 360.0f;
 
-	f32 toRad	= SIM_DEG2RAD(angle);
+	f32 toRad	= zpl_to_radians( angle );
 
-	m_timerSin	= sinf(toRad);
-	m_timerCos	= cosf(toRad);
+	m_timerSin	= zpl_sin( toRad );
+	m_timerCos	= zpl_cos( toRad );
 
 	m_timer += dt; 
 }
@@ -341,13 +342,15 @@ CRenderTexture* CDriver::BindRenderTexture( CRenderTexture* texture )
 
 void CDriver::ComputeNormalMatrix()
 {
-	TMatrix4 m;
+	Mat4 m;
 
-	Matrix4Multiply( GetViewMatrix(), GetWorldMatrix(), &m );
-	Matrix4Invert( &m, &m );
-	Matrix4Transpose( &m, &m );
+    zpl_mat4_mul( GetViewMatrix(), GetWorldMatrix(), &m );
+    zpl_mat4_inverse( &m, &m );
+    zpl_mat4_transpose( &m );
 
-	Matrix4ToMatrix3( &m, &m_normalMatrix );
+    m_normalMatrix.x = m.x.xyz;
+    m_normalMatrix.y = m.y.xyz;
+    m_normalMatrix.z = m.z.xyz;
 }
 
 // ----------------------------------------------------------------------//
@@ -370,22 +373,22 @@ CDriver::TextureChannel CDriver::SetTextureChannel(TextureChannel texChannel)
 
 // ----------------------------------------------------------------------//
 
-void CDriver::EnableBlendFunc( const TBlendFunc* blendfunc )
+void CDriver::EnableBlendFunc( TBlendFunc blendfunc )
 {
-	if ( blendfunc->equation != m_blendFunc.equation )
+	if ( blendfunc.equation != m_blendFunc.equation )
 	{
-		m_blendFunc.equation = blendfunc->equation;
+		m_blendFunc.equation = blendfunc.equation;
 
-		glBlendEquation( blendfunc->equation );
+		glBlendEquation( blendfunc.equation );
 	}
 
-	if ( blendfunc->src != m_blendFunc.src ||
-		 blendfunc->dst != m_blendFunc.dst )
+	if ( blendfunc.src != m_blendFunc.src ||
+		 blendfunc.dst != m_blendFunc.dst )
 	{
-		m_blendFunc.src = blendfunc->src;
-		m_blendFunc.dst = blendfunc->dst;
+		m_blendFunc.src = blendfunc.src;
+		m_blendFunc.dst = blendfunc.dst;
 
-		glBlendFunc( blendfunc->src, blendfunc->dst );
+		glBlendFunc( blendfunc.src, blendfunc.dst );
 	}
 }
 
@@ -399,18 +402,18 @@ void CDriver::EnableBlendFunc( u32 equation, u32 src, u32 dst )
 	blendfunc.src		= src;
 	blendfunc.dst		= dst;
 
-	EnableBlendFunc( &blendfunc );
+	EnableBlendFunc( blendfunc );
 }
 
 // ----------------------------------------------------------------------//
 
-void CDriver::EnableDepthFunc(const TDepthFunc* depthfunc)
+void CDriver::EnableDepthFunc(TDepthFunc depthfunc)
 {
-	if (depthfunc->equation != m_depthFunc.equation)
+	if (depthfunc.equation != m_depthFunc.equation)
 	{
-		m_depthFunc.equation = depthfunc->equation;
+		m_depthFunc.equation = depthfunc.equation;
 
-		glDepthFunc(depthfunc->equation);
+		glDepthFunc(depthfunc.equation);
 	}
 }
 
@@ -420,7 +423,7 @@ void CDriver::EnableDepthFunc(u32 equation)
 {
 	TDepthFunc depthfunc;
 	depthfunc.equation = equation;
-	EnableDepthFunc(&depthfunc);
+	EnableDepthFunc(depthfunc);
 }
 
 // ----------------------------------------------------------------------//
@@ -472,23 +475,23 @@ CDriver::CullingMode CDriver::SetCullingMode( CullingMode cullingMode )
 
 void CDriver::MatrixLoadIdentity()
 {
-	Matrix4ToIdentity( m_activeStack->topmatrix );
+	Mat4StackIdentity( m_activeStack );
 	MatrixDirty();
 }
 
 // ----------------------------------------------------------------------//
 
-void CDriver::MatrixLoad( const TMatrix4 *mat )
+void CDriver::MatrixLoad( Mat4 *mat )
 {
-	Matrix4Copy( m_activeStack->topmatrix, mat );
+    Mat4StackLoad( m_activeStack, mat );
 	MatrixDirty();
 }
 
 // ----------------------------------------------------------------------//
 
-void CDriver::MatrixMultiply( const TMatrix4 *mat )
+void CDriver::MatrixMultiply( Mat4 *mat )
 {
-	Matrix4Multiply( m_activeStack->topmatrix, mat );
+    Mat4StackMultiply( m_activeStack, mat );
 	MatrixDirty();
 }
 
@@ -585,7 +588,7 @@ bool CDriver::EnableBatch2D( bool isEnabled )
 
 void CDriver::MatrixPush()
 {
-	Matrix4StackPush( m_activeStack );
+	Mat4StackPush( m_activeStack );
 	MatrixDirty();
 }
 
@@ -593,142 +596,50 @@ void CDriver::MatrixPush()
 
 void CDriver::MatrixPop()
 {
-	Matrix4StackPop( m_activeStack );
+	Mat4StackPop( m_activeStack );
 	MatrixDirty();
 }
 
 // ----------------------------------------------------------------------//
 
-void CDriver::MatrixTranslate( const TVec3 *pos )
+void CDriver::MatrixTranslate( Vec3 translation )
 {
-	Matrix4Translate( m_activeStack->topmatrix, pos );
+    Mat4StackTranslate( m_activeStack, translation );
 	MatrixDirty();
 }
 
 // ----------------------------------------------------------------------//
 
-void CDriver::MatrixTranslate( const f32 x, const f32 y, const f32 z )
+void CDriver::MatrixRotate( Vec3 axis, f32 angle )
 {
-	Matrix4Translate( m_activeStack->topmatrix, x, y, z );
-	MatrixDirty();
-}
-
-void CDriver::MatrixTranslateX( const f32 x )
-{
-	Matrix4TranslateX( m_activeStack->topmatrix, x );
+	Mat4StackRotate( m_activeStack, axis, angle );
 	MatrixDirty();
 }
 
 // ----------------------------------------------------------------------//
 
-void CDriver::MatrixTranslateY( const f32 y )
+void CDriver::MatrixScale( Vec3 scale )
 {
-	Matrix4TranslateY( m_activeStack->topmatrix,y );
+    Mat4StackScale( m_activeStack, scale );
 	MatrixDirty();
 }
 
 // ----------------------------------------------------------------------//
 
-void CDriver::MatrixTranslateZ( const f32 z )
-{
-	Matrix4TranslateZ( m_activeStack->topmatrix, z );
-	MatrixDirty();
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::MatrixRotate( const f32 angle, const TVec3 *rot )
-{
-	Matrix4Rotate( m_activeStack->topmatrix, angle, rot );
-	MatrixDirty();
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::MatrixRotate( const f32 angle, const f32 x, const f32 y, const f32 z )
-{
-	Matrix4Rotate( m_activeStack->topmatrix, angle, x, y, z );
-	MatrixDirty();
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::MatrixRotateX( const f32 angle )
-{
-	Matrix4RotateX( m_activeStack->topmatrix, angle );
-	MatrixDirty();
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::MatrixRotateY( const f32 angle )
-{
-	Matrix4RotateY( m_activeStack->topmatrix, angle );
-	MatrixDirty();
-}
-
-void CDriver::MatrixRotateZ( const f32 angle )
-{
-	Matrix4RotateZ( m_activeStack->topmatrix, angle );
-	MatrixDirty();
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::MatrixScale( const TVec3 *scl )
-{
-	Matrix4Scale( m_activeStack->topmatrix, scl );
-	MatrixDirty();
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::MatrixScale( const f32 x, const f32 y, const f32 z )
-{
-	Matrix4Scale( m_activeStack->topmatrix, x, y, z );
-	MatrixDirty();
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::MatrixScaleX( const f32 scale )
-{
-	Matrix4ScaleX( m_activeStack->topmatrix, scale );
-	MatrixDirty();
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::MatrixScaleY( const f32 scale )
-{
-	Matrix4ScaleY( m_activeStack->topmatrix, scale );
-	MatrixDirty();
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::MatrixScaleZ( const f32 scale )
-{
-	Matrix4ScaleZ( m_activeStack->topmatrix, scale );
-	MatrixDirty();
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::Clear( const TVec4* color )
+void CDriver::Clear( Vec4 color )
 {
 	m_crtVertexSource	= 0;
 	m_crtRenderTexture	= 0;
 
-	glClearColor( color->x, color->y, color->z, color->w );
+	glClearColor( color.x, color.y, color.z, color.w );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
 
 // ----------------------------------------------------------------------//
 
-void CDriver::ClearColor( const TVec4* color )
+void CDriver::ClearColor( Vec4 color )
 {
-	glClearColor( color->x, color->y, color->z, color->w );
+	glClearColor( color.x, color.y, color.z, color.w );
 	glClear( GL_COLOR_BUFFER_BIT );
 }
 // ----------------------------------------------------------------------//
@@ -754,90 +665,6 @@ void CDriver::SetViewport( u32 width, u32 height )
 		m_viewportWidth = width;
 		m_viewportHeight = height;
 	}
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::SetColor( const TVec4 *col )
-{
-	Vec4Copy( &m_color, col );
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::SetFogColor( const TVec4 *col )
-{
-	Vec4Copy( &m_fogColor, col );
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::SetFogMode( FogMode fogMode )
-{
-	m_fogMode	= fogMode;
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::SetFogStart(  f32 fogStart )
-{
-	m_fogStart	= fogStart;
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::SetFogEnd( f32 fogEnd )
-{
-	m_fogEnd	= fogEnd;
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::SetFogDensity( f32 d )
-{
-	m_fogDensity = d;
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::SetLightPosition( const TVec3 *pos )
-{
-	Vec3Copy( &m_lightParameters[ Value(m_lightChannel) ].m_position, pos );
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::SetLightDirection( const TVec3 *dir )
-{
-	Vec3Copy( &m_lightParameters[Value(m_lightChannel)].m_direction, dir );
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::SetLightAmbient( const TVec4 *col )
-{
-	Vec4Copy( &m_lightParameters[Value(m_lightChannel)].m_ambient, col );
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::SetLightDiffuse( const TVec4 *col )
-{
-	Vec4Copy( &m_lightParameters[Value(m_lightChannel)].m_diffuse, col );
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::SetLightSpecular( const TVec4 *col )
-{
-	Vec4Copy( &m_lightParameters[Value(m_lightChannel)].m_specular, col );
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::SetLightIntensity( f32 intens )
-{
-	m_lightParameters[Value(m_lightChannel)].m_intensity = intens;
 }
 
 // ----------------------------------------------------------------------//
@@ -910,10 +737,13 @@ void CDriver::UpdateUniforms( CEffect *effect )
 	if( m_isWorldMatrixDirty )
 	{
 		if( effect->m_isUsingWorldInverseMatrix )
-			Matrix4Invert( GetWorldMatrix(), &m_worldInverseMatrix );
+			zpl_mat4_inverse( GetWorldMatrix(), &m_worldInverseMatrix );
 
-		if( effect->m_isUsingWorldInverseTMatrix )
-			Matrix4Transpose( &m_worldInverseMatrix, &m_worldInverseTMatrix );
+        if (effect->m_isUsingWorldInverseTMatrix)
+        {
+            zpl_mat4_copy( &m_worldInverseTMatrix, &m_worldInverseMatrix );
+            zpl_mat4_transpose( &m_worldInverseTMatrix );
+        }
 
 		m_isWorldMatrixDirty = false;
 	}
@@ -921,10 +751,13 @@ void CDriver::UpdateUniforms( CEffect *effect )
 	if( m_isViewMatrixDirty )
 	{
 		if ( effect->m_isUsingViewInverseMatrix )
-			Matrix4Invert( GetViewMatrix(), &m_viewInverseMatrix );
+            zpl_mat4_inverse( GetViewMatrix(), &m_viewInverseMatrix );
 
-		if( effect->m_isUsingViewInverseTMatrix )
-			Matrix4Transpose( &m_viewInverseMatrix, &m_viewInverseTMatrix );		
+        if (effect->m_isUsingViewInverseTMatrix)
+        {
+            zpl_mat4_copy(&m_viewInverseTMatrix, &m_viewInverseMatrix);
+            zpl_mat4_transpose(&m_viewInverseTMatrix);
+        }	
 		
 		m_isViewMatrixDirty = false;
 	}
@@ -932,7 +765,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 	if( m_isWorldViewMatrixDirty )
 	{
 		if ( effect->m_isUsingWorldViewMatrix )
-			Matrix4Multiply( GetViewMatrix(), GetWorldMatrix(), &m_worldViewMatrix );
+			zpl_mat4_mul( &m_worldViewMatrix, GetViewMatrix(), GetWorldMatrix() );
 
 		m_isWorldViewMatrixDirty = false;
 	}
@@ -940,7 +773,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 	if( m_isViewProjectionMatrixDirty )
 	{
 		if ( effect->m_isUsingViewProjectionMatrix )
-			Matrix4Multiply( GetProjectionMatrix(), GetViewMatrix(), &m_viewProjectionMatrix );
+            zpl_mat4_mul( &m_viewProjectionMatrix, GetProjectionMatrix(), GetViewMatrix() );
 
 		m_isViewProjectionMatrixDirty = false;
 	}
@@ -949,10 +782,10 @@ void CDriver::UpdateUniforms( CEffect *effect )
 	{
 		if ( effect->m_isUsingWorldViewProjectionMatrix )
 		{
-			static TMatrix4 m;
+			static Mat4 m;
 
-			Matrix4Multiply( GetProjectionMatrix(), GetViewMatrix(), &m );
-			Matrix4Multiply( &m, GetWorldMatrix(), &m_worldViewProjectionMatrix );
+            zpl_mat4_mul( &m, GetProjectionMatrix(), GetViewMatrix() );
+            zpl_mat4_mul( &m_worldViewProjectionMatrix, &m, GetWorldMatrix() );
 		}
 
 		m_isWorldViewProjectionMatrixDirty = false;
@@ -1070,7 +903,7 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 	}
 	else
 	{
-		static const Primitive primitives[] = {
+		static Primitive primitives[] = {
 			Primitive::Lines,
 			Primitive::LineStrip,
 			Primitive::Points,
@@ -1409,7 +1242,7 @@ void CDriver::InitUniform()
 
 // ----------------------------------------------------------------------//
 
-void CDriver::Log( const char *fmt, ... )
+void CDriver::Log( char *fmt, ... )
 {
 #if 1
     

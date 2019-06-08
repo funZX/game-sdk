@@ -91,7 +91,7 @@ void CWidgetButton::Render( CDriver *driver )
 		s32 y = ( s32 ) Top();
 		s32 off = IsPressed() ? 0 : 1;
 
-		m_font->DrawString( driver, x + off, y + off, m_string, &col::White );
+		m_font->DrawString( driver, x + off, y + off, m_string, col::White );
 	}
 
 	CWidget::Render(driver);

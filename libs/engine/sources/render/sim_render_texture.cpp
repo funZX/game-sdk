@@ -65,8 +65,8 @@ CRenderTexture::~CRenderTexture()
 
 void CRenderTexture::Generate( u32 width, u32 height )
 {
-	m_width		= mat::nextPowerOfTwo( width );
-	m_height	= mat::nextPowerOfTwo( height );
+	m_width		= zpl_next_pow2( width );
+	m_height	= zpl_next_pow2( height );
 
 	glGenFramebuffers(1, &m_bufferiD);
 	glBindFramebuffer(GL_FRAMEBUFFER, m_bufferiD);

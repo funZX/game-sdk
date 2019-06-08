@@ -27,8 +27,8 @@
 #ifndef __SIM_POLYGON_H
 #define __SIM_POLYGON_H
 
+#include <core/sim_core.h>
 #include <core/sim_list.h>
-#include <math/sim_vec2.h>
 
 // ----------------------------------------------------------------------//
 namespace sim
@@ -44,7 +44,7 @@ namespace core
 class CPolygon;
 typedef sim::stl::CList<CPolygon*>	TPolygonList;
 
-class CPolygon : public sim::stl::CList<mat::TVec2>
+class CPolygon : public sim::stl::CList<Vec2>
 {
 public:
 	CPolygon();
@@ -54,14 +54,12 @@ public:
 	bool			Intersects( CPolygon* polygon );
 	CPolygon*		Intersects( TPolygonList* polygonList );
 
-	bool			IsInside( const f32 x, const f32 y );
-	bool			IsInside( const mat::TVec2* v );
+	bool			IsInside( Vec2 v );
 
-	void			Translate( const sim::f32 x, const f32 y );
-	void			Scale( const f32 kx, const f32 ky );
+	void			Translate( Vec2 v );
+	void			Scale( Vec2 v );
 
-	void			AddVertex( const f32 x, const f32 y );
-	void			AddVertex( const mat::TVec2* v );
+	void			AddVertex( Vec2 v );
 
 	const f32		GetMinX();
 	const f32		GetMinY();

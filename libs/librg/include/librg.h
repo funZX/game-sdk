@@ -2066,7 +2066,7 @@ extern "C" {
             librg_table_init(&entity->last_snapshot, msg->ctx->allocator);
 
             // add client peer to storage
-            librg_table_set(&msg->ctx->network.connected_peers, cast(u64)msg->peer, entity->id);
+            librg_table_set(&msg->ctx->network.connected_peers, zpl_cast(u64)msg->peer, entity->id);
 
             // send accept
             librg_send_to(msg->ctx, LIBRG_CONNECTION_ACCEPT, msg->peer, librg_lambda(data), {
@@ -2121,7 +2121,7 @@ extern "C" {
         blob->position  = zpl_vec3f_zero();
 
         // add server peer to storage
-        librg_table_set(&msg->ctx->network.connected_peers, cast(u64)msg->peer, entity);
+        librg_table_set(&msg->ctx->network.connected_peers, zpl_cast(u64)msg->peer, entity);
 
         // trigger damn events!
         LIBRG_MSG_TO_EVENT(event, msg); event.entity = blob;
@@ -2152,7 +2152,7 @@ extern "C" {
             return;
         }
 
-        librg_entity_id *entity = librg_table_get(&msg->ctx->network.connected_peers, cast(u64)msg->peer);
+        librg_entity_id *entity = librg_table_get(&msg->ctx->network.connected_peers, zpl_cast(u64)msg->peer);
         if (entity && librg_entity_valid(msg->ctx, *entity)) {
             librg_entity *blob = librg_entity_fetch(msg->ctx, *entity);
             librg_event event = {0}; {
@@ -2467,7 +2467,7 @@ extern "C" {
             usize queue_count = librg_entity_query(ctx, player, &queue);
 
             u32 created_entities = 0;
-            u32 updated_entities = cast(u32)queue_count;
+            u32 updated_entities = zpl_cast(u32)queue_count;
             u32 removed_entities = 0;
 
             // write packet headers
@@ -2481,7 +2481,7 @@ extern "C" {
             // add entity creates and updates
             for (isize i = 0; i < queue_count; ++i) {
 
-                librg_entity_id entity = cast(librg_entity_id)queue[i];
+                librg_entity_id entity = zpl_cast(librg_entity_id)queue[i];
 
                 // fetch value of entity in the last snapshot
                 u32 *existed_in_last = librg_table_get(last_snapshot, entity);
@@ -2641,7 +2641,7 @@ extern "C" {
 
     #ifdef LIBRG_MULTITHREADED
     isize librg__execute_server_entity_update_worker(zpl_thread *thread) {
-        librg_update_worker_si_t *si = cast(librg_update_worker_si_t *)thread->user_data;
+        librg_update_worker_si_t *si = zpl_cast(librg_update_worker_si_t *)thread->user_data;
         librg_ctx *ctx = si->ctx;
 
         librg_data reliable, unreliable;

@@ -134,7 +134,7 @@ Version History:
   3.3.4  - Added Travis CI config
   3.3.3  - Small macro formatting changes + ZPL_SYSTEM_IOS
   3.3.2  - Fixes for android arm
-  3.3.1  - Fixed some type cast warnings
+  3.3.1  - Fixed some type zpl_cast warnings
   3.3.0  - Added Android support
   3.1.5  - Renamed userptr to user_data in timer
   3.1.4  - Fix for zpl_buffer not allocating correctly
@@ -613,10 +613,10 @@ ZPL_STATIC_ASSERT(sizeof(zpl_f64) == 8);
 
 typedef zpl_i32 zpl_rune; // NOTE: Unicode codepoint
 typedef zpl_i32 zpl_char32;
-#define ZPL_RUNE_INVALID cast(zpl_rune)(0xfffd)
-#define ZPL_RUNE_MAX cast(zpl_rune)(0x0010ffff)
-#define ZPL_RUNE_BOM cast(zpl_rune)(0xfeff)
-#define ZPL_RUNE_EOF cast(zpl_rune)(-1)
+#define ZPL_RUNE_INVALID zpl_cast(zpl_rune)(0xfffd)
+#define ZPL_RUNE_MAX zpl_cast(zpl_rune)(0x0010ffff)
+#define ZPL_RUNE_BOM zpl_cast(zpl_rune)(0xfeff)
+#define ZPL_RUNE_EOF zpl_cast(zpl_rune)(-1)
 
 typedef zpl_i8 zpl_b8;
 typedef zpl_i16 zpl_b16;
@@ -745,8 +745,8 @@ typedef zpl_b8 bool;
 #endif
 #endif
 
-#ifndef cast
-#define cast(Type) (Type)
+#ifndef zpl_cast
+#define zpl_cast(Type) (Type)
 #endif
 
 #ifndef zpl_size_of
@@ -867,8 +867,8 @@ do {                                                                            
 #define zpl_abs(x) ((x) < 0 ? -(x) : (x))
 #endif
 
-#ifndef hard_cast
-#define hard_cast(type) *cast(type) &
+#ifndef zpl_hard_cast
+#define zpl_hard_cast(type) *zpl_cast(type) &
 #endif
 
 // WARN(ZaKlaus): Supported only on GCC via GNU extensions!!!
@@ -922,7 +922,7 @@ do {                                                                            
 #define ZPL_ASSERT_MSG(cond, msg, ...)                                                                                 \
 do {                                                                                                               \
     if (!(cond)) {                                                                                                 \
-        zpl_assert_handler(#cond, __FILE__, cast(zpl_i64) __LINE__, msg, ##__VA_ARGS__);                               \
+        zpl_assert_handler(#cond, __FILE__, zpl_cast(zpl_i64) __LINE__, msg, ##__VA_ARGS__);                               \
         ZPL_DEBUG_TRAP( );                                                                                         \
     }                                                                                                              \
 } while (0)
@@ -1817,7 +1817,7 @@ typedef struct zpl_string_header {
     zpl_isize capacity;
 } zpl_string_header;
 
-#define ZPL_STRING_HEADER(str) (cast(zpl_string_header *)(str) - 1)
+#define ZPL_STRING_HEADER(str) (zpl_cast(zpl_string_header *)(str) - 1)
 
 ZPL_DEF zpl_string zpl_string_make_reserve(zpl_allocator a, zpl_isize capacity);
 ZPL_DEF zpl_string zpl_string_make(zpl_allocator a, const char *str);
@@ -1967,20 +1967,20 @@ typedef struct zpl_buffer_header {
 
 #define zpl_buffer_make(Type, Name, allocator, cap) Type *Name; zpl_buffer_init(Name, allocator, cap)
 
-#define ZPL_BUFFER_HEADER(x) (cast(zpl_buffer_header *)(x) - 1)
+#define ZPL_BUFFER_HEADER(x) (zpl_cast(zpl_buffer_header *)(x) - 1)
 #define zpl_buffer_count(x) (ZPL_BUFFER_HEADER(x)->count)
 #define zpl_buffer_capacity(x) (ZPL_BUFFER_HEADER(x)->capacity)
 #define zpl_buffer_end(x) (x + (zpl_buffer_count(x) - 1))
 
 #define zpl_buffer_init(x, allocator, cap)                                                                             \
 do {                                                                                                               \
-    void **nx = cast(void **) & (x);                                                                               \
+    void **nx = zpl_cast(void **) & (x);                                                                               \
     zpl_buffer_header *zpl__bh =                                                                                   \
-    cast(zpl_buffer_header *) zpl_alloc((allocator), sizeof(zpl_buffer_header) + (cap)*zpl_size_of(*(x)));     \
+    zpl_cast(zpl_buffer_header *) zpl_alloc((allocator), sizeof(zpl_buffer_header) + (cap)*zpl_size_of(*(x)));     \
     zpl__bh->backing = allocator;                                                                                  \
     zpl__bh->count = 0;                                                                                            \
     zpl__bh->capacity = cap;                                                                                       \
-    *nx = cast(void *)(zpl__bh + 1);                                                                               \
+    *nx = zpl_cast(void *)(zpl__bh + 1);                                                                               \
 } while (0)
 
 // DEPRECATED(zpl_buffer_free): Use zpl_buffer_free2 instead
@@ -2045,7 +2045,7 @@ int main(void)
     cursor = zpl_list_add(cursor, &c);
     
     for (zpl_list *l=head; l; l=l->next) {
-        zpl_printf("%s ", cast(char *)l->ptr);
+        zpl_printf("%s ", zpl_cast(char *)l->ptr);
     }
     zpl_printf("\n");
     
@@ -2143,7 +2143,7 @@ typedef struct zpl_array_header {
 
 ZPL_STATIC_ASSERT(ZPL_ARRAY_GROW_FORMULA(0) > 0);
 
-#define ZPL_ARRAY_HEADER(x) (cast(zpl_array_header *)(x) - 1)
+#define ZPL_ARRAY_HEADER(x) (zpl_cast(zpl_array_header *)(x) - 1)
 #define zpl_array_allocator(x) (ZPL_ARRAY_HEADER(x)->allocator)
 #define zpl_array_count(x) (ZPL_ARRAY_HEADER(x)->count)
 #define zpl_array_capacity(x) (ZPL_ARRAY_HEADER(x)->capacity)
@@ -2151,14 +2151,14 @@ ZPL_STATIC_ASSERT(ZPL_ARRAY_GROW_FORMULA(0) > 0);
 
 #define zpl_array_init_reserve(x, allocator_, cap)                                                                     \
 do {                                                                                                               \
-    void **zpl__array_ = cast(void **) & (x);                                                                      \
+    void **zpl__array_ = zpl_cast(void **) & (x);                                                                      \
     zpl_array_header *zpl__ah =                                                                                    \
-    cast(zpl_array_header *) zpl_alloc(allocator_, zpl_size_of(zpl_array_header) + zpl_size_of(*(x)) * (cap)); \
+    zpl_cast(zpl_array_header *) zpl_alloc(allocator_, zpl_size_of(zpl_array_header) + zpl_size_of(*(x)) * (cap)); \
     zpl__ah->allocator = allocator_;                                                                               \
     zpl__ah->count = 0;                                                                                            \
     zpl__ah->data = (char *)x;                                                                                     \
     zpl__ah->capacity = cap;                                                                                       \
-    *zpl__array_ = cast(void *)(zpl__ah + 1);                                                                      \
+    *zpl__array_ = zpl_cast(void *)(zpl__ah + 1);                                                                      \
 } while (0)
 
 // NOTE: Give it an initial default capacity
@@ -2173,7 +2173,7 @@ do {                                                                            
 #define zpl_array_set_capacity(x, capacity)                                                                            \
 do {                                                                                                               \
     if (x) {                                                                                                       \
-        void **zpl__array_ = cast(void **) & (x);                                                                  \
+        void **zpl__array_ = zpl_cast(void **) & (x);                                                                  \
         *zpl__array_ = zpl__array_set_capacity((x), (capacity), zpl_size_of(*(x)));                                \
     }                                                                                                              \
 } while (0)
@@ -2879,7 +2879,7 @@ typedef void *zpl_event_data;
 
 typedef void (*zpl_event_cb)(zpl_event_data evt);
 
-#define ZPL_EVENT_CAST(Type, name) Type * name = cast(Type *)evt
+#define ZPL_EVENT_CAST(Type, name) Type * name = zpl_cast(Type *)evt
 
 typedef zpl_event_cb* zpl_event_block; ///< zpl_array
 
@@ -3324,6 +3324,9 @@ typedef union zpl_vec2 {
     struct {
         zpl_f32 x, y;
     };
+    struct {
+        zpl_f32 s, t;
+    };
     zpl_f32 e[2];
 } zpl_vec2;
 
@@ -3397,6 +3400,15 @@ typedef zpl_f32 zpl_float2[2];
 typedef zpl_f32 zpl_float3[3];
 typedef zpl_f32 zpl_float4[4];
 
+typedef union zpl_plane {
+    struct {
+        zpl_f32 a, b, c, d;
+    };
+    zpl_vec4 abcd;
+    zpl_vec3 abc;
+    zpl_f32 e[4];
+} zpl_plane;
+
 typedef struct zpl_rect2 {
     zpl_vec2 pos, dim;
 } zpl_rect2;
@@ -3413,6 +3425,7 @@ typedef struct zpl_aabb3 {
 
 typedef short zpl_half;
 
+
 #ifndef ZPL_CONSTANTS
 #define ZPL_CONSTANTS
 #define ZPL_EPSILON 1.19209290e-7f
@@ -3422,6 +3435,9 @@ typedef short zpl_half;
 
 #define ZPL_TAU 6.28318530717958647692528676655900576f
 #define ZPL_PI 3.14159265358979323846264338327950288f
+#define ZPL_PI_OVER_180 0.0174532925199432f
+#define ZPL_180_OVER_PI 57.2957795130823208f
+
 #define ZPL_ONE_OVER_TAU 0.636619772367581343075535053490057448f
 #define ZPL_ONE_OVER_PI 0.159154943091895335768883763372514362f
 
@@ -3449,6 +3465,11 @@ typedef short zpl_half;
 #ifndef zpl_sign
 #define zpl_sign(x) ((x) >= 0 ? 1 : -1)
 #endif
+
+ZPL_DEF zpl_i32 zpl_next_pow2(zpl_i32 v);
+ZPL_DEF void zpl_bit_set(zpl_u32* x, zpl_u32 bit);
+ZPL_DEF zpl_b8 zpl_bit_get(zpl_u32 x, zpl_u32 bit);
+ZPL_DEF void zpl_bit_reset(zpl_u32* x, zpl_u32 bit);
 
 ZPL_DEF zpl_f32 zpl_to_radians(zpl_f32 degrees);
 ZPL_DEF zpl_f32 zpl_to_degrees(zpl_f32 radians);
@@ -3537,6 +3558,9 @@ ZPL_DEF void zpl_vec4_subeq(zpl_vec4 *d, zpl_vec4 v);
 ZPL_DEF void zpl_vec4_muleq(zpl_vec4 *d, zpl_f32 s);
 ZPL_DEF void zpl_vec4_diveq(zpl_vec4 *d, zpl_f32 s);
 
+ZPL_DEF zpl_f32 zpl_vec2_side(zpl_vec2 p, zpl_vec2 q, zpl_vec2 r);
+ZPL_DEF void zpl_vec2_rotate(zpl_vec2* d, zpl_vec2 center, zpl_f32 angle);
+
 ZPL_DEF zpl_f32 zpl_vec2_dot(zpl_vec2 v0, zpl_vec2 v1);
 ZPL_DEF zpl_f32 zpl_vec3_dot(zpl_vec3 v0, zpl_vec3 v1);
 ZPL_DEF zpl_f32 zpl_vec4_dot(zpl_vec4 v0, zpl_vec4 v1);
@@ -3608,6 +3632,7 @@ ZPL_DEF void zpl_float33_mul_vec3(zpl_vec3 *out, zpl_f32 m[3][3], zpl_vec3 in);
 
 ZPL_DEF void zpl_mat4_identity(zpl_mat4 *m);
 ZPL_DEF void zpl_float44_identity(zpl_f32 m[4][4]);
+ZPL_DEF void zpl_mat4_copy(zpl_mat4* out, zpl_mat4* m);
 
 ZPL_DEF void zpl_mat4_transpose(zpl_mat4 *m);
 ZPL_DEF void zpl_mat4_mul(zpl_mat4 *out, zpl_mat4 *m1, zpl_mat4 *m2);
@@ -3676,6 +3701,8 @@ ZPL_DEF zpl_f32 zpl_quat_roll(zpl_quat q);
 ZPL_DEF void zpl_quat_rotate_vec3(zpl_vec3 *d, zpl_quat q, zpl_vec3 v);
 ZPL_DEF void zpl_mat4_from_quat(zpl_mat4 *out, zpl_quat q);
 ZPL_DEF void zpl_quat_from_mat4(zpl_quat *out, zpl_mat4 *m);
+
+ZPL_DEF zpl_f32 zpl_plane_distance(zpl_plane* p, zpl_vec3* v);
 
 /* Interpolations */
 ZPL_DEF zpl_f32 zpl_lerp(zpl_f32 a, zpl_f32 b, zpl_f32 t);
@@ -4159,20 +4186,20 @@ zpl_inline void *zpl_align_forward(void *ptr, zpl_isize alignment) {
     
     ZPL_ASSERT(zpl_is_power_of_two(alignment));
     
-    p = cast(zpl_uintptr) ptr;
-    return cast(void *)((p + (alignment - 1)) & ~(alignment - 1));
+    p = zpl_cast(zpl_uintptr) ptr;
+    return zpl_cast(void *)((p + (alignment - 1)) & ~(alignment - 1));
 }
 
-zpl_inline void *zpl_pointer_add(void *ptr, zpl_isize bytes) { return cast(void *)(cast(zpl_u8 *) ptr + bytes); }
-zpl_inline void *zpl_pointer_sub(void *ptr, zpl_isize bytes) { return cast(void *)(cast(zpl_u8 *) ptr - bytes); }
+zpl_inline void *zpl_pointer_add(void *ptr, zpl_isize bytes) { return zpl_cast(void *)(zpl_cast(zpl_u8 *) ptr + bytes); }
+zpl_inline void *zpl_pointer_sub(void *ptr, zpl_isize bytes) { return zpl_cast(void *)(zpl_cast(zpl_u8 *) ptr - bytes); }
 zpl_inline void const *zpl_pointer_add_const(void const *ptr, zpl_isize bytes) {
-    return cast(void const *)(cast(zpl_u8 const *) ptr + bytes);
+    return zpl_cast(void const *)(zpl_cast(zpl_u8 const *) ptr + bytes);
 }
 zpl_inline void const *zpl_pointer_sub_const(void const *ptr, zpl_isize bytes) {
-    return cast(void const *)(cast(zpl_u8 const *) ptr - bytes);
+    return zpl_cast(void const *)(zpl_cast(zpl_u8 const *) ptr - bytes);
 }
 zpl_inline zpl_isize zpl_pointer_diff(void const *begin, void const *end) {
-    return cast(zpl_isize)(cast(zpl_u8 const *) end - cast(zpl_u8 const *) begin);
+    return zpl_cast(zpl_isize)(zpl_cast(zpl_u8 const *) end - zpl_cast(zpl_u8 const *) begin);
 }
 
 zpl_inline void zpl_zero_size(void *ptr, zpl_isize size) { zpl_memset(ptr, 0, size); }
@@ -4189,35 +4216,35 @@ zpl_inline void *zpl_memcopy(void *dest, void const *source, zpl_isize n) {
     // TODO: Re-work the whole method
 #if 0
 #if defined(_MSC_VER)
-    __movsb(cast(zpl_u8 *) dest, cast(zpl_u8 *) source, n);
+    __movsb(zpl_cast(zpl_u8 *) dest, zpl_cast(zpl_u8 *) source, n);
 #elif defined(ZPL_CPU_X86) && !defined(ZPL_SYSTEM_EMSCRIPTEN)
-    zpl_u8 *__dest8 = cast(zpl_u8 *) dest;
-    zpl_u8 *__source8 = cast(zpl_u8 *) source;
+    zpl_u8 *__dest8 = zpl_cast(zpl_u8 *) dest;
+    zpl_u8 *__source8 = zpl_cast(zpl_u8 *) source;
     __asm__ __volatile__("rep movsb" : "+D"(__dest8), "+S"(__source8), "+c"(n) : : "memory");
 #elif defined(ZPL_CPU_ARM)
     return memcpy(dest, source, n);
 #else
-    zpl_u8 *d = cast(zpl_u8 *) dest;
-    zpl_u8 const *s = cast(zpl_u8 const *) source;
+    zpl_u8 *d = zpl_cast(zpl_u8 *) dest;
+    zpl_u8 const *s = zpl_cast(zpl_u8 const *) source;
     zpl_u32 w, x;
     
-    for (; cast(zpl_uintptr) s % 4 && n; n--) *d++ = *s++;
+    for (; zpl_cast(zpl_uintptr) s % 4 && n; n--) *d++ = *s++;
     
-    if (cast(zpl_uintptr) d % 4 == 0) {
+    if (zpl_cast(zpl_uintptr) d % 4 == 0) {
         for (; n >= 16; s += 16, d += 16, n -= 16) {
-            *cast(zpl_u32 *)(d + 0) = *cast(zpl_u32 *)(s + 0);
-            *cast(zpl_u32 *)(d + 4) = *cast(zpl_u32 *)(s + 4);
-            *cast(zpl_u32 *)(d + 8) = *cast(zpl_u32 *)(s + 8);
-            *cast(zpl_u32 *)(d + 12) = *cast(zpl_u32 *)(s + 12);
+            *zpl_cast(zpl_u32 *)(d + 0) = *zpl_cast(zpl_u32 *)(s + 0);
+            *zpl_cast(zpl_u32 *)(d + 4) = *zpl_cast(zpl_u32 *)(s + 4);
+            *zpl_cast(zpl_u32 *)(d + 8) = *zpl_cast(zpl_u32 *)(s + 8);
+            *zpl_cast(zpl_u32 *)(d + 12) = *zpl_cast(zpl_u32 *)(s + 12);
         }
         if (n & 8) {
-            *cast(zpl_u32 *)(d + 0) = *cast(zpl_u32 *)(s + 0);
-            *cast(zpl_u32 *)(d + 4) = *cast(zpl_u32 *)(s + 4);
+            *zpl_cast(zpl_u32 *)(d + 0) = *zpl_cast(zpl_u32 *)(s + 0);
+            *zpl_cast(zpl_u32 *)(d + 4) = *zpl_cast(zpl_u32 *)(s + 4);
             d += 8;
             s += 8;
         }
         if (n & 4) {
-            *cast(zpl_u32 *)(d + 0) = *cast(zpl_u32 *)(s + 0);
+            *zpl_cast(zpl_u32 *)(d + 0) = *zpl_cast(zpl_u32 *)(s + 0);
             d += 4;
             s += 4;
         }
@@ -4237,22 +4264,22 @@ zpl_inline void *zpl_memcopy(void *dest, void const *source, zpl_isize n) {
 #define LS >>
 #define RS <<
 #endif
-        switch (cast(zpl_uintptr) d % 4) {
+        switch (zpl_cast(zpl_uintptr) d % 4) {
             case 1: {
-                w = *cast(zpl_u32 *) s;
+                w = *zpl_cast(zpl_u32 *) s;
                 *d++ = *s++;
                 *d++ = *s++;
                 *d++ = *s++;
                 n -= 3;
                 while (n > 16) {
-                    x = *cast(zpl_u32 *)(s + 1);
-                    *cast(zpl_u32 *)(d + 0) = (w LS 24) | (x RS 8);
-                    w = *cast(zpl_u32 *)(s + 5);
-                    *cast(zpl_u32 *)(d + 4) = (x LS 24) | (w RS 8);
-                    x = *cast(zpl_u32 *)(s + 9);
-                    *cast(zpl_u32 *)(d + 8) = (w LS 24) | (x RS 8);
-                    w = *cast(zpl_u32 *)(s + 13);
-                    *cast(zpl_u32 *)(d + 12) = (x LS 24) | (w RS 8);
+                    x = *zpl_cast(zpl_u32 *)(s + 1);
+                    *zpl_cast(zpl_u32 *)(d + 0) = (w LS 24) | (x RS 8);
+                    w = *zpl_cast(zpl_u32 *)(s + 5);
+                    *zpl_cast(zpl_u32 *)(d + 4) = (x LS 24) | (w RS 8);
+                    x = *zpl_cast(zpl_u32 *)(s + 9);
+                    *zpl_cast(zpl_u32 *)(d + 8) = (w LS 24) | (x RS 8);
+                    w = *zpl_cast(zpl_u32 *)(s + 13);
+                    *zpl_cast(zpl_u32 *)(d + 12) = (x LS 24) | (w RS 8);
                     
                     s += 16;
                     d += 16;
@@ -4260,19 +4287,19 @@ zpl_inline void *zpl_memcopy(void *dest, void const *source, zpl_isize n) {
                 }
             } break;
             case 2: {
-                w = *cast(zpl_u32 *) s;
+                w = *zpl_cast(zpl_u32 *) s;
                 *d++ = *s++;
                 *d++ = *s++;
                 n -= 2;
                 while (n > 17) {
-                    x = *cast(zpl_u32 *)(s + 2);
-                    *cast(zpl_u32 *)(d + 0) = (w LS 16) | (x RS 16);
-                    w = *cast(zpl_u32 *)(s + 6);
-                    *cast(zpl_u32 *)(d + 4) = (x LS 16) | (w RS 16);
-                    x = *cast(zpl_u32 *)(s + 10);
-                    *cast(zpl_u32 *)(d + 8) = (w LS 16) | (x RS 16);
-                    w = *cast(zpl_u32 *)(s + 14);
-                    *cast(zpl_u32 *)(d + 12) = (x LS 16) | (w RS 16);
+                    x = *zpl_cast(zpl_u32 *)(s + 2);
+                    *zpl_cast(zpl_u32 *)(d + 0) = (w LS 16) | (x RS 16);
+                    w = *zpl_cast(zpl_u32 *)(s + 6);
+                    *zpl_cast(zpl_u32 *)(d + 4) = (x LS 16) | (w RS 16);
+                    x = *zpl_cast(zpl_u32 *)(s + 10);
+                    *zpl_cast(zpl_u32 *)(d + 8) = (w LS 16) | (x RS 16);
+                    w = *zpl_cast(zpl_u32 *)(s + 14);
+                    *zpl_cast(zpl_u32 *)(d + 12) = (x LS 16) | (w RS 16);
                     
                     s += 16;
                     d += 16;
@@ -4280,18 +4307,18 @@ zpl_inline void *zpl_memcopy(void *dest, void const *source, zpl_isize n) {
                 }
             } break;
             case 3: {
-                w = *cast(zpl_u32 *) s;
+                w = *zpl_cast(zpl_u32 *) s;
                 *d++ = *s++;
                 n -= 1;
                 while (n > 18) {
-                    x = *cast(zpl_u32 *)(s + 3);
-                    *cast(zpl_u32 *)(d + 0) = (w LS 8) | (x RS 24);
-                    w = *cast(zpl_u32 *)(s + 7);
-                    *cast(zpl_u32 *)(d + 4) = (x LS 8) | (w RS 24);
-                    x = *cast(zpl_u32 *)(s + 11);
-                    *cast(zpl_u32 *)(d + 8) = (w LS 8) | (x RS 24);
-                    w = *cast(zpl_u32 *)(s + 15);
-                    *cast(zpl_u32 *)(d + 12) = (x LS 8) | (w RS 24);
+                    x = *zpl_cast(zpl_u32 *)(s + 3);
+                    *zpl_cast(zpl_u32 *)(d + 0) = (w LS 8) | (x RS 24);
+                    w = *zpl_cast(zpl_u32 *)(s + 7);
+                    *zpl_cast(zpl_u32 *)(d + 4) = (x LS 8) | (w RS 24);
+                    x = *zpl_cast(zpl_u32 *)(s + 11);
+                    *zpl_cast(zpl_u32 *)(d + 8) = (w LS 8) | (x RS 24);
+                    w = *zpl_cast(zpl_u32 *)(s + 15);
+                    *zpl_cast(zpl_u32 *)(d + 12) = (x LS 8) | (w RS 24);
                     
                     s += 16;
                     d += 16;
@@ -4352,21 +4379,21 @@ zpl_inline void *zpl_memcopy(void *dest, void const *source, zpl_isize n) {
 zpl_inline void *zpl_memmove(void *dest, void const *source, zpl_isize n) {
     if (dest == NULL) { return NULL; }
     
-    zpl_u8 *d = cast(zpl_u8 *) dest;
-    zpl_u8 const *s = cast(zpl_u8 const *) source;
+    zpl_u8 *d = zpl_cast(zpl_u8 *) dest;
+    zpl_u8 const *s = zpl_cast(zpl_u8 const *) source;
     
     if (d == s) return d;
     if (s + n <= d || d + n <= s) // NOTE: Non-overlapping
         return zpl_memcopy(d, s, n);
     
     if (d < s) {
-        if (cast(zpl_uintptr) s % zpl_size_of(zpl_isize) == cast(zpl_uintptr) d % zpl_size_of(zpl_isize)) {
-            while (cast(zpl_uintptr) d % zpl_size_of(zpl_isize)) {
+        if (zpl_cast(zpl_uintptr) s % zpl_size_of(zpl_isize) == zpl_cast(zpl_uintptr) d % zpl_size_of(zpl_isize)) {
+            while (zpl_cast(zpl_uintptr) d % zpl_size_of(zpl_isize)) {
                 if (!n--) return dest;
                 *d++ = *s++;
             }
             while (n >= zpl_size_of(zpl_isize)) {
-                *cast(zpl_isize *) d = *cast(zpl_isize *) s;
+                *zpl_cast(zpl_isize *) d = *zpl_cast(zpl_isize *) s;
                 n -= zpl_size_of(zpl_isize);
                 d += zpl_size_of(zpl_isize);
                 s += zpl_size_of(zpl_isize);
@@ -4374,14 +4401,14 @@ zpl_inline void *zpl_memmove(void *dest, void const *source, zpl_isize n) {
         }
         for (; n; n--) *d++ = *s++;
     } else {
-        if ((cast(zpl_uintptr) s % zpl_size_of(zpl_isize)) == (cast(zpl_uintptr) d % zpl_size_of(zpl_isize))) {
-            while (cast(zpl_uintptr)(d + n) % zpl_size_of(zpl_isize)) {
+        if ((zpl_cast(zpl_uintptr) s % zpl_size_of(zpl_isize)) == (zpl_cast(zpl_uintptr) d % zpl_size_of(zpl_isize))) {
+            while (zpl_cast(zpl_uintptr)(d + n) % zpl_size_of(zpl_isize)) {
                 if (!n--) return dest;
                 d[n] = s[n];
             }
             while (n >= zpl_size_of(zpl_isize)) {
                 n -= zpl_size_of(zpl_isize);
-                *cast(zpl_isize *)(d + n) = *cast(zpl_isize *)(s + n);
+                *zpl_cast(zpl_isize *)(d + n) = *zpl_cast(zpl_isize *)(s + n);
             }
         }
         while (n) n--, d[n] = s[n];
@@ -4393,7 +4420,7 @@ zpl_inline void *zpl_memmove(void *dest, void const *source, zpl_isize n) {
 zpl_inline void *zpl_memset(void *dest, zpl_u8 c, zpl_isize n) {
     if (dest == NULL) { return NULL; }
     
-    zpl_u8 *s = cast(zpl_u8 *) dest;
+    zpl_u8 *s = zpl_cast(zpl_u8 *) dest;
     zpl_isize k;
     zpl_u32 c32 = ((zpl_u32)-1) / 255 * c;
     
@@ -4406,39 +4433,39 @@ zpl_inline void *zpl_memset(void *dest, zpl_u8 c, zpl_isize n) {
     s[3] = s[n - 4] = c;
     if (n < 9) return dest;
     
-    k = -cast(zpl_intptr) s & 3;
+    k = -zpl_cast(zpl_intptr) s & 3;
     s += k;
     n -= k;
     n &= -4;
     
-    *cast(zpl_u32 *)(s + 0) = c32;
-    *cast(zpl_u32 *)(s + n - 4) = c32;
+    *zpl_cast(zpl_u32 *)(s + 0) = c32;
+    *zpl_cast(zpl_u32 *)(s + n - 4) = c32;
     if (n < 9) return dest;
-    *cast(zpl_u32 *)(s + 4) = c32;
-    *cast(zpl_u32 *)(s + 8) = c32;
-    *cast(zpl_u32 *)(s + n - 12) = c32;
-    *cast(zpl_u32 *)(s + n - 8) = c32;
+    *zpl_cast(zpl_u32 *)(s + 4) = c32;
+    *zpl_cast(zpl_u32 *)(s + 8) = c32;
+    *zpl_cast(zpl_u32 *)(s + n - 12) = c32;
+    *zpl_cast(zpl_u32 *)(s + n - 8) = c32;
     if (n < 25) return dest;
-    *cast(zpl_u32 *)(s + 12) = c32;
-    *cast(zpl_u32 *)(s + 16) = c32;
-    *cast(zpl_u32 *)(s + 20) = c32;
-    *cast(zpl_u32 *)(s + 24) = c32;
-    *cast(zpl_u32 *)(s + n - 28) = c32;
-    *cast(zpl_u32 *)(s + n - 24) = c32;
-    *cast(zpl_u32 *)(s + n - 20) = c32;
-    *cast(zpl_u32 *)(s + n - 16) = c32;
+    *zpl_cast(zpl_u32 *)(s + 12) = c32;
+    *zpl_cast(zpl_u32 *)(s + 16) = c32;
+    *zpl_cast(zpl_u32 *)(s + 20) = c32;
+    *zpl_cast(zpl_u32 *)(s + 24) = c32;
+    *zpl_cast(zpl_u32 *)(s + n - 28) = c32;
+    *zpl_cast(zpl_u32 *)(s + n - 24) = c32;
+    *zpl_cast(zpl_u32 *)(s + n - 20) = c32;
+    *zpl_cast(zpl_u32 *)(s + n - 16) = c32;
     
-    k = 24 + (cast(zpl_uintptr) s & 4);
+    k = 24 + (zpl_cast(zpl_uintptr) s & 4);
     s += k;
     n -= k;
     
     {
-        zpl_u64 c64 = (cast(zpl_u64) c32 << 32) | c32;
+        zpl_u64 c64 = (zpl_cast(zpl_u64) c32 << 32) | c32;
         while (n > 31) {
-            *cast(zpl_u64 *)(s + 0) = c64;
-            *cast(zpl_u64 *)(s + 8) = c64;
-            *cast(zpl_u64 *)(s + 16) = c64;
-            *cast(zpl_u64 *)(s + 24) = c64;
+            *zpl_cast(zpl_u64 *)(s + 0) = c64;
+            *zpl_cast(zpl_u64 *)(s + 8) = c64;
+            *zpl_cast(zpl_u64 *)(s + 16) = c64;
+            *zpl_cast(zpl_u64 *)(s + 24) = c64;
             
             n -= 32;
             s += 32;
@@ -4449,14 +4476,14 @@ zpl_inline void *zpl_memset(void *dest, zpl_u8 c, zpl_isize n) {
 }
 
 zpl_inline zpl_i32 zpl_memcompare(void const *s1, void const *s2, zpl_isize size) {
-    zpl_u8 const *s1p8 = cast(zpl_u8 const *) s1;
-    zpl_u8 const *s2p8 = cast(zpl_u8 const *) s2;
+    zpl_u8 const *s1p8 = zpl_cast(zpl_u8 const *) s1;
+    zpl_u8 const *s2p8 = zpl_cast(zpl_u8 const *) s2;
     
     if (s1 == NULL || s2 == NULL) { return 0; }
     
     while (size--) {
         zpl_isize d;
-        if ((d = (*s1p8++ - *s2p8++)) != 0) return cast(zpl_i32) d;
+        if ((d = (*s1p8++ - *s2p8++)) != 0) return zpl_cast(zpl_i32) d;
     }
     return 0;
 }
@@ -4465,12 +4492,12 @@ void zpl_memswap(void *i, void *j, zpl_isize size) {
     if (i == j) return;
     
     if (size == 4) {
-        zpl_swap(zpl_u32, *cast(zpl_u32 *) i, *cast(zpl_u32 *) j);
+        zpl_swap(zpl_u32, *zpl_cast(zpl_u32 *) i, *zpl_cast(zpl_u32 *) j);
     } else if (size == 8) {
-        zpl_swap(zpl_u64, *cast(zpl_u64 *) i, *cast(zpl_u64 *) j);
+        zpl_swap(zpl_u64, *zpl_cast(zpl_u64 *) i, *zpl_cast(zpl_u64 *) j);
     } else if (size < 8) {
-        zpl_u8 *a = cast(zpl_u8 *) i;
-        zpl_u8 *b = cast(zpl_u8 *) j;
+        zpl_u8 *a = zpl_cast(zpl_u8 *) i;
+        zpl_u8 *b = zpl_cast(zpl_u8 *) j;
         if (a != b) {
             while (size--) { zpl_swap(zpl_u8, *a++, *b++); }
         }
@@ -4490,38 +4517,38 @@ void zpl_memswap(void *i, void *j, zpl_isize size) {
     }
 }
 
-#define ZPL__ONES (cast(zpl_usize) - 1 / ZPL_U8_MAX)
+#define ZPL__ONES (zpl_cast(zpl_usize) - 1 / ZPL_U8_MAX)
 #define ZPL__HIGHS (ZPL__ONES * (ZPL_U8_MAX / 2 + 1))
 #define ZPL__HAS_ZERO(x) (((x)-ZPL__ONES) & ~(x)&ZPL__HIGHS)
 
 void const *zpl_memchr(void const *data, zpl_u8 c, zpl_isize n) {
-    zpl_u8 const *s = cast(zpl_u8 const *) data;
-    while ((cast(zpl_uintptr) s & (sizeof(zpl_usize) - 1)) && n && *s != c) {
+    zpl_u8 const *s = zpl_cast(zpl_u8 const *) data;
+    while ((zpl_cast(zpl_uintptr) s & (sizeof(zpl_usize) - 1)) && n && *s != c) {
         s++;
         n--;
     }
     if (n && *s != c) {
         zpl_isize const *w;
         zpl_isize k = ZPL__ONES * c;
-        w = cast(zpl_isize const *) s;
+        w = zpl_cast(zpl_isize const *) s;
         while (n >= zpl_size_of(zpl_isize) && !ZPL__HAS_ZERO(*w ^ k)) {
             w++;
             n -= zpl_size_of(zpl_isize);
         }
-        s = cast(zpl_u8 const *) w;
+        s = zpl_cast(zpl_u8 const *) w;
         while (n && *s != c) {
             s++;
             n--;
         }
     }
     
-    return n ? cast(void const *) s : NULL;
+    return n ? zpl_cast(void const *) s : NULL;
 }
 
 void const *zpl_memrchr(void const *data, zpl_u8 c, zpl_isize n) {
-    zpl_u8 const *s = cast(zpl_u8 const *) data;
+    zpl_u8 const *s = zpl_cast(zpl_u8 const *) data;
     while (n--) {
-        if (s[n] == c) return cast(void const *)(s + n);
+        if (s[n] == c) return zpl_cast(void const *)(s + n);
     }
     return NULL;
 }
@@ -4553,7 +4580,7 @@ zpl_inline zpl_b32 zpl_vm_free(zpl_virtual_memory vm) {
     while (vm.size > 0) {
         if (VirtualQuery(vm.data, &info, zpl_size_of(info)) == 0) return false;
         if (info.BaseAddress != vm.data || info.AllocationBase != vm.data || info.State != MEM_COMMIT ||
-            info.RegionSize > cast(zpl_usize) vm.size) {
+            info.RegionSize > zpl_cast(zpl_usize) vm.size) {
             return false;
         }
         if (VirtualFree(vm.data, 0, MEM_RELEASE) == 0) return false;
@@ -4629,7 +4656,7 @@ zpl_inline zpl_b32 zpl_vm_purge(zpl_virtual_memory vm) {
 
 zpl_isize zpl_virtual_memory_page_size(zpl_isize *alignment_out) {
     // TODO: Is this always true?
-    zpl_isize result = cast(zpl_isize) sysconf(_SC_PAGE_SIZE);
+    zpl_isize result = zpl_cast(zpl_isize) sysconf(_SC_PAGE_SIZE);
     if (alignment_out) *alignment_out = result;
     return result;
 }
@@ -4666,7 +4693,7 @@ zpl_inline char *zpl_alloc_str(zpl_allocator a, char const *str) { return zpl_al
 
 zpl_inline char *zpl_alloc_str_len(zpl_allocator a, char const *str, zpl_isize len) {
     char *result;
-    result = cast(char *) zpl_alloc_copy(a, str, len + 1);
+    result = zpl_cast(char *) zpl_alloc_copy(a, str, len + 1);
     result[len] = '\0';
     return result;
 }
@@ -4799,7 +4826,7 @@ zpl_inline zpl_isize zpl_arena_alignment_of(zpl_arena *arena, zpl_isize alignmen
     ZPL_ASSERT(zpl_is_power_of_two(alignment));
     
     alignment_offset = 0;
-    result_pointer = cast(zpl_isize) arena->physical_start + arena->total_allocated;
+    result_pointer = zpl_cast(zpl_isize) arena->physical_start + arena->total_allocated;
     mask = alignment - 1;
     if (result_pointer & mask) alignment_offset = alignment - (result_pointer & mask);
     
@@ -4821,7 +4848,7 @@ zpl_inline zpl_allocator zpl_arena_allocator(zpl_arena *arena) {
 }
 
 ZPL_ALLOCATOR_PROC(zpl_arena_allocator_proc) {
-    zpl_arena *arena = cast(zpl_arena *) allocator_data;
+    zpl_arena *arena = zpl_cast(zpl_arena *) allocator_data;
     void *ptr = NULL;
     
     zpl_unused(old_size);
@@ -4832,7 +4859,7 @@ ZPL_ALLOCATOR_PROC(zpl_arena_allocator_proc) {
             zpl_isize total_size = size + alignment;
             
             // NOTE: Out of memory
-            if (arena->total_allocated + total_size > cast(zpl_isize) arena->total_size) {
+            if (arena->total_allocated + total_size > zpl_cast(zpl_isize) arena->total_size) {
                 zpl_printf_err("Arena out of memory\n");
                 return NULL;
             }
@@ -4900,13 +4927,13 @@ void zpl_pool_init_align(zpl_pool *pool, zpl_allocator backing, zpl_isize num_bl
     // NOTE: Init intrusive freelist
     curr = data;
     for (block_index = 0; block_index < num_blocks - 1; block_index++) {
-        zpl_uintptr *next = cast(zpl_uintptr *) curr;
-        *next = cast(zpl_uintptr) curr + actual_block_size;
+        zpl_uintptr *next = zpl_cast(zpl_uintptr *) curr;
+        *next = zpl_cast(zpl_uintptr) curr + actual_block_size;
         curr = zpl_pointer_add(curr, actual_block_size);
     }
     
-    end = cast(zpl_uintptr *) curr;
-    *end = cast(zpl_uintptr) NULL;
+    end = zpl_cast(zpl_uintptr *) curr;
+    *end = zpl_cast(zpl_uintptr) NULL;
     
     pool->physical_start = data;
     pool->free_list = data;
@@ -4923,7 +4950,7 @@ zpl_inline zpl_allocator zpl_pool_allocator(zpl_pool *pool) {
     return allocator;
 }
 ZPL_ALLOCATOR_PROC(zpl_pool_allocator_proc) {
-    zpl_pool *pool = cast(zpl_pool *) allocator_data;
+    zpl_pool *pool = zpl_cast(zpl_pool *) allocator_data;
     void *ptr = NULL;
     
     zpl_unused(old_size);
@@ -4935,9 +4962,9 @@ ZPL_ALLOCATOR_PROC(zpl_pool_allocator_proc) {
             ZPL_ASSERT(alignment == pool->block_align);
             ZPL_ASSERT(pool->free_list != NULL);
             
-            next_free = *cast(zpl_uintptr *) pool->free_list;
+            next_free = *zpl_cast(zpl_uintptr *) pool->free_list;
             ptr = pool->free_list;
-            pool->free_list = cast(void *) next_free;
+            pool->free_list = zpl_cast(void *) next_free;
             pool->total_size += pool->block_size;
             if (flags & ZPL_ALLOCATOR_FLAG_CLEAR_TO_ZERO) zpl_zero_size(ptr, size);
         } break;
@@ -4946,8 +4973,8 @@ ZPL_ALLOCATOR_PROC(zpl_pool_allocator_proc) {
             zpl_uintptr *next;
             if (old_memory == NULL) return NULL;
             
-            next = cast(zpl_uintptr *) old_memory;
-            *next = cast(zpl_uintptr) pool->free_list;
+            next = zpl_cast(zpl_uintptr *) old_memory;
+            *next = zpl_cast(zpl_uintptr) pool->free_list;
             pool->free_list = old_memory;
             pool->total_size -= pool->block_size;
         } break;
@@ -4966,16 +4993,16 @@ ZPL_ALLOCATOR_PROC(zpl_pool_allocator_proc) {
 }
 
 zpl_inline zpl_allocation_header_ev *zpl_allocation_header(void *data) {
-    zpl_isize *p = cast(zpl_isize *) data;
-    while (p[-1] == cast(zpl_isize)(-1)) p--;
-    return cast(zpl_allocation_header_ev *) p - 1;
+    zpl_isize *p = zpl_cast(zpl_isize *) data;
+    while (p[-1] == zpl_cast(zpl_isize)(-1)) p--;
+    return zpl_cast(zpl_allocation_header_ev *) p - 1;
 }
 
 zpl_inline void zpl_allocation_header_fill(zpl_allocation_header_ev *header, void *data, zpl_isize size) {
     zpl_isize *ptr;
     header->size = size;
-    ptr = cast(zpl_isize *)(header + 1);
-    while (cast(void *) ptr < data) *ptr++ = cast(zpl_isize)(-1);
+    ptr = zpl_cast(zpl_isize *)(header + 1);
+    while (zpl_cast(void *) ptr < data) *ptr++ = zpl_cast(zpl_isize)(-1);
 }
 
 //
@@ -5003,14 +5030,14 @@ zpl_allocator zpl_scratch_allocator(zpl_scratch_memory *s) {
 }
 
 ZPL_ALLOCATOR_PROC(zpl_scratch_allocator_proc) {
-    zpl_scratch_memory *s = cast(zpl_scratch_memory *) allocator_data;
+    zpl_scratch_memory *s = zpl_cast(zpl_scratch_memory *) allocator_data;
     void *ptr = NULL;
     ZPL_ASSERT_NOT_NULL(s);
     
     switch (type) {
         case ZPL_ALLOCATION_ALLOC: {
             void *pt = s->alloc_point;
-            zpl_allocation_header_ev *header = cast(zpl_allocation_header_ev *) pt;
+            zpl_allocation_header_ev *header = zpl_cast(zpl_allocation_header_ev *) pt;
             void *data = zpl_align_forward(header + 1, alignment);
             void *end = zpl_pointer_add(s->physical_start, s->total_size);
             
@@ -5022,14 +5049,14 @@ ZPL_ALLOCATOR_PROC(zpl_scratch_allocator_proc) {
             if (pt > end) {
                 header->size = zpl_pointer_diff(header, end) | ZPL_ISIZE_HIGH_BIT;
                 pt = s->physical_start;
-                header = cast(zpl_allocation_header_ev *) pt;
+                header = zpl_cast(zpl_allocation_header_ev *) pt;
                 data = zpl_align_forward(header + 1, alignment);
                 pt = zpl_pointer_add(pt, size);
             }
             
             if (!zpl_scratch_memory_is_in_use(s, pt)) {
                 zpl_allocation_header_fill(header, pt, zpl_pointer_diff(header, pt));
-                s->alloc_point = cast(zpl_u8 *) pt;
+                s->alloc_point = zpl_cast(zpl_u8 *) pt;
                 ptr = data;
             }
             
@@ -5048,7 +5075,7 @@ ZPL_ALLOCATOR_PROC(zpl_scratch_allocator_proc) {
                     h->size = h->size | ZPL_ISIZE_HIGH_BIT;
                     
                     while (s->free_point != s->alloc_point) {
-                        zpl_allocation_header_ev *header = cast(zpl_allocation_header_ev *) s->free_point;
+                        zpl_allocation_header_ev *header = zpl_cast(zpl_allocation_header_ev *) s->free_point;
                         if ((header->size & ZPL_ISIZE_HIGH_BIT) == 0) break;
                         
                         s->free_point = zpl_pointer_add(s->free_point, h->size & (~ZPL_ISIZE_HIGH_BIT));
@@ -5114,7 +5141,7 @@ zpl_inline zpl_allocator zpl_stack_allocator(zpl_stack_memory *s) {
 }
 
 ZPL_ALLOCATOR_PROC(zpl_stack_allocator_proc) {
-    zpl_stack_memory *s = cast(zpl_stack_memory *) allocator_data;
+    zpl_stack_memory *s = zpl_cast(zpl_stack_memory *) allocator_data;
     void *ptr = NULL;
     ZPL_ASSERT_NOT_NULL(s);
     zpl_unused(old_size);
@@ -5126,15 +5153,15 @@ ZPL_ALLOCATOR_PROC(zpl_stack_allocator_proc) {
             zpl_u64 alloc_offset = s->allocated;
             
             void *curr =
-                cast(zpl_u64 *) zpl_align_forward(cast(zpl_u64 *) zpl_pointer_add(s->physical_start, s->allocated), alignment);
+                zpl_cast(zpl_u64 *) zpl_align_forward(zpl_cast(zpl_u64 *) zpl_pointer_add(s->physical_start, s->allocated), alignment);
             
-            if (cast(zpl_u64 *) zpl_pointer_add(curr, size) > cast(zpl_u64 *) zpl_pointer_add(s->physical_start, s->total_size)) {
+            if (zpl_cast(zpl_u64 *) zpl_pointer_add(curr, size) > zpl_cast(zpl_u64 *) zpl_pointer_add(s->physical_start, s->total_size)) {
                 if (s->backing.proc) {
                     void *old_start = s->physical_start;
                     s->physical_start =
                         zpl_resize_align(s->backing, s->physical_start, s->total_size, s->total_size + size, alignment);
-                    curr = cast(zpl_u64 *)
-                        zpl_align_forward(cast(zpl_u64 *) zpl_pointer_add(s->physical_start, s->allocated), alignment);
+                    curr = zpl_cast(zpl_u64 *)
+                        zpl_align_forward(zpl_cast(zpl_u64 *) zpl_pointer_add(s->physical_start, s->allocated), alignment);
                     s->total_size = zpl_pointer_diff(old_start, s->physical_start);
                 } else {
                     ZPL_PANIC("Can not resize stack's memory! Allocator not defined!");
@@ -5185,19 +5212,19 @@ zpl_inline zpl_i32  zpl_atomic32_load (zpl_atomic32 const volatile *a)      { re
 zpl_inline void zpl_atomic32_store(zpl_atomic32 volatile *a, zpl_i32 value) { a->value = value; }
 
 zpl_inline zpl_i32 zpl_atomic32_compare_exchange(zpl_atomic32 volatile *a, zpl_i32 expected, zpl_i32 desired) {
-    return _InterlockedCompareExchange(cast(long volatile *)a, desired, expected);
+    return _InterlockedCompareExchange(zpl_cast(long volatile *)a, desired, expected);
 }
 zpl_inline zpl_i32 zpl_atomic32_exchange(zpl_atomic32 volatile *a, zpl_i32 desired) {
-    return _InterlockedExchange(cast(long volatile *)a, desired);
+    return _InterlockedExchange(zpl_cast(long volatile *)a, desired);
 }
 zpl_inline zpl_i32 zpl_atomic32_fetch_add(zpl_atomic32 volatile *a, zpl_i32 operand) {
-    return _InterlockedExchangeAdd(cast(long volatile *)a, operand);
+    return _InterlockedExchangeAdd(zpl_cast(long volatile *)a, operand);
 }
 zpl_inline zpl_i32 zpl_atomic32_fetch_and(zpl_atomic32 volatile *a, zpl_i32 operand) {
-    return _InterlockedAnd(cast(long volatile *)a, operand);
+    return _InterlockedAnd(zpl_cast(long volatile *)a, operand);
 }
 zpl_inline zpl_i32 zpl_atomic32_fetch_or(zpl_atomic32 volatile *a, zpl_i32 operand) {
-    return _InterlockedOr(cast(long volatile *)a, operand);
+    return _InterlockedOr(zpl_cast(long volatile *)a, operand);
 }
 
 zpl_inline zpl_i64 zpl_atomic64_load(zpl_atomic64 const volatile *a) {
@@ -5239,16 +5266,16 @@ zpl_inline void zpl_atomic64_store(zpl_atomic64 volatile *a, zpl_i64 value) {
 }
 
 zpl_inline zpl_i64 zpl_atomic64_compare_exchange(zpl_atomic64 volatile *a, zpl_i64 expected, zpl_i64 desired) {
-    return _InterlockedCompareExchange64(cast(zpl_i64 volatile *)a, desired, expected);
+    return _InterlockedCompareExchange64(zpl_cast(zpl_i64 volatile *)a, desired, expected);
 }
 
 zpl_inline zpl_i64 zpl_atomic64_exchange(zpl_atomic64 volatile *a, zpl_i64 desired) {
 #if defined(ZPL_ARCH_64_BIT)
-    return _InterlockedExchange64(cast(zpl_i64 volatile *)a, desired);
+    return _InterlockedExchange64(zpl_cast(zpl_i64 volatile *)a, desired);
 #elif ZPL_CPU_X86
     zpl_i64 expected = a->value;
     for (;;) {
-        zpl_i64 original = _InterlockedCompareExchange64(cast(zpl_i64 volatile *)a, desired, expected);
+        zpl_i64 original = _InterlockedCompareExchange64(zpl_cast(zpl_i64 volatile *)a, desired, expected);
         if (original == expected)
             return original;
         expected = original;
@@ -5260,11 +5287,11 @@ zpl_inline zpl_i64 zpl_atomic64_exchange(zpl_atomic64 volatile *a, zpl_i64 desir
 
 zpl_inline zpl_i64 zpl_atomic64_fetch_add(zpl_atomic64 volatile *a, zpl_i64 operand) {
 #if defined(ZPL_ARCH_64_BIT)
-    return _InterlockedExchangeAdd64(cast(zpl_i64 volatile *)a, operand);
+    return _InterlockedExchangeAdd64(zpl_cast(zpl_i64 volatile *)a, operand);
 #elif ZPL_CPU_X86
     zpl_i64 expected = a->value;
     for (;;) {
-        zpl_i64 original = _InterlockedCompareExchange64(cast(zpl_i64 volatile *)a, expected + operand, expected);
+        zpl_i64 original = _InterlockedCompareExchange64(zpl_cast(zpl_i64 volatile *)a, expected + operand, expected);
         if (original == expected)
             return original;
         expected = original;
@@ -5276,11 +5303,11 @@ zpl_inline zpl_i64 zpl_atomic64_fetch_add(zpl_atomic64 volatile *a, zpl_i64 oper
 
 zpl_inline zpl_i64 zpl_atomic64_fetch_and(zpl_atomic64 volatile *a, zpl_i64 operand) {
 #if defined(ZPL_ARCH_64_BIT)
-    return _InterlockedAnd64(cast(zpl_i64 volatile *)a, operand);
+    return _InterlockedAnd64(zpl_cast(zpl_i64 volatile *)a, operand);
 #elif ZPL_CPU_X86
     zpl_i64 expected = a->value;
     for (;;) {
-        zpl_i64 original = _InterlockedCompareExchange64(cast(zpl_i64 volatile *)a, expected & operand, expected);
+        zpl_i64 original = _InterlockedCompareExchange64(zpl_cast(zpl_i64 volatile *)a, expected & operand, expected);
         if (original == expected)
             return original;
         expected = original;
@@ -5292,11 +5319,11 @@ zpl_inline zpl_i64 zpl_atomic64_fetch_and(zpl_atomic64 volatile *a, zpl_i64 oper
 
 zpl_inline zpl_i64 zpl_atomic64_fetch_or(zpl_atomic64 volatile *a, zpl_i64 operand) {
 #if defined(ZPL_ARCH_64_BIT)
-    return _InterlockedOr64(cast(zpl_i64 volatile *)a, operand);
+    return _InterlockedOr64(zpl_cast(zpl_i64 volatile *)a, operand);
 #elif ZPL_CPU_X86
     zpl_i64 expected = a->value;
     for (;;) {
-        zpl_i64 original = _InterlockedCompareExchange64(cast(zpl_i64 volatile *)a, expected | operand, expected);
+        zpl_i64 original = _InterlockedCompareExchange64(zpl_cast(zpl_i64 volatile *)a, expected | operand, expected);
         if (original == expected)
             return original;
         expected = original;
@@ -5565,67 +5592,67 @@ zpl_inline zpl_b32 zpl_atomic64_try_acquire_lock(zpl_atomic64 volatile *a) {
 #if defined(ZPL_ARCH_32_BIT)
 
 zpl_inline void *zpl_atomic_ptr_load(zpl_atomic_ptr const volatile *a) {
-    return cast(void *)cast(zpl_intptr)zpl_atomic32_load(cast(zpl_atomic32 const volatile *)a);
+    return zpl_cast(void *)zpl_cast(zpl_intptr)zpl_atomic32_load(zpl_cast(zpl_atomic32 const volatile *)a);
 }
 zpl_inline void zpl_atomic_ptr_store(zpl_atomic_ptr volatile *a, void *value) {
-    zpl_atomic32_store(cast(zpl_atomic32 volatile *)a, cast(zpl_i32)cast(zpl_intptr)value);
+    zpl_atomic32_store(zpl_cast(zpl_atomic32 volatile *)a, zpl_cast(zpl_i32)zpl_cast(zpl_intptr)value);
 }
 zpl_inline void *zpl_atomic_ptr_compare_exchange(zpl_atomic_ptr volatile *a, void *expected, void *desired) {
-    return cast(void *)cast(zpl_intptr)zpl_atomic32_compare_exchange(cast(zpl_atomic32 volatile *)a, cast(zpl_i32)cast(zpl_intptr)expected, cast(zpl_i32)cast(zpl_intptr)desired);
+    return zpl_cast(void *)zpl_cast(zpl_intptr)zpl_atomic32_compare_exchange(zpl_cast(zpl_atomic32 volatile *)a, zpl_cast(zpl_i32)zpl_cast(zpl_intptr)expected, zpl_cast(zpl_i32)zpl_cast(zpl_intptr)desired);
 }
 zpl_inline void *zpl_atomic_ptr_exchange(zpl_atomic_ptr volatile *a, void *desired) {
-    return cast(void *)cast(zpl_intptr)zpl_atomic32_exchange(cast(zpl_atomic32 volatile *)a, cast(zpl_i32)cast(zpl_intptr)desired);
+    return zpl_cast(void *)zpl_cast(zpl_intptr)zpl_atomic32_exchange(zpl_cast(zpl_atomic32 volatile *)a, zpl_cast(zpl_i32)zpl_cast(zpl_intptr)desired);
 }
 zpl_inline void *zpl_atomic_ptr_fetch_add(zpl_atomic_ptr volatile *a, void *operand) {
-    return cast(void *)cast(zpl_intptr)zpl_atomic32_fetch_add(cast(zpl_atomic32 volatile *)a, cast(zpl_i32)cast(zpl_intptr)operand);
+    return zpl_cast(void *)zpl_cast(zpl_intptr)zpl_atomic32_fetch_add(zpl_cast(zpl_atomic32 volatile *)a, zpl_cast(zpl_i32)zpl_cast(zpl_intptr)operand);
 }
 zpl_inline void *zpl_atomic_ptr_fetch_and(zpl_atomic_ptr volatile *a, void *operand) {
-    return cast(void *)cast(zpl_intptr)zpl_atomic32_fetch_and(cast(zpl_atomic32 volatile *)a, cast(zpl_i32)cast(zpl_intptr)operand);
+    return zpl_cast(void *)zpl_cast(zpl_intptr)zpl_atomic32_fetch_and(zpl_cast(zpl_atomic32 volatile *)a, zpl_cast(zpl_i32)zpl_cast(zpl_intptr)operand);
 }
 zpl_inline void *zpl_atomic_ptr_fetch_or(zpl_atomic_ptr volatile *a, void *operand) {
-    return cast(void *)cast(zpl_intptr)zpl_atomic32_fetch_or(cast(zpl_atomic32 volatile *)a, cast(zpl_i32)cast(zpl_intptr)operand);
+    return zpl_cast(void *)zpl_cast(zpl_intptr)zpl_atomic32_fetch_or(zpl_cast(zpl_atomic32 volatile *)a, zpl_cast(zpl_i32)zpl_cast(zpl_intptr)operand);
 }
 zpl_inline zpl_b32 zpl_atomic_ptr_spin_lock(zpl_atomic_ptr volatile *a, zpl_isize time_out) {
-    return zpl_atomic32_spin_lock(cast(zpl_atomic32 volatile *)a, time_out);
+    return zpl_atomic32_spin_lock(zpl_cast(zpl_atomic32 volatile *)a, time_out);
 }
 zpl_inline void zpl_atomic_ptr_spin_unlock(zpl_atomic_ptr volatile *a) {
-    zpl_atomic32_spin_unlock(cast(zpl_atomic32 volatile *)a);
+    zpl_atomic32_spin_unlock(zpl_cast(zpl_atomic32 volatile *)a);
 }
 zpl_inline zpl_b32 zpl_atomic_ptr_try_acquire_lock(zpl_atomic_ptr volatile *a) {
-    return zpl_atomic32_try_acquire_lock(cast(zpl_atomic32 volatile *)a);
+    return zpl_atomic32_try_acquire_lock(zpl_cast(zpl_atomic32 volatile *)a);
 }
 
 #elif defined(ZPL_ARCH_64_BIT)
 
 zpl_inline void *zpl_atomic_ptr_load(zpl_atomic_ptr const volatile *a) {
-    return cast(void *)cast(zpl_intptr)zpl_atomic64_load(cast(zpl_atomic64 const volatile *)a);
+    return zpl_cast(void *)zpl_cast(zpl_intptr)zpl_atomic64_load(zpl_cast(zpl_atomic64 const volatile *)a);
 }
 zpl_inline void zpl_atomic_ptr_store(zpl_atomic_ptr volatile *a, void *value) {
-    zpl_atomic64_store(cast(zpl_atomic64 volatile *)a, cast(zpl_i64)cast(zpl_intptr)value);
+    zpl_atomic64_store(zpl_cast(zpl_atomic64 volatile *)a, zpl_cast(zpl_i64)zpl_cast(zpl_intptr)value);
 }
 zpl_inline void *zpl_atomic_ptr_compare_exchange(zpl_atomic_ptr volatile *a, void *expected, void *desired) {
-    return cast(void *)cast(zpl_intptr)zpl_atomic64_compare_exchange(cast(zpl_atomic64 volatile *)a, cast(zpl_i64)cast(zpl_intptr)expected, cast(zpl_i64)cast(zpl_intptr)desired);
+    return zpl_cast(void *)zpl_cast(zpl_intptr)zpl_atomic64_compare_exchange(zpl_cast(zpl_atomic64 volatile *)a, zpl_cast(zpl_i64)zpl_cast(zpl_intptr)expected, zpl_cast(zpl_i64)zpl_cast(zpl_intptr)desired);
 }
 zpl_inline void *zpl_atomic_ptr_exchange(zpl_atomic_ptr volatile *a, void *desired) {
-    return cast(void *)cast(zpl_intptr)zpl_atomic64_exchange(cast(zpl_atomic64 volatile *)a, cast(zpl_i64)cast(zpl_intptr)desired);
+    return zpl_cast(void *)zpl_cast(zpl_intptr)zpl_atomic64_exchange(zpl_cast(zpl_atomic64 volatile *)a, zpl_cast(zpl_i64)zpl_cast(zpl_intptr)desired);
 }
 zpl_inline void *zpl_atomic_ptr_fetch_add(zpl_atomic_ptr volatile *a, void *operand) {
-    return cast(void *)cast(zpl_intptr)zpl_atomic64_fetch_add(cast(zpl_atomic64 volatile *)a, cast(zpl_i64)cast(zpl_intptr)operand);
+    return zpl_cast(void *)zpl_cast(zpl_intptr)zpl_atomic64_fetch_add(zpl_cast(zpl_atomic64 volatile *)a, zpl_cast(zpl_i64)zpl_cast(zpl_intptr)operand);
 }
 zpl_inline void *zpl_atomic_ptr_fetch_and(zpl_atomic_ptr volatile *a, void *operand) {
-    return cast(void *)cast(zpl_intptr)zpl_atomic64_fetch_and(cast(zpl_atomic64 volatile *)a, cast(zpl_i64)cast(zpl_intptr)operand);
+    return zpl_cast(void *)zpl_cast(zpl_intptr)zpl_atomic64_fetch_and(zpl_cast(zpl_atomic64 volatile *)a, zpl_cast(zpl_i64)zpl_cast(zpl_intptr)operand);
 }
 zpl_inline void *zpl_atomic_ptr_fetch_or(zpl_atomic_ptr volatile *a, void *operand) {
-    return cast(void *)cast(zpl_intptr)zpl_atomic64_fetch_or(cast(zpl_atomic64 volatile *)a, cast(zpl_i64)cast(zpl_intptr)operand);
+    return zpl_cast(void *)zpl_cast(zpl_intptr)zpl_atomic64_fetch_or(zpl_cast(zpl_atomic64 volatile *)a, zpl_cast(zpl_i64)zpl_cast(zpl_intptr)operand);
 }
 zpl_inline zpl_b32 zpl_atomic_ptr_spin_lock(zpl_atomic_ptr volatile *a, zpl_isize time_out) {
-    return zpl_atomic64_spin_lock(cast(zpl_atomic64 volatile *)a, time_out);
+    return zpl_atomic64_spin_lock(zpl_cast(zpl_atomic64 volatile *)a, time_out);
 }
 zpl_inline void zpl_atomic_ptr_spin_unlock(zpl_atomic_ptr volatile *a) {
-    zpl_atomic64_spin_unlock(cast(zpl_atomic64 volatile *)a);
+    zpl_atomic64_spin_unlock(zpl_cast(zpl_atomic64 volatile *)a);
 }
 zpl_inline zpl_b32 zpl_atomic_ptr_try_acquire_lock(zpl_atomic_ptr volatile *a) {
-    return zpl_atomic64_try_acquire_lock(cast(zpl_atomic64 volatile *)a);
+    return zpl_atomic64_try_acquire_lock(zpl_cast(zpl_atomic64 volatile *)a);
 }
 #endif
 
@@ -5746,7 +5773,7 @@ zpl_inline void zpl_mutex_unlock(zpl_mutex *m) {
 
 
 zpl_isize zpl__async_handler(struct zpl_thread *thread) {
-    zpl_async_ctl *ctl = cast(zpl_async_ctl *)thread->user_data;
+    zpl_async_ctl *ctl = zpl_cast(zpl_async_ctl *)thread->user_data;
     
     ctl->work(ctl->data);
     ctl->cb(ctl->data);
@@ -5781,14 +5808,14 @@ zpl_inline void zpl__thread_run(zpl_thread *t) {
 
 #if defined(ZPL_SYSTEM_WINDOWS)
 zpl_inline DWORD __stdcall zpl__thread_proc(void *arg) {
-    zpl_thread *t = cast(zpl_thread *)arg;
+    zpl_thread *t = zpl_cast(zpl_thread *)arg;
     zpl__thread_run(t);
     t->is_running = false;
     return 0;
 }
 #else
 zpl_inline void *          zpl__thread_proc(void *arg) {
-    zpl_thread *t = cast(zpl_thread *)arg;
+    zpl_thread *t = zpl_cast(zpl_thread *)arg;
     zpl__thread_run(t);
     t->is_running = false;
     return NULL;
@@ -5843,9 +5870,9 @@ zpl_inline zpl_u32 zpl_thread_current_id(void) {
     zpl_u32 thread_id;
 #if defined(ZPL_SYSTEM_WINDOWS)
 #if defined(ZPL_ARCH_32_BIT) && defined(ZPL_CPU_X86)
-    thread_id = (cast(zpl_u32 *)__readfsdword(24))[9];
+    thread_id = (zpl_cast(zpl_u32 *)__readfsdword(24))[9];
 #elif defined(ZPL_ARCH_64_BIT) && defined(ZPL_CPU_X86)
-    thread_id = (cast(zpl_u32 *)__readgsqword(48))[18];
+    thread_id = (zpl_cast(zpl_u32 *)__readgsqword(48))[18];
 #else
     thread_id = GetCurrentThreadId();
 #endif
@@ -5878,11 +5905,11 @@ void zpl_thread_set_name(zpl_thread *t, char const *name) {
     zplprivThreadName tn;
     tn.type  = 0x1000;
     tn.name  = name;
-    tn.id    = GetThreadId(cast(HANDLE)t->win32_handle);
+    tn.id    = GetThreadId(zpl_cast(HANDLE)t->win32_handle);
     tn.flags = 0;
     
     __try {
-        RaiseException(0x406d1388, 0, zpl_size_of(tn)/4, cast(ULONG_PTR *)&tn);
+        RaiseException(0x406d1388, 0, zpl_size_of(tn)/4, zpl_cast(ULONG_PTR *)&tn);
     } __except(1 /*EXCEPTION_EXECUTE_HANDLER*/) {
     }
     
@@ -5984,7 +6011,7 @@ void zpl_affinity_init(zpl_affinity *a) {
     zpl_zero_item(a);
     
     if (!result && GetLastError() == 122l /*ERROR_INSUFFICIENT_BUFFER*/ && length > 0) {
-        start_processor_info = cast(SYSTEM_LOGICAL_PROCESSOR_INFORMATION *)zpl_alloc(zpl_heap_allocator(), length);
+        start_processor_info = zpl_cast(SYSTEM_LOGICAL_PROCESSOR_INFORMATION *)zpl_alloc(zpl_heap_allocator(), length);
         result = GetLogicalProcessorInformation(start_processor_info, &length);
         if (result) {
             SYSTEM_LOGICAL_PROCESSOR_INFORMATION *end_processor_info, *processor_info;
@@ -5992,7 +6019,7 @@ void zpl_affinity_init(zpl_affinity *a) {
             a->is_accurate  = true;
             a->core_count   = 0;
             a->thread_count = 0;
-            end_processor_info = cast(SYSTEM_LOGICAL_PROCESSOR_INFORMATION *)zpl_pointer_add(start_processor_info, length);
+            end_processor_info = zpl_cast(SYSTEM_LOGICAL_PROCESSOR_INFORMATION *)zpl_pointer_add(start_processor_info, length);
             
             for (processor_info = start_processor_info;
                  processor_info < end_processor_info;
@@ -6094,8 +6121,8 @@ zpl_b32 zpl_affinity_set(zpl_affinity *a, zpl_isize core, zpl_isize thread_index
     
     index = core * a->threads_per_core + thread_index;
     thread = mach_thread_self();
-    info.affinity_tag = cast(integer_t)index;
-    result = thread_policy_set(thread, THREAD_AFFINITY_POLICY, cast(thread_policy_t)&info, THREAD_AFFINITY_POLICY_COUNT);
+    info.affinity_tag = zpl_cast(integer_t)index;
+    result = thread_policy_set(thread, THREAD_AFFINITY_POLICY, zpl_cast(thread_policy_t)&info, THREAD_AFFINITY_POLICY_COUNT);
     return result == KERN_SUCCESS;
 }
 
@@ -6208,8 +6235,8 @@ zpl_isize zpl_affinity_thread_count_for_core(zpl_affinity *a, zpl_isize core) {
 #define ZPL__COMPARE_PROC(Type)                                                                                        \
 zpl_global zpl_isize Type##__cmp_offset;                                                                         \
 ZPL_COMPARE_PROC(Type##__cmp) {                                                                              \
-    Type const p = *cast(Type const *) zpl_pointer_add_const(a, Type##__cmp_offset);                         \
-    Type const q = *cast(Type const *) zpl_pointer_add_const(b, Type##__cmp_offset);                         \
+    Type const p = *zpl_cast(Type const *) zpl_pointer_add_const(a, Type##__cmp_offset);                         \
+    Type const q = *zpl_cast(Type const *) zpl_pointer_add_const(b, Type##__cmp_offset);                         \
     return p < q ? -1 : p > q;                                                                                     \
 }                                                                                                                  \
 ZPL_COMPARE_PROC_PTR(Type##_cmp(zpl_isize offset)) {                                                             \
@@ -6228,8 +6255,8 @@ ZPL__COMPARE_PROC(zpl_f64);
 // NOTE: str_cmp is special as it requires a funny type and funny comparison
 zpl_global zpl_isize zpl__str_cmp_offset;
 ZPL_COMPARE_PROC(zpl__str_cmp) {
-    char const *p = *cast(char const **) zpl_pointer_add_const(a, zpl__str_cmp_offset);
-    char const *q = *cast(char const **) zpl_pointer_add_const(b, zpl__str_cmp_offset);
+    char const *p = *zpl_cast(char const **) zpl_pointer_add_const(a, zpl__str_cmp_offset);
+    char const *q = *zpl_cast(char const **) zpl_pointer_add_const(b, zpl__str_cmp_offset);
     return zpl_strcmp(p, q);
 }
 ZPL_COMPARE_PROC_PTR(zpl_str_cmp(zpl_isize offset)) {
@@ -6259,7 +6286,7 @@ do {                                                                            
 
 void zpl_sort(void *base_, zpl_isize count, zpl_isize size, zpl_compare_proc cmp) {
     zpl_u8 *i, *j;
-    zpl_u8 *base = cast(zpl_u8 *) base_;
+    zpl_u8 *base = zpl_cast(zpl_u8 *) base_;
     zpl_u8 *limit = base + count * size;
     zpl_isize threshold = zpl__SORT_INSERT_SORT_TRESHOLD * size;
     
@@ -6358,7 +6385,7 @@ zpl_inline zpl_isize zpl_binary_search(void const *base, zpl_isize count, zpl_is
     
     while (start < end) {
         zpl_isize mid = start + (end - start) / 2;
-        zpl_isize result = compare_proc(key, cast(zpl_u8 *) base + mid * size);
+        zpl_isize result = compare_proc(key, zpl_cast(zpl_u8 *) base + mid * size);
         if (result < 0)
             end = mid;
         else if (result > 0)
@@ -6376,17 +6403,17 @@ void zpl_shuffle(void *base, zpl_isize count, zpl_isize size) {
     zpl_random random;
     zpl_random_init(&random);
     
-    a = cast(zpl_u8 *) base + (count - 1) * size;
+    a = zpl_cast(zpl_u8 *) base + (count - 1) * size;
     for (i = count; i > 1; i--) {
         j = zpl_random_gen_isize(&random) % i;
-        zpl_memswap(a, cast(zpl_u8 *) base + j * size, size);
+        zpl_memswap(a, zpl_cast(zpl_u8 *) base + j * size, size);
         a -= size;
     }
 }
 
 void zpl_reverse(void *base, zpl_isize count, zpl_isize size) {
     zpl_isize i, j = count - 1;
-    for (i = 0; i < j; i++, j++) zpl_memswap(cast(zpl_u8 *) base + i * size, cast(zpl_u8 *) base + j * size, size);
+    for (i = 0; i < j; i++, j++) zpl_memswap(zpl_cast(zpl_u8 *) base + i * size, zpl_cast(zpl_u8 *) base + j * size, size);
 }
 
 
@@ -6472,19 +6499,19 @@ zpl_inline zpl_isize zpl_strlen(const char *str) {
     
     const char *begin = str;
     zpl_isize const *w;
-    while (cast(zpl_uintptr) str % sizeof(zpl_usize)) {
+    while (zpl_cast(zpl_uintptr) str % sizeof(zpl_usize)) {
         if (!*str) return str - begin;
         str++;
     }
-    w = cast(zpl_isize const *) str;
+    w = zpl_cast(zpl_isize const *) str;
     while (!ZPL__HAS_ZERO(*w)) w++;
-    str = cast(const char *) w;
+    str = zpl_cast(const char *) w;
     while (*str) str++;
     return str - begin;
 }
 
 zpl_inline zpl_isize zpl_strnlen(const char *str, zpl_isize max_len) {
-    const char *end = cast(const char *) zpl_memchr(str, 0, max_len);
+    const char *end = zpl_cast(const char *) zpl_memchr(str, 0, max_len);
     if (end) return end - str;
     return max_len;
 }
@@ -6549,7 +6576,7 @@ zpl_inline char *zpl_strcpy(char *dest, const char *source) {
 zpl_inline char *zpl_strdup(zpl_allocator a, char *src, zpl_isize max_len) {
     ZPL_ASSERT_NOT_NULL(src);
     zpl_isize len = zpl_strlen(src);
-    char *dest = cast(char *) zpl_alloc(a, max_len);
+    char *dest = zpl_cast(char *) zpl_alloc(a, max_len);
     zpl_memset(dest + len, 0, max_len - len);
     zpl_strncpy(dest, src, max_len);
     
@@ -6802,7 +6829,7 @@ zpl_inline void zpl_i64_to_str(zpl_i64 value, char *string, zpl_i32 base) {
         value = -value;
     }
     
-    v = cast(zpl_u64) value;
+    v = zpl_cast(zpl_u64) value;
     if (v != 0) {
         while (v > 0) {
             *buf++ = zpl__num_to_char_table[v % base];
@@ -6834,7 +6861,7 @@ zpl_inline void zpl_u64_to_str(zpl_u64 value, char *string, zpl_i32 base) {
 
 zpl_inline zpl_f32 zpl_str_to_f32(const char *str, char **end_ptr) {
     zpl_f64 f = zpl_str_to_f64(str, end_ptr);
-    zpl_f32 r = cast(zpl_f32) f;
+    zpl_f32 r = zpl_cast(zpl_f32) f;
     return r;
 }
 
@@ -6896,7 +6923,7 @@ zpl_inline zpl_f64 zpl_str_to_f64(const char *str, char **end_ptr) {
     
     result = sign * (frac ? (value / scale) : (value * scale));
     
-    if (end_ptr) *end_ptr = cast(char *) str;
+    if (end_ptr) *end_ptr = zpl_cast(char *) str;
     
     return result;
 }
@@ -6914,7 +6941,7 @@ zpl_inline zpl_string zpl_string_make_reserve(zpl_allocator a, zpl_isize capacit
     if (ptr == NULL) return NULL;
     zpl_zero_size(ptr, header_size + capacity + 1);
     
-    str = cast(char *) ptr + header_size;
+    str = zpl_cast(char *) ptr + header_size;
     header = ZPL_STRING_HEADER(str);
     header->allocator = a;
     header->length = 0;
@@ -6939,7 +6966,7 @@ zpl_string zpl_string_make_length(zpl_allocator a, void const *init_str, zpl_isi
     if (ptr == NULL) return NULL;
     if (!init_str) zpl_zero_size(ptr, header_size + num_bytes + 1);
     
-    str = cast(char *) ptr + header_size;
+    str = zpl_cast(char *) ptr + header_size;
     header = ZPL_STRING_HEADER(str);
     header->allocator = a;
     header->length = num_bytes;
@@ -7050,10 +7077,10 @@ zpl_string zpl_string_make_space_for(zpl_string str, zpl_isize add_len) {
         new_ptr = zpl_resize(a, ptr, old_size, new_size);
         if (new_ptr == NULL) return NULL;
         
-        header = cast(zpl_string_header *) new_ptr;
+        header = zpl_cast(zpl_string_header *) new_ptr;
         header->allocator = a;
         
-        str = cast(zpl_string)(header + 1);
+        str = zpl_cast(zpl_string)(header + 1);
         zpl__set_string_capacity(str, new_len);
         
         return str;
@@ -7088,7 +7115,7 @@ zpl_string zpl_string_trim(zpl_string str, const char *cut_set) {
     while (start_pos <= end && zpl_char_first_occurence(cut_set, *start_pos)) start_pos++;
     while (end_pos > start_pos && zpl_char_first_occurence(cut_set, *end_pos)) end_pos--;
     
-    len = cast(zpl_isize)((start_pos > end_pos) ? 0 : ((end_pos - start_pos) + 1));
+    len = zpl_cast(zpl_isize)((start_pos > end_pos) ? 0 : ((end_pos - start_pos) + 1));
     
     if (str != start_pos) zpl_memmove(str, start_pos, len);
     str[len] = '\0';
@@ -7138,7 +7165,7 @@ zpl_u16 *zpl_utf8_to_ucs2(zpl_u16 *buffer, zpl_isize len, zpl_u8 const *str) {
             if (*str < 0xc2) return NULL;
             c = (*str++ & 0x1f) << 6;
             if ((*str & 0xc0) != 0x80) return NULL;
-            buffer[i++] = cast(zpl_u16)(c + (*str++ & 0x3f));
+            buffer[i++] = zpl_cast(zpl_u16)(c + (*str++ & 0x3f));
         } else if ((*str & 0xf0) == 0xe0) {
             if (*str == 0xe0 && (str[1] < 0xa0 || str[1] > 0xbf)) return NULL;
             if (*str == 0xed && str[1] > 0x9f) // str[1] < 0x80 is checked below
@@ -7147,7 +7174,7 @@ zpl_u16 *zpl_utf8_to_ucs2(zpl_u16 *buffer, zpl_isize len, zpl_u8 const *str) {
             if ((*str & 0xc0) != 0x80) return NULL;
             c += (*str++ & 0x3f) << 6;
             if ((*str & 0xc0) != 0x80) return NULL;
-            buffer[i++] = cast(zpl_u16)(c + (*str++ & 0x3f));
+            buffer[i++] = zpl_cast(zpl_u16)(c + (*str++ & 0x3f));
         } else if ((*str & 0xf8) == 0xf0) {
             if (*str > 0xf4) return NULL;
             if (*str == 0xf0 && (str[1] < 0x90 || str[1] > 0xbf)) return NULL;
@@ -7185,17 +7212,17 @@ zpl_u8 *zpl_ucs2_to_utf8(zpl_u8 *buffer, zpl_isize len, zpl_u16 const *str) {
             buffer[i++] = (char)*str++;
         } else if (*str < 0x800) {
             if (i + 2 > len) return NULL;
-            buffer[i++] = cast(char)(0xc0 + (*str >> 6));
-            buffer[i++] = cast(char)(0x80 + (*str & 0x3f));
+            buffer[i++] = zpl_cast(char)(0xc0 + (*str >> 6));
+            buffer[i++] = zpl_cast(char)(0x80 + (*str & 0x3f));
             str += 1;
         } else if (*str >= 0xd800 && *str < 0xdc00) {
             zpl_rune c;
             if (i + 4 > len) return NULL;
             c = ((str[0] - 0xd800) << 10) + ((str[1]) - 0xdc00) + 0x10000;
-            buffer[i++] = cast(char)(0xf0 + (c >> 18));
-            buffer[i++] = cast(char)(0x80 + ((c >> 12) & 0x3f));
-            buffer[i++] = cast(char)(0x80 + ((c >> 6) & 0x3f));
-            buffer[i++] = cast(char)(0x80 + ((c)&0x3f));
+            buffer[i++] = zpl_cast(char)(0xf0 + (c >> 18));
+            buffer[i++] = zpl_cast(char)(0x80 + ((c >> 12) & 0x3f));
+            buffer[i++] = zpl_cast(char)(0x80 + ((c >> 6) & 0x3f));
+            buffer[i++] = zpl_cast(char)(0x80 + ((c)&0x3f));
             str += 2;
         } else if (*str >= 0xdc00 && *str < 0xe000) {
             return NULL;
@@ -7260,8 +7287,8 @@ zpl_isize zpl_utf8_decode(zpl_u8 const *str, zpl_isize str_len, zpl_rune *codepo
         zpl_u8 b1, b2, b3;
         zpl_utf8_accept_range accept;
         if (x >= 0xf0) {
-            zpl_rune mask = (cast(zpl_rune) x << 31) >> 31;
-            codepoint = (cast(zpl_rune) s0 & (~mask)) | (ZPL_RUNE_INVALID & mask);
+            zpl_rune mask = (zpl_cast(zpl_rune) x << 31) >> 31;
+            codepoint = (zpl_cast(zpl_rune) s0 & (~mask)) | (ZPL_RUNE_INVALID & mask);
             width = 1;
             goto end;
         }
@@ -7279,7 +7306,7 @@ zpl_isize zpl_utf8_decode(zpl_u8 const *str, zpl_isize str_len, zpl_rune *codepo
         if (b1 < accept.lo || accept.hi < b1) goto invalid_codepoint;
         
         if (sz == 2) {
-            codepoint = (cast(zpl_rune) s0 & 0x1f) << 6 | (cast(zpl_rune) b1 & 0x3f);
+            codepoint = (zpl_cast(zpl_rune) s0 & 0x1f) << 6 | (zpl_cast(zpl_rune) b1 & 0x3f);
             width = 2;
             goto end;
         }
@@ -7288,7 +7315,7 @@ zpl_isize zpl_utf8_decode(zpl_u8 const *str, zpl_isize str_len, zpl_rune *codepo
         if (!zpl_is_between(b2, 0x80, 0xbf)) goto invalid_codepoint;
         
         if (sz == 3) {
-            codepoint = (cast(zpl_rune) s0 & 0x1f) << 12 | (cast(zpl_rune) b1 & 0x3f) << 6 | (cast(zpl_rune) b2 & 0x3f);
+            codepoint = (zpl_cast(zpl_rune) s0 & 0x1f) << 12 | (zpl_cast(zpl_rune) b1 & 0x3f) << 6 | (zpl_cast(zpl_rune) b2 & 0x3f);
             width = 3;
             goto end;
         }
@@ -7296,8 +7323,8 @@ zpl_isize zpl_utf8_decode(zpl_u8 const *str, zpl_isize str_len, zpl_rune *codepo
         b3 = str[3];
         if (!zpl_is_between(b3, 0x80, 0xbf)) goto invalid_codepoint;
         
-        codepoint = (cast(zpl_rune) s0 & 0x07) << 18 | (cast(zpl_rune) b1 & 0x3f) << 12 | (cast(zpl_rune) b2 & 0x3f) << 6 |
-            (cast(zpl_rune) b3 & 0x3f);
+        codepoint = (zpl_cast(zpl_rune) s0 & 0x07) << 18 | (zpl_cast(zpl_rune) b1 & 0x3f) << 12 | (zpl_cast(zpl_rune) b2 & 0x3f) << 6 |
+            (zpl_cast(zpl_rune) b3 & 0x3f);
         width = 4;
         goto end;
         
@@ -7320,15 +7347,15 @@ zpl_isize zpl_utf8_codepoint_size(zpl_u8 const *str, zpl_isize str_len) {
 }
 
 zpl_isize zpl_utf8_encode_rune(zpl_u8 buf[4], zpl_rune r) {
-    zpl_u32 i = cast(zpl_u32) r;
+    zpl_u32 i = zpl_cast(zpl_u32) r;
     zpl_u8 mask = 0x3f;
     if (i <= (1 << 7) - 1) {
-        buf[0] = cast(zpl_u8) r;
+        buf[0] = zpl_cast(zpl_u8) r;
         return 1;
     }
     if (i <= (1 << 11) - 1) {
-        buf[0] = 0xc0 | cast(zpl_u8)(r >> 6);
-        buf[1] = 0x80 | (cast(zpl_u8)(r) & mask);
+        buf[0] = 0xc0 | zpl_cast(zpl_u8)(r >> 6);
+        buf[1] = 0x80 | (zpl_cast(zpl_u8)(r) & mask);
         return 2;
     }
     
@@ -7336,23 +7363,23 @@ zpl_isize zpl_utf8_encode_rune(zpl_u8 buf[4], zpl_rune r) {
     if (i > ZPL_RUNE_MAX || zpl_is_between(i, 0xd800, 0xdfff)) {
         r = ZPL_RUNE_INVALID;
         
-        buf[0] = 0xe0 | cast(zpl_u8)(r >> 12);
-        buf[1] = 0x80 | (cast(zpl_u8)(r >> 6) & mask);
-        buf[2] = 0x80 | (cast(zpl_u8)(r) & mask);
+        buf[0] = 0xe0 | zpl_cast(zpl_u8)(r >> 12);
+        buf[1] = 0x80 | (zpl_cast(zpl_u8)(r >> 6) & mask);
+        buf[2] = 0x80 | (zpl_cast(zpl_u8)(r) & mask);
         return 3;
     }
     
     if (i <= (1 << 16) - 1) {
-        buf[0] = 0xe0 | cast(zpl_u8)(r >> 12);
-        buf[1] = 0x80 | (cast(zpl_u8)(r >> 6) & mask);
-        buf[2] = 0x80 | (cast(zpl_u8)(r) & mask);
+        buf[0] = 0xe0 | zpl_cast(zpl_u8)(r >> 12);
+        buf[1] = 0x80 | (zpl_cast(zpl_u8)(r >> 6) & mask);
+        buf[2] = 0x80 | (zpl_cast(zpl_u8)(r) & mask);
         return 3;
     }
     
-    buf[0] = 0xf0 | cast(zpl_u8)(r >> 18);
-    buf[1] = 0x80 | (cast(zpl_u8)(r >> 12) & mask);
-    buf[2] = 0x80 | (cast(zpl_u8)(r >> 6) & mask);
-    buf[3] = 0x80 | (cast(zpl_u8)(r) & mask);
+    buf[0] = 0xf0 | zpl_cast(zpl_u8)(r >> 18);
+    buf[1] = 0x80 | (zpl_cast(zpl_u8)(r >> 12) & mask);
+    buf[2] = 0x80 | (zpl_cast(zpl_u8)(r >> 6) & mask);
+    buf[3] = 0x80 | (zpl_cast(zpl_u8)(r) & mask);
     return 4;
 }
 
@@ -8170,7 +8197,7 @@ zpl_no_inline void *zpl__array_set_capacity(void *array, zpl_isize capacity, zpl
     
     {
         zpl_isize size = zpl_size_of(zpl_array_header) + element_size * capacity;
-        zpl_array_header *nh = cast(zpl_array_header *) zpl_alloc(h->allocator, size);
+        zpl_array_header *nh = zpl_cast(zpl_array_header *) zpl_alloc(h->allocator, size);
         zpl_memmove(nh, h, zpl_size_of(zpl_array_header) + element_size * h->count);
         nh->allocator = h->allocator;
         nh->count = h->count;
@@ -8192,7 +8219,7 @@ zpl_u32 zpl_adler32(void const *data, zpl_isize len) {
     zpl_u32 const MOD_ALDER = 65521;
     zpl_u32 a = 1, b = 0;
     zpl_isize i, block_len;
-    zpl_u8 const *bytes = cast(zpl_u8 const *) data;
+    zpl_u8 const *bytes = zpl_cast(zpl_u8 const *) data;
     
     block_len = len % 5552;
     
@@ -8308,16 +8335,16 @@ zpl_global zpl_u64 const ZPL__CRC64_TABLE[256] = {
 
 zpl_u32 zpl_crc32(void const *data, zpl_isize len) {
     zpl_isize remaining;
-    zpl_u32 result = ~(cast(zpl_u32) 0);
-    zpl_u8 const *c = cast(zpl_u8 const *) data;
+    zpl_u32 result = ~(zpl_cast(zpl_u32) 0);
+    zpl_u8 const *c = zpl_cast(zpl_u8 const *) data;
     for (remaining = len; remaining--; c++) result = (result >> 8) ^ (ZPL__CRC32_TABLE[(result ^ *c) & 0xff]);
     return ~result;
 }
 
 zpl_u64 zpl_crc64(void const *data, zpl_isize len) {
     zpl_isize remaining;
-    zpl_u64 result = ~(cast(zpl_u64) 0);
-    zpl_u8 const *c = cast(zpl_u8 const *) data;
+    zpl_u64 result = ~(zpl_cast(zpl_u64) 0);
+    zpl_u8 const *c = zpl_cast(zpl_u8 const *) data;
     for (remaining = len; remaining--; c++) result = (result >> 8) ^ (ZPL__CRC64_TABLE[(result ^ *c) & 0xff]);
     return ~result;
 }
@@ -8325,7 +8352,7 @@ zpl_u64 zpl_crc64(void const *data, zpl_isize len) {
 zpl_u32 zpl_fnv32(void const *data, zpl_isize len) {
     zpl_isize i;
     zpl_u32 h = 0x811c9dc5;
-    zpl_u8 const *c = cast(zpl_u8 const *) data;
+    zpl_u8 const *c = zpl_cast(zpl_u8 const *) data;
     
     for (i = 0; i < len; i++) h = (h * 0x01000193) ^ c[i];
     
@@ -8335,7 +8362,7 @@ zpl_u32 zpl_fnv32(void const *data, zpl_isize len) {
 zpl_u64 zpl_fnv64(void const *data, zpl_isize len) {
     zpl_isize i;
     zpl_u64 h = 0xcbf29ce484222325ull;
-    zpl_u8 const *c = cast(zpl_u8 const *) data;
+    zpl_u8 const *c = zpl_cast(zpl_u8 const *) data;
     
     for (i = 0; i < len; i++) h = (h * 0x100000001b3ll) ^ c[i];
     
@@ -8345,7 +8372,7 @@ zpl_u64 zpl_fnv64(void const *data, zpl_isize len) {
 zpl_u32 zpl_fnv32a(void const *data, zpl_isize len) {
     zpl_isize i;
     zpl_u32 h = 0x811c9dc5;
-    zpl_u8 const *c = cast(zpl_u8 const *) data;
+    zpl_u8 const *c = zpl_cast(zpl_u8 const *) data;
     
     for (i = 0; i < len; i++) h = (h ^ c[i]) * 0x01000193;
     
@@ -8355,7 +8382,7 @@ zpl_u32 zpl_fnv32a(void const *data, zpl_isize len) {
 zpl_u64 zpl_fnv64a(void const *data, zpl_isize len) {
     zpl_isize i;
     zpl_u64 h = 0xcbf29ce484222325ull;
-    zpl_u8 const *c = cast(zpl_u8 const *) data;
+    zpl_u8 const *c = zpl_cast(zpl_u8 const *) data;
     
     for (i = 0; i < len; i++) h = (h ^ c[i]) * 0x100000001b3ll;
     
@@ -8375,8 +8402,8 @@ zpl_u32 zpl_murmur32_seed(void const *data, zpl_isize len, zpl_u32 seed) {
     
     zpl_isize i, nblocks = len / 4;
     zpl_u32 hash = seed, k1 = 0;
-    zpl_u32 const *blocks = cast(zpl_u32 const *) data;
-    zpl_u8 const *tail = cast(zpl_u8 const *)(data) + nblocks * 4;
+    zpl_u32 const *blocks = zpl_cast(zpl_u32 const *) data;
+    zpl_u8 const *tail = zpl_cast(zpl_u8 const *)(data) + nblocks * 4;
     
     for (i = 0; i < nblocks; i++) {
         zpl_u32 k = blocks[i];
@@ -8417,8 +8444,8 @@ zpl_u64 zpl_murmur64_seed(void const *data_, zpl_isize len, zpl_u64 seed) {
     
     zpl_u64 h = seed ^ (len * m);
     
-    zpl_u64 const *data = cast(zpl_u64 const *) data_;
-    zpl_u8 const *data2 = cast(zpl_u8 const *) data_;
+    zpl_u64 const *data = zpl_cast(zpl_u64 const *) data_;
+    zpl_u8 const *data2 = zpl_cast(zpl_u8 const *) data_;
     zpl_u64 const *end = data + (len / 8);
     
     while (data != end) {
@@ -8433,13 +8460,13 @@ zpl_u64 zpl_murmur64_seed(void const *data_, zpl_isize len, zpl_u64 seed) {
     }
     
     switch (len & 7) {
-        case 7: h ^= cast(zpl_u64)(data2[6]) << 48;
-        case 6: h ^= cast(zpl_u64)(data2[5]) << 40;
-        case 5: h ^= cast(zpl_u64)(data2[4]) << 32;
-        case 4: h ^= cast(zpl_u64)(data2[3]) << 24;
-        case 3: h ^= cast(zpl_u64)(data2[2]) << 16;
-        case 2: h ^= cast(zpl_u64)(data2[1]) << 8;
-        case 1: h ^= cast(zpl_u64)(data2[0]); h *= m;
+        case 7: h ^= zpl_cast(zpl_u64)(data2[6]) << 48;
+        case 6: h ^= zpl_cast(zpl_u64)(data2[5]) << 40;
+        case 5: h ^= zpl_cast(zpl_u64)(data2[4]) << 32;
+        case 4: h ^= zpl_cast(zpl_u64)(data2[3]) << 24;
+        case 3: h ^= zpl_cast(zpl_u64)(data2[2]) << 16;
+        case 2: h ^= zpl_cast(zpl_u64)(data2[1]) << 8;
+        case 1: h ^= zpl_cast(zpl_u64)(data2[0]); h *= m;
     };
     
     h ^= h >> r;
@@ -8452,10 +8479,10 @@ zpl_u64 zpl_murmur64_seed(void const *data_, zpl_isize len, zpl_u64 seed) {
     zpl_u32 const m = 0x5bd1e995;
     zpl_i32 const r = 24;
     
-    zpl_u32 h1 = cast(zpl_u32)(seed) ^ cast(zpl_u32)(len);
-    zpl_u32 h2 = cast(zpl_u32)(seed >> 32);
+    zpl_u32 h1 = zpl_cast(zpl_u32)(seed) ^ zpl_cast(zpl_u32)(len);
+    zpl_u32 h2 = zpl_cast(zpl_u32)(seed >> 32);
     
-    zpl_u32 const *data = cast(zpl_u32 const *) data_;
+    zpl_u32 const *data = zpl_cast(zpl_u32 const *) data_;
     
     while (len >= 8) {
         zpl_u32 k1, k2;
@@ -8487,9 +8514,9 @@ zpl_u64 zpl_murmur64_seed(void const *data_, zpl_isize len, zpl_u64 seed) {
     }
     
     switch (len) {
-        case 3: h2 ^= (cast(zpl_u8 const *) data)[2] << 16;
-        case 2: h2 ^= (cast(zpl_u8 const *) data)[1] << 8;
-        case 1: h2 ^= (cast(zpl_u8 const *) data)[0] << 0; h2 *= m;
+        case 3: h2 ^= (zpl_cast(zpl_u8 const *) data)[2] << 16;
+        case 2: h2 ^= (zpl_cast(zpl_u8 const *) data)[1] << 8;
+        case 1: h2 ^= (zpl_cast(zpl_u8 const *) data)[0] << 0; h2 *= m;
     };
     
     h1 ^= h2 >> 18;
@@ -8531,13 +8558,13 @@ zpl_internal wchar_t *zpl__alloc_utf8_to_ucs2(zpl_allocator a, char const *text,
         if (w_len_) *w_len_ = w_len;
         return NULL;
     }
-    w_len = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, text, cast(int) len, NULL, 0);
+    w_len = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, text, zpl_cast(int) len, NULL, 0);
     if (w_len == 0) {
         if (w_len_) *w_len_ = w_len;
         return NULL;
     }
     w_text = zpl_alloc_array(a, wchar_t, w_len + 1);
-    w_len1 = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, text, cast(int) len, w_text, cast(int) w_len);
+    w_len1 = MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, text, zpl_cast(int) len, w_text, zpl_cast(int) w_len);
     if (w_len1 == 0) {
         zpl_free(a, w_text);
         if (w_len_) *w_len_ = 0;
@@ -8561,7 +8588,7 @@ zpl_internal ZPL_FILE_READ_AT_PROC(zpl__win32_file_read) {
     zpl_unused(stop_at_newline);
     zpl_b32 result = false;
     zpl__win32_file_seek(fd, offset, ZPL_SEEK_WHENCE_BEGIN, NULL);
-    DWORD size_ = cast(DWORD)(size > ZPL_I32_MAX ? ZPL_I32_MAX : size);
+    DWORD size_ = zpl_cast(DWORD)(size > ZPL_I32_MAX ? ZPL_I32_MAX : size);
     DWORD bytes_read_;
     if (ReadFile(fd.p, buffer, size_, &bytes_read_, NULL)) {
         if (bytes_read) *bytes_read = bytes_read_;
@@ -8572,7 +8599,7 @@ zpl_internal ZPL_FILE_READ_AT_PROC(zpl__win32_file_read) {
 }
 
 zpl_internal ZPL_FILE_WRITE_AT_PROC(zpl__win32_file_write) {
-    DWORD size_ = cast(DWORD)(size > ZPL_I32_MAX ? ZPL_I32_MAX : size);
+    DWORD size_ = zpl_cast(DWORD)(size > ZPL_I32_MAX ? ZPL_I32_MAX : size);
     DWORD bytes_written_;
     zpl__win32_file_seek(fd, offset, ZPL_SEEK_WHENCE_BEGIN, NULL);
     if (WriteFile(fd.p, buffer, size_, &bytes_written_, NULL)) {
@@ -8677,9 +8704,9 @@ zpl_internal ZPL_FILE_WRITE_AT_PROC(zpl__posix_file_write) {
     zpl__posix_file_seek(fd, 0, ZPL_SEEK_WHENCE_CURRENT, &curr_offset);
     if (curr_offset == offset) {
         // NOTE: Writing to stdout et al. doesn't like pwrite for numerous reasons
-        res = write(cast(int) fd.i, buffer, size);
+        res = write(zpl_cast(int) fd.i, buffer, size);
     } else {
-        res = pwrite(cast(int) fd.i, buffer, size, offset);
+        res = pwrite(zpl_cast(int) fd.i, buffer, size, offset);
     }
     if (res < 0) return false;
     if (bytes_written) *bytes_written = res;
@@ -8722,7 +8749,7 @@ zplFileError zpl_file_new(zpl_file *f, zpl_file_descriptor fd, zpl_file_operatio
     f->ops = ops;
     f->fd = fd;
     f->filename = zpl_alloc_array(zpl_heap_allocator( ), char, len + 1);
-    zpl_memcopy(cast(char *) f->filename, cast(char *) filename, len + 1);
+    zpl_memcopy(zpl_cast(char *) f->filename, zpl_cast(char *) filename, len + 1);
     f->last_write_time = zpl_fs_last_write_time(f->filename);
     
     return err;
@@ -8744,7 +8771,7 @@ zpl_internal void zpl__dirinfo_free_entry(zpl_dir_entry *entry);
 zplFileError zpl_file_close(zpl_file *f) {
     if (!f) return ZPL_FILE_ERROR_INVALID;
     
-    if (f->filename) zpl_free(zpl_heap_allocator( ), cast(char *) f->filename);
+    if (f->filename) zpl_free(zpl_heap_allocator( ), zpl_cast(char *) f->filename);
     
 #if defined(ZPL_SYSTEM_WINDOWS)
     if (f->fd.p == INVALID_HANDLE_VALUE) return ZPL_FILE_ERROR_INVALID;
@@ -8855,7 +8882,7 @@ typedef struct {
 } zpl__async_file_ctl;
 
 zpl_isize zpl__async_file_read_proc(struct zpl_thread *thread) {
-    zpl__async_file_ctl *afops = cast(zpl__async_file_ctl *) thread->user_data;
+    zpl__async_file_ctl *afops = zpl_cast(zpl__async_file_ctl *) thread->user_data;
     
     zpl_async_file *f = afops->f;
     
@@ -8875,7 +8902,7 @@ zpl_isize zpl__async_file_read_proc(struct zpl_thread *thread) {
 }
 
 zpl_isize zpl__async_file_write_proc(struct zpl_thread *thread) {
-    zpl__async_file_ctl *afops = cast(zpl__async_file_ctl *) thread->user_data;
+    zpl__async_file_ctl *afops = zpl_cast(zpl__async_file_ctl *) thread->user_data;
     
     zpl_async_file *f = afops->f;
     
@@ -8913,7 +8940,7 @@ void zpl_async_file_read(zpl_file *file, zpl_async_file_cb proc) {
     afops->f = a;
     afops->proc = proc;
     
-    zpl_thread_start(&td, zpl__async_file_read_proc, cast(void *) afops);
+    zpl_thread_start(&td, zpl__async_file_read_proc, zpl_cast(void *) afops);
 }
 
 void zpl_async_file_write(zpl_file *file, void const *buffer, zpl_isize size, zpl_async_file_cb proc) {
@@ -8934,10 +8961,10 @@ void zpl_async_file_write(zpl_file *file, void const *buffer, zpl_isize size, zp
     
     afops->f = a;
     afops->proc = proc;
-    afops->data = cast(void *) buffer;
+    afops->data = zpl_cast(void *) buffer;
     afops->data_size = size;
     
-    zpl_thread_start(&td, zpl__async_file_write_proc, cast(void *) afops);
+    zpl_thread_start(&td, zpl__async_file_write_proc, zpl_cast(void *) afops);
 }
 
 #endif // ZPL_THREADING
@@ -9069,7 +9096,7 @@ zpl_file_time zpl_fs_last_write_time(char const *filepath) {
     
     li.LowPart = last_write_time.dwLowDateTime;
     li.HighPart = last_write_time.dwHighDateTime;
-    return cast(zpl_file_time) li.QuadPart;
+    return zpl_cast(zpl_file_time) li.QuadPart;
 }
 
 zpl_inline zpl_b32 zpl_fs_copy(char const *existing_filename, char const *new_filename, zpl_b32 fail_if_exists) {
@@ -9123,7 +9150,7 @@ zpl_file_time zpl_fs_last_write_time(char const *filepath) {
     
     if (stat(filepath, &file_stat)) result = file_stat.st_mtime;
     
-    return cast(zpl_file_time) result;
+    return zpl_cast(zpl_file_time) result;
 }
 
 zpl_inline zpl_b32 zpl_fs_copy(char const *existing_filename, char const *new_filename, zpl_b32 fail_if_exists) {
@@ -9169,13 +9196,13 @@ zpl_file_contents zpl_file_read_contents(zpl_allocator a, zpl_b32 zero_terminate
     result.allocator = a;
     
     if (zpl_file_open(&file, filepath) == ZPL_FILE_ERROR_NONE) {
-        zpl_isize file_size = cast(zpl_isize) zpl_file_size(&file);
+        zpl_isize file_size = zpl_cast(zpl_isize) zpl_file_size(&file);
         if (file_size > 0) {
             result.data = zpl_alloc(a, zero_terminate ? file_size + 1 : file_size);
             result.size = file_size;
             zpl_file_read_at(&file, result.data, result.size, 0);
             if (zero_terminate) {
-                zpl_u8 *str = cast(zpl_u8 *) result.data;
+                zpl_u8 *str = zpl_cast(zpl_u8 *) result.data;
                 str[file_size] = '\0';
             }
         }
@@ -9265,18 +9292,18 @@ char *zpl_path_get_full_name(zpl_allocator a, char const *path) {
     w_len = GetFullPathNameW(w_path, 0, NULL, NULL);
     if (w_len == 0) { return NULL; }
     w_fullpath = zpl_alloc_array(zpl_heap_allocator( ), wchar_t, w_len + 1);
-    GetFullPathNameW(w_path, cast(int) w_len, w_fullpath, NULL);
+    GetFullPathNameW(w_path, zpl_cast(int) w_len, w_fullpath, NULL);
     w_fullpath[w_len] = 0;
     zpl_free(zpl_heap_allocator( ), w_path);
     
-    new_len = WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, w_fullpath, cast(int) w_len, NULL, 0, NULL, NULL);
+    new_len = WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, w_fullpath, zpl_cast(int) w_len, NULL, 0, NULL, NULL);
     if (new_len == 0) {
         zpl_free(zpl_heap_allocator( ), w_fullpath);
         return NULL;
     }
     new_path = zpl_alloc_array(a, char, new_len1);
-    new_len1 = WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, w_fullpath, cast(int) w_len, new_path,
-                                   cast(int) new_len, NULL, NULL);
+    new_len1 = WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, w_fullpath, zpl_cast(int) w_len, new_path,
+                                   zpl_cast(int) new_len, NULL, NULL);
     if (new_len1 == 0) {
         zpl_free(zpl_heap_allocator( ), w_fullpath);
         zpl_free(a, new_path);
@@ -9291,7 +9318,7 @@ char *zpl_path_get_full_name(zpl_allocator a, char const *path) {
     fullpath = p;
     if (p == NULL) {
         // NOTE(bill): File does not exist
-        fullpath = cast(char *) path;
+        fullpath = zpl_cast(char *) path;
     }
     
     len = zpl_strlen(fullpath);
@@ -9732,7 +9759,7 @@ zpl_internal zpl_isize zpl__print_zpl_f64(char *text, zpl_isize max_len, zplpriv
             text++;
         }
         
-        value = cast(zpl_u64) arg;
+        value = zpl_cast(zpl_u64) arg;
         len = zpl__print_zpl_u64(text, remaining, NULL, value);
         text += len;
         
@@ -9749,14 +9776,14 @@ zpl_internal zpl_isize zpl__print_zpl_f64(char *text, zpl_isize max_len, zplpriv
             if (remaining > 1) *text = '.', remaining--;
             text++;
             while (info->precision-- > 0) {
-                value = cast(zpl_u64)(arg * mult);
+                value = zpl_cast(zpl_u64)(arg * mult);
                 len = zpl__print_zpl_u64(text, remaining, NULL, value);
                 text += len;
                 if (len >= remaining)
                     remaining = zpl_min(remaining, 1);
                 else
                     remaining -= len;
-                arg -= cast(zpl_f64) value / mult;
+                arg -= zpl_cast(zpl_f64) value / mult;
                 mult *= 10;
             }
         }
@@ -9829,7 +9856,7 @@ zpl_no_inline zpl_isize zpl_snprintf_va(char *text, zpl_isize max_len, char cons
             }
             fmt++;
         } else {
-            info.width = cast(zpl_i32) zpl_str_to_i64(fmt, cast(char **) & fmt, 10);
+            info.width = zpl_cast(zpl_i32) zpl_str_to_i64(fmt, zpl_cast(char **) & fmt, 10);
         }
         
         // NOTE: Optional Precision
@@ -9839,7 +9866,7 @@ zpl_no_inline zpl_isize zpl_snprintf_va(char *text, zpl_isize max_len, char cons
                 info.precision = va_arg(va, int);
                 fmt++;
             } else {
-                info.precision = cast(zpl_i32) zpl_str_to_i64(fmt, cast(char **) & fmt, 10);
+                info.precision = zpl_cast(zpl_i32) zpl_str_to_i64(fmt, zpl_cast(char **) & fmt, 10);
             }
             info.flags &= ~ZPL_FMT_ZERO;
         }
@@ -9904,7 +9931,7 @@ zpl_no_inline zpl_isize zpl_snprintf_va(char *text, zpl_isize max_len, char cons
             // TODO:
             break;
             
-            case 'c': len = zpl__print_char(text, remaining, &info, cast(char) va_arg(va, int)); break;
+            case 'c': len = zpl__print_char(text, remaining, &info, zpl_cast(char) va_arg(va, int)); break;
             
             case 's': len = zpl__print_string(text, remaining, &info, va_arg(va, char *)); break;
             
@@ -9924,13 +9951,13 @@ zpl_no_inline zpl_isize zpl_snprintf_va(char *text, zpl_isize max_len, char cons
             if (info.flags & ZPL_FMT_UNSIGNED) {
                 zpl_u64 value = 0;
                 switch (info.flags & ZPL_FMT_INTS) {
-                    case ZPL_FMT_CHAR: value = cast(zpl_u64) cast(zpl_u8) va_arg(va, int); break;
-                    case ZPL_FMT_SHORT: value = cast(zpl_u64) cast(zpl_u16) va_arg(va, int); break;
-                    case ZPL_FMT_LONG: value = cast(zpl_u64) va_arg(va, unsigned long); break;
-                    case ZPL_FMT_LLONG: value = cast(zpl_u64) va_arg(va, unsigned long long); break;
-                    case ZPL_FMT_SIZE: value = cast(zpl_u64) va_arg(va, zpl_usize); break;
-                    case ZPL_FMT_zpl_intptr: value = cast(zpl_u64) va_arg(va, zpl_uintptr); break;
-                    default: value = cast(zpl_u64) va_arg(va, unsigned int); break;
+                    case ZPL_FMT_CHAR: value = zpl_cast(zpl_u64) zpl_cast(zpl_u8) va_arg(va, int); break;
+                    case ZPL_FMT_SHORT: value = zpl_cast(zpl_u64) zpl_cast(zpl_u16) va_arg(va, int); break;
+                    case ZPL_FMT_LONG: value = zpl_cast(zpl_u64) va_arg(va, unsigned long); break;
+                    case ZPL_FMT_LLONG: value = zpl_cast(zpl_u64) va_arg(va, unsigned long long); break;
+                    case ZPL_FMT_SIZE: value = zpl_cast(zpl_u64) va_arg(va, zpl_usize); break;
+                    case ZPL_FMT_zpl_intptr: value = zpl_cast(zpl_u64) va_arg(va, zpl_uintptr); break;
+                    default: value = zpl_cast(zpl_u64) va_arg(va, unsigned int); break;
                 }
                 
                 len = zpl__print_zpl_u64(text, remaining, &info, value);
@@ -9938,13 +9965,13 @@ zpl_no_inline zpl_isize zpl_snprintf_va(char *text, zpl_isize max_len, char cons
             } else {
                 zpl_i64 value = 0;
                 switch (info.flags & ZPL_FMT_INTS) {
-                    case ZPL_FMT_CHAR: value = cast(zpl_i64) cast(zpl_i8) va_arg(va, int); break;
-                    case ZPL_FMT_SHORT: value = cast(zpl_i64) cast(zpl_i16) va_arg(va, int); break;
-                    case ZPL_FMT_LONG: value = cast(zpl_i64) va_arg(va, long); break;
-                    case ZPL_FMT_LLONG: value = cast(zpl_i64) va_arg(va, long long); break;
-                    case ZPL_FMT_SIZE: value = cast(zpl_i64) va_arg(va, zpl_usize); break;
-                    case ZPL_FMT_zpl_intptr: value = cast(zpl_i64) va_arg(va, zpl_uintptr); break;
-                    default: value = cast(zpl_i64) va_arg(va, int); break;
+                    case ZPL_FMT_CHAR: value = zpl_cast(zpl_i64) zpl_cast(zpl_i8) va_arg(va, int); break;
+                    case ZPL_FMT_SHORT: value = zpl_cast(zpl_i64) zpl_cast(zpl_i16) va_arg(va, int); break;
+                    case ZPL_FMT_LONG: value = zpl_cast(zpl_i64) va_arg(va, long); break;
+                    case ZPL_FMT_LLONG: value = zpl_cast(zpl_i64) va_arg(va, long long); break;
+                    case ZPL_FMT_SIZE: value = zpl_cast(zpl_i64) va_arg(va, zpl_usize); break;
+                    case ZPL_FMT_zpl_intptr: value = zpl_cast(zpl_i64) va_arg(va, zpl_uintptr); break;
+                    default: value = zpl_cast(zpl_i64) va_arg(va, int); break;
                 }
                 
                 len = zpl__print_zpl_i64(text, remaining, &info, value);
@@ -9972,21 +9999,21 @@ zpl_no_inline zpl_isize zpl_snprintf_va(char *text, zpl_isize max_len, char cons
 
 #if defined(ZPL_SYSTEM_WINDOWS)
 
-zpl_dll_handle zpl_dll_load(char const *filepath) { return cast(zpl_dll_handle) LoadLibraryA(filepath); }
-zpl_inline void zpl_dll_unload(zpl_dll_handle dll) { FreeLibrary(cast(HMODULE) dll); }
+zpl_dll_handle zpl_dll_load(char const *filepath) { return zpl_cast(zpl_dll_handle) LoadLibraryA(filepath); }
+zpl_inline void zpl_dll_unload(zpl_dll_handle dll) { FreeLibrary(zpl_cast(HMODULE) dll); }
 zpl_inline zpl_dll_proc zpl_dll_proc_address(zpl_dll_handle dll, char const *proc_name) {
-    return cast(zpl_dll_proc) GetProcAddress(cast(HMODULE) dll, proc_name);
+    return zpl_cast(zpl_dll_proc) GetProcAddress(zpl_cast(HMODULE) dll, proc_name);
 }
 
 #else // POSIX
 
 zpl_dll_handle zpl_dll_load(char const *filepath) {
-    return cast(zpl_dll_handle) dlopen(filepath, RTLD_LAZY | RTLD_GLOBAL);
+    return zpl_cast(zpl_dll_handle) dlopen(filepath, RTLD_LAZY | RTLD_GLOBAL);
 }
 
 zpl_inline void zpl_dll_unload(zpl_dll_handle dll) { dlclose(dll); }
 zpl_inline zpl_dll_proc zpl_dll_proc_address(zpl_dll_handle dll, char const *proc_name) {
-    return cast(zpl_dll_proc) dlsym(dll, proc_name);
+    return zpl_cast(zpl_dll_proc) dlsym(dll, proc_name);
 }
 
 #endif
@@ -10010,7 +10037,7 @@ zpl_inline zpl_u64 zpl_rdtsc(void) {
 zpl_inline zpl_u64 zpl_rdtsc(void) {
     zpl_u32 hi, lo;
     __asm__ __volatile__("rdtsc" : "=a"(lo), "=d"(hi));
-    return (cast(zpl_u64) lo) | ((cast(zpl_u64) hi) << 32);
+    return (zpl_cast(zpl_u64) lo) | ((zpl_cast(zpl_u64) hi) << 32);
 }
 #elif defined(__powerpc__)
 zpl_inline zpl_u64 zpl_rdtsc(void) {
@@ -10074,7 +10101,7 @@ zpl_inline zpl_f64 zpl_time_now(void) {
     
     QueryPerformanceCounter(&counter);
     
-    result = (counter.QuadPart - win32_perf_counter.QuadPart) / cast(zpl_f64)(win32_perf_count_freq.QuadPart);
+    result = (counter.QuadPart - win32_perf_counter.QuadPart) / zpl_cast(zpl_f64)(win32_perf_count_freq.QuadPart);
     return result;
 }
 
@@ -10146,11 +10173,11 @@ zpl_inline zpl_f64 zpl_utc_time_now(void) {
 #else
     clock_gettime(0 /*CLOCK_REALTIME*/, &t);
 #endif
-    return (cast(zpl_u64) t.tv_sec * 1000000ull + t.tv_nsec / 1000 + 11644473600000000ull) / 10e5;
+    return (zpl_cast(zpl_u64) t.tv_sec * 1000000ull + t.tv_nsec / 1000 + 11644473600000000ull) / 10e5;
 }
 
 zpl_inline void zpl_sleep_ms(zpl_u32 ms) {
-    struct timespec req = { cast(time_t) ms / 1000, cast(long)((ms % 1000) * 1000000) };
+    struct timespec req = { zpl_cast(time_t) ms / 1000, zpl_cast(long)((ms % 1000) * 1000000) };
     struct timespec rem = { 0, 0 };
     nanosleep(&req, &rem);
 }
@@ -10289,12 +10316,12 @@ zpl_internal zpl_u32 zpl__get_noise_from_time(void) {
     zpl_u64 interval = 100000ll;
     
     start     = zpl_time_now();
-    remaining = (interval - cast(zpl_u64)(interval*start)%interval) / cast(zpl_f64)interval;
+    remaining = (interval - zpl_cast(zpl_u64)(interval*start)%interval) / zpl_cast(zpl_f64)interval;
     end       = start + remaining;
     
     do {
         curr = zpl_time_now();
-        accum += cast(zpl_u32)curr;
+        accum += zpl_cast(zpl_u32)curr;
     } while (curr >= end);
     return accum;
 }
@@ -10307,7 +10334,7 @@ zpl_internal zpl_inline zpl_u32 zpl__permute_qpr(zpl_u32 x) {
     if (x >= prime) {
         return x;
     } else {
-        zpl_u32 residue = cast(zpl_u32)(cast(zpl_u64) x * x) % prime;
+        zpl_u32 residue = zpl_cast(zpl_u32)(zpl_cast(zpl_u64) x * x) % prime;
         if (x <= prime / 2)
             return residue;
         else
@@ -10336,12 +10363,12 @@ void zpl_random_init(zpl_random *r) {
     r->offsets[2] = 0;
     r->offsets[3] = 1;
 #endif
-    time = cast(zpl_u64)zpl_utc_time_now();
-    r->offsets[4] = cast(zpl_u32)(time >> 32);
-    r->offsets[5] = cast(zpl_u32)time;
+    time = zpl_cast(zpl_u64)zpl_utc_time_now();
+    r->offsets[4] = zpl_cast(zpl_u32)(time >> 32);
+    r->offsets[5] = zpl_cast(zpl_u32)time;
     r->offsets[6] = zpl__get_noise_from_time();
     tick = zpl_rdtsc();
-    r->offsets[7] = cast(zpl_u32)(tick ^ (tick >> 32));
+    r->offsets[7] = zpl_cast(zpl_u32)(tick ^ (tick >> 32));
     
     for (j = 0; j < 4; j++) {
         for (i = 0; i < zpl_count_of(r->offsets); i++) {
@@ -10377,13 +10404,13 @@ zpl_u32 zpl_random_gen_u32_unique(zpl_random *r) {
 }
 
 zpl_u64 zpl_random_gen_u64(zpl_random *r) {
-    return ((cast(zpl_u64)zpl_random_gen_u32(r)) << 32) | zpl_random_gen_u32(r);
+    return ((zpl_cast(zpl_u64)zpl_random_gen_u32(r)) << 32) | zpl_random_gen_u32(r);
 }
 
 
 zpl_isize zpl_random_gen_isize(zpl_random *r) {
     zpl_u64 u = zpl_random_gen_u64(r);
-    return *cast(zpl_isize *)&u;
+    return *zpl_cast(zpl_isize *)&u;
 }
 
 
@@ -10391,7 +10418,7 @@ zpl_isize zpl_random_gen_isize(zpl_random *r) {
 
 zpl_i64 zpl_random_range_i64(zpl_random *r, zpl_i64 lower_inc, zpl_i64 higher_inc) {
     zpl_u64 u = zpl_random_gen_u64(r);
-    zpl_i64 i = *cast(zpl_i64 *)&u;
+    zpl_i64 i = *zpl_cast(zpl_i64 *)&u;
     zpl_i64 diff = higher_inc-lower_inc+1;
     i %= diff;
     i += lower_inc;
@@ -10400,7 +10427,7 @@ zpl_i64 zpl_random_range_i64(zpl_random *r, zpl_i64 lower_inc, zpl_i64 higher_in
 
 zpl_isize zpl_random_range_isize(zpl_random *r, zpl_isize lower_inc, zpl_isize higher_inc) {
     zpl_u64 u = zpl_random_gen_u64(r);
-    zpl_isize i = *cast(zpl_isize *)&u;
+    zpl_isize i = *zpl_cast(zpl_isize *)&u;
     zpl_isize diff = higher_inc-lower_inc+1;
     i %= diff;
     i += lower_inc;
@@ -10409,7 +10436,7 @@ zpl_isize zpl_random_range_isize(zpl_random *r, zpl_isize lower_inc, zpl_isize h
 
 zpl_f64 zpl_random_range_f64(zpl_random *r, zpl_f64 lower_inc, zpl_f64 higher_inc) {
     zpl_u64 u = zpl_random_gen_u64(r);
-    zpl_f64 f = *cast(zpl_f64 *)&u;
+    zpl_f64 f = *zpl_cast(zpl_f64 *)&u;
     zpl_f64 diff = higher_inc-lower_inc+1.0;
     f = zpl_mod64(f, diff);
     f += lower_inc;
@@ -11185,7 +11212,7 @@ char *zpl__json_parse_object(zpl_json_object *obj, char *base, zpl_allocator a, 
         
         char *wp = p;
         p = zpl_str_trim(p, true);
-        zpl_u8 wl = cast(zpl_u8)(p-wp);
+        zpl_u8 wl = zpl_cast(zpl_u8)(p-wp);
         
         if (zpl__json_is_delim_char(*p)) {
             zpl_json_object *n = zpl_array_end(obj->nodes);
@@ -11749,6 +11776,20 @@ static void zpl__memcpy_4byte(void *dest, void const *src, zpl_isize size) {
     for (i = 0; i < size / 4; i++) { *d++ = *s++; }
 }
 
+zpl_i32 zpl_next_pow2(zpl_i32 x) { 
+    x--;
+    x |= x >> 1;
+    x |= x >> 2;
+    x |= x >> 4;
+    x |= x >> 8;
+    x |= x >> 16;
+    return x + 1;
+}
+
+void zpl_bit_set(zpl_u32* x, zpl_u32 bit) { *x = *x | (1 << bit); }
+zpl_b8 zpl_bit_get(zpl_u32 x, zpl_u32 bit) { return (x && (1 << bit)); }
+void zpl_bit_reset(zpl_u32* x, zpl_u32 bit) { *x = *x & ~(1 << bit); }
+
 zpl_f32 zpl_to_radians(zpl_f32 degrees) { return degrees * ZPL_TAU / 360.0f; }
 zpl_f32 zpl_to_degrees(zpl_f32 radians) { return radians * 360.0f / ZPL_TAU; }
 
@@ -11786,12 +11827,12 @@ zpl_f64 zpl_copy_sign64(zpl_f64 x, zpl_f64 y) {
     
     ix &= 0x7fffffffffffffff;
     ix |= iy & 0x8000000000000000;
-    return *cast(zpl_f64 *) & ix;
+    return *zpl_cast(zpl_f64 *) & ix;
 }
 
-zpl_f64 zpl_floor64(zpl_f64 x) { return cast(zpl_f64)((x >= 0.0) ? cast(zpl_i64) x : cast(zpl_i64)(x - 0.9999999999999999)); }
-zpl_f64 zpl_ceil64(zpl_f64 x) { return cast(zpl_f64)((x < 0) ? cast(zpl_i64) x : (cast(zpl_i64) x) + 1); }
-zpl_f64 zpl_round64(zpl_f64 x) { return cast(zpl_f64)((x >= 0.0) ? zpl_floor64(x + 0.5) : zpl_ceil64(x - 0.5)); }
+zpl_f64 zpl_floor64(zpl_f64 x) { return zpl_cast(zpl_f64)((x >= 0.0) ? zpl_cast(zpl_i64) x : zpl_cast(zpl_i64)(x - 0.9999999999999999)); }
+zpl_f64 zpl_ceil64(zpl_f64 x) { return zpl_cast(zpl_f64)((x < 0) ? zpl_cast(zpl_i64) x : (zpl_cast(zpl_i64) x) + 1); }
+zpl_f64 zpl_round64(zpl_f64 x) { return zpl_cast(zpl_f64)((x >= 0.0) ? zpl_floor64(x + 0.5) : zpl_ceil64(x - 0.5)); }
 zpl_f64 zpl_remainder64(zpl_f64 x, zpl_f64 y) { return x - (zpl_round64(x / y) * y); }
 zpl_f64 zpl_abs64(zpl_f64 x) { return x < 0 ? -x : x; }
 zpl_f64 zpl_sign64(zpl_f64 x) { return x < 0 ? -1.0 : +1.0; }
@@ -12221,9 +12262,25 @@ void zpl_vec4_diveq(zpl_vec4 *d, zpl_f32 s) { ZPL_VEC4_2OP(d, (*d), / s); }
 #undef ZPL_VEC4_2OP
 #undef ZPL_VEC4_3OP
 
+
+zpl_f32 zpl_vec2_side(zpl_vec2 p, zpl_vec2 q, zpl_vec2 r) { return ((q.x - p.x) * (r.y - p.y) - (r.x - p.x) * (q.y - p.y)); }
 zpl_f32 zpl_vec2_dot(zpl_vec2 v0, zpl_vec2 v1) { return v0.x * v1.x + v0.y * v1.y; }
 zpl_f32 zpl_vec3_dot(zpl_vec3 v0, zpl_vec3 v1) { return v0.x * v1.x + v0.y * v1.y + v0.z * v1.z; }
 zpl_f32 zpl_vec4_dot(zpl_vec4 v0, zpl_vec4 v1) { return v0.x * v1.x + v0.y * v1.y + v0.z * v1.z + v0.w * v1.w; }
+
+void zpl_vec2_rotate(zpl_vec2* v, zpl_vec2 center, zpl_f32 angle)
+{
+    zpl_f32 ang = zpl_to_radians(angle);
+
+    zpl_f32 s = zpl_sin(ang);
+    zpl_f32 c = zpl_cos(ang);
+
+    zpl_f32 _dx = v->x - center.x;
+    zpl_f32 _dy = v->y - center.y;
+
+    v->x = center.x + (_dx * c - _dy * s);
+    v->y = center.y + (_dx * s + _dy * c);
+}
 
 void zpl_vec2_cross(zpl_f32 *d, zpl_vec2 v0, zpl_vec2 v1) { *d = v0.x * v1.y - v1.x * v0.y; }
 void zpl_vec3_cross(zpl_vec3 *d, zpl_vec3 v0, zpl_vec3 v1) {
@@ -12494,6 +12551,10 @@ void zpl_float44_identity(zpl_f32 m[4][4]) {
     m[3][1] = 0;
     m[3][2] = 0;
     m[3][3] = 1;
+}
+
+void zpl_mat4_copy(zpl_mat4* out, zpl_mat4* m) { 
+    zpl_memcopy(out, m, sizeof(zpl_mat4));
 }
 
 void zpl_mat4_mul_vec4(zpl_vec4 *out, zpl_mat4 *m, zpl_vec4 in) { zpl_float44_mul_vec4(out, zpl_float44_m(m), in); }
@@ -12975,6 +13036,10 @@ void zpl_quat_from_mat4(zpl_quat *out, zpl_mat4 *mat) {
     }
 }
 
+zpl_f32 zpl_plane_distance(zpl_plane* p, zpl_vec3* v) {
+    return (p->a * v->x + p->b * v->y + p->c * v->z + p->d);
+}
+
 zpl_f32 zpl_lerp(zpl_f32 a, zpl_f32 b, zpl_f32 t) { return a * (1.0f - t) + b * t; }
 zpl_f32 zpl_unlerp(zpl_f32 t, zpl_f32 a, zpl_f32 b) { return (t - a) / (b - a); }
 zpl_f32 zpl_smooth_step(zpl_f32 a, zpl_f32 b, zpl_f32 t) {
@@ -13214,9 +13279,9 @@ zpl_internal zpl_inline zpl_f32 zpl__process_xinput_stick_value(zpl_i16 value, z
     zpl_f32 result = 0;
     
     if (value < -dead_zone_threshold) {
-        result = cast(zpl_f32)(value + dead_zone_threshold) / (32768.0f - dead_zone_threshold);
+        result = zpl_cast(zpl_f32)(value + dead_zone_threshold) / (32768.0f - dead_zone_threshold);
     } else if (value > dead_zone_threshold) {
-        result = cast(zpl_f32)(value - dead_zone_threshold) / (32767.0f - dead_zone_threshold);
+        result = zpl_cast(zpl_f32)(value - dead_zone_threshold) / (32767.0f - dead_zone_threshold);
     }
     
     return result;
@@ -13239,7 +13304,7 @@ zpl_internal void zpl__platform_resize_dib_section(zpl_platform *p, zpl_i32 widt
         bmi.bmiHeader.biWidth = width;
         bmi.bmiHeader.biHeight = height; // NOTE(bill): -ve is top-down, +ve is bottom-up
         bmi.bmiHeader.biPlanes = 1;
-        bmi.bmiHeader.biBitCount = cast(zpl_u16) p->sw_framebuffer.bits_per_pixel;
+        bmi.bmiHeader.biBitCount = zpl_cast(zpl_u16) p->sw_framebuffer.bits_per_pixel;
         bmi.bmiHeader.biCompression = 0 /*BI_RGB*/;
         
         p->sw_framebuffer.win32_bmi = bmi;
@@ -13257,8 +13322,8 @@ zpl_internal void zpl__platform_resize_dib_section(zpl_platform *p, zpl_i32 widt
 
 zpl_internal zplKeyType zpl__win32_from_vk(unsigned int key) {
     // NOTE(bill): Letters and numbers are defined the same for VK_* and ZPL_*
-    if (key >= 'A' && key < 'Z') return cast(zplKeyType) key;
-    if (key >= '0' && key < '9') return cast(zplKeyType) key;
+    if (key >= 'A' && key < 'Z') return zpl_cast(zplKeyType) key;
+    if (key >= '0' && key < '9') return zpl_cast(zplKeyType) key;
     switch (key) {
         case VK_ESCAPE: return ZPL_KEY_ESCAPE;
         
@@ -13341,7 +13406,7 @@ zpl_internal zplKeyType zpl__win32_from_vk(unsigned int key) {
 }
 LRESULT CALLBACK zpl__win32_window_callback(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     // NOTE(bill): Silly callbacks
-    zpl_platform *platform = cast(zpl_platform *) GetWindowLongPtrW(hWnd, GWLP_USERDATA);
+    zpl_platform *platform = zpl_cast(zpl_platform *) GetWindowLongPtrW(hWnd, GWLP_USERDATA);
     zpl_b32 window_has_focus = (platform != NULL) && platform->window_has_focus;
     
     if (msg == WM_CREATE) { // NOTE(bill): Doesn't need the platform
@@ -13386,7 +13451,7 @@ LRESULT CALLBACK zpl__win32_window_callback(HWND hWnd, UINT msg, WPARAM wParam, 
             if (window_has_focus) {
                 if (wParam == '\r') { wParam = '\n'; }
                 
-                platform->char_buffer[platform->char_buffer_count++] = cast(zpl_rune) wParam;
+                platform->char_buffer[platform->char_buffer_count++] = zpl_cast(zpl_rune) wParam;
             }
         } break;
         
@@ -13394,7 +13459,7 @@ LRESULT CALLBACK zpl__win32_window_callback(HWND hWnd, UINT msg, WPARAM wParam, 
             RAWINPUT raw = { 0 };
             unsigned int size = zpl_size_of(RAWINPUT);
             
-            if (!GetRawInputData(cast(HRAWINPUT) lParam, RID_INPUT, &raw, &size, zpl_size_of(RAWINPUTHEADER))) { return 0; }
+            if (!GetRawInputData(zpl_cast(HRAWINPUT) lParam, RID_INPUT, &raw, &size, zpl_size_of(RAWINPUTHEADER))) { return 0; }
             switch (raw.header.dwType) {
                 case RIM_TYPEKEYBOARD: {
                     // NOTE(bill): Many thanks to
@@ -13490,7 +13555,7 @@ LRESULT CALLBACK zpl__win32_window_callback(HWND hWnd, UINT msg, WPARAM wParam, 
                     long dx = +raw_mouse->lLastX;
                     long dy = -raw_mouse->lLastY;
                     
-                    if (flags & RI_MOUSE_WHEEL) { platform->mouse_wheel_delta = cast(zpl_i16) raw_mouse->usButtonData; }
+                    if (flags & RI_MOUSE_WHEEL) { platform->mouse_wheel_delta = zpl_cast(zpl_i16) raw_mouse->usButtonData; }
                     
                     platform->mouse_raw_dx = dx;
                     platform->mouse_raw_dy = dy;
@@ -13515,7 +13580,7 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
     
     wc.style = CS_HREDRAW | CS_VREDRAW; // | CS_OWNDC
     wc.lpfnWndProc = zpl__win32_window_callback;
-    wc.hbrBackground = cast(HBRUSH) GetStockObject(0 /*WHITE_BRUSH*/);
+    wc.hbrBackground = zpl_cast(HBRUSH) GetStockObject(0 /*WHITE_BRUSH*/);
     wc.lpszMenuName = NULL;
     wc.lpszClassName = L"zpl-win32-wndclass"; // TODO(bill): Is this enough?
     wc.hInstance = GetModuleHandleW(NULL);
@@ -13579,7 +13644,7 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
     p->window_flags = window_flags;
     p->window_handle = CreateWindowExW(
         ex_style, wc.lpszClassName,
-        cast(wchar_t const *) zpl_utf8_to_ucs2(title_buffer, zpl_size_of(title_buffer), (zpl_u8 *)window_title), style,
+        zpl_cast(wchar_t const *) zpl_utf8_to_ucs2(title_buffer, zpl_size_of(title_buffer), (zpl_u8 *)window_title), style,
         CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top, 0, 0, GetModuleHandleW(NULL), NULL);
     
     if (!p->window_handle) {
@@ -13587,7 +13652,7 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
         return false;
     }
     
-    p->win32_dc = GetDC(cast(HWND) p->window_handle);
+    p->win32_dc = GetDC(zpl_cast(HWND) p->window_handle);
     
     p->renderer_type = type;
     switch (p->renderer_type) {
@@ -13606,9 +13671,9 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
             pfd.cStencilBits = 8;
             pfd.iLayerType = PFD_MAIN_PLANE;
             
-            SetPixelFormat(cast(HDC) p->win32_dc, ChoosePixelFormat(cast(HDC) p->win32_dc, &pfd), NULL);
-            p->opengl.context = cast(void *) wglCreateContext(cast(HDC) p->win32_dc);
-            wglMakeCurrent(cast(HDC) p->win32_dc, cast(HGLRC) p->opengl.context);
+            SetPixelFormat(zpl_cast(HDC) p->win32_dc, ChoosePixelFormat(zpl_cast(HDC) p->win32_dc, &pfd), NULL);
+            p->opengl.context = zpl_cast(void *) wglCreateContext(zpl_cast(HDC) p->win32_dc);
+            wglMakeCurrent(zpl_cast(HDC) p->win32_dc, zpl_cast(HGLRC) p->opengl.context);
             
             if (p->opengl.major > 0) {
                 attribs[c++] = 0x2091; // WGL_CONTEXT_MAJOR_VERSION_ARB
@@ -13629,10 +13694,10 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
             attribs[c++] = 0; // NOTE(bill): tells the proc that this is the end of attribs
             
             wglCreateContextAttribsARB =
-                cast(wglCreateContextAttribsARB_Proc *) wglGetProcAddress("wglCreateContextAttribsARB");
+                zpl_cast(wglCreateContextAttribsARB_Proc *) wglGetProcAddress("wglCreateContextAttribsARB");
             if (wglCreateContextAttribsARB) {
-                HGLRC rc = cast(HGLRC) wglCreateContextAttribsARB(p->win32_dc, 0, attribs);
-                if (rc && wglMakeCurrent(cast(HDC) p->win32_dc, rc)) {
+                HGLRC rc = zpl_cast(HGLRC) wglCreateContextAttribsARB(p->win32_dc, 0, attribs);
+                if (rc && wglMakeCurrent(zpl_cast(HDC) p->win32_dc, rc)) {
                     p->opengl.context = rc;
                 } else {
                     // TODO(bill): Handle errors from GetLastError
@@ -13648,9 +13713,9 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
         default: ZPL_PANIC("Unknown window type"); break;
     }
     
-    SetForegroundWindow(cast(HWND) p->window_handle);
-    SetFocus(cast(HWND) p->window_handle);
-    SetWindowLongPtrW(cast(HWND) p->window_handle, GWLP_USERDATA, cast(LONG_PTR) p);
+    SetForegroundWindow(zpl_cast(HWND) p->window_handle);
+    SetFocus(zpl_cast(HWND) p->window_handle);
+    SetWindowLongPtrW(zpl_cast(HWND) p->window_handle, GWLP_USERDATA, zpl_cast(LONG_PTR) p);
     
     p->window_width = mode.width;
     p->window_height = mode.height;
@@ -13670,9 +13735,9 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
             zpl_printf_err("XInput could not be loaded. Controllers will not work!\n");
         } else {
             p->xinput.get_state =
-                cast(zpl_xinput_get_state_proc *) zpl_dll_proc_address(xinput_library, "XInputGetState");
+                zpl_cast(zpl_xinput_get_state_proc *) zpl_dll_proc_address(xinput_library, "XInputGetState");
             p->xinput.set_state =
-                cast(zpl_xinput_set_state_proc *) zpl_dll_proc_address(xinput_library, "XInputSetState");
+                zpl_cast(zpl_xinput_set_state_proc *) zpl_dll_proc_address(xinput_library, "XInputSetState");
         }
     }
     
@@ -13700,8 +13765,8 @@ zpl_inline zpl_b32 zpl_platform_init_with_opengl(zpl_platform *p, char const *wi
     mode.bits_per_pixel = 32;
     p->opengl.major = major;
     p->opengl.minor = minor;
-    p->opengl.core = cast(zpl_b16) core;
-    p->opengl.compatible = cast(zpl_b16) compatible;
+    p->opengl.core = zpl_cast(zpl_b16) core;
+    p->opengl.compatible = zpl_cast(zpl_b16) compatible;
     return zpl__platform_init(p, window_title, mode, ZPL_RENDERER_OPENGL, window_flags);
 }
 
@@ -13757,7 +13822,7 @@ void zpl_platform_update(zpl_platform *p) {
         RECT window_rect;
         zpl_i32 x, y, w, h;
         
-        GetClientRect(cast(HWND) p->window_handle, &window_rect);
+        GetClientRect(zpl_cast(HWND) p->window_handle, &window_rect);
         x = window_rect.left;
         y = window_rect.top;
         w = window_rect.right - window_rect.left;
@@ -13771,12 +13836,12 @@ void zpl_platform_update(zpl_platform *p) {
         p->window_y = y;
         p->window_width = w;
         p->window_height = h;
-        ZPL_MASK_SET(p->window_flags, IsIconic(cast(HWND) p->window_handle) != 0, ZPL_WINDOW_MINIMIZED);
+        ZPL_MASK_SET(p->window_flags, IsIconic(zpl_cast(HWND) p->window_handle) != 0, ZPL_WINDOW_MINIMIZED);
         
-        p->window_has_focus = GetFocus( ) == cast(HWND) p->window_handle;
+        p->window_has_focus = GetFocus( ) == zpl_cast(HWND) p->window_handle;
         
         RECT outline_rect;
-        GetWindowRect(cast(HWND) p->window_handle, &outline_rect);
+        GetWindowRect(zpl_cast(HWND) p->window_handle, &outline_rect);
         x = window_rect.left;
         y = window_rect.top;
         w = window_rect.right - window_rect.left;
@@ -13801,7 +13866,7 @@ void zpl_platform_update(zpl_platform *p) {
         }
         
         GetCursorPos(&mouse_pos);
-        ScreenToClient(cast(HWND) p->window_handle, &mouse_pos);
+        ScreenToClient(zpl_cast(HWND) p->window_handle, &mouse_pos);
         {
             zpl_i32 x = mouse_pos.x;
             zpl_i32 y = p->window_height - 1 - mouse_pos.y;
@@ -13866,7 +13931,7 @@ void zpl_platform_update(zpl_platform *p) {
         for (i = 0; i < max_controller_count; i++) {
             zpl_game_controller *controller = &p->game_controllers[i];
             XINPUT_STATE controller_state = { 0 };
-            if (p->xinput.get_state(cast(DWORD) i, &controller_state) != 0) {
+            if (p->xinput.get_state(zpl_cast(DWORD) i, &controller_state) != 0) {
                 // NOTE(bill): The controller is not available
                 controller->is_connected = false;
             } else {
@@ -13887,8 +13952,8 @@ void zpl_platform_update(zpl_platform *p) {
                 controller->axes[ZPL_CONTROLLER_AXIS_RIGHTY] =
                     zpl__process_xinput_stick_value(pad->sThumbRY, XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE);
                 
-                controller->axes[ZPL_CONTROLLER_AXIS_LEFTTRIGGER] = cast(zpl_f32) pad->bLeftTrigger / 255.0f;
-                controller->axes[ZPL_CONTROLLER_AXIS_RIGHTTRIGGER] = cast(zpl_f32) pad->bRightTrigger / 255.0f;
+                controller->axes[ZPL_CONTROLLER_AXIS_LEFTTRIGGER] = zpl_cast(zpl_f32) pad->bLeftTrigger / 255.0f;
+                controller->axes[ZPL_CONTROLLER_AXIS_RIGHTTRIGGER] = zpl_cast(zpl_f32) pad->bRightTrigger / 255.0f;
                 
                 if ((controller->axes[ZPL_CONTROLLER_AXIS_LEFTX] != 0.0f) ||
                     (controller->axes[ZPL_CONTROLLER_AXIS_LEFTY] != 0.0f)) {
@@ -13941,9 +14006,9 @@ void zpl_platform_update(zpl_platform *p) {
 
 void zpl_platform_display(zpl_platform *p) {
     if (p->renderer_type == ZPL_RENDERER_OPENGL) {
-        SwapBuffers(cast(HDC) p->win32_dc);
+        SwapBuffers(zpl_cast(HDC) p->win32_dc);
     } else if (p->renderer_type == ZPL_RENDERER_SOFTWARE) {
-        StretchDIBits(cast(HDC) p->win32_dc, 0, 0, p->window_width, p->window_height, 0, 0, p->window_width,
+        StretchDIBits(zpl_cast(HDC) p->win32_dc, 0, 0, p->window_width, p->window_height, 0, 0, p->window_width,
                       p->window_height, p->sw_framebuffer.memory, &p->sw_framebuffer.win32_bmi, DIB_RGB_COLORS,
                       SRCCOPY);
     } else {
@@ -13960,12 +14025,12 @@ void zpl_platform_display(zpl_platform *p) {
 
 void zpl_platform_destroy(zpl_platform *p) {
     if (p->renderer_type == ZPL_RENDERER_OPENGL) {
-        wglDeleteContext(cast(HGLRC) p->opengl.context);
+        wglDeleteContext(zpl_cast(HGLRC) p->opengl.context);
     } else if (p->renderer_type == ZPL_RENDERER_SOFTWARE) {
         zpl_vm_free(zpl_vm(p->sw_framebuffer.memory, p->sw_framebuffer.memory_size));
     }
     
-    DestroyWindow(cast(HWND) p->window_handle);
+    DestroyWindow(zpl_cast(HWND) p->window_handle);
 }
 
 void zpl_platform_show_cursor(zpl_platform *p, zpl_b32 show) {
@@ -13981,9 +14046,9 @@ void zpl_platform_set_cursor(zpl_platform *p, void *handle) {
 
 void zpl_platform_set_mouse_position(zpl_platform *p, zpl_i32 x, zpl_i32 y) {
     POINT point;
-    point.x = cast(LONG) x;
-    point.y = cast(LONG)(p->window_height - 1 - y);
-    ClientToScreen(cast(HWND) p->window_handle, &point);
+    point.x = zpl_cast(LONG) x;
+    point.y = zpl_cast(LONG)(p->window_height - 1 - y);
+    ClientToScreen(zpl_cast(HWND) p->window_handle, &point);
     SetCursorPos(point.x, point.y);
     
     p->mouse_x = point.x;
@@ -13995,10 +14060,10 @@ void zpl_platform_set_controller_vibration(zpl_platform *p, zpl_isize index, zpl
         XINPUT_VIBRATION vibration = { 0 };
         left_motor = zpl_clamp01(left_motor);
         right_motor = zpl_clamp01(right_motor);
-        vibration.wLeftMotorSpeed = cast(WORD)(65535 * left_motor);
-        vibration.wRightMotorSpeed = cast(WORD)(65535 * right_motor);
+        vibration.wLeftMotorSpeed = zpl_cast(WORD)(65535 * left_motor);
+        vibration.wRightMotorSpeed = zpl_cast(WORD)(65535 * right_motor);
         
-        p->xinput.set_state(cast(DWORD) index, &vibration);
+        p->xinput.set_state(zpl_cast(DWORD) index, &vibration);
     }
 }
 
@@ -14006,10 +14071,10 @@ void zpl_platform_set_window_position(zpl_platform *p, zpl_i32 x, zpl_i32 y) {
     RECT rect;
     zpl_i32 width, height;
     
-    GetClientRect(cast(HWND) p->window_handle, &rect);
+    GetClientRect(zpl_cast(HWND) p->window_handle, &rect);
     width = rect.right - rect.left;
     height = rect.bottom - rect.top;
-    MoveWindow(cast(HWND) p->window_handle, x, y, width, height, false);
+    MoveWindow(zpl_cast(HWND) p->window_handle, x, y, width, height, false);
 }
 
 void zpl_platform_set_window_title(zpl_platform *p, char const *title, ...) {
@@ -14021,15 +14086,15 @@ void zpl_platform_set_window_title(zpl_platform *p, char const *title, ...) {
     va_end(va);
     
     if (str[0] != '\0') {
-        SetWindowTextW(cast(HWND) p->window_handle,
-                       cast(wchar_t const *) zpl_utf8_to_ucs2(buffer, zpl_size_of(buffer), (zpl_u8 *)str));
+        SetWindowTextW(zpl_cast(HWND) p->window_handle,
+                       zpl_cast(wchar_t const *) zpl_utf8_to_ucs2(buffer, zpl_size_of(buffer), (zpl_u8 *)str));
     }
 }
 
 void zpl_platform_toggle_fullscreen(zpl_platform *p, zpl_b32 fullscreen_desktop) {
     // NOTE(bill): From the man himself, Raymond Chen! (Modified for my need.)
-    HWND handle = cast(HWND) p->window_handle;
-    DWORD style = cast(DWORD) GetWindowLongW(handle, GWL_STYLE);
+    HWND handle = zpl_cast(HWND) p->window_handle;
+    DWORD style = zpl_cast(DWORD) GetWindowLongW(handle, GWL_STYLE);
     WINDOWPLACEMENT placement;
     
     if (style & WS_OVERLAPPEDWINDOW) {
@@ -14065,7 +14130,7 @@ void zpl_platform_toggle_fullscreen(zpl_platform *p, zpl_b32 fullscreen_desktop)
 }
 
 void zpl_platform_toggle_borderless(zpl_platform *p) {
-    HWND handle = cast(HWND) p->window_handle;
+    HWND handle = zpl_cast(HWND) p->window_handle;
     DWORD style = GetWindowLongW(handle, GWL_STYLE);
     zpl_b32 is_borderless = (style & WS_POPUP) != 0;
     
@@ -14079,17 +14144,17 @@ void zpl_platform_toggle_borderless(zpl_platform *p) {
 
 zpl_inline void zpl_platform_make_opengl_context_current(zpl_platform *p) {
     if (p->renderer_type == ZPL_RENDERER_OPENGL) {
-        wglMakeCurrent(cast(HDC) p->win32_dc, cast(HGLRC) p->opengl.context);
+        wglMakeCurrent(zpl_cast(HDC) p->win32_dc, zpl_cast(HGLRC) p->opengl.context);
     }
 }
 
 zpl_inline void zpl_platform_show_window(zpl_platform *p) {
-    ShowWindow(cast(HWND) p->window_handle, SW_SHOW);
+    ShowWindow(zpl_cast(HWND) p->window_handle, SW_SHOW);
     p->window_flags &= ~ZPL_WINDOW_HIDDEN;
 }
 
 zpl_inline void zpl_platform_hide_window(zpl_platform *p) {
-    ShowWindow(cast(HWND) p->window_handle, SW_HIDE);
+    ShowWindow(zpl_cast(HWND) p->window_handle, SW_HIDE);
     p->window_flags |= ZPL_WINDOW_HIDDEN;
 }
 
@@ -14113,10 +14178,10 @@ zpl_isize zpl_video_mode_get_fullscreen_modes(zpl_video_mode *modes, zpl_isize m
 zpl_b32 zpl_platform_has_clipboard_text(zpl_platform *p) {
     zpl_b32 result = false;
     
-    if (IsClipboardFormatAvailable(1 /*CF_TEXT*/) && OpenClipboard(cast(HWND) p->window_handle)) {
+    if (IsClipboardFormatAvailable(1 /*CF_TEXT*/) && OpenClipboard(zpl_cast(HWND) p->window_handle)) {
         HANDLE mem = GetClipboardData(1 /*CF_TEXT*/);
         if (mem) {
-            char *str = cast(char *) GlobalLock(mem);
+            char *str = zpl_cast(char *) GlobalLock(mem);
             if (str && str[0] != '\0') { result = true; }
             GlobalUnlock(mem);
         } else {
@@ -14131,12 +14196,12 @@ zpl_b32 zpl_platform_has_clipboard_text(zpl_platform *p) {
 
 // TODO(bill): Handle UTF-8
 void zpl_platform_set_clipboard_text(zpl_platform *p, char const *str) {
-    if (OpenClipboard(cast(HWND) p->window_handle)) {
+    if (OpenClipboard(zpl_cast(HWND) p->window_handle)) {
         zpl_isize i, len = zpl_strlen(str) + 1;
         
-        HANDLE mem = cast(HANDLE) GlobalAlloc(0x0002 /*GMEM_MOVEABLE*/, len);
+        HANDLE mem = zpl_cast(HANDLE) GlobalAlloc(0x0002 /*GMEM_MOVEABLE*/, len);
         if (mem) {
-            char *dst = cast(char *) GlobalLock(mem);
+            char *dst = zpl_cast(char *) GlobalLock(mem);
             if (dst) {
                 for (i = 0; str[i]; i++) {
                     // TODO(bill): Does this cause a buffer overflow?
@@ -14159,10 +14224,10 @@ void zpl_platform_set_clipboard_text(zpl_platform *p, char const *str) {
 char *zpl_platform_get_clipboard_text(zpl_platform *p, zpl_allocator a) {
     char *text = NULL;
     
-    if (IsClipboardFormatAvailable(1 /*CF_TEXT*/) && OpenClipboard(cast(HWND) p->window_handle)) {
+    if (IsClipboardFormatAvailable(1 /*CF_TEXT*/) && OpenClipboard(zpl_cast(HWND) p->window_handle)) {
         HANDLE mem = GetClipboardData(1 /*CF_TEXT*/);
         if (mem) {
-            char *str = cast(char *) GlobalLock(mem);
+            char *str = zpl_cast(char *) GlobalLock(mem);
             text = zpl_alloc_str(a, str);
             GlobalUnlock(mem);
         } else {
@@ -14239,12 +14304,12 @@ zpl_internal NSUInteger zpl__osx_application_should_terminate(id self, SEL _sel,
 
 zpl_internal void zpl__osx_window_will_close(id self, SEL _sel, id notification) {
     NSUInteger value = true;
-    object_setInstanceVariable(self, "closed", cast(void *) value);
+    object_setInstanceVariable(self, "closed", zpl_cast(void *) value);
 }
 
 zpl_internal void zpl__osx_window_did_become_key(id self, SEL _sel, id notification) {
     zpl_platform *p = NULL;
-    object_getInstanceVariable(self, "zpl_platform", cast(void **) & p);
+    object_getInstanceVariable(self, "zpl_platform", zpl_cast(void **) & p);
     if (p) {
         // TODO(bill):
     }
@@ -14264,20 +14329,20 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
 #if defined(ARC_AVAILABLE)
 #error TODO(bill): This code should be compiled as C for now
 #else
-        id poolAlloc = objc_msgSend_id(cast(id) objc_getClass("NSAutoreleasePool"), sel_registerName("alloc"));
+        id poolAlloc = objc_msgSend_id(zpl_cast(id) objc_getClass("NSAutoreleasePool"), sel_registerName("alloc"));
         p->osx_autorelease_pool = objc_msgSend_id(poolAlloc, sel_registerName("init"));
 #endif
         
-        objc_msgSend_id(cast(id) objc_getClass("NSApplication"), sel_registerName("sharedApplication"));
+        objc_msgSend_id(zpl_cast(id) objc_getClass("NSApplication"), sel_registerName("sharedApplication"));
         ((void (*)(id, SEL, NSInteger))objc_msgSend)(NSApp, sel_registerName("setActivationPolicy:"), 0);
         
         appDelegateClass = objc_allocateClassPair((Class)objc_getClass("NSObject"), "AppDelegate", 0);
         resultAddProtoc = class_addProtocol(appDelegateClass, objc_getProtocol("NSApplicationDelegate"));
         assert(resultAddProtoc);
         resultAddMethod = class_addMethod(appDelegateClass, sel_registerName("applicationShouldTerminate:"),
-                                          cast(IMP) zpl__osx_application_should_terminate, NSUIntegerEncoding "@:@");
+                                          zpl_cast(IMP) zpl__osx_application_should_terminate, NSUIntegerEncoding "@:@");
         assert(resultAddMethod);
-        dgAlloc = objc_msgSend_id(cast(id) appDelegateClass, sel_registerName("alloc"));
+        dgAlloc = objc_msgSend_id(zpl_cast(id) appDelegateClass, sel_registerName("alloc"));
         dg = objc_msgSend_id(dgAlloc, sel_registerName("init"));
 #ifndef ARC_AVAILABLE
         objc_msgSend_void(dg, sel_registerName("autorelease"));
@@ -14286,13 +14351,13 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
         objc_msgSend_void_id(NSApp, sel_registerName("setDelegate:"), dg);
         objc_msgSend_void(NSApp, sel_registerName("finishLaunching"));
         
-        menubarAlloc = objc_msgSend_id(cast(id) objc_getClass("NSMenu"), sel_registerName("alloc"));
+        menubarAlloc = objc_msgSend_id(zpl_cast(id) objc_getClass("NSMenu"), sel_registerName("alloc"));
         menubar = objc_msgSend_id(menubarAlloc, sel_registerName("init"));
 #ifndef ARC_AVAILABLE
         objc_msgSend_void(menubar, sel_registerName("autorelease"));
 #endif
         
-        appMenuItemAlloc = objc_msgSend_id(cast(id) objc_getClass("NSMenuItem"), sel_registerName("alloc"));
+        appMenuItemAlloc = objc_msgSend_id(zpl_cast(id) objc_getClass("NSMenuItem"), sel_registerName("alloc"));
         appMenuItem = objc_msgSend_id(appMenuItemAlloc, sel_registerName("init"));
 #ifndef ARC_AVAILABLE
         objc_msgSend_void(appMenuItem, sel_registerName("autorelease"));
@@ -14301,24 +14366,24 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
         objc_msgSend_void_id(menubar, sel_registerName("addItem:"), appMenuItem);
         ((id(*)(id, SEL, id))objc_msgSend)(NSApp, sel_registerName("setMainMenu:"), menubar);
         
-        appMenuAlloc = objc_msgSend_id(cast(id) objc_getClass("NSMenu"), sel_registerName("alloc"));
+        appMenuAlloc = objc_msgSend_id(zpl_cast(id) objc_getClass("NSMenu"), sel_registerName("alloc"));
         appMenu = objc_msgSend_id(appMenuAlloc, sel_registerName("init"));
 #ifndef ARC_AVAILABLE
         objc_msgSend_void(appMenu, sel_registerName("autorelease"));
 #endif
         
         {
-            id processInfo = objc_msgSend_id(cast(id) objc_getClass("NSProcessInfo"), sel_registerName("processInfo"));
+            id processInfo = objc_msgSend_id(zpl_cast(id) objc_getClass("NSProcessInfo"), sel_registerName("processInfo"));
             id appName = objc_msgSend_id(processInfo, sel_registerName("processName"));
             
-            id quitTitlePrefixString = objc_msgSend_id_char_const(cast(id) objc_getClass("NSString"),
+            id quitTitlePrefixString = objc_msgSend_id_char_const(zpl_cast(id) objc_getClass("NSString"),
                                                                   sel_registerName("stringWithUTF8String:"), "Quit ");
             id quitTitle = ((id(*)(id, SEL, id))objc_msgSend)(quitTitlePrefixString,
                                                               sel_registerName("stringByAppendingString:"), appName);
             
-            id quitMenuItemKey = objc_msgSend_id_char_const(cast(id) objc_getClass("NSString"),
+            id quitMenuItemKey = objc_msgSend_id_char_const(zpl_cast(id) objc_getClass("NSString"),
                                                             sel_registerName("stringWithUTF8String:"), "q");
-            id quitMenuItemAlloc = objc_msgSend_id(cast(id) objc_getClass("NSMenuItem"), sel_registerName("alloc"));
+            id quitMenuItemAlloc = objc_msgSend_id(zpl_cast(id) objc_getClass("NSMenuItem"), sel_registerName("alloc"));
             id quitMenuItem = ((id(*)(id, SEL, id, SEL, id))objc_msgSend)(
                 quitMenuItemAlloc, sel_registerName("initWithTitle:action:keyEquivalent:"), quitTitle,
                 sel_registerName("terminate:"), quitMenuItemKey);
@@ -14332,12 +14397,12 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
     }
     
     { // Init Window
-        NSRect rect = { { 0, 0 }, { cast(CGFloat) mode.width, cast(CGFloat) mode.height } };
+        NSRect rect = { { 0, 0 }, { zpl_cast(CGFloat) mode.width, zpl_cast(CGFloat) mode.height } };
         id windowAlloc, window, wdgAlloc, wdg, contentView, titleString;
         Class WindowDelegateClass;
         zpl_b32 resultAddProtoc, resultAddIvar, resultAddMethod;
         
-        windowAlloc = objc_msgSend_id(cast(id) objc_getClass("NSWindow"), sel_registerName("alloc"));
+        windowAlloc = objc_msgSend_id(zpl_cast(id) objc_getClass("NSWindow"), sel_registerName("alloc"));
         window = ((id(*)(id, SEL, NSRect, NSUInteger, NSUInteger, BOOL))objc_msgSend)(
             windowAlloc, sel_registerName("initWithContentRect:styleMask:backing:defer:"), rect, 15, 2, NO);
 #ifndef ARC_AVAILABLE
@@ -14359,12 +14424,12 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
                                       rint(log2(zpl_size_of(void *))), "ˆv");
         ZPL_ASSERT(resultAddIvar);
         resultAddMethod = class_addMethod(WindowDelegateClass, sel_registerName("windowWillClose:"),
-                                          cast(IMP) zpl__osx_window_will_close, "v@:@");
+                                          zpl_cast(IMP) zpl__osx_window_will_close, "v@:@");
         ZPL_ASSERT(resultAddMethod);
         resultAddMethod = class_addMethod(WindowDelegateClass, sel_registerName("windowDidBecomeKey:"),
-                                          cast(IMP) zpl__osx_window_did_become_key, "v@:@");
+                                          zpl_cast(IMP) zpl__osx_window_did_become_key, "v@:@");
         ZPL_ASSERT(resultAddMethod);
-        wdgAlloc = objc_msgSend_id(cast(id) WindowDelegateClass, sel_registerName("alloc"));
+        wdgAlloc = objc_msgSend_id(zpl_cast(id) WindowDelegateClass, sel_registerName("alloc"));
         wdg = objc_msgSend_id(wdgAlloc, sel_registerName("init"));
 #ifndef ARC_AVAILABLE
         objc_msgSend_void(wdg, sel_registerName("autorelease"));
@@ -14379,7 +14444,7 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
             ((void (*)(id, SEL, NSPoint))objc_msgSend)(window, sel_registerName("cascadeTopLeftFromPoint:"), point);
         }
         
-        titleString = objc_msgSend_id_char_const(cast(id) objc_getClass("NSString"),
+        titleString = objc_msgSend_id_char_const(zpl_cast(id) objc_getClass("NSString"),
                                                  sel_registerName("stringWithUTF8String:"), window_title);
         objc_msgSend_void_id(window, sel_registerName("setTitle:"), titleString);
         
@@ -14400,7 +14465,7 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
             id opengl_context_alloc, opengl_context;
             
             pixel_format_alloc =
-                objc_msgSend_id(cast(id) objc_getClass("NSOpenGLPixelFormat"), sel_registerName("alloc"));
+                objc_msgSend_id(zpl_cast(id) objc_getClass("NSOpenGLPixelFormat"), sel_registerName("alloc"));
             pixel_format = ((id(*)(id, SEL, const uint32_t *))objc_msgSend)(
                 pixel_format_alloc, sel_registerName("initWithAttributes:"), gl_attribs);
 #ifndef ARC_AVAILABLE
@@ -14408,7 +14473,7 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
 #endif
             
             opengl_context_alloc =
-                objc_msgSend_id(cast(id) objc_getClass("NSOpenGLContext"), sel_registerName("alloc"));
+                objc_msgSend_id(zpl_cast(id) objc_getClass("NSOpenGLContext"), sel_registerName("alloc"));
             opengl_context = ((id(*)(id, SEL, id, id))objc_msgSend)(
                 opengl_context_alloc, sel_registerName("initWithFormat:shareContext:"), pixel_format, nil);
 #ifndef ARC_AVAILABLE
@@ -14419,18 +14484,18 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
             objc_msgSend_void_id(window, sel_registerName("makeKeyAndOrderFront:"), window);
             objc_msgSend_void_bool(window, sel_registerName("setAcceptsMouseMovedEvents:"), YES);
             
-            p->window_handle = cast(void *) window;
-            p->opengl.context = cast(void *) opengl_context;
+            p->window_handle = zpl_cast(void *) window;
+            p->opengl.context = zpl_cast(void *) opengl_context;
         } else {
             ZPL_PANIC("TODO(bill): Software rendering");
         }
         
         {
-            id blackColor = objc_msgSend_id(cast(id) objc_getClass("NSColor"), sel_registerName("blackColor"));
+            id blackColor = objc_msgSend_id(zpl_cast(id) objc_getClass("NSColor"), sel_registerName("blackColor"));
             objc_msgSend_void_id(window, sel_registerName("setBackgroundColor:"), blackColor);
             objc_msgSend_void_bool(NSApp, sel_registerName("activateIgnoringOtherApps:"), YES);
         }
-        object_setInstanceVariable(wdg, "zpl_platform", cast(void *) p);
+        object_setInstanceVariable(wdg, "zpl_platform", zpl_cast(void *) p);
         
         p->is_initialized = true;
     }
@@ -14627,7 +14692,7 @@ zpl_internal void zpl__osx_on_cocoa_event(zpl_platform *p, id event, id window) 
 #endif
                 
                 // zpl_printf("%u\n", keys.mask);
-                // zpl_printf("%x\n", cast(zpl_u32)modifiers);
+                // zpl_printf("%x\n", zpl_cast(zpl_u32)modifiers);
             } break;
             
             case 10: { // NSKeyDown
@@ -14659,7 +14724,7 @@ void zpl_platform_update(zpl_platform *p) {
     id window, key_window, content_view;
     NSRect original_frame;
     
-    window = cast(id) p->window_handle;
+    window = zpl_cast(id) p->window_handle;
     key_window = objc_msgSend_id(NSApp, sel_registerName("keyWindow"));
     p->window_has_focus = key_window == window; // TODO(bill): Is this right
     
@@ -14680,7 +14745,7 @@ void zpl_platform_update(zpl_platform *p) {
     }
     
     { // Handle Events
-        id distant_past = objc_msgSend_id(cast(id) objc_getClass("NSDate"), sel_registerName("distantPast"));
+        id distant_past = objc_msgSend_id(zpl_cast(id) objc_getClass("NSDate"), sel_registerName("distantPast"));
         id event = ((id(*)(id, SEL, NSUInteger, id, id, BOOL))objc_msgSend)(
             NSApp, sel_registerName("nextEventMatchingMask:untilDate:inMode:dequeue:"), NSUIntegerMax, distant_past,
             NSDefaultRunLoopMode, YES);
@@ -14699,7 +14764,7 @@ void zpl_platform_update(zpl_platform *p) {
             p->window_is_closed = false;
         } else {
             NSUInteger value = 0;
-            object_getInstanceVariable(wdg, "closed", cast(void **) & value);
+            object_getInstanceVariable(wdg, "closed", zpl_cast(void **) & value);
             p->window_is_closed = (value != 0);
         }
     }
@@ -14765,7 +14830,7 @@ void zpl_platform_update(zpl_platform *p) {
     // TODO(bill): Is this in the correct place?
     objc_msgSend_void(NSApp, sel_registerName("updateWindows"));
     if (p->renderer_type == ZPL_RENDERER_OPENGL) {
-        objc_msgSend_void(cast(id) p->opengl.context, sel_registerName("update"));
+        objc_msgSend_void(zpl_cast(id) p->opengl.context, sel_registerName("update"));
         zpl_platform_make_opengl_context_current(p);
     }
 }
@@ -14774,7 +14839,7 @@ void zpl_platform_display(zpl_platform *p) {
     // TODO(bill): Do more
     if (p->renderer_type == ZPL_RENDERER_OPENGL) {
         zpl_platform_make_opengl_context_current(p);
-        objc_msgSend_void(cast(id) p->opengl.context, sel_registerName("flushBuffer"));
+        objc_msgSend_void(zpl_cast(id) p->opengl.context, sel_registerName("flushBuffer"));
     } else if (p->renderer_type == ZPL_RENDERER_SOFTWARE) {
         // TODO(bill):
     } else {
@@ -14792,12 +14857,12 @@ void zpl_platform_display(zpl_platform *p) {
 void zpl_platform_destroy(zpl_platform *p) {
     zpl_platform_make_opengl_context_current(p);
     
-    objc_msgSend_void(cast(id) p->window_handle, sel_registerName("close"));
+    objc_msgSend_void(zpl_cast(id) p->window_handle, sel_registerName("close"));
     
 #if defined(ARC_AVAILABLE)
     // TODO(bill): autorelease pool
 #else
-    objc_msgSend_void(cast(id) p->osx_autorelease_pool, sel_registerName("drain"));
+    objc_msgSend_void(zpl_cast(id) p->osx_autorelease_pool, sel_registerName("drain"));
 #endif
 }
 
@@ -14811,7 +14876,7 @@ void zpl_platform_show_cursor(zpl_platform *p, zpl_b32 show) {
 
 void zpl_platform_set_mouse_position(zpl_platform *p, zpl_i32 x, zpl_i32 y) {
     // TODO(bill):
-    CGPoint pos = { cast(CGFloat) x, cast(CGFloat) y };
+    CGPoint pos = { zpl_cast(CGFloat) x, zpl_cast(CGFloat) y };
     pos.x += p->window_x;
     pos.y += p->window_y;
     CGWarpMouseCursorPosition(pos);
@@ -14848,8 +14913,8 @@ void zpl_platform_set_window_title(zpl_platform *p, char const *title, ...) {
     va_end(va);
     
     title_string =
-        objc_msgSend_id_char_const(cast(id) objc_getClass("NSString"), sel_registerName("stringWithUTF8String:"), buf);
-    objc_msgSend_void_id(cast(id) p->window_handle, sel_registerName("setTitle:"), title_string);
+        objc_msgSend_id_char_const(zpl_cast(id) objc_getClass("NSString"), sel_registerName("stringWithUTF8String:"), buf);
+    objc_msgSend_void_id(zpl_cast(id) p->window_handle, sel_registerName("setTitle:"), title_string);
 }
 
 void zpl_platform_toggle_fullscreen(zpl_platform *p, zpl_b32 fullscreen_desktop) {
@@ -14861,7 +14926,7 @@ void zpl_platform_toggle_borderless(zpl_platform *p) {
 }
 
 void zpl_platform_make_opengl_context_current(zpl_platform *p) {
-    objc_msgSend_void(cast(id) p->opengl.context, sel_registerName("makeCurrentContext"));
+    objc_msgSend_void(zpl_cast(id) p->opengl.context, sel_registerName("makeCurrentContext"));
 }
 
 void zpl_platform_show_window(zpl_platform *p) {
@@ -14909,7 +14974,7 @@ zpl_isize zpl_video_mode_get_fullscreen_modes(zpl_video_mode *modes, zpl_isize m
     
     count = zpl_min(CFArrayGetCount(cg_modes), max_mode_count);
     for (i = 0; i < count; i++) {
-        CGDisplayModeRef cg_mode = cast(CGDisplayModeRef) CFArrayGetValueAtIndex(cg_modes, i);
+        CGDisplayModeRef cg_mode = zpl_cast(CGDisplayModeRef) CFArrayGetValueAtIndex(cg_modes, i);
         modes[i] = zpl_set_video_mode(CGDisplayModeGetWidth(cg_mode), CGDisplayModeGetHeight(cg_mode),
                                       zpl__osx_mode_bits_per_pixel(cg_mode));
     }
@@ -14917,7 +14982,7 @@ zpl_isize zpl_video_mode_get_fullscreen_modes(zpl_video_mode *modes, zpl_isize m
     CFRelease(cg_modes);
     
     zpl_sort_array(modes, count, zpl_video_mode_dsc_cmp);
-    return cast(zpl_isize) count;
+    return zpl_cast(zpl_isize) count;
 }
 
 #endif
@@ -14951,8 +15016,8 @@ zpl_inline zpl_b32 zpl_video_mode_is_valid(zpl_video_mode mode) {
 }
 
 ZPL_COMPARE_PROC(zpl_video_mode_cmp) {
-    zpl_video_mode const *x = cast(zpl_video_mode const *) a;
-    zpl_video_mode const *y = cast(zpl_video_mode const *) b;
+    zpl_video_mode const *x = zpl_cast(zpl_video_mode const *) a;
+    zpl_video_mode const *y = zpl_cast(zpl_video_mode const *) b;
     
     if (x->bits_per_pixel == y->bits_per_pixel) {
         if (x->width == y->width) { return x->height < y->height ? -1 : x->height > y->height; }
@@ -15038,7 +15103,7 @@ typedef zpl_isize isize;
 typedef zpl_uintptr uintptr;
 typedef zpl_intptr intptr;
 #else
-#undef cast
+#undef zpl_cast
 #undef hard_cast
 #endif // ZPL_PREFIX_TYPES
 

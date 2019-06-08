@@ -35,5 +35,5 @@ void main()
 	v_Tex0 = a_TexCoord_0;
 #endif
 	v_Color 		= col;	
-	gl_Position		= a_PositionL * u_Matrix_WorldViewProjection;
+	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL;
 }	

@@ -27,12 +27,9 @@
 #ifndef __SIM_CAMERA_H
 #define __SIM_CAMERA_H
 
+#include <core/sim_core.h>
+
 #include <render/scene/sim_scene_node.h>
-
-#include <math/sim_matrix4.h>
-#include <math/sim_plane.h>
-#include <math/sim_vec3.h>
-
 #include <render/sim_render.h>
 
 
@@ -57,31 +54,23 @@ public:
 	void						SetPerspective( CRect2D *canvas );
 	void						SetOrthographic( CRect2D *canvas );
 
-	inline TMatrix4*			GetPerspectiveMatrix() { return &m_perspectiveMatrix; }
-	inline TMatrix4*			GetOrthographicMatrix() { return &m_orthographicMatrix; }
-    inline TMatrix4*            GetViewMatrix() { return &m_viewMatrix; }
+    inline Mat4*                GetPerspectiveMatrix();
+    inline Mat4*                GetOrthographicMatrix();
 
-	inline void					SetFieldOfView( f32 fov ) { m_fieldOfView = fov ; }
-	inline f32					GetFieldOfView()		{ return m_fieldOfView; }
+    inline void					SetFieldOfView(f32 fov);
+    inline f32					GetFieldOfView();
 
-	inline void					SetSpeed( f32 spd ) { m_speed = spd ; }
-	inline f32					GetSpeed()		{ return m_speed; }
+    inline void					SetNearPlane(f32 nearPlane);
+    inline f32					GetNearPlane();
 
-	inline void					SetNearPlane( f32 nearPlane ) { m_nearPlane = nearPlane; }
-	inline f32					GetNearPlane()	{ return m_nearPlane; }
-
-	inline void					SetFarPlane( f32 farPlane ) { m_farPlane = farPlane; }
-	inline f32					GetFarPlane()		{ return m_farPlane; };
-
-	void						Move( f32 dt, bool forward );
-	void						Strafe( f32 dt, bool left );
+    inline void					SetFarPlane(f32 farPlane);
+    inline f32					GetFarPlane();
 
 	void						ExtractClipPlanes();
-	bool						SphereIn( const TVec3 *pos, const f32 rad ) const;
-	bool						PointIn( const TVec3 *pos ) const;
 
-	bool						BoxIn( const TVec3 *pos, const TVec3 *bounds );
-	bool						BoxIn( const TVec3 *pos, const TVec3 *bounds, const TMatrix4 *orientMat );
+	bool						SphereIn( Vec3 *pos, const f32 rad );
+	bool						PointIn( Vec3 *pos );
+	bool						BoxIn( Vec3 *pos, Vec3 *bounds );
 
 	virtual void				Update( f32 dt, void *userData );
 	virtual void				Render( CDriver *driver );
@@ -90,24 +79,60 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	TPlane						m_leftClipPlane;
-	TPlane						m_rightClipPlane;
-	TPlane						m_topClipPlane;
-	TPlane						m_bottomClipPlane;
-	TPlane						m_nearClipPlane;
-	TPlane						m_farClipPlane;
+	Plane						m_leftClipPlane;
+	Plane						m_rightClipPlane;
+	Plane						m_topClipPlane;
+	Plane						m_bottomClipPlane;
+	Plane						m_nearClipPlane;
+	Plane						m_farClipPlane;
 
-	TMatrix4					m_perspectiveMatrix;
-	TMatrix4					m_orthographicMatrix;
-
-	TMatrix4					m_viewMatrix;
+	Mat4					    m_perspectiveMatrix;
+	Mat4					    m_orthographicMatrix;
 
 	f32							m_fieldOfView;
 	f32							m_nearPlane;
 	f32							m_farPlane;
-
-	f32							m_speed;
 	// ------------------------------------------------------------------//
+};
+
+inline Mat4* CCamera::GetPerspectiveMatrix() 
+{ 
+    return &m_perspectiveMatrix; 
+}
+
+inline Mat4* CCamera::GetOrthographicMatrix()
+{ 
+    return &m_orthographicMatrix; 
+}
+
+inline void	 CCamera::SetFieldOfView(f32 fov) 
+{ 
+    m_fieldOfView = fov;
+}
+
+inline f32	 CCamera::GetFieldOfView() 
+{ 
+    return m_fieldOfView; 
+}
+
+inline void	 CCamera::SetNearPlane(f32 nearPlane) 
+{ 
+    m_nearPlane = nearPlane;
+}
+
+inline f32	 CCamera::GetNearPlane()
+{
+    return m_nearPlane; 
+}
+
+inline void	 CCamera::SetFarPlane(f32 farPlane)
+{ 
+    m_farPlane = farPlane;
+}
+
+inline f32	 CCamera::GetFarPlane()
+{
+    return m_farPlane; 
 };
 
 // ----------------------------------------------------------------------//

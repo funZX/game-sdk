@@ -52,15 +52,15 @@ namespace sim
 //------------------------------------------------
 	namespace mat
 	{
-		union TMatrix3;
-		union TMatrix4;
+		union Mat3;
+		union Mat4;
 
-		union TVec2;
-		union TVec3;
-		union TVec4;
-		union TQuat;
-		struct TMatrix4Stack;
-		union TPlane;
+		union Vec2;
+		union Vec3;
+		union Vec4;
+		union Quat;
+		struct Mat4Stack;
+		union Plane;
 	};
 //------------------------------------------------
 	namespace rnr
@@ -143,10 +143,7 @@ namespace sim
 #include <core/sim_singleton.h>
 #include <core/sim_stack.h>
 
-#include <math/sim_math.h>
-
 #include <render/sim_render.h>
-#include <render/sim_color.h>
 #include <render/sim_glaux.h>
 
 #include <sound/sim_sound.h>
@@ -160,7 +157,6 @@ using namespace sim::rnr;
 using namespace sim::phy;
 using namespace sim::snd;
 using namespace sim::vm;
-using namespace sim::mat;
 
 namespace sim
 {

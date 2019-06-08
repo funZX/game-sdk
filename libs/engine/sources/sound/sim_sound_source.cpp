@@ -94,7 +94,7 @@ void CSoundSource::SetLoop( Loop loop )
 
 // ----------------------------------------------------------------------//
 
-void CSoundSource::SetFX( TVec3 *pos, f32 rad, f32 maxrad )
+void CSoundSource::SetFX( Vec3 *pos, f32 rad, f32 maxrad )
 {
 	m_type = Type::Fx;
 

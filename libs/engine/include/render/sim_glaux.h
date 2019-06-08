@@ -28,9 +28,7 @@
 #define __SIM_GLAUX_H
 
 #include <core/sim_interfaces.h>
-#include <math/sim_vec2.h>
-#include <math/sim_vec3.h>
-#include <math/sim_matrix4.h>
+#include <core/sim_core.h>
 #include <render/sim_render.h>
 
 namespace sim
@@ -45,7 +43,7 @@ class CMaterial;
 class CRect2D;
 
 // ----------------------------------------------------------------------//
-struct TSphere
+struct Sphere
 {
 	s32					numSlices;
 	f32					radius;
@@ -53,28 +51,28 @@ struct TSphere
 	CVertexGroup*		vertexGroup;
 };
 
-struct TCube
+struct Cube
 {
 	f32					sideSize;
 
 	CVertexGroup*		vertexGroup;
 };
 
-TSphere*	gluNewSphere( s32 numSlices, f32 radius );
-TSphere*	gluDelSphere( TSphere *sphere );
-void		gluRenderSphere( CDriver *driver, TSphere *sphere );
+Sphere*	    gluNewSphere( s32 numSlices, f32 radius );
+Sphere*	    gluDelSphere( Sphere *sphere );
+void		gluRenderSphere( CDriver *driver, Sphere *sphere );
 
-TCube*		gluNewCube( f32 sideSize );
-TCube*		gluDelCube( TCube *cube );
-void		gluRenderCube( CDriver *driver, TCube *cube );
+Cube*		gluNewCube( f32 sideSize );
+Cube*		gluDelCube( Cube *cube );
+void		gluRenderCube( CDriver *driver, Cube *cube );
 
-void		gluTBN(	mat::TVec3* TAN, 
-					mat::TVec3* BIN,
-					const mat::TVec3* NOR,
-					const mat::TVec3* A, const mat::TVec3* B, const mat::TVec3* C,
-					const mat::TVec2* H, const mat::TVec2* K, const mat::TVec2* L );
+void		gluTBN(	Vec3* TAN, 
+					Vec3* BIN,
+					Vec3 NOR,
+					Vec3 A, Vec3 B, Vec3 C,
+					Vec2 H, Vec2 K, Vec2 L );
 
-void		gluProject( mat::TVec3 *obj, mat::TMatrix4 *modelViewMatrix, mat::TMatrix4 *projectionMatrix, CRect2D *viewPort, mat::TVec3 *screen );
+void		gluProject( Vec3 *obj, Mat4 *modelViewMatrix, Mat4 *projectionMatrix, CRect2D *viewPort, Vec3 screen );
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

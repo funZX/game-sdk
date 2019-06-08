@@ -18,5 +18,5 @@ void main()
 	
 	v_Tex0			= a_TexCoord_0;
 
-	gl_Position		= a_PositionL * u_Matrix_WorldViewProjection;
+	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL;
 }

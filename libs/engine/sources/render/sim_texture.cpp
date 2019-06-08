@@ -271,8 +271,8 @@ void CTexture::GenerateMipmapsPVR( u8 *buf, u32 maxLevel )
 			bpp = 2;
 		}
 
-		bw = SIM_MAX( 2, bw );
-		bh = SIM_MAX( 2, bh );
+		bw = zpl_max( 2, bw );
+		bh = zpl_max( 2, bh );
 
 		pvrSize = bw * bh * ( (bs  * bpp) >> 3 );
 
@@ -292,8 +292,8 @@ void CTexture::GenerateMipmapsPVR( u8 *buf, u32 maxLevel )
 		pvrOff += pvrSize;
 		pvr += pvrSize;
 
-		w = SIM_MAX( w >> 1, 1 );
-		h = SIM_MAX( h >> 1, 1 );
+		w = zpl_max( w >> 1, 1 );
+		h = zpl_max( h >> 1, 1 );
 
 		++level;
 	}
@@ -327,7 +327,7 @@ void CTexture::GenerateMipmapsMIP( u8 *buf, u32 maxLevel )
 	if( m_format == Format::RGBA4 )
 		type = GL_UNSIGNED_SHORT_4_4_4_4;
 
-	while( level < SIM_MIN( header->dwNumMipmaps, maxLevel ) )
+	while( level < zpl_min( header->dwNumMipmaps, maxLevel ) )
 	{
 		glTexImage2D( GL_TEXTURE_2D,
 			level,
@@ -343,8 +343,8 @@ void CTexture::GenerateMipmapsMIP( u8 *buf, u32 maxLevel )
 		mipOff += mipSize;
 		mip += mipSize;
 
-		w = SIM_MAX( w >> 1, 1 );
-		h = SIM_MAX( h >> 1, 1 );
+		w = zpl_max( w >> 1, 1 );
+		h = zpl_max( h >> 1, 1 );
 
 		++level;
 

@@ -40,7 +40,7 @@ namespace rnr
 CWidgetDrawable::CWidgetDrawable()
 	:CWidget()
 {
-	Vec4Copy( &m_fillcolor, &col::Black );
+	m_fillcolor = col::Black;
 
 	m_rendertexture = nullptr;
 	m_camera		= new CCamera();
@@ -93,7 +93,7 @@ void CWidgetDrawable::Draw( CDriver *driver )
 
 	CRenderTexture* fb =
 	driver->BindRenderTexture(m_rendertexture);
-	driver->ClearColor( &m_fillcolor);
+	driver->ClearColor( m_fillcolor);
 	engine->SetCamera( m_camera );
 
 	OnDraw.Emit( driver );

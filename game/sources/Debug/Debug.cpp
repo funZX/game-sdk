@@ -1,6 +1,7 @@
 #include <GLES2/gl2.h>
 
-#include <math/sim_math.h>
+#include <core/sim_core.h>
+
 #include <render/sim_glaux.h>
 #include <render/sim_driver.h>
 
@@ -46,8 +47,8 @@ void CDebug::drawSphere( const btVector3& p, btScalar radius, const btVector3& c
 	CDriver* driver = CDriver::GetSingletonPtr();
 	driver->MatrixPush();
 	driver->MatrixLoadIdentity();
-	driver->MatrixTranslate(p.getX(), p.getY(), p.getZ());
-	driver->MatrixScale(radius, radius, radius);
+    driver->MatrixTranslate({ p.getX(), p.getY(), p.getZ() });
+    driver->MatrixScale({ radius, radius, radius });
 	gluRenderSphere(driver, m_debugSphere);
 	driver->MatrixPop();
 }

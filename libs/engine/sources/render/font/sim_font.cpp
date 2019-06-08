@@ -131,7 +131,7 @@ s32 CFont::GetCharWidth( s32 charCode )
 
 // ----------------------------------------------------------------------//
 
-s32 CFont::DrawString( CDriver* driver, s32 x, s32 y, const std::string &text, mat::TVec4* color)
+s32 CFont::DrawString( CDriver* driver, s32 x, s32 y, const std::string &text, Vec4 color)
 {
 	u16 c;
 	s32 currX 	= x;

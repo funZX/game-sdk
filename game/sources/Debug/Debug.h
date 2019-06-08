@@ -46,8 +46,8 @@ public:
 	void						reportErrorWarning(const char* warningString);
 
 public:
-	TSphere*					m_debugSphere;
-	TCube*						m_debugCube;
+	Sphere*					    m_debugSphere;
+	Cube*						m_debugCube;
 
 	sim::s32					m_debugMode;
 };

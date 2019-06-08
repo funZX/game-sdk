@@ -49,45 +49,33 @@ CPolygon::~CPolygon()
 {
 
 }
+
 // ----------------------------------------------------------------------//
-void CPolygon::AddVertex( const f32 x, const f32 y )
+void CPolygon::AddVertex( Vec2 v )
 {
-	TVec2 v;
-
-	v.x = x;
-	v.y = y;
-
-	AddToEnd( v );
+    AddToEnd( v );
 }
 // ----------------------------------------------------------------------//
-void CPolygon::AddVertex( const TVec2* v )
+void CPolygon::Translate( Vec2 v )
 {
-	AddVertex( v->x, v->y );
-}
-// ----------------------------------------------------------------------//
-void CPolygon::Translate( const f32 x, const f32 y )
-{
-	TVec2* p, v;
-
-	v.x = x;
-	v.y = y;
+    Vec2* p;
 
 	Begin();
-	while ( p = Next() )
-		Vec2Add( p, p, &v );
+    while (p = Next())
+        zpl_vec2_add( p, v, *p );
 }
 
 // ----------------------------------------------------------------------//
-void CPolygon::Scale( const f32 kx, const f32 ky )
+void CPolygon::Scale( Vec2 v )
 {
-	TVec2* p = nullptr;
+	Vec2* p = nullptr;
 
 	Begin();
 
 	while ( p = Next() )
 	{
-		p->x *= kx;
-		p->y *= ky;
+		p->x *= v.x;
+		p->y *= v.y;
 	}
 }
 // ----------------------------------------------------------------------//
@@ -95,7 +83,7 @@ const f32 CPolygon::GetMinX()
 {
 	f32 min = FLT_MAX;
 
-	TVec2* p = nullptr;
+	Vec2* p = nullptr;
 
 	Begin();
 
@@ -110,7 +98,7 @@ const f32 CPolygon::GetMinY()
 {
 	f32 min = FLT_MAX;
 
-	TVec2* p = nullptr;
+	Vec2* p = nullptr;
 
 	Begin();
 
@@ -125,7 +113,7 @@ const f32 CPolygon::GetMaxX()
 {
 	f32 max = -FLT_MAX;
 
-	TVec2* p = nullptr;
+	Vec2* p = nullptr;
 
 	Begin();
 
@@ -140,7 +128,7 @@ const f32 CPolygon::GetMaxY()
 {
 	f32 max = -FLT_MAX;
 
-	TVec2* p = nullptr;
+	Vec2* p = nullptr;
 
 	Begin();
 
@@ -151,49 +139,42 @@ const f32 CPolygon::GetMaxY()
 	return max;
 }
 // ----------------------------------------------------------------------//
-bool CPolygon::IsInside( const TVec2* p )
+bool CPolygon::IsInside( Vec2 p )
 {
 	u32 wn = 0;
 
-	TVec2 *v0 = nullptr, *v1 = nullptr;
+	Vec2 *v0 = nullptr, *v1 = nullptr;
 
 	Begin();
 
 	while ( ( v0 = Next() ) && ( v1 = Current() ) )
 	{
-		if ( v0->y <= p->y )
+		if ( v0->y <= p.y )
 		{
-			if ( v1->y > p->y )
-				if ( 0 < Vec2Side( v0, v1, p ) )
+			if ( v1->y > p.y )
+				if ( 0 < zpl_vec2_side( *v0, *v1, p ) )
 					++wn;
 		}
 		else
 		{
-			if ( v1->y <= p->y )
-				if ( 0 > Vec2Side( v0, v1, p ) )
+			if ( v1->y <= p.y )
+				if ( 0 > zpl_vec2_side( *v0, *v1, p ) )
 					--wn;
 		}
 	}
 
 	return wn != 0;
 }
-// ----------------------------------------------------------------------//
-bool CPolygon::IsInside( const f32 x, const f32 y )
-{
-	TVec2 v;
-	Vec2Set( &v, x, y );
 
-	return IsInside( &v );
-}
 // ----------------------------------------------------------------------//
 bool CPolygon::Intersects( CPolygon* polygon )
 {
-	TVec2* v = nullptr;
+	Vec2* v = nullptr;
 
 	polygon->Begin();
 
 	while ( v = polygon->Next() )
-		if ( IsInside( v ) )
+		if ( IsInside( *v ) )
 			return true;
 
 	return false;
@@ -233,7 +214,7 @@ void CPolygon::Render( rnr::CDriver *driver, rnr::CMaterial *material )
 
 	vg.m_vertexSource->m_vboData	= SIM_NEW f32[ newFloats ];
 
-	TVec2* p	= nullptr;
+	Vec2* p	= nullptr;
 	s32 k			= 0;
 	s32  currIndex	= 0;
 	f32* curVertex	= nullptr;

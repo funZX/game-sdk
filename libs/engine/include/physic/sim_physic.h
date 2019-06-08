@@ -56,6 +56,7 @@ public:
 	void								Del(rnr::CActor* actor);
 	// ------------------------------------------------------------------//
 protected:
+    #pragma align(16)
 	btDynamicsWorld*					m_dynamicsWorld;
 	btBroadphaseInterface*				m_broadphase;
 	btCollisionDispatcher*				m_dispatcher;

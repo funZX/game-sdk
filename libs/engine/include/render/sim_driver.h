@@ -28,18 +28,12 @@
 #define __SIM_RENDERER_H
 
 #include <core/sim_core.h>
-#include <math/sim_matrix4_stack.h>
-#include <math/sim_matrix4.h>
-#include <math/sim_vec3.h>
-#include <math/sim_vec4.h>
 
 #include <render/sim_vertex_source.h>
 #include <render/sim_vertex_group.h>
 #include <render/sim_render_texture.h>
 #include <render/sim_shader.h>
 #include <core/sim_singleton.h>
-
-using namespace sim::mat;
 
 namespace sim
 {
@@ -113,12 +107,12 @@ public:
 	typedef struct
 	{
 		bool	m_isEnabled;
-		TVec3	m_position;
-		TVec3	m_direction;
+		Vec3	m_position;
+		Vec3	m_direction;
 
-		TVec4	m_ambient;
-		TVec4	m_diffuse;
-		TVec4	m_specular;
+		Vec4	m_ambient;
+		Vec4	m_diffuse;
+		Vec4	m_specular;
 
 		f32		m_intensity;
 	} TLightParameters;
@@ -166,8 +160,8 @@ public:
 	// ------------------------------------------------------------------//
 	void						Initialize();
 	// ------------------------------------------------------------------//
-	void						Clear( const TVec4* color );
-	void						ClearColor( const TVec4* color );
+	void						Clear( Vec4 color );
+	void						ClearColor( Vec4 color );
 	void						Flush2D();
 	// ------------------------------------------------------------------//
 
@@ -183,125 +177,110 @@ public:
 	bool						EnableBlending( bool val );
 	bool						EnableDepthTest( bool val );
 	bool						EnableDepthMask( bool val );
-	void						EnableBlendFunc( const TBlendFunc* blendfunc );
+	void						EnableBlendFunc( TBlendFunc blendfunc );
 	void						EnableBlendFunc( u32 equation, u32 src, u32 dst );
-	void						EnableDepthFunc(const TDepthFunc* blendfunc);
+	void						EnableDepthFunc( TDepthFunc blendfunc);
 	void						EnableDepthFunc(u32 equation);
 	bool						EnableBatch2D( bool isEnabled);
 
-	void						Tick( const f32 dt );
-	inline f32				    GetTimer()		{ return m_timer; }
-	inline f32					GetTimerSin()	{ return m_timerSin; }
-	inline f32					GetTimerCos()	{ return m_timerCos; }
-	inline f32					GetTimerRot()	{ return m_timerRot; }
+	void						Tick( f32 dt );
+	inline f32				    GetTimer()   { return m_timer; }
+	inline f32					GetTimerSin()  { return m_timerSin; }
+	inline f32					GetTimerCos()   { return m_timerCos; }
+	inline f32					GetTimerRot()  { return m_timerRot; }
 
 	void						MatrixPush();
 	void						MatrixPop();
 	void						MatrixDirty();
 
 	void						MatrixLoadIdentity();
-	void						MatrixLoad( const TMatrix4 *mat );
-	void						MatrixMultiply( const TMatrix4 *mat );
+	void						MatrixLoad( Mat4 *mat );
+	void						MatrixMultiply( Mat4 *mat );
 
-	void						MatrixTranslate( const TVec3 *pos );
-	void						MatrixTranslate( const f32 x, const f32 y, const f32 z );
-	void						MatrixTranslateX( const f32 x );
-	void						MatrixTranslateY( const f32 y );
-	void						MatrixTranslateZ( const f32 z );
+	void						MatrixTranslate( Vec3 translation );
+	void						MatrixRotate( Vec3 axis, f32 angle );
+	void						MatrixScale( Vec3 scale );
 
-	void						MatrixRotate( const f32 angle, const TVec3 *rot );
-	void						MatrixRotate( const f32 angle, const f32 x, const f32 y, const f32 z );
-	void						MatrixRotateX( const f32 angle );
-	void						MatrixRotateY( const f32 angle );
-	void						MatrixRotateZ( const f32 angle );
+    inline Mat3*                GetNormalMatrix() ;
 
-	void						MatrixScale( const TVec3 *scl );
-	void						MatrixScale( const f32 x, const f32 y, const f32 z );
-	void						MatrixScaleX( const f32 scale );
-	void						MatrixScaleY( const f32 scale );
-	void						MatrixScaleZ( const f32 scale );
-
-		   const TMatrix3*		GetNormalMatrix(){ return &m_normalMatrix; }
-
-	inline const TMatrix4*		GetWorldMatrix()						{ return m_worldStack.topmatrix; }
-	inline const TMatrix4*		GetWorldMatrixInverse()					{ return &m_worldInverseMatrix; }
-	inline const TMatrix4*		GetWorldMatrixInverseT()				{ return &m_worldInverseTMatrix; }
-
-	inline const TMatrix4*		GetViewMatrix()							{ return m_viewStack.topmatrix; }
-	inline const TMatrix4*		GetViewMatrixInverse()					{ return &m_viewInverseMatrix; }
-	inline const TMatrix4*		GetViewMatrixInverseT()					{ return &m_viewInverseTMatrix; }
-
-	inline const TMatrix4*		GetProjectionMatrix()					{ return m_projectionStack.topmatrix; }
-	inline const TMatrix4*		GetTextureMatrix( TextureChannel texChannel)	{ return m_textureStack[Value(texChannel)].topmatrix; }
+    inline Mat4*                GetWorldMatrix() ;
+    inline Mat4*                GetWorldMatrixInverse() ;
+    inline Mat4*                GetWorldMatrixInverseT() ;
+                                
+    inline Mat4*                GetViewMatrix() ;
+    inline Mat4*                GetViewMatrixInverse() ;
+    inline Mat4*                GetViewMatrixInverseT() ;
+                                
+    inline Mat4*                GetProjectionMatrix() ;
+    inline Mat4*                GetTextureMatrix(TextureChannel texChannel) ;
 
 	void						SetScreenSize(u32 width, u32 height);
 	void						SetViewport( u32 width, u32 height );
 
-	void						SetColor( const TVec4 *col );
-	inline TVec4*				GetColor() { return &m_color; }
+    inline void					SetColor(Vec4 col);
+    inline Vec4                 GetColor() ;
+    inline void					SetPointSize(float size);
+    inline f32					GetPointSize() ;
 
-	void						SetPointSize( const float size ) { m_pointSize = size; }
-	inline f32					GetPointSize() { return m_pointSize; }
+    inline void					SetFogColor(Vec4 col);
+    inline Vec4                 GetFogColor() ;
 
-	void						SetFogColor( const TVec4 *col );
-	inline TVec4*				GetFogColor() { return &m_fogColor; }
+    inline void					SetFogMode(FogMode fogMode);
 
-	void						SetFogMode( FogMode fogMode);
+    inline void					SetFogStart(f32 fogStart);
+    inline f32				    GetFogStart() ;
 
-	void						SetFogStart( const f32 fogStart );
-	inline f32				    GetFogStart() { return m_fogStart; }
+    inline  void				SetFogEnd(f32 fogEnd);
+    inline f32				    GetFogEnd() ;
 
-	void						SetFogEnd( const f32 fogEnd );
-	inline f32				    GetFogEnd() { return m_fogEnd; }
+    inline void					SetFogDensity(f32 fogDensity);
+    inline f32				    GetFogDensity() ;
 
-	void						SetFogDensity( const f32 d );
-	inline f32				    GetFogDensity() { return m_fogDensity; }
+    inline void					SetLightPosition(Vec3 pos);
+    inline Vec3                 GetLightPosition() ;
 
-	void						SetLightPosition( const TVec3 *pos );
-	inline TVec3*				GetLightPosition() { return &m_lightParameters[Value(m_lightChannel)].m_position; }
+    inline void					SetLightDirection(Vec3 dir);
+    inline Vec3                 GetLightDirection() ;
 
-	void						SetLightDirection( const TVec3 *dir );
-	inline TVec3*				GetLightDirection() { return &m_lightParameters[Value(m_lightChannel)].m_direction; }
+    inline void					SetLightAmbient(Vec4 ambient);
+    inline Vec4                 GetLightAmbient() ;
 
-	void						SetLightAmbient( const TVec4 *col );
-	inline TVec4*				GetLightAmbient() { return &m_lightParameters[Value(m_lightChannel)].m_ambient; }
+    inline void					SetLightDiffuse(Vec4 diffuse);
+    inline Vec4                 GetLightDiffuse() ;
 
-	void						SetLightDiffuse( const TVec4 *col );
-	inline TVec4*				GetLightDiffuse() { return &m_lightParameters[Value(m_lightChannel)].m_diffuse; }
+    inline void					SetLightSpecular(Vec4 specular);
+    inline Vec4                 GetLightSpecular() ;
 
-	void						SetLightSpecular( const TVec4 *col );
-	inline TVec4*				GetLightSpecular() { return &m_lightParameters[Value(m_lightChannel)].m_specular; }
+    inline void					SetLightIntensity(f32 intensity);
+    inline f32				    GetLightIntensity() ;
 
-	void						SetLightIntensity( f32 intens );
-	inline f32				    GetLightIntensity() { return m_lightParameters[Value(m_lightChannel)].m_intensity; }
+    inline void					SetMaterialShininess(f32 shininess);
+    inline f32				    GetMaterialShininess() ;
 
-	inline void					SetMaterialShininess( f32 shine ) { m_materialShininess = shine; }
-	inline f32				    GetMaterialShininess() { return m_materialShininess; }
+    inline void					SetMaterialRefraction(f32 refraction);
+    inline f32				    GetMaterialRefraction() ;
 
-	inline void					SetMaterialRefraction(f32 refraction) { m_materialRefraction = refraction; }
-	inline f32				    GetMaterialRefraction() { return m_materialRefraction; }
+    inline Vec4                 GetMaterialAmbient() ;
+    inline void					SetMaterialAmbient(Vec4 ambient);
 
-	inline TVec4*				GetMaterialAmbient() { return &m_materialAmbient; }
-	inline void					SetMaterialAmbient( const TVec4 *col ) { Vec4Copy( &m_materialAmbient, col ); }
+    inline Vec4                 GetMaterialDiffuse() ;
+    inline  void				SetMaterialDiffuse(Vec4 diffuse);
 
-	inline TVec4*				GetMaterialDiffuse() { return &m_materialDiffuse; }
-	inline  void				SetMaterialDiffuse( const TVec4 *col ) { Vec4Copy( &m_materialDiffuse, col ); }
+    inline Vec4                 GetMaterialSpecular() ;
+    inline void					SetMaterialSpecular(Vec4 specular);
 
-	inline TVec4*				GetMaterialSpecular() { return &m_materialSpecular; }
-	inline void					SetMaterialSpecular( const TVec4 *col ) { Vec4Copy( &m_materialSpecular, col ); }
+    inline Vec4                 GetMaterialEmissive() ;
+    inline void					SetMaterialEmissive(Vec4 emissive);
 
-	inline TVec4*				GetMaterialEmissive() { return &m_materialEmissive; }
-	inline void					SetMaterialEmissive( const TVec4 *col ) { Vec4Copy( &m_materialEmissive, col ); }
-
-	inline TVec4*				GetMaterialReflective() { return &m_materialReflective; }
-	inline void					SetMaterialReflective( const TVec4 *col ) { Vec4Copy( &m_materialReflective, col ); }
+    inline Vec4                 GetMaterialReflective() ;
+    inline void					SetMaterialReflective(Vec4 col);
 
 
-	inline void					SetEyePosition( const TVec3 *pos ) { Vec3Copy( &m_eyePosition, pos ); }
-	inline TVec3*				GetEyePosition() { return &m_eyePosition; }
+    inline void					SetEyePosition(Vec3 pos);
+	inline Vec3			        GetEyePosition() ;
 
-	inline void					SetEyeDirection( const TVec3 *pos ) { Vec3Copy( &m_eyeDirection, pos ); }
-	inline TVec3*				GetEyeDirection() { return &m_eyeDirection; }
+    inline void					SetEyeDirection(Vec3 pos);
+    inline Vec3                 GetEyeDirection() ;
 
 	void						SetDepthRange( f32 start, f32 end );
 
@@ -315,7 +294,7 @@ public:
 	// ------------------------------------------------------------------//
 	void						Render( CVertexGroup* vertexGroup );
 	// ------------------------------------------------------------------//
-	void						Log( const char *fmt, ... );
+	void						Log( char *fmt, ... );
 	// ------------------------------------------------------------------//
 	inline u32					GetDrawCallCount()	{ return m_drawCallCount; }
 	inline u32					GetVertexCount()	{ return m_vertexCount; }
@@ -344,43 +323,43 @@ protected:
 	CBatch2D*					m_batch2D;
 	bool						m_isEnabledBatch2D;
 
-	TMatrix4Stack				m_worldStack;
-	TMatrix4Stack				m_viewStack;
-	TMatrix4Stack				m_projectionStack;
+    Mat4Stack				    m_worldStack;
+    Mat4Stack				    m_viewStack;
+    Mat4Stack				    m_projectionStack;
 
-	TMatrix4Stack*				m_activeStack;
+	Mat4Stack*				    m_activeStack;
 
-	TMatrix4Stack				m_textureStack[k_Texture_Channels_Count];
+	Mat4Stack				    m_textureStack[k_Texture_Channels_Count];
 	TextureChannel				m_textureChannel;
 
-	TMatrix4					m_worldInverseMatrix;
-	TMatrix4					m_worldInverseTMatrix;
+	Mat4					    m_worldInverseMatrix;
+	Mat4					    m_worldInverseTMatrix;
 	bool						m_isWorldMatrixDirty;
 	bool						m_isActiveStackAlteringWorldMatrix;
 
-	TMatrix4					m_viewInverseMatrix;
-	TMatrix4					m_viewInverseTMatrix;
+	Mat4					    m_viewInverseMatrix;
+	Mat4					    m_viewInverseTMatrix;
 	bool						m_isViewMatrixDirty;
 	bool						m_isActiveStackAlteringViewMatrix;
 
-	TMatrix4					m_worldViewMatrix;
+	Mat4					    m_worldViewMatrix;
 	bool						m_isWorldViewMatrixDirty;
 	bool						m_isActiveStackAlteringWorldViewMatrix;
 
-	TMatrix4					m_viewProjectionMatrix;
+	Mat4					    m_viewProjectionMatrix;
 	bool						m_isViewProjectionMatrixDirty;
 	bool						m_isActiveStackAlteringViewProjectionMatrix;
 
-	TMatrix4					m_worldViewProjectionMatrix;
+	Mat4					    m_worldViewProjectionMatrix;
 	bool						m_isWorldViewProjectionMatrixDirty;
 	bool						m_isActiveStackAlteringWorldViewProjectionMatrix;
 
-	TMatrix3					m_normalMatrix;
+	Mat3					    m_normalMatrix;
 	bool						m_isNormalMatrixDirty;
 	bool						m_isActiveStackAlteringNormalMatrix;
 	MatrixMode					m_matrixMode;
 
-	TMatrix4					m_boneArrayMatrix[ k_Animation_Bones_Max ];
+	Mat4					    m_boneArrayMatrix[ k_Animation_Bones_Max ];
 
 	u32				            m_textureBind[ k_Texture_Channels_Count ];
 
@@ -393,7 +372,7 @@ protected:
 	TBlendFunc					m_blendFunc;
 	TDepthFunc					m_depthFunc;
 
-	TVec4						m_fogColor;
+	Vec4						m_fogColor;
 	FogMode						m_fogMode;
 	f32						    m_fogDensity;
 	f32						    m_fogStart;
@@ -404,14 +383,14 @@ protected:
 
 	f32						    m_materialShininess;
 	f32						    m_materialRefraction;
-	TVec4						m_materialAmbient;
-	TVec4						m_materialDiffuse;
-	TVec4						m_materialSpecular;
-	TVec4						m_materialEmissive;
-	TVec4					    m_materialReflective;
+	Vec4						m_materialAmbient;
+	Vec4						m_materialDiffuse;
+	Vec4						m_materialSpecular;
+	Vec4						m_materialEmissive;
+	Vec4					    m_materialReflective;
 
-	TVec3						m_eyePosition;
-	TVec3						m_eyeDirection;
+	Vec3						m_eyePosition;
+	Vec3						m_eyeDirection;
 
 	bool						m_isCullingEnabled;
 	bool						m_isBlendingEnabled;
@@ -423,7 +402,7 @@ protected:
 	f32							m_timerCos;
 	f32							m_timerRot;
 
-	TVec4						m_color;
+	Vec4						m_color;
 	f32							m_pointSize;
 
 	u32							m_screenWidth;
@@ -439,6 +418,265 @@ protected:
 	// ------------------------------------------------------------------//
 };
 
+
+ inline Mat3* CDriver::GetNormalMatrix() 
+{
+    return &m_normalMatrix; 
+}
+
+inline Mat4* CDriver::GetWorldMatrix()  
+{
+    return m_worldStack.topmatrix; 
+}
+
+inline Mat4* CDriver::GetWorldMatrixInverse()  
+{
+    return &m_worldInverseMatrix; 
+}
+
+inline Mat4* CDriver::GetWorldMatrixInverseT()  
+{
+    return &m_worldInverseTMatrix; 
+}
+
+inline Mat4* CDriver::GetViewMatrix()  
+{
+    return m_viewStack.topmatrix; 
+}
+
+inline Mat4* CDriver::GetViewMatrixInverse() 
+{
+    return &m_viewInverseMatrix; 
+}
+
+inline Mat4* CDriver::GetViewMatrixInverseT() 
+{
+    return &m_viewInverseTMatrix; 
+}
+
+inline Mat4* CDriver::GetProjectionMatrix() 
+{
+    return m_projectionStack.topmatrix; 
+}
+
+inline Mat4* CDriver::GetTextureMatrix(TextureChannel texChannel)  
+{
+    return m_textureStack[Value(texChannel)].topmatrix; 
+}
+
+void CDriver::SetColor(Vec4 col) 
+{ 
+    m_color = col;
+}
+
+inline Vec4 CDriver::GetColor()  
+{ 
+    return m_color; 
+}
+
+void CDriver::SetPointSize(float size) 
+{ 
+    m_pointSize = size; 
+}
+
+inline f32 CDriver::GetPointSize() 
+{ 
+    return m_pointSize;
+}
+
+void CDriver::SetFogColor(Vec4 col) 
+{ 
+    m_fogColor = col; 
+}
+
+inline Vec4 CDriver::GetFogColor() 
+{ 
+    return m_fogColor;
+}
+
+void CDriver::SetFogMode(FogMode fogMode) 
+{ 
+    m_fogMode = fogMode; 
+}
+
+void CDriver::SetFogStart(f32 fogStart)
+{ 
+    m_fogStart = fogStart;
+}
+
+inline f32 CDriver::GetFogStart() 
+{ 
+    return m_fogStart; 
+}
+
+void CDriver::SetFogEnd(f32 fogEnd)
+{ 
+    m_fogEnd = fogEnd; 
+}
+
+inline f32 CDriver::GetFogEnd() 
+{ 
+    return m_fogEnd;
+}
+
+void CDriver::SetFogDensity(f32 fogDensity)
+{ 
+    m_fogDensity = fogDensity;
+}
+
+inline f32 CDriver::GetFogDensity() 
+{ 
+    return m_fogDensity; 
+}
+
+inline void CDriver::SetLightPosition(Vec3 pos) 
+{ 
+    m_lightParameters[Value(m_lightChannel)].m_position = pos;
+}
+
+inline Vec3 CDriver::GetLightPosition() 
+{ 
+    return m_lightParameters[Value(m_lightChannel)].m_position;
+}
+
+inline void CDriver::SetLightDirection(Vec3 dir)
+{ 
+    m_lightParameters[Value(m_lightChannel)].m_direction = dir; 
+}
+inline Vec3 CDriver::GetLightDirection()  
+{
+    return m_lightParameters[Value(m_lightChannel)].m_direction;
+}
+
+inline void CDriver::SetLightAmbient(Vec4 ambient)
+{ 
+    m_lightParameters[Value(m_lightChannel)].m_ambient = ambient; 
+}
+
+inline Vec4 CDriver::GetLightAmbient()  
+{ 
+    return m_lightParameters[Value(m_lightChannel)].m_ambient;
+}
+
+inline void CDriver::SetLightDiffuse(Vec4 diffuse)
+{ 
+    m_lightParameters[Value(m_lightChannel)].m_diffuse = diffuse;
+}
+
+inline Vec4 CDriver::GetLightDiffuse()  
+{ 
+    return m_lightParameters[Value(m_lightChannel)].m_diffuse;
+}
+
+inline void CDriver::SetLightSpecular(Vec4 specular)
+{ 
+    m_lightParameters[Value(m_lightChannel)].m_specular = specular;
+}
+inline Vec4 CDriver::GetLightSpecular()  
+{ 
+    return m_lightParameters[Value(m_lightChannel)].m_specular; 
+}
+
+inline void CDriver::SetLightIntensity(f32 intensity)
+{ 
+    m_lightParameters[Value(m_lightChannel)].m_intensity = intensity;
+}
+
+inline f32 CDriver::GetLightIntensity()  
+{ 
+    return m_lightParameters[Value(m_lightChannel)].m_intensity;
+}
+
+inline void CDriver::SetMaterialShininess(f32 shininess)
+{ 
+    m_materialShininess = shininess; 
+}
+
+inline f32 CDriver::GetMaterialShininess()  
+{ 
+    return m_materialShininess; 
+}
+
+inline void CDriver::SetMaterialRefraction(f32 refraction) 
+{ 
+    m_materialRefraction = refraction; 
+}
+
+inline f32 CDriver::GetMaterialRefraction() 
+{ 
+    return m_materialRefraction;
+}
+
+inline Vec4 CDriver::GetMaterialAmbient()  
+{ 
+    return m_materialAmbient; 
+}
+
+inline void CDriver::SetMaterialAmbient(Vec4 ambient) 
+{ 
+    m_materialAmbient = ambient;
+}
+
+inline Vec4 CDriver::GetMaterialDiffuse()  
+{
+    return m_materialDiffuse;
+}
+
+inline  void CDriver::SetMaterialDiffuse(Vec4 diffuse)
+{ 
+    m_materialDiffuse = diffuse;
+}
+
+inline Vec4 CDriver::GetMaterialSpecular()  
+{ 
+    return m_materialSpecular;
+}
+
+inline void CDriver::SetMaterialSpecular(Vec4 specular) 
+{ 
+    m_materialSpecular = specular;
+}
+
+inline Vec4 CDriver::GetMaterialEmissive()  
+{ 
+    return m_materialEmissive; 
+}
+
+inline void CDriver::SetMaterialEmissive(Vec4 emissive)
+{ 
+    m_materialEmissive = emissive;
+}
+
+inline Vec4 CDriver::GetMaterialReflective()  
+{ 
+    return m_materialReflective; 
+}
+
+inline void CDriver::SetMaterialReflective(Vec4 reflective)
+{
+    m_materialReflective = reflective;
+}
+
+
+inline void CDriver::SetEyePosition(Vec3 position) 
+{ 
+    m_eyePosition = position;
+}
+
+inline Vec3 CDriver::GetEyePosition() 
+{ 
+    return m_eyePosition;
+}
+
+inline void CDriver::SetEyeDirection(Vec3 direction) 
+{ 
+    m_eyeDirection = direction;
+}
+
+inline Vec3 CDriver::GetEyeDirection()  
+{ 
+    return m_eyeDirection; 
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
