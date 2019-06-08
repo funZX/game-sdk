@@ -300,6 +300,7 @@ defined(__ppc64__) || defined(__aarch64__)
 #if defined(_WIN32) || defined(_WIN64)
 #ifndef ZPL_SYSTEM_WINDOWS
 #define ZPL_SYSTEM_WINDOWS 1
+#define ZPL_PLATFORM
 #endif
 #elif defined(__APPLE__) && defined(__MACH__)
 #ifndef ZPL_SYSTEM_OSX
@@ -3533,6 +3534,8 @@ ZPL_DEF void zpl_vec2_sub(zpl_vec2 *d, zpl_vec2 v0, zpl_vec2 v1);
 ZPL_DEF void zpl_vec2_mul(zpl_vec2 *d, zpl_vec2 v, zpl_f32 s);
 ZPL_DEF void zpl_vec2_div(zpl_vec2 *d, zpl_vec2 v, zpl_f32 s);
 
+ZPL_DEF zpl_f32 zpl_vec3_max(zpl_vec3 v);
+
 ZPL_DEF void zpl_vec3_add(zpl_vec3 *d, zpl_vec3 v0, zpl_vec3 v1);
 ZPL_DEF void zpl_vec3_sub(zpl_vec3 *d, zpl_vec3 v0, zpl_vec3 v1);
 ZPL_DEF void zpl_vec3_mul(zpl_vec3 *d, zpl_vec3 v, zpl_f32 s);
@@ -3772,6 +3775,9 @@ ZPL_DEF int zpl_rect2_intersection_result(zpl_rect2 a, zpl_rect2 b, zpl_rect2 *i
 
 #if defined(ZPL_PLATFORM)
 
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+#include <EGL/egl.h>
 
 #ifndef ZPL_MAX_GAME_CONTROLLER_COUNT
 #define ZPL_MAX_GAME_CONTROLLER_COUNT 4
@@ -3971,13 +3977,6 @@ typedef enum zplWindowFlag {
     ZPL_WINDOW_FULLSCREENDESKTOP = ZPL_WINDOW_FULLSCREEN | ZPL_WINDOW_BORDERLESS,
 } zplWindowFlag;
 
-typedef enum zplRendererType {
-    ZPL_RENDERER_OPENGL,
-    ZPL_RENDERER_SOFTWARE,
-    
-    ZPL_RENDERER_COUNT,
-} zplRendererType;
-
 #if defined(ZPL_SYSTEM_WINDOWS) && !defined(_WINDOWS_)
 typedef struct tagBITMAPINFOHEADER {
     unsigned long bzpl_isize;
@@ -3992,12 +3991,14 @@ typedef struct tagBITMAPINFOHEADER {
     unsigned long biClrUsed;
     unsigned long biClrImportant;
 } BITMAPINFOHEADER, *PBITMAPINFOHEADER;
+
 typedef struct tagRGBQUAD {
     zpl_u8 rgbBlue;
     zpl_u8 rgbGreen;
     zpl_u8 rgbRed;
     zpl_u8 rgbReserved;
 } RGBQUAD;
+
 typedef struct tagBITMAPINFO {
     BITMAPINFOHEADER bmiHeader;
     RGBQUAD bmiColors[1];
@@ -4015,32 +4016,15 @@ typedef struct zpl_platform {
     zpl_u32 window_flags;
     zpl_b16 window_is_closed, window_has_focus;
     
-#if defined(ZPL_SYSTEM_WINDOWS)
     void *win32_dc;
-#elif defined(ZPL_SYSTEM_OSX)
-    void *osx_autorelease_pool; // TODO(bill): Is this really needed?
-#endif
     
-    zplRendererType renderer_type;
     union {
         struct {
-            void *context;
-            zpl_i32 major;
-            zpl_i32 minor;
-            zpl_b16 core, compatible;
-            zpl_dll_handle dll_handle;
+            EGLNativeWindowType		hWnd;
+            EGLDisplay				eglDisplay;
+            EGLContext				eglContext;
+            EGLSurface				eglSurface;
         } opengl;
-        
-        // NOTE(bill): Software rendering
-        struct {
-#if defined(ZPL_SYSTEM_WINDOWS)
-            BITMAPINFO win32_bmi;
-#endif
-            void *memory;
-            zpl_isize memory_size;
-            zpl_i32 pitch;
-            zpl_i32 bits_per_pixel;
-        } sw_framebuffer;
     };
     
     zplKeyState keys[ZPL_KEY_COUNT];
@@ -4089,12 +4073,8 @@ ZPL_DEF zpl_isize zpl_video_mode_get_fullscreen_modes(zpl_video_mode *modes,
 ZPL_DEF ZPL_COMPARE_PROC(zpl_video_mode_cmp);     // NOTE(bill): Sort smallest to largest (Ascending)
 ZPL_DEF ZPL_COMPARE_PROC(zpl_video_mode_dsc_cmp); // NOTE(bill): Sort largest to smallest (Descending)
 
-// NOTE(bill): Software rendering
-ZPL_DEF zpl_b32 zpl_platform_init_with_software(zpl_platform *p, char const *window_title, zpl_i32 width, zpl_i32 height,
-                                            zpl_u32 window_flags);
 // NOTE(bill): OpenGL Rendering
-ZPL_DEF zpl_b32 zpl_platform_init_with_opengl(zpl_platform *p, char const *window_title, zpl_i32 width, zpl_i32 height,
-                                          zpl_u32 window_flags, zpl_i32 major, zpl_i32 minor, zpl_b32 core, zpl_b32 compatible);
+ZPL_DEF zpl_b32 zpl_platform_init(zpl_platform *p, char const *window_title, zpl_i32 width, zpl_i32 height, zpl_u32 window_flags);
 ZPL_DEF void zpl_platform_update(zpl_platform *p);
 ZPL_DEF void zpl_platform_display(zpl_platform *p);
 ZPL_DEF void zpl_platform_destroy(zpl_platform *p);
@@ -12230,6 +12210,8 @@ void zpl_vec2_sub(zpl_vec2 *d, zpl_vec2 v0, zpl_vec2 v1) { ZPL_VEC2_3OP(d, v0, -
 void zpl_vec2_mul(zpl_vec2 *d, zpl_vec2 v, zpl_f32 s) { ZPL_VEC2_2OP(d, v, *s); }
 void zpl_vec2_div(zpl_vec2 *d, zpl_vec2 v, zpl_f32 s) { ZPL_VEC2_2OP(d, v, / s); }
 
+zpl_f32 zpl_vec3_max(zpl_vec3 v) { return zpl_max3(v.x, v.y, v.z); }
+
 void zpl_vec3_add(zpl_vec3 *d, zpl_vec3 v0, zpl_vec3 v1) { ZPL_VEC3_3OP(d, v0, +, v1, +0); }
 void zpl_vec3_sub(zpl_vec3 *d, zpl_vec3 v0, zpl_vec3 v1) { ZPL_VEC3_3OP(d, v0, -, v1, +0); }
 void zpl_vec3_mul(zpl_vec3 *d, zpl_vec3 v, zpl_f32 s) { ZPL_VEC3_2OP(d, v, *s); }
@@ -13287,39 +13269,6 @@ zpl_internal zpl_inline zpl_f32 zpl__process_xinput_stick_value(zpl_i16 value, z
     return result;
 }
 
-zpl_internal void zpl__platform_resize_dib_section(zpl_platform *p, zpl_i32 width, zpl_i32 height) {
-    if ((p->renderer_type == ZPL_RENDERER_SOFTWARE) && !(p->window_width == width && p->window_height == height)) {
-        BITMAPINFO bmi = { 0 };
-        
-        if (width == 0 || height == 0) { return; }
-        
-        p->window_width = width;
-        p->window_height = height;
-        
-        // TODO(bill): Is this slow to get the desktop mode everytime?
-        p->sw_framebuffer.bits_per_pixel = zpl_video_mode_get_desktop( ).bits_per_pixel;
-        p->sw_framebuffer.pitch = (p->sw_framebuffer.bits_per_pixel * width / 8);
-        
-        bmi.bmiHeader.biSize = zpl_size_of(bmi.bmiHeader);
-        bmi.bmiHeader.biWidth = width;
-        bmi.bmiHeader.biHeight = height; // NOTE(bill): -ve is top-down, +ve is bottom-up
-        bmi.bmiHeader.biPlanes = 1;
-        bmi.bmiHeader.biBitCount = zpl_cast(zpl_u16) p->sw_framebuffer.bits_per_pixel;
-        bmi.bmiHeader.biCompression = 0 /*BI_RGB*/;
-        
-        p->sw_framebuffer.win32_bmi = bmi;
-        
-        if (p->sw_framebuffer.memory) { zpl_vm_free(zpl_vm(p->sw_framebuffer.memory, p->sw_framebuffer.memory_size)); }
-        
-        {
-            zpl_isize memory_size = p->sw_framebuffer.pitch * height;
-            zpl_virtual_memory vm = zpl_vm_alloc(0, memory_size);
-            p->sw_framebuffer.memory = vm.data;
-            p->sw_framebuffer.memory_size = vm.size;
-        }
-    }
-}
-
 zpl_internal zplKeyType zpl__win32_from_vk(unsigned int key) {
     // NOTE(bill): Letters and numbers are defined the same for VK_* and ZPL_*
     if (key >= 'A' && key < 'Z') return zpl_cast(zplKeyType) key;
@@ -13569,9 +13518,7 @@ LRESULT CALLBACK zpl__win32_window_callback(HWND hWnd, UINT msg, WPARAM wParam, 
     return DefWindowProcW(hWnd, msg, wParam, lParam);
 }
 
-typedef void *wglCreateContextAttribsARB_Proc(void *hDC, void *hshareContext, int const *attribList);
-
-zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_mode mode, zplRendererType type,
+zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_mode mode,
                        zpl_u32 window_flags) {
     WNDCLASSEXW wc = { zpl_size_of(WNDCLASSEXW) };
     DWORD ex_style = 0, style = 0;
@@ -13654,64 +13601,49 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
     
     p->win32_dc = GetDC(zpl_cast(HWND) p->window_handle);
     
-    p->renderer_type = type;
-    switch (p->renderer_type) {
-        case ZPL_RENDERER_OPENGL: {
-            wglCreateContextAttribsARB_Proc *wglCreateContextAttribsARB;
-            zpl_i32 attribs[8] = { 0 };
-            zpl_isize c = 0;
-            
-            PIXELFORMATDESCRIPTOR pfd = { zpl_size_of(PIXELFORMATDESCRIPTOR) };
-            pfd.nVersion = 1;
-            pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
-            pfd.iPixelType = PFD_TYPE_RGBA;
-            pfd.cColorBits = 32;
-            pfd.cAlphaBits = 8;
-            pfd.cDepthBits = 24;
-            pfd.cStencilBits = 8;
-            pfd.iLayerType = PFD_MAIN_PLANE;
-            
-            SetPixelFormat(zpl_cast(HDC) p->win32_dc, ChoosePixelFormat(zpl_cast(HDC) p->win32_dc, &pfd), NULL);
-            p->opengl.context = zpl_cast(void *) wglCreateContext(zpl_cast(HDC) p->win32_dc);
-            wglMakeCurrent(zpl_cast(HDC) p->win32_dc, zpl_cast(HGLRC) p->opengl.context);
-            
-            if (p->opengl.major > 0) {
-                attribs[c++] = 0x2091; // WGL_CONTEXT_MAJOR_VERSION_ARB
-                attribs[c++] = zpl_max(p->opengl.major, 1);
-            }
-            if (p->opengl.major > 0 && p->opengl.minor >= 0) {
-                attribs[c++] = 0x2092; // WGL_CONTEXT_MINOR_VERSION_ARB
-                attribs[c++] = zpl_max(p->opengl.minor, 0);
-            }
-            
-            if (p->opengl.core) {
-                attribs[c++] = 0x9126; // WGL_CONTEXT_PROFILE_MASK_ARB
-                attribs[c++] = 0x0001; // WGL_CONTEXT_CORE_PROFILE_BIT_ARB
-            } else if (p->opengl.compatible) {
-                attribs[c++] = 0x9126; // WGL_CONTEXT_PROFILE_MASK_ARB
-                attribs[c++] = 0x0002; // WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB
-            }
-            attribs[c++] = 0; // NOTE(bill): tells the proc that this is the end of attribs
-            
-            wglCreateContextAttribsARB =
-                zpl_cast(wglCreateContextAttribsARB_Proc *) wglGetProcAddress("wglCreateContextAttribsARB");
-            if (wglCreateContextAttribsARB) {
-                HGLRC rc = zpl_cast(HGLRC) wglCreateContextAttribsARB(p->win32_dc, 0, attribs);
-                if (rc && wglMakeCurrent(zpl_cast(HDC) p->win32_dc, rc)) {
-                    p->opengl.context = rc;
-                } else {
-                    // TODO(bill): Handle errors from GetLastError
-                    // ERROR_INVALID_VERSION_ARB 0x2095
-                    // ERROR_INVALID_PROFILE_ARB 0x2096
-                }
-            }
-            
-        } break;
-        
-        case ZPL_RENDERER_SOFTWARE: zpl__platform_resize_dib_section(p, mode.width, mode.height); break;
-        
-        default: ZPL_PANIC("Unknown window type"); break;
-    }
+    EGLint attribs[] =
+    {
+        EGL_RED_SIZE, 5,
+        EGL_GREEN_SIZE, 6,
+        EGL_BLUE_SIZE, 5,
+        EGL_DEPTH_SIZE, 16,
+        EGL_STENCIL_SIZE, 8,
+        EGL_RENDERABLE_TYPE, EGL_OPENGL_ES2_BIT,
+        EGL_SAMPLE_BUFFERS, 0,
+        EGL_SURFACE_TYPE, EGL_PBUFFER_BIT,
+        EGL_NONE
+    };
+
+    EGLint numConfigs;
+    EGLint majorVersion;
+    EGLint minorVersion;
+    EGLConfig config;
+    EGLint contextAttribs[] = { EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE };
+
+    p->opengl.eglDisplay = eglGetDisplay(GetDC((HWND)p->window_handle));
+    if (p->opengl.eglDisplay == EGL_NO_DISPLAY)
+        return false;
+
+    if (!eglInitialize(p->opengl.eglDisplay, &majorVersion, &minorVersion))
+        return false;
+
+    if (!eglGetConfigs(p->opengl.eglDisplay, NULL, 0, &numConfigs))
+        return false;
+
+    if (!eglChooseConfig(p->opengl.eglDisplay, attribs, &config, 1, &numConfigs))
+        return false;
+
+    p->opengl.eglSurface = eglCreateWindowSurface(p->opengl.eglDisplay, config, (EGLNativeWindowType)p->window_handle, NULL);
+    if (p->opengl.eglSurface == EGL_NO_SURFACE)
+        return false;
+
+    p->opengl.eglContext = eglCreateContext(p->opengl.eglDisplay, config, EGL_NO_CONTEXT, contextAttribs);
+
+    if (p->opengl.eglContext == EGL_NO_CONTEXT)
+        return false;
+
+    if (!eglMakeCurrent(p->opengl.eglDisplay, p->opengl.eglSurface, p->opengl.eglSurface, p->opengl.eglContext))
+        return false;
     
     SetForegroundWindow(zpl_cast(HWND) p->window_handle);
     SetFocus(zpl_cast(HWND) p->window_handle);
@@ -13719,8 +13651,6 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
     
     p->window_width = mode.width;
     p->window_height = mode.height;
-    
-    if (p->renderer_type == ZPL_RENDERER_OPENGL) { p->opengl.dll_handle = zpl_dll_load("opengl32.dll"); }
     
     { // Load XInput
         // TODO(bill): What other dlls should I look for?
@@ -13748,26 +13678,12 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
     return true;
 }
 
-zpl_inline zpl_b32 zpl_platform_init_with_software(zpl_platform *p, char const *window_title, zpl_i32 width, zpl_i32 height,
-                                               zpl_u32 window_flags) {
+zpl_inline zpl_b32 zpl_platform_init(zpl_platform *p, char const *window_title, zpl_i32 width, zpl_i32 height, zpl_u32 window_flags) {
     zpl_video_mode mode;
     mode.width = width;
     mode.height = height;
     mode.bits_per_pixel = 32;
-    return zpl__platform_init(p, window_title, mode, ZPL_RENDERER_SOFTWARE, window_flags);
-}
-
-zpl_inline zpl_b32 zpl_platform_init_with_opengl(zpl_platform *p, char const *window_title, zpl_i32 width, zpl_i32 height,
-                                             zpl_u32 window_flags, zpl_i32 major, zpl_i32 minor, zpl_b32 core, zpl_b32 compatible) {
-    zpl_video_mode mode;
-    mode.width = width;
-    mode.height = height;
-    mode.bits_per_pixel = 32;
-    p->opengl.major = major;
-    p->opengl.minor = minor;
-    p->opengl.core = zpl_cast(zpl_b16) core;
-    p->opengl.compatible = zpl_cast(zpl_b16) compatible;
-    return zpl__platform_init(p, window_title, mode, ZPL_RENDERER_OPENGL, window_flags);
+    return zpl__platform_init(p, window_title, mode, window_flags);
 }
 
 #ifndef _XINPUT_H_
@@ -13827,10 +13743,6 @@ void zpl_platform_update(zpl_platform *p) {
         y = window_rect.top;
         w = window_rect.right - window_rect.left;
         h = window_rect.bottom - window_rect.top;
-        
-        if ((p->window_width != w) || (p->window_height != h)) {
-            if (p->renderer_type == ZPL_RENDERER_SOFTWARE) { zpl__platform_resize_dib_section(p, w, h); }
-        }
         
         p->window_x = x;
         p->window_y = y;
@@ -14005,15 +13917,8 @@ void zpl_platform_update(zpl_platform *p) {
 }
 
 void zpl_platform_display(zpl_platform *p) {
-    if (p->renderer_type == ZPL_RENDERER_OPENGL) {
-        SwapBuffers(zpl_cast(HDC) p->win32_dc);
-    } else if (p->renderer_type == ZPL_RENDERER_SOFTWARE) {
-        StretchDIBits(zpl_cast(HDC) p->win32_dc, 0, 0, p->window_width, p->window_height, 0, 0, p->window_width,
-                      p->window_height, p->sw_framebuffer.memory, &p->sw_framebuffer.win32_bmi, DIB_RGB_COLORS,
-                      SRCCOPY);
-    } else {
-        ZPL_PANIC("Invalid window rendering type");
-    }
+
+    eglSwapBuffers(p->opengl.eglDisplay, p->opengl.eglSurface);
     
     {
         zpl_f64 prev_time = p->curr_time;
@@ -14024,12 +13929,7 @@ void zpl_platform_display(zpl_platform *p) {
 }
 
 void zpl_platform_destroy(zpl_platform *p) {
-    if (p->renderer_type == ZPL_RENDERER_OPENGL) {
-        wglDeleteContext(zpl_cast(HGLRC) p->opengl.context);
-    } else if (p->renderer_type == ZPL_RENDERER_SOFTWARE) {
-        zpl_vm_free(zpl_vm(p->sw_framebuffer.memory, p->sw_framebuffer.memory_size));
-    }
-    
+    eglDestroyContext(p->opengl.eglDisplay, p->opengl.eglContext);    
     DestroyWindow(zpl_cast(HWND) p->window_handle);
 }
 
@@ -14143,9 +14043,7 @@ void zpl_platform_toggle_borderless(zpl_platform *p) {
 }
 
 zpl_inline void zpl_platform_make_opengl_context_current(zpl_platform *p) {
-    if (p->renderer_type == ZPL_RENDERER_OPENGL) {
-        wglMakeCurrent(zpl_cast(HDC) p->win32_dc, zpl_cast(HGLRC) p->opengl.context);
-    }
+    eglMakeCurrent(p->opengl.eglDisplay, p->opengl.eglSurface, p->opengl.eglSurface, p->opengl.eglContext);
 }
 
 zpl_inline void zpl_platform_show_window(zpl_platform *p) {
@@ -14246,750 +14144,7 @@ zpl_u32 zpl_platform_get_scancode(zpl_platform *p, zplKeyType key) {
     zpl_u32 scancode = MapVirtualKey(vk, MAPVK_VK_TO_CHAR);
     return scancode;
 }
-
-// TODO: Refactor OS X part
-#if 0
-#elif defined(ZPL_SYSTEM_OSX)
-
-#include <CoreGraphics/CoreGraphics.h>
-#include <objc/NSObjCRuntime.h>
-#include <objc/message.h>
-#include <objc/objc.h>
-
-#if __LP64__ || (TARGET_OS_EMBEDDED && !TARGET_OS_IPHONE) || TARGET_OS_WIN32 || NS_BUILD_32_LIKE_64
-#define NSIntegerEncoding "q"
-#define NSUIntegerEncoding "L"
-#else
-#define NSIntegerEncoding "i"
-#define NSUIntegerEncoding "I"
-#endif
-
-#ifdef __OBJC__
-#import <Cocoa/Cocoa.h>
-#else
-typedef CGPoint NSPoint;
-typedef CGSize NSSize;
-typedef CGRect NSRect;
-
-extern id NSApp;
-extern id const NSDefaultRunLoopMode;
-#endif
-
-#if defined(__OBJC__) && __has_feature(objc_arc)
-#error TODO(bill): Cannot compile as objective-c code just yet!
-#endif
-
-// ABI is a bit different between platforms
-#ifdef __arm64__
-#define abi_objc_msgSend_stret objc_msgSend
-#else
-#define abi_objc_msgSend_stret objc_msgSend_stret
-#endif
-#ifdef __i386__
-#define abi_objc_msgSend_fpret objc_msgSend_fpret
-#else
-#define abi_objc_msgSend_fpret objc_msgSend
-#endif
-
-#define objc_msgSend_id ((id(*)(id, SEL))objc_msgSend)
-#define objc_msgSend_void ((void (*)(id, SEL))objc_msgSend)
-#define objc_msgSend_void_id ((void (*)(id, SEL, id))objc_msgSend)
-#define objc_msgSend_void_bool ((void (*)(id, SEL, BOOL))objc_msgSend)
-#define objc_msgSend_id_char_const ((id(*)(id, SEL, char const *))objc_msgSend)
-
-zpl_internal NSUInteger zpl__osx_application_should_terminate(id self, SEL _sel, id sender) {
-    // NOTE(bill): Do nothing
-    return 0;
-}
-
-zpl_internal void zpl__osx_window_will_close(id self, SEL _sel, id notification) {
-    NSUInteger value = true;
-    object_setInstanceVariable(self, "closed", zpl_cast(void *) value);
-}
-
-zpl_internal void zpl__osx_window_did_become_key(id self, SEL _sel, id notification) {
-    zpl_platform *p = NULL;
-    object_getInstanceVariable(self, "zpl_platform", zpl_cast(void **) & p);
-    if (p) {
-        // TODO(bill):
-    }
-}
-
-zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_mode mode, zplRendererType type,
-                       zpl_u32 window_flags) {
-    if (p->is_initialized) { return true; }
-    // Init Platform
-    { // Initial OSX State
-        Class appDelegateClass;
-        zpl_b32 resultAddProtoc, resultAddMethod;
-        id dgAlloc, dg, menubarAlloc, menubar;
-        id appMenuItemAlloc, appMenuItem;
-        id appMenuAlloc, appMenu;
-        
-#if defined(ARC_AVAILABLE)
-#error TODO(bill): This code should be compiled as C for now
-#else
-        id poolAlloc = objc_msgSend_id(zpl_cast(id) objc_getClass("NSAutoreleasePool"), sel_registerName("alloc"));
-        p->osx_autorelease_pool = objc_msgSend_id(poolAlloc, sel_registerName("init"));
-#endif
-        
-        objc_msgSend_id(zpl_cast(id) objc_getClass("NSApplication"), sel_registerName("sharedApplication"));
-        ((void (*)(id, SEL, NSInteger))objc_msgSend)(NSApp, sel_registerName("setActivationPolicy:"), 0);
-        
-        appDelegateClass = objc_allocateClassPair((Class)objc_getClass("NSObject"), "AppDelegate", 0);
-        resultAddProtoc = class_addProtocol(appDelegateClass, objc_getProtocol("NSApplicationDelegate"));
-        assert(resultAddProtoc);
-        resultAddMethod = class_addMethod(appDelegateClass, sel_registerName("applicationShouldTerminate:"),
-                                          zpl_cast(IMP) zpl__osx_application_should_terminate, NSUIntegerEncoding "@:@");
-        assert(resultAddMethod);
-        dgAlloc = objc_msgSend_id(zpl_cast(id) appDelegateClass, sel_registerName("alloc"));
-        dg = objc_msgSend_id(dgAlloc, sel_registerName("init"));
-#ifndef ARC_AVAILABLE
-        objc_msgSend_void(dg, sel_registerName("autorelease"));
-#endif
-        
-        objc_msgSend_void_id(NSApp, sel_registerName("setDelegate:"), dg);
-        objc_msgSend_void(NSApp, sel_registerName("finishLaunching"));
-        
-        menubarAlloc = objc_msgSend_id(zpl_cast(id) objc_getClass("NSMenu"), sel_registerName("alloc"));
-        menubar = objc_msgSend_id(menubarAlloc, sel_registerName("init"));
-#ifndef ARC_AVAILABLE
-        objc_msgSend_void(menubar, sel_registerName("autorelease"));
-#endif
-        
-        appMenuItemAlloc = objc_msgSend_id(zpl_cast(id) objc_getClass("NSMenuItem"), sel_registerName("alloc"));
-        appMenuItem = objc_msgSend_id(appMenuItemAlloc, sel_registerName("init"));
-#ifndef ARC_AVAILABLE
-        objc_msgSend_void(appMenuItem, sel_registerName("autorelease"));
-#endif
-        
-        objc_msgSend_void_id(menubar, sel_registerName("addItem:"), appMenuItem);
-        ((id(*)(id, SEL, id))objc_msgSend)(NSApp, sel_registerName("setMainMenu:"), menubar);
-        
-        appMenuAlloc = objc_msgSend_id(zpl_cast(id) objc_getClass("NSMenu"), sel_registerName("alloc"));
-        appMenu = objc_msgSend_id(appMenuAlloc, sel_registerName("init"));
-#ifndef ARC_AVAILABLE
-        objc_msgSend_void(appMenu, sel_registerName("autorelease"));
-#endif
-        
-        {
-            id processInfo = objc_msgSend_id(zpl_cast(id) objc_getClass("NSProcessInfo"), sel_registerName("processInfo"));
-            id appName = objc_msgSend_id(processInfo, sel_registerName("processName"));
-            
-            id quitTitlePrefixString = objc_msgSend_id_char_const(zpl_cast(id) objc_getClass("NSString"),
-                                                                  sel_registerName("stringWithUTF8String:"), "Quit ");
-            id quitTitle = ((id(*)(id, SEL, id))objc_msgSend)(quitTitlePrefixString,
-                                                              sel_registerName("stringByAppendingString:"), appName);
-            
-            id quitMenuItemKey = objc_msgSend_id_char_const(zpl_cast(id) objc_getClass("NSString"),
-                                                            sel_registerName("stringWithUTF8String:"), "q");
-            id quitMenuItemAlloc = objc_msgSend_id(zpl_cast(id) objc_getClass("NSMenuItem"), sel_registerName("alloc"));
-            id quitMenuItem = ((id(*)(id, SEL, id, SEL, id))objc_msgSend)(
-                quitMenuItemAlloc, sel_registerName("initWithTitle:action:keyEquivalent:"), quitTitle,
-                sel_registerName("terminate:"), quitMenuItemKey);
-#ifndef ARC_AVAILABLE
-            objc_msgSend_void(quitMenuItem, sel_registerName("autorelease"));
-#endif
-            
-            objc_msgSend_void_id(appMenu, sel_registerName("addItem:"), quitMenuItem);
-            objc_msgSend_void_id(appMenuItem, sel_registerName("setSubmenu:"), appMenu);
-        }
-    }
-    
-    { // Init Window
-        NSRect rect = { { 0, 0 }, { zpl_cast(CGFloat) mode.width, zpl_cast(CGFloat) mode.height } };
-        id windowAlloc, window, wdgAlloc, wdg, contentView, titleString;
-        Class WindowDelegateClass;
-        zpl_b32 resultAddProtoc, resultAddIvar, resultAddMethod;
-        
-        windowAlloc = objc_msgSend_id(zpl_cast(id) objc_getClass("NSWindow"), sel_registerName("alloc"));
-        window = ((id(*)(id, SEL, NSRect, NSUInteger, NSUInteger, BOOL))objc_msgSend)(
-            windowAlloc, sel_registerName("initWithContentRect:styleMask:backing:defer:"), rect, 15, 2, NO);
-#ifndef ARC_AVAILABLE
-        objc_msgSend_void(window, sel_registerName("autorelease"));
-#endif
-        
-        // when we are not using ARC, than window will be added to autorelease pool
-        // so if we close it by hand (pressing red button), we don't want it to be released for us
-        // so it will be released by autorelease pool later
-        objc_msgSend_void_bool(window, sel_registerName("setReleasedWhenClosed:"), NO);
-        
-        WindowDelegateClass = objc_allocateClassPair((Class)objc_getClass("NSObject"), "WindowDelegate", 0);
-        resultAddProtoc = class_addProtocol(WindowDelegateClass, objc_getProtocol("NSWindowDelegate"));
-        ZPL_ASSERT(resultAddProtoc);
-        resultAddIvar = class_addIvar(WindowDelegateClass, "closed", zpl_size_of(NSUInteger),
-                                      rint(log2(zpl_size_of(NSUInteger))), NSUIntegerEncoding);
-        ZPL_ASSERT(resultAddIvar);
-        resultAddIvar = class_addIvar(WindowDelegateClass, "zpl_platform", zpl_size_of(void *),
-                                      rint(log2(zpl_size_of(void *))), "ˆv");
-        ZPL_ASSERT(resultAddIvar);
-        resultAddMethod = class_addMethod(WindowDelegateClass, sel_registerName("windowWillClose:"),
-                                          zpl_cast(IMP) zpl__osx_window_will_close, "v@:@");
-        ZPL_ASSERT(resultAddMethod);
-        resultAddMethod = class_addMethod(WindowDelegateClass, sel_registerName("windowDidBecomeKey:"),
-                                          zpl_cast(IMP) zpl__osx_window_did_become_key, "v@:@");
-        ZPL_ASSERT(resultAddMethod);
-        wdgAlloc = objc_msgSend_id(zpl_cast(id) WindowDelegateClass, sel_registerName("alloc"));
-        wdg = objc_msgSend_id(wdgAlloc, sel_registerName("init"));
-#ifndef ARC_AVAILABLE
-        objc_msgSend_void(wdg, sel_registerName("autorelease"));
-#endif
-        
-        objc_msgSend_void_id(window, sel_registerName("setDelegate:"), wdg);
-        
-        contentView = objc_msgSend_id(window, sel_registerName("contentView"));
-        
-        {
-            NSPoint point = { 20, 20 };
-            ((void (*)(id, SEL, NSPoint))objc_msgSend)(window, sel_registerName("cascadeTopLeftFromPoint:"), point);
-        }
-        
-        titleString = objc_msgSend_id_char_const(zpl_cast(id) objc_getClass("NSString"),
-                                                 sel_registerName("stringWithUTF8String:"), window_title);
-        objc_msgSend_void_id(window, sel_registerName("setTitle:"), titleString);
-        
-        if (type == ZPL_RENDERER_OPENGL) {
-            // TODO(bill): Make sure this works correctly
-            zpl_u32 opengl_hex_version = (p->opengl.major << 12) | (p->opengl.minor << 8);
-            zpl_u32 gl_attribs[] = { 8, 24, // NSOpenGLPFAColorSize, 24,
-                11, 8, // NSOpenGLPFAAlphaSize, 8,
-                5,     // NSOpenGLPFADoubleBuffer,
-                73,    // NSOpenGLPFAAccelerated,
-                // 72,                   // NSOpenGLPFANoRecovery,
-                // 55, 1,                // NSOpenGLPFASampleBuffers, 1,
-                // 56, 4,                // NSOpenGLPFASamples, 4,
-                99, opengl_hex_version, // NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
-                0 };
-            
-            id pixel_format_alloc, pixel_format;
-            id opengl_context_alloc, opengl_context;
-            
-            pixel_format_alloc =
-                objc_msgSend_id(zpl_cast(id) objc_getClass("NSOpenGLPixelFormat"), sel_registerName("alloc"));
-            pixel_format = ((id(*)(id, SEL, const uint32_t *))objc_msgSend)(
-                pixel_format_alloc, sel_registerName("initWithAttributes:"), gl_attribs);
-#ifndef ARC_AVAILABLE
-            objc_msgSend_void(pixel_format, sel_registerName("autorelease"));
-#endif
-            
-            opengl_context_alloc =
-                objc_msgSend_id(zpl_cast(id) objc_getClass("NSOpenGLContext"), sel_registerName("alloc"));
-            opengl_context = ((id(*)(id, SEL, id, id))objc_msgSend)(
-                opengl_context_alloc, sel_registerName("initWithFormat:shareContext:"), pixel_format, nil);
-#ifndef ARC_AVAILABLE
-            objc_msgSend_void(opengl_context, sel_registerName("autorelease"));
-#endif
-            
-            objc_msgSend_void_id(opengl_context, sel_registerName("setView:"), contentView);
-            objc_msgSend_void_id(window, sel_registerName("makeKeyAndOrderFront:"), window);
-            objc_msgSend_void_bool(window, sel_registerName("setAcceptsMouseMovedEvents:"), YES);
-            
-            p->window_handle = zpl_cast(void *) window;
-            p->opengl.context = zpl_cast(void *) opengl_context;
-        } else {
-            ZPL_PANIC("TODO(bill): Software rendering");
-        }
-        
-        {
-            id blackColor = objc_msgSend_id(zpl_cast(id) objc_getClass("NSColor"), sel_registerName("blackColor"));
-            objc_msgSend_void_id(window, sel_registerName("setBackgroundColor:"), blackColor);
-            objc_msgSend_void_bool(NSApp, sel_registerName("activateIgnoringOtherApps:"), YES);
-        }
-        object_setInstanceVariable(wdg, "zpl_platform", zpl_cast(void *) p);
-        
-        p->is_initialized = true;
-    }
-    
-    return true;
-}
-
-// NOTE(bill): Software rendering
-zpl_b32 zpl_platform_init_with_software(zpl_platform *p, char const *window_title, zpl_i32 width, zpl_i32 height,
-                                    zpl_u32 window_flags) {
-    ZPL_PANIC("TODO(bill): Software rendering in not yet implemented on OS X\n");
-    return zpl__platform_init(p, window_title, zpl_set_video_mode(width, height, 32), ZPL_RENDERER_SOFTWARE,
-                              window_flags);
-}
-// NOTE(bill): OpenGL Rendering
-zpl_b32 zpl_platform_init_with_opengl(zpl_platform *p, char const *window_title, zpl_i32 width, zpl_i32 height, zpl_u32 window_flags,
-                                  zpl_i32 major, zpl_i32 minor, zpl_b32 core, zpl_b32 compatible) {
-    
-    p->opengl.major = major;
-    p->opengl.minor = minor;
-    p->opengl.core = core;
-    p->opengl.compatible = compatible;
-    return zpl__platform_init(p, window_title, zpl_set_video_mode(width, height, 32), ZPL_RENDERER_OPENGL,
-                              window_flags);
-}
-
-// NOTE(bill): Reverse engineering can be fun!!!
-zpl_internal zplKeyType zpl__osx_from_key_code(zpl_u16 key_code) {
-    switch (key_code) {
-        default: return zplKey_Unknown;
-        // NOTE(bill): WHO THE FUCK DESIGNED THIS VIRTUAL KEY CODE SYSTEM?!
-        // THEY ARE FUCKING IDIOTS!
-        case 0x1d: return zplKey_0;
-        case 0x12: return zplKey_1;
-        case 0x13: return zplKey_2;
-        case 0x14: return zplKey_3;
-        case 0x15: return zplKey_4;
-        case 0x17: return zplKey_5;
-        case 0x16: return zplKey_6;
-        case 0x1a: return zplKey_7;
-        case 0x1c: return zplKey_8;
-        case 0x19: return zplKey_9;
-        
-        case 0x00: return zplKey_A;
-        case 0x0b: return zplKey_B;
-        case 0x08: return zplKey_C;
-        case 0x02: return zplKey_D;
-        case 0x0e: return zplKey_E;
-        case 0x03: return zplKey_F;
-        case 0x05: return zplKey_G;
-        case 0x04: return zplKey_H;
-        case 0x22: return zplKey_I;
-        case 0x26: return zplKey_J;
-        case 0x28: return zplKey_K;
-        case 0x25: return zplKey_L;
-        case 0x2e: return zplKey_M;
-        case 0x2d: return zplKey_N;
-        case 0x1f: return zplKey_O;
-        case 0x23: return zplKey_P;
-        case 0x0c: return zplKey_Q;
-        case 0x0f: return zplKey_R;
-        case 0x01: return zplKey_S;
-        case 0x11: return zplKey_T;
-        case 0x20: return zplKey_U;
-        case 0x09: return zplKey_V;
-        case 0x0d: return zplKey_W;
-        case 0x07: return zplKey_X;
-        case 0x10: return zplKey_Y;
-        case 0x06: return zplKey_Z;
-        
-        case 0x21: return zplKey_Lbracket;
-        case 0x1e: return zplKey_Rbracket;
-        case 0x29: return zplKey_Semicolon;
-        case 0x2b: return zplKey_Comma;
-        case 0x2f: return zplKey_Period;
-        case 0x27: return zplKey_Quote;
-        case 0x2c: return zplKey_Slash;
-        case 0x2a: return zplKey_Backslash;
-        case 0x32: return zplKey_Grave;
-        case 0x18: return zplKey_Equals;
-        case 0x1b: return zplKey_Minus;
-        case 0x31: return zplKey_Space;
-        
-        case 0x35: return zplKey_Escape;    // Escape
-        case 0x3b: return ZPL_KEY_LCONTROL; // Left Control
-        case 0x38: return ZPL_KEY_LSHIFT;   // Left Shift
-        case 0x3a: return ZPL_KEY_LALT;     // Left Alt
-        case 0x37: return zplKey_Lsystem;   // Left OS specific: window (Windows and Linux), apple/cmd (MacOS X), ...
-        case 0x3e: return ZPL_KEY_RCONTROL; // Right Control
-        case 0x3c: return ZPL_KEY_RSHIFT;   // Right Shift
-        case 0x3d:
-        return ZPL_KEY_RALT; // Right Alt
-        // case 0x37: return zplKey_Rsystem;      // Right OS specific: window (Windows and Linux), apple/cmd (MacOS X), ...
-        case 0x6e: return zplKey_Menu;        // Menu
-        case 0x24: return zplKey_Return;      // Return
-        case 0x33: return zplKey_Backspace;   // Backspace
-        case 0x30: return zplKey_Tab;         // Tabulation
-        case 0x74: return zplKey_Pageup;      // Page up
-        case 0x79: return zplKey_Pagedown;    // Page down
-        case 0x77: return zplKey_End;         // End
-        case 0x73: return zplKey_Home;        // Home
-        case 0x72: return zplKey_Insert;      // Insert
-        case 0x75: return zplKey_Delete;      // Delete
-        case 0x45: return zplKey_Plus;        // +
-        case 0x4e: return zplKey_Subtract;    // -
-        case 0x43: return zplKey_Multiply;    // *
-        case 0x4b: return zplKey_Divide;      // /
-        case 0x7b: return zplKey_Left;        // Left arrow
-        case 0x7c: return zplKey_Right;       // Right arrow
-        case 0x7e: return zplKey_Up;          // Up arrow
-        case 0x7d: return zplKey_Down;        // Down arrow
-        case 0x52: return zplKey_Numpad0;     // Numpad 0
-        case 0x53: return zplKey_Numpad1;     // Numpad 1
-        case 0x54: return zplKey_Numpad2;     // Numpad 2
-        case 0x55: return zplKey_Numpad3;     // Numpad 3
-        case 0x56: return zplKey_Numpad4;     // Numpad 4
-        case 0x57: return zplKey_Numpad5;     // Numpad 5
-        case 0x58: return zplKey_Numpad6;     // Numpad 6
-        case 0x59: return zplKey_Numpad7;     // Numpad 7
-        case 0x5b: return zplKey_Numpad8;     // Numpad 8
-        case 0x5c: return zplKey_Numpad9;     // Numpad 9
-        case 0x41: return zplKey_NumpadDot;   // Numpad .
-        case 0x4c: return zplKey_NumpadEnter; // Numpad Enter
-        case 0x7a: return zplKey_F1;          // F1
-        case 0x78: return zplKey_F2;          // F2
-        case 0x63: return zplKey_F3;          // F3
-        case 0x76: return zplKey_F4;          // F4
-        case 0x60: return zplKey_F5;          // F5
-        case 0x61: return zplKey_F6;          // F6
-        case 0x62: return zplKey_F7;          // F7
-        case 0x64: return zplKey_F8;          // F8
-        case 0x65: return zplKey_F9;          // F8
-        case 0x6d: return zplKey_F10;         // F10
-        case 0x67: return zplKey_F11;         // F11
-        case 0x6f: return zplKey_F12;         // F12
-        case 0x69: return zplKey_F13;         // F13
-        case 0x6b: return zplKey_F14;         // F14
-        case 0x71:
-        return zplKey_F15; // F15
-        // case : return zplKey_Pause;        // Pause // NOTE(bill): Not possible on OS X
-    }
-}
-
-zpl_internal void zpl__osx_on_cocoa_event(zpl_platform *p, id event, id window) {
-    if (!event) {
-        return;
-    } else if (objc_msgSend_id(window, sel_registerName("delegate"))) {
-        NSUInteger event_type = ((NSUInteger(*)(id, SEL))objc_msgSend)(event, sel_registerName("type"));
-        switch (event_type) {
-            case 1: zpl_key_state_update(&p->mouse_buttons[zplMouseButton_Left], true); break;   // NSLeftMouseDown
-            case 2: zpl_key_state_update(&p->mouse_buttons[zplMouseButton_Left], false); break;  // NSLeftMouseUp
-            case 3: zpl_key_state_update(&p->mouse_buttons[zplMouseButton_Right], true); break;  // NSRightMouseDown
-            case 4: zpl_key_state_update(&p->mouse_buttons[zplMouseButton_Right], false); break; // NSRightMouseUp
-            case 25: {                                                                           // NSOtherMouseDown
-                // TODO(bill): Test thoroughly
-                NSInteger number = ((NSInteger(*)(id, SEL))objc_msgSend)(event, sel_registerName("buttonNumber"));
-                if (number == 2) zpl_key_state_update(&p->mouse_buttons[zplMouseButton_Middle], true);
-                if (number == 3) zpl_key_state_update(&p->mouse_buttons[zplMouseButton_X1], true);
-                if (number == 4) zpl_key_state_update(&p->mouse_buttons[zplMouseButton_X2], true);
-            } break;
-            case 26: { // NSOtherMouseUp
-                NSInteger number = ((NSInteger(*)(id, SEL))objc_msgSend)(event, sel_registerName("buttonNumber"));
-                if (number == 2) zpl_key_state_update(&p->mouse_buttons[zplMouseButton_Middle], false);
-                if (number == 3) zpl_key_state_update(&p->mouse_buttons[zplMouseButton_X1], false);
-                if (number == 4) zpl_key_state_update(&p->mouse_buttons[zplMouseButton_X2], false);
-                
-            } break;
-            
-            // TODO(bill): Scroll wheel
-            case 22: { // NSScrollWheel
-                CGFloat dx = ((CGFloat(*)(id, SEL))abi_objc_msgSend_fpret)(event, sel_registerName("scrollingDeltaX"));
-                CGFloat dy = ((CGFloat(*)(id, SEL))abi_objc_msgSend_fpret)(event, sel_registerName("scrollingDeltaY"));
-                BOOL precision_scrolling =
-                    ((BOOL(*)(id, SEL))objc_msgSend)(event, sel_registerName("hasPreciseScrollingDeltas"));
-                if (precision_scrolling) {
-                    dx *= 0.1f;
-                    dy *= 0.1f;
-                }
-                // TODO(bill): Handle sideways
-                p->mouse_wheel_delta = dy;
-                // p->mouse_wheel_dy = dy;
-                // zpl_printf("%f %f\n", dx, dy);
-            } break;
-            
-            case 12: { // NSFlagsChanged
-#if 0
-                // TODO(bill): Reverse engineer this properly
-                NSUInteger modifiers = ((NSUInteger (*)(id, SEL))objc_msgSend)(event, sel_registerName("modifierFlags"));
-                zpl_u32 upper_mask = (modifiers & 0xffff0000ul) >> 16;
-                zpl_b32 shift   = (upper_mask & 0x02) != 0;
-                zpl_b32 control = (upper_mask & 0x04) != 0;
-                zpl_b32 alt     = (upper_mask & 0x08) != 0;
-                zpl_b32 command = (upper_mask & 0x10) != 0;
-#endif
-                
-                // zpl_printf("%u\n", keys.mask);
-                // zpl_printf("%x\n", zpl_cast(zpl_u32)modifiers);
-            } break;
-            
-            case 10: { // NSKeyDown
-                zpl_u16 key_code;
-                
-                id input_text = objc_msgSend_id(event, sel_registerName("characters"));
-                char const *input_text_utf8 =
-                    ((char const *(*)(id, SEL))objc_msgSend)(input_text, sel_registerName("UTF8String"));
-                p->char_buffer_count = zpl_strnlen(input_text_utf8, zpl_size_of(p->char_buffer));
-                zpl_memcopy(p->char_buffer, input_text_utf8, p->char_buffer_count);
-                
-                key_code = ((unsigned short (*)(id, SEL))objc_msgSend)(event, sel_registerName("keyCode"));
-                zpl_key_state_update(&p->keys[zpl__osx_from_key_code(key_code)], true);
-            } break;
-            
-            case 11: { // NSKeyUp
-                zpl_u16 key_code = ((unsigned short (*)(id, SEL))objc_msgSend)(event, sel_registerName("keyCode"));
-                zpl_key_state_update(&p->keys[zpl__osx_from_key_code(key_code)], false);
-            } break;
-            
-            default: break;
-        }
-        
-        objc_msgSend_void_id(NSApp, sel_registerName("sendEvent:"), event);
-    }
-}
-
-void zpl_platform_update(zpl_platform *p) {
-    id window, key_window, content_view;
-    NSRect original_frame;
-    
-    window = zpl_cast(id) p->window_handle;
-    key_window = objc_msgSend_id(NSApp, sel_registerName("keyWindow"));
-    p->window_has_focus = key_window == window; // TODO(bill): Is this right
-    
-    if (p->window_has_focus) {
-        zpl_isize i;
-        p->char_buffer_count = 0; // TODO(bill): Reset buffer count here or else where?
-        
-        // NOTE(bill): Need to update as the keys only get updates on events
-        for (i = 0; i < ZPL_KEY_COUNT; i++) {
-            zpl_b32 is_down = (p->keys[i] & ZPL_KEY_STATE_DOWN) != 0;
-            zpl_key_state_update(&p->keys[i], is_down);
-        }
-        
-        for (i = 0; i < ZPL_MOUSEBUTTON_COUNT; i++) {
-            zpl_b32 is_down = (p->mouse_buttons[i] & ZPL_KEY_STATE_DOWN) != 0;
-            zpl_key_state_update(&p->mouse_buttons[i], is_down);
-        }
-    }
-    
-    { // Handle Events
-        id distant_past = objc_msgSend_id(zpl_cast(id) objc_getClass("NSDate"), sel_registerName("distantPast"));
-        id event = ((id(*)(id, SEL, NSUInteger, id, id, BOOL))objc_msgSend)(
-            NSApp, sel_registerName("nextEventMatchingMask:untilDate:inMode:dequeue:"), NSUIntegerMax, distant_past,
-            NSDefaultRunLoopMode, YES);
-        zpl__osx_on_cocoa_event(p, event, window);
-    }
-    
-    if (p->window_has_focus) {
-        p->key_modifiers.control = p->keys[ZPL_KEY_LCONTROL] | p->keys[ZPL_KEY_RCONTROL];
-        p->key_modifiers.alt = p->keys[ZPL_KEY_LALT] | p->keys[ZPL_KEY_RALT];
-        p->key_modifiers.shift = p->keys[ZPL_KEY_LSHIFT] | p->keys[ZPL_KEY_RSHIFT];
-    }
-    
-    { // Check if window is closed
-        id wdg = objc_msgSend_id(window, sel_registerName("delegate"));
-        if (!wdg) {
-            p->window_is_closed = false;
-        } else {
-            NSUInteger value = 0;
-            object_getInstanceVariable(wdg, "closed", zpl_cast(void **) & value);
-            p->window_is_closed = (value != 0);
-        }
-    }
-    
-    content_view = objc_msgSend_id(window, sel_registerName("contentView"));
-    original_frame = ((NSRect(*)(id, SEL))abi_objc_msgSend_stret)(content_view, sel_registerName("frame"));
-    
-    { // Window
-        NSRect frame = original_frame;
-        frame = ((NSRect(*)(id, SEL, NSRect))abi_objc_msgSend_stret)(content_view,
-                                                                     sel_registerName("convertRectToBacking:"), frame);
-        p->window_width = frame.size.width;
-        p->window_height = frame.size.height;
-        frame = ((NSRect(*)(id, SEL, NSRect))abi_objc_msgSend_stret)(window, sel_registerName("convertRectToScreen:"),
-                                                                     frame);
-        p->window_x = frame.origin.x;
-        p->window_y = frame.origin.y;
-    }
-    
-    { // Mouse
-        NSRect frame = original_frame;
-        NSPoint mouse_pos =
-            ((NSPoint(*)(id, SEL))objc_msgSend)(window, sel_registerName("mouseLocationOutsideOfEventStream"));
-        mouse_pos.x = zpl_clamp(mouse_pos.x, 0, frame.size.width - 1);
-        mouse_pos.y = zpl_clamp(mouse_pos.y, 0, frame.size.height - 1);
-        
-        {
-            zpl_i32 x = mouse_pos.x;
-            zpl_i32 y = mouse_pos.y;
-            p->mouse_dx = x - p->mouse_x;
-            p->mouse_dy = y - p->mouse_y;
-            p->mouse_x = x;
-            p->mouse_y = y;
-        }
-        
-        if (p->mouse_clip) {
-            zpl_b32 update = false;
-            zpl_i32 x = p->mouse_x;
-            zpl_i32 y = p->mouse_y;
-            if (p->mouse_x < 0) {
-                x = 0;
-                update = true;
-            } else if (p->mouse_y > p->window_height - 1) {
-                y = p->window_height - 1;
-                update = true;
-            }
-            
-            if (p->mouse_y < 0) {
-                y = 0;
-                update = true;
-            } else if (p->mouse_x > p->window_width - 1) {
-                x = p->window_width - 1;
-                update = true;
-            }
-            
-            if (update) { zpl_platform_set_mouse_position(p, x, y); }
-        }
-    }
-    
-    { // TODO(bill): Controllers
-    }
-    
-    // TODO(bill): Is this in the correct place?
-    objc_msgSend_void(NSApp, sel_registerName("updateWindows"));
-    if (p->renderer_type == ZPL_RENDERER_OPENGL) {
-        objc_msgSend_void(zpl_cast(id) p->opengl.context, sel_registerName("update"));
-        zpl_platform_make_opengl_context_current(p);
-    }
-}
-
-void zpl_platform_display(zpl_platform *p) {
-    // TODO(bill): Do more
-    if (p->renderer_type == ZPL_RENDERER_OPENGL) {
-        zpl_platform_make_opengl_context_current(p);
-        objc_msgSend_void(zpl_cast(id) p->opengl.context, sel_registerName("flushBuffer"));
-    } else if (p->renderer_type == ZPL_RENDERER_SOFTWARE) {
-        // TODO(bill):
-    } else {
-        ZPL_PANIC("Invalid window rendering type");
-    }
-    
-    {
-        zpl_f64 prev_time = p->curr_time;
-        zpl_f64 curr_time = zpl_time_now( );
-        p->dt_for_frame = curr_time - prev_time;
-        p->curr_time = curr_time;
-    }
-}
-
-void zpl_platform_destroy(zpl_platform *p) {
-    zpl_platform_make_opengl_context_current(p);
-    
-    objc_msgSend_void(zpl_cast(id) p->window_handle, sel_registerName("close"));
-    
-#if defined(ARC_AVAILABLE)
-    // TODO(bill): autorelease pool
-#else
-    objc_msgSend_void(zpl_cast(id) p->osx_autorelease_pool, sel_registerName("drain"));
-#endif
-}
-
-void zpl_platform_show_cursor(zpl_platform *p, zpl_b32 show) {
-    if (show) {
-        // objc_msgSend_void(class_registerName("NSCursor"), sel_registerName("unhide"));
-    } else {
-        // objc_msgSend_void(class_registerName("NSCursor"), sel_registerName("hide"));
-    }
-}
-
-void zpl_platform_set_mouse_position(zpl_platform *p, zpl_i32 x, zpl_i32 y) {
-    // TODO(bill):
-    CGPoint pos = { zpl_cast(CGFloat) x, zpl_cast(CGFloat) y };
-    pos.x += p->window_x;
-    pos.y += p->window_y;
-    CGWarpMouseCursorPosition(pos);
-}
-
-void zpl_platform_set_controller_vibration(zpl_platform *p, zpl_isize index, zpl_f32 left_motor, zpl_f32 right_motor) {
-    // TODO(bill):
-}
-
-zpl_b32 zpl_platform_has_clipboard_text(zpl_platform *p) {
-    // TODO(bill):
-    return false;
-}
-
-void zpl_platform_set_clipboard_text(zpl_platform *p, char const *str) {
-    // TODO(bill):
-}
-
-char *zpl_platform_get_clipboard_text(zpl_platform *p, zplAllocator a) {
-    // TODO(bill):
-    return NULL;
-}
-
-void zpl_platform_set_window_position(zpl_platform *p, zpl_i32 x, zpl_i32 y) {
-    // TODO(bill):
-}
-
-void zpl_platform_set_window_title(zpl_platform *p, char const *title, ...) {
-    id title_string;
-    char buf[256] = { 0 };
-    va_list va;
-    va_start(va, title);
-    zpl_snprintf_va(buf, zpl_count_of(buf), title, va);
-    va_end(va);
-    
-    title_string =
-        objc_msgSend_id_char_const(zpl_cast(id) objc_getClass("NSString"), sel_registerName("stringWithUTF8String:"), buf);
-    objc_msgSend_void_id(zpl_cast(id) p->window_handle, sel_registerName("setTitle:"), title_string);
-}
-
-void zpl_platform_toggle_fullscreen(zpl_platform *p, zpl_b32 fullscreen_desktop) {
-    // TODO(bill):
-}
-
-void zpl_platform_toggle_borderless(zpl_platform *p) {
-    // TODO(bill):
-}
-
-void zpl_platform_make_opengl_context_current(zpl_platform *p) {
-    objc_msgSend_void(zpl_cast(id) p->opengl.context, sel_registerName("makeCurrentContext"));
-}
-
-void zpl_platform_show_window(zpl_platform *p) {
-    // TODO(bill):
-}
-
-void zpl_platform_hide_window(zpl_platform *p) {
-    // TODO(bill):
-}
-
-zpl_i32 zpl__osx_mode_bits_per_pixel(CGDisplayModeRef mode) {
-    zpl_i32 bits_per_pixel = 0;
-    CFStringRef pixel_encoding = CGDisplayModeCopyPixelEncoding(mode);
-    if (CFStringCompare(pixel_encoding, CFSTR(IO32BitDirectPixels), kCFCompareCaseInsensitive) == kCFCompareEqualTo) {
-        bits_per_pixel = 32;
-    } else if (CFStringCompare(pixel_encoding, CFSTR(IO16BitDirectPixels), kCFCompareCaseInsensitive) ==
-               kCFCompareEqualTo) {
-        bits_per_pixel = 16;
-    } else if (CFStringCompare(pixel_encoding, CFSTR(IO8BitIndexedPixels), kCFCompareCaseInsensitive) ==
-               kCFCompareEqualTo) {
-        bits_per_pixel = 8;
-    }
-    CFRelease(pixel_encoding);
-    
-    return bits_per_pixel;
-}
-
-zpl_i32 zpl__osx_display_bits_per_pixel(CGDirectDisplayID display) {
-    CGDisplayModeRef mode = CGDisplayCopyDisplayMode(display);
-    zpl_i32 bits_per_pixel = zpl__osx_mode_bits_per_pixel(mode);
-    CGDisplayModeRelease(mode);
-    return bits_per_pixel;
-}
-
-zpl_video_mode zpl_video_mode_get_desktop(void) {
-    CGDirectDisplayID display = CGMainDisplayID( );
-    return zpl_set_video_mode(CGDisplayPixelsWide(display), CGDisplayPixelsHigh(display),
-                              zpl__osx_display_bits_per_pixel(display));
-}
-
-zpl_isize zpl_video_mode_get_fullscreen_modes(zpl_video_mode *modes, zpl_isize max_mode_count) {
-    CFArrayRef cg_modes = CGDisplayCopyAllDisplayModes(CGMainDisplayID( ), NULL);
-    CFIndex i, count;
-    if (cg_modes == NULL) { return 0; }
-    
-    count = zpl_min(CFArrayGetCount(cg_modes), max_mode_count);
-    for (i = 0; i < count; i++) {
-        CGDisplayModeRef cg_mode = zpl_cast(CGDisplayModeRef) CFArrayGetValueAtIndex(cg_modes, i);
-        modes[i] = zpl_set_video_mode(CGDisplayModeGetWidth(cg_mode), CGDisplayModeGetHeight(cg_mode),
-                                      zpl__osx_mode_bits_per_pixel(cg_mode));
-    }
-    
-    CFRelease(cg_modes);
-    
-    zpl_sort_array(modes, count, zpl_video_mode_dsc_cmp);
-    return zpl_cast(zpl_isize) count;
-}
-
-#endif
-#endif // #if 0
-
-// TODO(bill): OSX Platform Layer
-// NOTE(bill): Use this as a guide so there is no need for Obj-C https://github.com/jimon/osx_app_in_plain_c
+#endif // ZPL_SYSTEM_WINDOWS
 
 zpl_inline zpl_video_mode zpl_set_video_mode(zpl_i32 width, zpl_i32 height, zpl_i32 bits_per_pixel) {
     zpl_video_mode m;

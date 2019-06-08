@@ -45,8 +45,8 @@ CMesh::CMesh()
 	m_vertexSource		= nullptr;
 	m_vertexGroup		= nullptr;
 
-    m_box               = zpl_vec3f_zero();
-	m_center            = zpl_vec3f_zero();
+    m_box               = axis::Origin.xyz;
+	m_center            = axis::Origin.xyz;
 	m_radius			= 1.0f;
 
 	m_fs				= nullptr;

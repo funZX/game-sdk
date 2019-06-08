@@ -19,7 +19,6 @@
     <ClCompile Include="..\..\sources\GameState\State_MenuMain.cpp" />
     <ClCompile Include="..\..\sources\World\World.cpp" />
     <ClCompile Include="base\main.cpp" />
-    <ClCompile Include="base\simulator\SimulatorWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\sources\Debug\Debug.h" />
@@ -29,8 +28,6 @@
     <ClInclude Include="..\..\sources\GameState\State_Game.h" />
     <ClInclude Include="..\..\sources\GameState\State_MenuMain.h" />
     <ClInclude Include="..\..\sources\World\World.h" />
-    <ClInclude Include="base\simulator.h" />
-    <ClInclude Include="base\simulator\SimulatorWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\libs\TODO.txt" />

@@ -45,15 +45,15 @@ class COctreeVolume
 public:
 	COctreeVolume();
 
-	inline const u32		GetID() { return id::Get();  }
+	inline u32		        GetID() { return id::Get();  }
 
-	inline void				SetBox(Vec3* box) { m_box = zpl_vec3fv(box->e); }
-	inline const Vec3*		GetBox() const  { return &m_box; }
+	inline void				SetBox( Vec3 box ) { m_box = box; }
+	inline Vec3		        GetBox() const  { return m_box; }
 
-	inline void				SetCenter( Vec3* center) { m_center = zpl_vec3fv(center->e); }
-	inline const Vec3*		GetCenter() const { return &m_center; }
+	inline void				SetCenter( Vec3 center) { m_center = center; }
+	inline Vec3		        GetCenter() const { return m_center; }
 
-	inline void				SetRadius(f32 radius) { m_radius = radius; }
+	inline void				SetRadius( f32 radius ) { m_radius = radius; }
 	inline f32				GetRadius() const { return m_radius; }
 
 	// ----------------------------------------------------------------------//

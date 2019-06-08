@@ -1,7 +1,9 @@
 #include <windows.h>
+#include <core/sim_core.h>
 
 #include "../../../../Game/sources/Game.h"
-#include "simulator.h"
+
+zpl_platform p;
 
 CGame *game = NULL;
 
@@ -10,6 +12,8 @@ void onQuit()
 #ifdef _DEBUG
 	_CrtDumpMemoryLeaks();
 #endif
+
+    zpl_platform_destroy( &p );
 }
 
 void onStart()
@@ -19,13 +23,15 @@ void onStart()
 	//_crtBreakAlloc = 4469;
 #endif
 
-	atexit( onQuit );
-}
+    int width   = 640;
+    int height  = 480;
 
-void resizeFromLayer( int width, int height )
-{
-	game = new CGame("../../blob/");
-	game->Start( width, height );
+    zpl_platform_init(&p, "game-sdk", width, height, ZPL_WINDOW_RESIZABLE);
+
+    game = new CGame("../../blob/");
+    game->Start(width, height);
+
+    atexit( onQuit );
 }
 
 void quit( void )
@@ -34,46 +40,16 @@ void quit( void )
 	delete game;
 }
 
-void key( unsigned char key, bool isDown )
-{
-	game->KeyPress( key, isDown );
-}
-
-void touchesBegan( CGPoint *pos, int tapCount )
-{
-	game->PointerDown( (int)pos->x, (int)pos->y );
-}
-
-void touchesMoved( CGPoint *pos )
-{
-	game->PointerDrag( (int)pos->x, (int)pos->y );
-}
-
-void touchesEnded( CGPoint *pos )
-{
-	game->PointerUp( (int)pos->x, (int)pos->y );
-}
-
-void render ( void )
-{
-	game->Run();
-
-#if SIM_DEBUG
-	_CrtCheckMemory();
-#endif
-}
-
 int main(int argc, char *argv[])
 {
 	onStart();
 
-	SimulatorSetRenderCallback( render );
-	SimulatorSetResizeFromLayerCallback( resizeFromLayer );
-	SimulatorSetTouchesBeganCallback( touchesBegan );
-	SimulatorSetTouchesMovedCallback( touchesMoved );
-	SimulatorSetTouchesEndedCallback( touchesEnded );
-	SimulatorSetKeyCallback( key );
-	SimulatorSetQuitCallback( quit );
 
-	SimulatorRun( 960, 640 );
+    while (!p.quit_requested)
+    {
+        game->Run();
+
+        zpl_platform_update(&p);
+        zpl_platform_display(&p);
+    }
 }

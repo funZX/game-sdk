@@ -43,8 +43,8 @@ const CRect2D*		CRect2D::OneSizeRectFlip	= &OneSizeRectFlipStatic;
 // ----------------------------------------------------------------------//
 CRect2D::CRect2D()
 {
-	m_position  = zpl_vec2f_zero();
-	m_size      = zpl_vec2f_zero();
+	m_position  = axis::Origin.xyz.xy;
+	m_size      = axis::Unit.xyz.xy;
 
 	m_rotation	= 0.0f;
 	m_material	= nullptr;
