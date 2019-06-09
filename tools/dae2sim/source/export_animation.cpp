@@ -10,3 +10,8 @@ int export_animation(daeElement* animation, const std::string& path)
 {
     return 0;
 }
+
+int export_animationclip(daeElement* animationclip, const std::string& path)
+{
+    return 0;
+}

@@ -82,5 +82,15 @@ void CLight::Render( CDriver *driver )
 }
 
 // ----------------------------------------------------------------------//
+bool CLight::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
+bool CLight::Save(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

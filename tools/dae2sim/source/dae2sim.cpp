@@ -6,6 +6,7 @@ void onStart();
 int export_dae2sim(daeDocument* doc, const char* folder);
 
 Options options;
+daeScene S;
 
 int main(int argc, char** argv)
 {
@@ -90,6 +91,11 @@ int export_dae2sim(daeDocument* doc, const char* folder)
 	return export_scenes(doc, path);
 }
 
+// ----------------------------------------------------------------------//
+daeString daeGetNodeName(daeElement* elem)
+{
+    return ((domNode*)elem)->getName();
+}
 // ----------------------------------------------------------------------//
 
 daeElement* daeGetUrl(daeDocument* doc, daeElement* elem)

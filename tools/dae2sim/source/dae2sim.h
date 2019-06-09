@@ -23,8 +23,34 @@ struct Options
 extern Options options;
 
 daeElement* daeGetUrl(daeDocument* doc, daeElement* elem);
+daeString daeGetNodeName(daeElement* elem);
 std::vector<daeElement*> daeGetChildrenOfType(daeElement* elem, daeInt daeType);
 std::vector<daeElement*> daeGetChildrenOfType(daeElement* elem, domNodeType domType);
+
+
+struct daeSceneNode
+{
+    daeElement*                             elem;
+    std::map<std::string, daeSceneNode*>    childs;
+};
+
+struct daeContent
+{
+    std::map<std::string, daeElement*>      materials;
+    std::map<std::string, daeElement*>      lights;
+    std::map<std::string, daeElement*>      cameras;
+    std::map<std::string, daeElement*>      curves;
+    std::map<std::string, daeElement*>      meshes;
+    std::map<std::string, daeElement*>      controllers;
+    std::map<std::string, daeElement*>      animations;
+    std::map<std::string, daeElement*>      animationclips;
+};
+
+struct daeScene
+{
+    daeSceneNode                            root;
+    daeContent                              content;
+};
 
 // ----------------------------------------------------------------------//
 

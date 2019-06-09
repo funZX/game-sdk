@@ -69,5 +69,15 @@ void CCurve::Render( CDriver *driver )
 }
 
 // ----------------------------------------------------------------------//
+bool CCurve::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
+bool CCurve::Save(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
