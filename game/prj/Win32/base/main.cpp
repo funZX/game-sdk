@@ -13,7 +13,8 @@ void onStart()
 
 void onUpdate()
 {
-    game->Run();
+    if (game) 
+        game->Run();
 }
 
 void onResize(int w, int h)
