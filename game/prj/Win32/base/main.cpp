@@ -3,55 +3,51 @@
 
 #include "../../../../Game/sources/Game.h"
 
-zpl_platform p;
-
-CGame *game = NULL;
-
-void onQuit()
-{
-#ifdef _DEBUG
-	_CrtDumpMemoryLeaks();
-#endif
-
-    zpl_platform_destroy( &p );
-}
+CGame* game = 0;
 
 void onStart()
 {
-#ifdef _DEBUG
-	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-	//_crtBreakAlloc = 4469;
-#endif
-
-    int width   = 640;
-    int height  = 480;
-
-    zpl_platform_init(&p, "game-sdk", width, height, ZPL_WINDOW_RESIZABLE);
-
-    game = new CGame("../../blob/");
-    game->Start(width, height);
-
-    atexit( onQuit );
+    game = SIM_NEW CGame("../../blob/");
+    game->Start();
 }
 
-void quit( void )
+void onUpdate()
 {
-	game->Quit();
-	delete game;
+    game->Run();
+}
+
+void onResize(int w, int h)
+{
+    game->Resize(w, h);
+}
+
+void onClose()
+{
+    game->Quit();
+    delete game;
+    game = 0;
 }
 
 int main(int argc, char *argv[])
 {
-	onStart();
+    zpl_platform p;
 
+    zpl_memset(&p, 0, sizeof(p));
 
-    while (!p.quit_requested)
+    p.callbacks.zpl_window_open = onStart;
+    p.callbacks.zpl_window_resize = onResize;
+    p.callbacks.zpl_window_update = onUpdate;
+    p.callbacks.zpl_window_close = onClose;
+
+    zpl_platform_init(&p, "game-sdk", 640, 480, ZPL_WINDOW_RESIZABLE);
+
+    while (game)
     {
-        game->Run();
-
         zpl_platform_update(&p);
         zpl_platform_display(&p);
 
         Sleep(1);
     }
+
+    zpl_platform_destroy(&p);
 }

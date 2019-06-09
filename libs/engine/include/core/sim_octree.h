@@ -92,7 +92,10 @@ public:
 	COctreeNode()
 	{
 		m_octreeparent = nullptr;
-		
+
+        m_center = axis::Origin.xyz;
+        m_radius = 0.0f;
+
 		SIM_MEMSET( m_octreenodes, 0, sizeof( m_octreenodes ) );
 	}
 

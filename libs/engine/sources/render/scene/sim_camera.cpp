@@ -67,8 +67,8 @@ CCamera::~CCamera()
 void CCamera::SetPerspective( CRect2D *rect )
 {
 	Vec2 size;
-	size.x = ( f32 ) rect->Width();
-	size.y = ( f32 ) rect->Height();
+	size.x = rect->Width();
+	size.y = rect->Height();
 
     zpl_mat4_perspective( &m_perspectiveMatrix, zpl_to_radians(m_fieldOfView), size.x / size.y, m_nearPlane, m_farPlane );
 }

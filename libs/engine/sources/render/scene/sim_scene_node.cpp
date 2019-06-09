@@ -24,6 +24,8 @@
 *    SOFTWARE.
 */
 
+#include <render/scene/sim_scene.h>
+#include <render/scene/sim_camera.h>
 #include <render/scene/sim_scene_node.h>
 
 namespace sim
@@ -50,6 +52,7 @@ CSceneNode::CSceneNode()
     m_state.isVisible       = true;
     m_state.isCulled        = false;
     m_state.isPhysic        = false;
+    m_state.isStatic        = true;
     m_state.mass            = 0.0f;
     m_state.restitution     = 0.0f;
     m_state.friction        = 0.0f;
@@ -114,13 +117,31 @@ CSceneNode* CSceneNode::GetChild( const std::string& name )
 
 void CSceneNode::Update( f32 dt, void *userData )
 {
-    zpl_mat4_from_quat( &m_matrix, m_transform.quaternion );
+    if ( IsVisible() )
+    {
+        CScene* scene   = (CScene*)userData;
+        CCamera* camera = scene->GetCamera();
 
-    m_matrix.x.x *= m_transform.scale.x;
-    m_matrix.y.y *= m_transform.scale.y;
-    m_matrix.z.z *= m_transform.scale.z;
+        SIM_ASSERT(camera);
 
-    m_matrix.w.xyz = m_transform.translation;
+        m_state.isCulled = !camera->SphereIn(&m_transform.translation, m_radius);
+
+        if (!m_state.isCulled)
+            m_state.isCulled = !camera->BoxIn(&m_transform.translation, &m_box);
+    }
+
+    if ( !IsStatic() )
+    {
+        zpl_mat4_from_quat(&m_matrix, m_transform.quaternion);
+
+        m_matrix.x.x *= m_transform.scale.x;
+        m_matrix.y.y *= m_transform.scale.y;
+        m_matrix.z.z *= m_transform.scale.z;
+
+        m_matrix.w.xyz = m_transform.translation;
+    }
+
+
 }
 
 // ----------------------------------------------------------------------//

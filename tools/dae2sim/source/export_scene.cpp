@@ -54,20 +54,15 @@ int export_scene(daeElement* scene, const std::string& path)
 {
     int success = 0;
 
-    CScene* data = SIM_NEW CScene(scene->getElementName());
-
     auto nodes = daeGetChildrenOfType(scene, NODETYPE_NODE);
     
     for (auto node : nodes)
     {
-        node->setUserData(data);
         auto items = daeGetChildrenOfType(node, NODETYPE_NODE);
         
         for (auto item : items)
             success |= export_item(item, path);
     }
-
-    SIM_SAFE_DELETE(data);
 
     return success;
 }
@@ -78,8 +73,6 @@ int export_item(daeElement* item, const std::string& path)
     if (controller)
     {
         auto instance = daeGetUrl(item->getDocument(), controller);
-        instance->setUserData(item->getUserData());
-
         return export_controller(instance, path);
     }
 
@@ -87,8 +80,6 @@ int export_item(daeElement* item, const std::string& path)
     if (geometry)
     {
         auto instance = daeGetUrl(item->getDocument(), geometry);
-        instance->setUserData(item->getUserData());
-
         return export_geometry(instance, path);
     }
 
@@ -96,8 +87,6 @@ int export_item(daeElement* item, const std::string& path)
     if (camera)
     {
         auto instance = daeGetUrl(item->getDocument(), camera);
-        instance->setUserData(item->getUserData());
-
         return export_camera(instance, path);
     }
 
@@ -105,8 +94,6 @@ int export_item(daeElement* item, const std::string& path)
     if (light)
     {
         auto instance = daeGetUrl(item->getDocument(), light);
-        instance->setUserData(item->getUserData());
-
         return export_light(instance, path);
     }
 
