@@ -27,14 +27,10 @@
 #ifndef __SIM_MODEL_H
 #define __SIM_MODEL_H
 
+#include <core/sim_core.h>
 #include <core/sim_interfaces.h>
 
 #include <render/sim_render.h>
-#include <math/sim_matrix4.h>
-#include <math/sim_vec2.h>
-#include <math/sim_vec3.h>
-
-using namespace sim::mat;
 
 namespace sim
 {
@@ -65,14 +61,14 @@ public:
 
 	// ------------------------------------------------------------------//
 
-	inline void						SetBox( const TVec3* box)					{ Vec3Copy( &m_box, box ); }
-	inline const TVec3*				GetBox() const								{ return &m_box; }
+    inline void						SetBox( Vec3 box );
+    inline Vec3				        GetBox();
 
-	inline void						SetCenter( const TVec3* center)				{ Vec3Copy( &m_center, center ); }
-	inline const TVec3*				GetCenter() const							{ return &m_center; }
+    inline void						SetCenter( Vec3 center );
+    inline Vec3				        GetCenter();
 
-	inline void			            SetRadius( f32 radius )						{ m_radius = radius; }
-	inline f32			            GetRadius() const							{ return m_radius; }
+    inline void			            SetRadius( f32 radius );
+    inline f32			            GetRadius();
 
 	void					        Render( CDriver *driver );
 
@@ -92,13 +88,43 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	TVec3							m_box;
-	TVec3							m_center;
+	Vec3							m_box;
+	Vec3							m_center;
 	f32					            m_radius;
 
 	io::CFileSystem*				m_fs;
 	// ------------------------------------------------------------------//
 };
+
+inline void	CMesh::SetBox(Vec3 box) 
+{
+    m_box = box;
+}
+
+inline Vec3	CMesh::GetBox()
+{ 
+    return m_box; 
+}
+
+inline void	CMesh::SetCenter(Vec3 center) 
+{ 
+    m_center = center;
+}
+
+inline Vec3	CMesh::GetCenter()
+{ 
+    return m_center; 
+}
+
+inline void	CMesh::SetRadius(f32 radius) 
+{ 
+    m_radius = radius; 
+}
+
+inline f32	CMesh::GetRadius()
+{ 
+    return m_radius; 
+}
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr

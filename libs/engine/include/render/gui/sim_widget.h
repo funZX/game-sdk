@@ -79,7 +79,7 @@ public:
 	virtual void					PointerDrag( u32 x, u32 y );
 	virtual void					PointerUp( u32 x, u32 y );
 
-	void							SetColor(const TVec4* color);
+	void							SetColor( Vec4 color);
 	// ------------------------------------------------------------------//
 
 protected:
@@ -91,7 +91,7 @@ protected:
 	bool							m_isEnabled;
 	bool							m_isVisible;
 
-	TVec4							m_fillcolor;
+	Vec4							m_fillcolor;
 };
 
 // ----------------------------------------------------------------------//

@@ -42,7 +42,7 @@ CState_Game::CState_Game()
 	m_drawable = SIM_NEW CWidgetDrawable();
 	m_drawable->MoveTo(100.0f, 100.0f);
 	m_drawable->Resize(200, 200);
-	m_drawable->SetColor(&col::Blueish);
+	m_drawable->SetColor(col::Blueish);
 	m_drawable->OnDraw.Connect(this, &CState_Game::DrawToWidget);
 
 	CScript* script = O.world->GetFs()->GetScript("deltatime");
@@ -110,7 +110,7 @@ void CState_Game::Render2D( CDriver *driver )
 	O.font.roboto.bold20->DrawString(driver,
 		10,
 		(s32)(O.canvas->Height() - 2 * O.font.roboto.bold20->GetHeight()),
-		"The quick brown fox jumps over the lazy dog! :;.,'\"(?)+=*/=1234567890", &col::Magenta);
+		"The quick brown fox jumps over the lazy dog! :;.,'\"(?)+=*/=1234567890", col::Magenta);
 }
 // ----------------------------------------------------------------------//
 void CState_Game::Render3D( CDriver *driver )
@@ -128,22 +128,20 @@ void CState_Game::DrawToWidget(CDriver* driver, sigcxx::SLOT slot)
 	f32 dr = driver->GetTimerRot();
 
 	driver->MatrixPush();
-	driver->MatrixTranslateY(-0.5f);
-	driver->MatrixTranslateZ(-2.0f);
-	driver->MatrixRotateY(dr * 60.0f);
+    driver->MatrixTranslate({ 0.0f, -0.5f, -2.0f });
 	m_mesh->Render(driver);
 	driver->MatrixPop();
 
 	driver->MatrixPush();
-	driver->MatrixTranslate(-0.4f, -0.2f, -1.5f);
-	driver->MatrixRotateY(dr * 20.0f);
+    driver->MatrixTranslate({ -0.4f, -0.2f, -1.5f });
+	driver->MatrixRotate(axis::Up.xyz, dr * 20.0f);
 	m_mesh->Render(driver);
 	driver->MatrixPop();
 
 	driver->MatrixPush();
-	driver->MatrixTranslate(0.4f, -0.2f, -1.5f);
-	driver->MatrixScale(0.5f, 0.5f, 0.5f);
-	driver->MatrixRotateY(dr * 40.0f);
+    driver->MatrixTranslate({ 0.4f, -0.2f, -1.5f });
+    driver->MatrixScale( { 0.5f, 0.5f, 0.5f } );
+	driver->MatrixRotate(axis::Up.xyz, dr * 40.0f);
 	m_mesh->Render(driver);
 	driver->MatrixPop();
 }

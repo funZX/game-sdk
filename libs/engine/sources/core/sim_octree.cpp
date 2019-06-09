@@ -33,8 +33,8 @@ namespace stl
 // ----------------------------------------------------------------------//
 COctreeVolume::COctreeVolume()
 {
-	Vec3ToZero(&m_box);
-	Vec3ToZero(&m_center);
+    m_box       = axis::Origin.xyz;
+    m_center    = axis::Origin.xyz;
 
 	m_radius = 1.0f;
 }
@@ -121,8 +121,8 @@ void COctree::Insert(COctreeVolume* volume)
 	{
 		m_root = NewNode();
 
-		m_root->m_radius = Vec3Max(volume->GetBox());
-		Vec3Copy(&m_root->m_center, volume->GetCenter());
+		m_root->m_radius = zpl_vec3_max(volume->GetBox());
+        m_root->m_center = volume->GetCenter();
 
 		m_root->NewVolume(volume);
 

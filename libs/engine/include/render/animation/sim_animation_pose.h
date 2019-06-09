@@ -56,7 +56,7 @@ protected:
 	u32						m_nBones;
 
 	CBone::TTransform*		m_root;
-	TVec3					m_velocity;
+	Vec3					m_velocity;
 };
 
 // ----------------------------------------------------------------------//

@@ -108,7 +108,7 @@ void CEngine::Initialize()
 // ----------------------------------------------------------------------//
 void CEngine::InitEffect()
 {
-	const char* vsource =
+	static const s8* vsource =
 		"attribute vec4 a_PositionL;"
 		"attribute vec2 a_TexCoord_0;"
 
@@ -124,12 +124,12 @@ void CEngine::InitEffect()
 		"	v_Tex0			= a_TexCoord_0;"
 		"	v_Color			= u_Color * u_Material_Diffuse;"
 
-		"	gl_Position		= a_PositionL * u_Matrix_WorldViewProjection;"
+		"	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL;"
 		"}";
 
 	// ----------------------------------------------------------------------//
 
-	const char* psource =
+	static const s8* psource =
 		"precision mediump float;"
 
 		"uniform sampler2D	u_Sampler_Tex_0;"
@@ -145,7 +145,7 @@ void CEngine::InitEffect()
 		"	gl_FragColor = col;"
 		"}";
 
-	static const char* attributes[] =
+	static const s8* attributes[] =
 	{
 		"a_PositionL",
 		"a_TexCoord_0"
@@ -156,7 +156,7 @@ void CEngine::InitEffect()
 	for (u32 k = 0; k < nAttrib; k++)
 		m_effect->AddAttribute(attributes[k], k);
 
-	static const char* uniforms[] =
+	static const s8* uniforms[] =
 	{
 		"u_Matrix_WorldViewProjection",
 		"u_Color",
@@ -271,7 +271,7 @@ f32 CEngine::Smooth( f32 deltaTime )
 	sum -= ( min1 + min2 + max1 + max2 );
 	sum *= 0.1428571f;
 
-	dt	 = Lerp( deltaTime, sum, 0.5f );
+	dt	 = zpl_lerp( deltaTime, sum, 0.5f );
 
 	for( s32 k = 0; k < 10; k++ )
 		m_dtfilter[ k ] = m_dtfilter[ k + 1 ];
@@ -337,7 +337,7 @@ void CEngine::Update( f32 dt, void *userData )
 
 void CEngine::Render( CDriver *driver )
 {
-	driver->Clear( &col::Black );
+	driver->Clear( col::Black );
 
 	// 3D rendering
 	On3D();
@@ -385,11 +385,11 @@ void CEngine::SetCamera( CCamera *camera )
 	{
 		m_driver->SetMatrixMode(CDriver::MatrixMode::Projection);
 		m_driver->MatrixPush();
-		m_driver->MatrixLoad(camera->GetPerspectiveMatrix());
+		m_driver->MatrixLoad( camera->GetPerspectiveMatrix() );
 
 		m_driver->SetMatrixMode(CDriver::MatrixMode::View);
 		m_driver->MatrixPush();
-		m_driver->MatrixLoad(camera->GetViewMatrix());
+		m_driver->MatrixLoad( camera->GetMatrix() );
 
 		m_driver->SetMatrixMode(CDriver::MatrixMode::World);
 		m_driver->MatrixPush();
@@ -443,7 +443,7 @@ void CEngine::On3D()
 	m_driver->MatrixLoad( m_activeCamera->GetPerspectiveMatrix() );
 
 	m_driver->SetMatrixMode( CDriver::MatrixMode::View );
-	m_driver->MatrixLoad( m_activeCamera->GetViewMatrix() );
+	m_driver->MatrixLoad( m_activeCamera->GetMatrix() );
 
 	m_driver->SetMatrixMode( CDriver::MatrixMode::World );
 	m_driver->MatrixLoadIdentity();
@@ -461,7 +461,7 @@ void CEngine::Off3D()
 
 void  CEngine::Print( CDriver* driver, s32 x, s32 y, const std::string &text )
 {
-	m_font->DrawString( driver, x, y, text, &col::Green);
+	m_font->DrawString( driver, x, y, text, col::Green);
 }
 
 // ----------------------------------------------------------------------//
@@ -476,7 +476,7 @@ void  CEngine::Print( CDriver* driver, s32 x, s32 y, char *format, ... )
 	vsnprintf( buf, CBatch2D::MaxQuads, format, args );
 	va_end( args );
 
-	m_font->DrawString( driver, x, y, buf, &col::Green);
+	m_font->DrawString( driver, x, y, buf, col::Green);
 }
 // ----------------------------------------------------------------------//
 

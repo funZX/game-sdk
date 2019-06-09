@@ -21,15 +21,15 @@ void main()
 {
 	vec4 posV, ligV;
 	
-	posV 			= a_PositionL * u_Matrix_WorldView;
-	ligV 			= vec4( u_Light_Position_0, 1.0 ) * u_Matrix_View;
+	posV 			= u_Matrix_WorldView * a_PositionL;
+	ligV 			= u_Matrix_View * vec4( u_Light_Position_0, 1.0 );
 	
-	v_NormalW 		= a_NormalL * u_Matrix_Normal;
+	v_NormalW 		= u_Matrix_Normal * a_NormalL;
 	
 	v_ToEyeDirV 	= 		   - posV.xyz;	
 	v_ToLightDirV 	= ligV.xyz - posV.xyz;
 	v_Tex0 			= a_TexCoord_0;
 
 	
-	gl_Position 	= posV * u_Matrix_Projection;
+	gl_Position 	= u_Matrix_Projection * posV;
 }

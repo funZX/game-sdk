@@ -29,10 +29,8 @@
 
 #include <OpenAL/al.h>
 
-#include <math/sim_vec3.h>
+#include <core/sim_core.h>
 #include <core/sim_interfaces.h>
-
-using namespace sim::mat;
 
 namespace sim
 {
@@ -69,7 +67,7 @@ public:
 	void Init( CSoundData *data );
 	
 	void SetAmbient( void );
-	void SetFX( TVec3 *pos, f32 rad, f32 maxrad );
+	void SetFX( Vec3 *pos, f32 rad, f32 maxrad );
 	void SetDefault( void );
 	void Play( void );
 	void Pause( void );

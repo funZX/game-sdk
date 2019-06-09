@@ -74,8 +74,8 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>NO_BOOST;HAVE_STRUCT_TIMESPEC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../../libs/collada-dom/include;../../../../libs/opengles/include;../../../../libs/openal/include;../../../../libs/sigcxx/include;../../../../libs/pthread/include;../../../../libs/jansson/include;../../../../libs/engine/include;../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NO_BOOST;HAVE_STRUCT_TIMESPEC;WIN32;WIN32_LEAN_AND_MEAN;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../../libs/collada-dom/include;../../../../libs/opengles/include;../../../../libs/openal/include;../../../../libs/sigcxx/include;../../../../libs/pthread/include;../../../../libs/librg/include;../../../../libs/jansson/include;../../../../libs/engine/include;../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -91,8 +91,8 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>NO_BOOST;HAVE_STRUCT_TIMESPEC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../../libs/collada-dom/include;../../../../libs/openal/include;../../../../libs/opengles/include;../../../../libs/sigcxx/include;../../../../libs/pthread/include;../../../../libs/jansson/include;../../../../libs/engine/include;../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NO_BOOST;HAVE_STRUCT_TIMESPEC;WIN32;WIN32_LEAN_AND_MEAN;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../../libs/collada-dom/include;../../../../libs/openal/include;../../../../libs/opengles/include;../../../../libs/sigcxx/include;../../../../libs/pthread/include;../../../../libs/librg/include;../../../../libs/jansson/include;../../../../libs/engine/include;../../include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>

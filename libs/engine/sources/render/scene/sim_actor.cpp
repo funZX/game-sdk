@@ -82,11 +82,14 @@ void CActor::BindSize()
 {
 	m_radius = m_mesh->GetRadius();
 
-	Vec3Copy( &m_center, m_mesh->GetCenter() );
-	Vec3Copy( &m_box, m_mesh->GetBox() );
-	Vec3Multiply( &m_box, &m_transform.scale );
+	m_center = m_mesh->GetCenter();
+	m_box    = m_mesh->GetBox();
 
-	m_radius *= Vec3Max( &m_transform.scale );
+    m_box.x *= m_transform.scale.x;
+    m_box.y *= m_transform.scale.y;
+    m_box.z *= m_transform.scale.z;
+
+	m_radius *= zpl_max3( m_transform.scale.x, m_transform.scale.y, m_transform.scale.z );
 
 	CSceneNode::OnResize();
 }
@@ -171,7 +174,7 @@ void CActor::Update( f32 dt, void *userData )
 		m_state.isCulled = !camera->SphereIn( &m_transform.translation, m_radius );
 
 		if( !m_state.isCulled )
-			m_state.isCulled = !camera->BoxIn( &m_transform.translation, &m_box, &m_transform.matrix.orientation );
+			m_state.isCulled = !camera->BoxIn( &m_transform.translation, &m_box );
 	}
 
 	if ( IsPhysic() )
@@ -182,9 +185,14 @@ void CActor::Update( f32 dt, void *userData )
 		const btVector3& origin = worldTransform.getOrigin();
 		const btQuaternion& quat = worldTransform.getRotation();
 
-		Vec3Set( &m_transform.translation, origin.getX(), origin.getY(), origin.getZ());
-		QuatSet( &m_transform.quaternion, quat.getX(), quat.getY(), quat.getZ(), quat.getW() );
-		QuatGetRot( &m_transform.quaternion, &m_transform.rotation );
+        m_transform.translation.x = origin.getX();
+        m_transform.translation.y = origin.getY();
+        m_transform.translation.z = origin.getZ();
+
+        m_transform.quaternion.x = quat.getX();
+        m_transform.quaternion.y = quat.getY();
+        m_transform.quaternion.z = quat.getZ();
+        m_transform.quaternion.w = quat.getW();
 
         CSceneNode::Update(dt, userData);
 
@@ -212,7 +220,7 @@ void CActor::Render( CDriver *driver )
 
 	driver->MatrixPush();
 	{
-		driver->MatrixMultiply( &m_transform.matrix.world );
+		driver->MatrixMultiply( &m_matrix );
 		m_mesh->Render( driver );
 	}
 	driver->MatrixPop();

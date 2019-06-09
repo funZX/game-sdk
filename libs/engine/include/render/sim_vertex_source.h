@@ -30,10 +30,6 @@
 #include <core/sim_core.h>
 #include <core/sim_interfaces.h>
 
-#include <math/sim_matrix4.h>
-#include <math/sim_vec2.h>
-#include <math/sim_vec3.h>
-
 #include <render/sim_render.h>
 
 namespace sim
@@ -41,8 +37,8 @@ namespace sim
 namespace rnr
 {
 // ----------------------------------------------------------------------//
-struct TSphere;
-struct TCube;
+struct Sphere;
+struct Cube;
 
 class CEffect;
 class CMaterial;

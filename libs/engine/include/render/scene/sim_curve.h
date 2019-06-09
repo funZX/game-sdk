@@ -27,12 +27,10 @@
 #ifndef __SIM_CURVE_H
 #define __SIM_CURVE_H
 
+#include <core/sim_core.h>
+
 #include <render/scene/sim_scene_node.h>
 #include <render/sim_render.h>
-
-#include <math/sim_vec4.h>
-#include <math/sim_vec3.h>
-
 #include <render/sim_driver.h>
 
 namespace sim

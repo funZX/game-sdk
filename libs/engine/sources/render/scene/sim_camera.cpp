@@ -24,12 +24,9 @@
 *    SOFTWARE.
 */
 
-#include <math/sim_vec2.h>
-#include <math/sim_vec3.h>
-#include <math/sim_matrix4.h>
+#include <core/sim_core.h>
 
 #include <render/scene/sim_camera.h>
-
 #include <render/sim_rect_2d.h>
 #include <render/sim_driver.h>
 
@@ -42,17 +39,10 @@ namespace rnr
 CCamera::CCamera()
 	: CSceneNode()
 {
-	Matrix4ToIdentity( &m_perspectiveMatrix );
-	Matrix4ToIdentity( &m_orthographicMatrix );
+	zpl_mat4_identity( &m_perspectiveMatrix );
+    zpl_mat4_identity( &m_orthographicMatrix );
 
-	Matrix4ToIdentity( &m_viewMatrix );
-
-    Matrix4GetFront(&m_transform.matrix.orientation, &m_transform.axis.direction);
-    Vec3Invert(&m_transform.axis.direction);
-
-	m_speed			= 1.0f;
-
-	m_fieldOfView	= 60.0f;
+    m_fieldOfView	= 60.0f;
 	m_nearPlane		= 0.1f;
 	m_farPlane		= 100.0f;
 }
@@ -76,69 +66,35 @@ CCamera::~CCamera()
 
 void CCamera::SetPerspective( CRect2D *rect )
 {
-	TVec2 size;
+	Vec2 size;
 	size.x = ( f32 ) rect->Width();
 	size.y = ( f32 ) rect->Height();
 
-	Matrix4FromPerspective( &m_perspectiveMatrix, m_fieldOfView, size.x / size.y, m_nearPlane, m_farPlane );
+    zpl_mat4_perspective( &m_perspectiveMatrix, zpl_to_radians(m_fieldOfView), size.x / size.y, m_nearPlane, m_farPlane );
 }
 
 // ----------------------------------------------------------------------//
 
 void CCamera::SetOrthographic( CRect2D *rect)
 {
-	TVec2 size;
+	Vec2 size;
 	size.x = ( f32 ) rect->Width();
 	size.y = ( f32 ) rect->Height();
 
-	Matrix4FromOrtho( &m_orthographicMatrix, rect->Left(), rect->Right(), rect->Bottom(), rect->Top(), -1.0f, 1.0f );
-}
-
-// ----------------------------------------------------------------------//
-
-void CCamera::Move( f32 dt, bool forward )
-{
-	TVec3 v;
-	f32 speed = m_speed * dt;
-
-	if( !forward ) {
-	    speed = -speed;
-	}
-
-	Vec3Scale( &v, &m_transform.axis.direction, speed );
-	Vec3Add( &m_transform.translation, &v );
-}
-
-// ----------------------------------------------------------------------//
-
-void CCamera::Strafe( f32 dt, bool left )
-{
-	TVec3 v;
-	f32 speed = m_speed * dt;
-
-	if( left ) {
-	    speed = -speed;
-	}
-
-	Matrix4GetSide( &m_transform.matrix.orientation, &v );
-	Vec3Scale( &v, speed );
-	Vec3Add( &m_transform.translation, &m_transform.translation, &v );
+    zpl_mat4_ortho3d( &m_orthographicMatrix, rect->Left(), rect->Right(), rect->Bottom(), rect->Top(), -1.0f, 1.0f );
 }
 
 // ----------------------------------------------------------------------//
 
 void CCamera::Update( f32 dt, void *userData )
 {
-	TVec3 minusPos;
+	Vec3 minusPos;
 
-	Vec3Copy( &minusPos, &m_transform.translation );
-	Vec3Invert( &minusPos );
-
-	Matrix4FromDirectionNoRoll( &m_transform.matrix.orientation, &m_transform.axis.direction );
-	Matrix4Copy( &m_viewMatrix, &m_transform.matrix.orientation);
-	Matrix4Translate( &m_viewMatrix, &minusPos );
-
-    BindWorldMatrix();
+	minusPos = m_transform.translation;
+    zpl_vec3_mul( &minusPos, minusPos, -1.0f );
+    zpl_mat4_from_quat( &m_matrix, m_transform.quaternion );
+    
+    m_matrix.w.xyz = minusPos;
 
 	ExtractClipPlanes();
 }
@@ -147,19 +103,19 @@ void CCamera::Update( f32 dt, void *userData )
 
 void CCamera::Render( CDriver *driver )
 {
-	driver->SetEyePosition( &m_transform.translation );
-	driver->SetEyeDirection( &m_transform.axis.direction );
+	driver->SetEyePosition( m_transform.translation );
+	driver->SetEyeDirection( m_matrix.y.xyz );
 }
 
 // ----------------------------------------------------------------------//
 
 void CCamera::ExtractClipPlanes( void )
 {
-	static TMatrix4 projViewMatrix;
+	static Mat4 projViewMatrix;
 
-	Matrix4Multiply( &m_perspectiveMatrix, &m_viewMatrix, &projViewMatrix );
+    zpl_mat4_mul( &projViewMatrix, &m_matrix , &m_perspectiveMatrix );
 
-	register TPlane *fp;
+	register Plane *fp;
 	register f32 *pv = (f32*) &projViewMatrix;
     register f32 rmag;
 
@@ -170,7 +126,7 @@ void CCamera::ExtractClipPlanes( void )
     fp->c = pv[ 14 ] + pv[  2 ];
     fp->d = pv[ 15 ] + pv[  3 ];
 
-    rmag = RSqrt( SIM_SQR( fp->a ) + SIM_SQR( fp->b ) + SIM_SQR( fp->c ) );
+    rmag = zpl_rsqrt( zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
 
 	fp->a *= rmag;
 	fp->b *= rmag;
@@ -184,7 +140,7 @@ void CCamera::ExtractClipPlanes( void )
     fp->c = pv[ 14 ] - pv[  2 ];
     fp->d = pv[ 15 ] - pv[  3 ];
 
-    rmag = RSqrt( SIM_SQR( fp->a ) + SIM_SQR( fp->b ) + SIM_SQR( fp->c ) );
+    rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
 
 	fp->a *= rmag;
 	fp->b *= rmag;
@@ -198,7 +154,7 @@ void CCamera::ExtractClipPlanes( void )
     fp->c = pv[ 14 ] - pv[  6 ];
     fp->d = pv[ 15 ] - pv[  7 ];
 
-    rmag = RSqrt( SIM_SQR( fp->a ) + SIM_SQR( fp->b ) + SIM_SQR( fp->c ) );
+    rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
 
 	fp->a *= rmag;
 	fp->b *= rmag;
@@ -212,7 +168,7 @@ void CCamera::ExtractClipPlanes( void )
     fp->c = pv[ 14 ] + pv[  6 ];
     fp->d = pv[ 15 ] + pv[  7 ];
 
-    rmag = RSqrt( SIM_SQR( fp->a ) + SIM_SQR( fp->b ) + SIM_SQR( fp->c ) );
+    rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
 
 	fp->a *= rmag;
 	fp->b *= rmag;
@@ -226,7 +182,7 @@ void CCamera::ExtractClipPlanes( void )
     fp->c = pv[ 14 ] + pv[ 10 ];
     fp->d = pv[ 15 ] + pv[ 11 ];
 
-    rmag = RSqrt( SIM_SQR( fp->a ) + SIM_SQR( fp->b ) + SIM_SQR( fp->c ) );
+    rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
 
 	fp->a *= rmag;
 	fp->b *= rmag;
@@ -240,7 +196,7 @@ void CCamera::ExtractClipPlanes( void )
     fp->c = pv[ 14 ] - pv[ 10 ];
     fp->d = pv[ 15 ] - pv[ 11 ];
 
-    rmag = RSqrt( SIM_SQR( fp->a ) + SIM_SQR( fp->b ) + SIM_SQR( fp->c ) );
+    rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
 
 	fp->a *= rmag;
 	fp->b *= rmag;
@@ -250,165 +206,89 @@ void CCamera::ExtractClipPlanes( void )
 
 // ----------------------------------------------------------------------//
 
-bool CCamera::SphereIn( const TVec3 *pos, const f32 rad ) const
+bool CCamera::SphereIn( Vec3 *pos, const f32 rad )
 {
-	if( Vec3DistToPlane( pos, &m_leftClipPlane )	<= -rad ) return false;
-	if( Vec3DistToPlane( pos, &m_rightClipPlane )	<= -rad ) return false;
-	if( Vec3DistToPlane( pos, &m_nearClipPlane )	<= -rad ) return false;
-	if( Vec3DistToPlane( pos, &m_farClipPlane )	<= -rad ) return false;
-	if( Vec3DistToPlane( pos, &m_topClipPlane )	<= -rad ) return false;
-	if( Vec3DistToPlane( pos, &m_bottomClipPlane )	<= -rad ) return false;
+	if(zpl_plane_distance( &m_leftClipPlane, pos )	<= -rad ) return false;
+	if(zpl_plane_distance( &m_rightClipPlane, pos)	<= -rad ) return false;
+	if(zpl_plane_distance( &m_nearClipPlane, pos)	<= -rad ) return false;
+	if(zpl_plane_distance( &m_farClipPlane, pos)	<= -rad ) return false;
+	if(zpl_plane_distance( &m_topClipPlane, pos)	<= -rad ) return false;
+	if(zpl_plane_distance( &m_bottomClipPlane, pos)	<= -rad ) return false;
 
 	return true;
 }
 
 // ----------------------------------------------------------------------//
 
-bool CCamera::PointIn( const TVec3 *pos ) const
+bool CCamera::PointIn( Vec3 *pos )
 {
-	if( Vec3DistToPlane( pos, &m_leftClipPlane )	<= 0.0f ) return false;
-	if( Vec3DistToPlane( pos, &m_rightClipPlane )	<= 0.0f ) return false;
-	if( Vec3DistToPlane( pos, &m_nearClipPlane )	<= 0.0f ) return false;
-	if( Vec3DistToPlane( pos, &m_farClipPlane )	<= 0.0f ) return false;
-	if( Vec3DistToPlane( pos, &m_topClipPlane )	<= 0.0f ) return false;
-	if( Vec3DistToPlane( pos, &m_bottomClipPlane )	<= 0.0f ) return false;
+	if(zpl_plane_distance( &m_leftClipPlane, pos)	<= 0.0f ) return false;
+	if(zpl_plane_distance( &m_rightClipPlane, pos)	<= 0.0f ) return false;
+	if(zpl_plane_distance( &m_nearClipPlane, pos)	<= 0.0f ) return false;
+	if(zpl_plane_distance( &m_farClipPlane, pos)	<= 0.0f ) return false;
+	if(zpl_plane_distance( &m_topClipPlane, pos)	<= 0.0f ) return false;
+	if(zpl_plane_distance( &m_bottomClipPlane, pos)	<= 0.0f ) return false;
 
 	return true;
 }
 
 // ----------------------------------------------------------------------//
 
-bool CCamera::BoxIn( const TVec3 *pos, const TVec3 *bounds )
+bool CCamera::BoxIn( Vec3 *pos, Vec3 *bounds )
 {
-	static TVec3 v;
+	static Vec3 v, b;
 
-	Vec3Set( &v, -bounds->x, -bounds->y, -bounds->z );
-	Vec3Add( &v, pos );
-
-	if( PointIn( &v ) ) {
-		return true;
-	}
-
-	Vec3Set( &v, +bounds->x, -bounds->y, -bounds->z );
-	Vec3Add( &v, pos );
+    b = zpl_vec3f( -bounds->x, -bounds->y, -bounds->z );
+    zpl_vec3_add( &v, v, *pos );
 
 	if( PointIn( &v ) ) {
 		return true;
 	}
 
-	Vec3Set( &v, -bounds->x, +bounds->y, -bounds->z );
-	Vec3Add( &v, pos );
+    b = zpl_vec3f( +bounds->x, -bounds->y, -bounds->z );
+    zpl_vec3_add(&v, v, *pos);
 
 	if( PointIn( &v ) ) {
 		return true;
 	}
 
-	Vec3Set( &v, +bounds->x, +bounds->y, -bounds->z );
-	Vec3Add( &v, pos );
+    b = zpl_vec3f( -bounds->x, +bounds->y, -bounds->z );
+    zpl_vec3_add(&v, v, *pos);
 
 	if( PointIn( &v ) ) {
 		return true;
 	}
 
-	Vec3Set( &v, +bounds->x, +bounds->y, +bounds->z );
-	Vec3Add( &v, pos );
+    b = zpl_vec3f( +bounds->x, +bounds->y, -bounds->z );
+    zpl_vec3_add(&v, v, *pos);
 
 	if( PointIn( &v ) ) {
 		return true;
 	}
 
-	Vec3Set( &v, -bounds->x, +bounds->y, +bounds->z );
-	Vec3Add( &v, pos );
+    b = zpl_vec3f( +bounds->x, +bounds->y, +bounds->z );
+    zpl_vec3_add(&v, v, *pos);
 
 	if( PointIn( &v ) ) {
 		return true;
 	}
 
-	Vec3Set( &v, -bounds->x, -bounds->y, +bounds->z );
-	Vec3Add( &v, pos );
+    b = zpl_vec3f( -bounds->x, +bounds->y, +bounds->z );
+    zpl_vec3_add(&v, v, *pos);
 
 	if( PointIn( &v ) ) {
 		return true;
 	}
 
-	Vec3Set( &v, +bounds->x, -bounds->y, +bounds->z );
-	Vec3Add( &v, pos );
+    b = zpl_vec3f( -bounds->x, -bounds->y, +bounds->z );
+    zpl_vec3_add(&v, v, *pos);
 
 	if( PointIn( &v ) ) {
 		return true;
 	}
 
-	return false;
-}
-
-// ----------------------------------------------------------------------//
-
-bool CCamera::BoxIn( const TVec3 *pos, const TVec3 *bounds, const TMatrix4 *orientMat )
-{
-	static TVec3		    v;
-	static TMatrix4		m;
-
-	Matrix4Transpose( orientMat, &m );
-
-	Vec3Set( &v, -bounds->x, -bounds->y, -bounds->z );
-	Matrix4Transform( &m, &v, &v );
-	Vec3Add( &v, pos );
-
-	if( PointIn( &v ) ) {
-		return true;
-	}
-
-	Vec3Set( &v, +bounds->x, -bounds->y, -bounds->z );
-	Matrix4Transform( &m, &v, &v );
-	Vec3Add( &v, pos );
-
-	if( PointIn( &v ) ) {
-		return true;
-	}
-
-	Vec3Set( &v, -bounds->x, +bounds->y, -bounds->z );
-	Matrix4Transform( &m, &v, &v );
-	Vec3Add( &v, pos );
-
-	if( PointIn( &v ) ) {
-		return true;
-	}
-
-	Vec3Set( &v, +bounds->x, +bounds->y, -bounds->z );
-	Matrix4Transform( &m, &v, &v );
-	Vec3Add( &v, pos );
-
-	if( PointIn( &v ) ) {
-		return true;
-	}
-
-	Vec3Set( &v, +bounds->x, +bounds->y, +bounds->z );
-	Matrix4Transform( &m, &v, &v );
-	Vec3Add( &v, pos );
-
-	if( PointIn( &v ) ) {
-		return true;
-	}
-
-	Vec3Set( &v, -bounds->x, +bounds->y, +bounds->z );
-	Matrix4Transform( &m, &v, &v );
-	Vec3Add( &v, pos );
-
-	if( PointIn( &v ) ) {
-		return true;
-	}
-
-	Vec3Set( &v, -bounds->x, -bounds->y, +bounds->z );
-	Matrix4Transform( &m, &v, &v );
-	Vec3Add( &v, pos );
-
-	if( PointIn( &v ) ) {
-		return true;
-	}
-
-	Vec3Set( &v, +bounds->x, -bounds->y, +bounds->z );
-	Matrix4Transform( &m, &v, &v );
-	Vec3Add( &v, pos );
+    b = zpl_vec3f( +bounds->x, -bounds->y, +bounds->z );
+    zpl_vec3_add(&v, v, *pos);
 
 	if( PointIn( &v ) ) {
 		return true;

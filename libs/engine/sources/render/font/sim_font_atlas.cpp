@@ -283,7 +283,7 @@ bool CFontAtlas::BinPack(stl::CPool<CFontNode>* pool, s32 texWidth, s32 texHeigh
 // ----------------------------------------------------------------------//
 void CFontAtlas::InitEffect()
 {
-	const char* vsource =
+	const s8* vsource =
 		"attribute vec4 a_PositionL;"
 		"attribute vec2 a_TexCoord_0;"
 
@@ -299,12 +299,12 @@ void CFontAtlas::InitEffect()
 		"	v_Tex0			= a_TexCoord_0;"
 		"	v_Color			= u_Color * u_Material_Diffuse;"
 
-		"	gl_Position		= a_PositionL * u_Matrix_WorldViewProjection;"
+		"	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL;"
 		"}";
 
 	// ----------------------------------------------------------------------//
 
-	const char *psource =
+	const s8 *psource =
 		"precision mediump float;"
 
 		"uniform sampler2D	u_Sampler_Tex_0;"
@@ -321,7 +321,7 @@ void CFontAtlas::InitEffect()
 		"	gl_FragColor = col;"
 		"}";
 
-	static const char* attributes[] =
+	static const s8* attributes[] =
 	{
 		"a_PositionL",
 		"a_TexCoord_0"
@@ -334,7 +334,7 @@ void CFontAtlas::InitEffect()
 	for (u32 k = 0; k < nAttrib; k++)
 		m_effect->AddAttribute(attributes[k], k);
 
-	static const char* uniforms[] =
+	static const s8* uniforms[] =
 	{
 		"u_Matrix_WorldViewProjection",
 		"u_Sampler_Tex_0",
@@ -367,7 +367,7 @@ void CFontAtlas::InitMaterial()
 // ----------------------------------------------------------------------//
 	m_material = SIM_NEW CMaterial( m_name );
 	m_material->SetTexture( m_texture, 0 );
-	m_material->SetDiffuse( &col::Green );
+	m_material->SetDiffuse( col::Green );
 	m_material->SetEffect( m_effect );
 }
 

@@ -662,52 +662,52 @@ bool CFileSystem::LoadMaterial(const json_t* jsonRoot, s32 index)
 	json_t*  ambient	= json_object_get( jmr, "ambient" );
 	SIM_ASSERT( json_is_array(ambient) && 4 == json_array_size(ambient) );
 
-	TVec4 a;
+	Vec4 a;
 	a.x = (f32)json_real_value( json_array_get( ambient, 0 ) );
 	a.y = (f32)json_real_value( json_array_get( ambient, 1 ) );
 	a.z = (f32)json_real_value( json_array_get( ambient, 2 ) );
 	a.w = (f32)json_real_value( json_array_get( ambient, 3 ) );
-	material->SetAmbient( &a );
+	material->SetAmbient( a );
 
 	json_t*  diffuse	= json_object_get( jmr, "diffuse" );
 	SIM_ASSERT( json_is_array(diffuse) && 4 == json_array_size(diffuse) );
 
-	TVec4 d;
+	Vec4 d;
 	d.x = (f32)json_real_value( json_array_get( diffuse, 0 ) );
 	d.y = (f32)json_real_value( json_array_get( diffuse, 1 ) );
 	d.z = (f32)json_real_value( json_array_get( diffuse, 2 ) );
 	d.w = (f32)json_real_value( json_array_get( diffuse, 3 ) );
-	material->SetDiffuse( &d );
+	material->SetDiffuse( d );
 
 	json_t*  emissive	= json_object_get( jmr, "emissive" );
 	SIM_ASSERT( json_is_array(emissive) && 4 == json_array_size(emissive) );
 
-	TVec4 e;
+	Vec4 e;
 	e.x = (f32)json_real_value( json_array_get( emissive, 0 ) );
 	e.y = (f32)json_real_value( json_array_get( emissive, 1 ) );
 	e.z = (f32)json_real_value( json_array_get( emissive, 2 ) );
 	e.w = (f32)json_real_value( json_array_get( emissive, 3 ) );
-	material->SetEmissive( &e );
+	material->SetEmissive( e );
 
 	json_t*  specular	= json_object_get( jmr, "specular" );
 	SIM_ASSERT( json_is_array(specular) && 4 == json_array_size(specular) );
 
-	TVec4 s;
+	Vec4 s;
 	s.x = (f32)json_real_value( json_array_get( specular, 0 ) );
 	s.y = (f32)json_real_value( json_array_get( specular, 1 ) );
 	s.z = (f32)json_real_value( json_array_get( specular, 2 ) );
 	s.w = (f32)json_real_value( json_array_get( specular, 3 ) );
-	material->SetSpecular( &s );
+	material->SetSpecular( s );
 
 	json_t*  reflective = json_object_get(jmr, "reflective");
 	SIM_ASSERT(json_is_array(reflective) && 4 == json_array_size(reflective));
 
-	TVec4 r;
+	Vec4 r;
 	r.x = (f32)json_real_value(json_array_get(reflective, 0));
 	r.y = (f32)json_real_value(json_array_get(reflective, 1));
 	r.z = (f32)json_real_value(json_array_get(reflective, 2));
 	r.w = (f32)json_real_value(json_array_get(reflective, 3));
-	material->SetReflective( &r );
+	material->SetReflective( r );
 
 
 	f32	h;

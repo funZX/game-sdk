@@ -27,11 +27,10 @@
 #ifndef __SIM_SKY_BOX_H
 #define __SIM_SKY_BOX_H
 
+#include <core/sim_core.h>
+
 #include <render/sim_render.h>
 #include <core/sim_interfaces.h>
-
-#include <math/sim_vec4.h>
-#include <math/sim_vec3.h>
 
 namespace sim
 {

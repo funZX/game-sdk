@@ -27,14 +27,9 @@
 #ifndef __SIM_SCENE_NODE_H
 #define __SIM_SCENE_NODE_H
 
-#include <math/sim_matrix4.h>
-#include <math/sim_vec3.h>
-
 #include <core/sim_interfaces.h>
 #include <core/sim_balance_tree.h>
 #include <core/sim_octree.h>
-
-using namespace sim::mat;
 
 namespace sim
 {
@@ -63,42 +58,17 @@ public:
         Billboard,
     };
     // ------------------------------------------------------------------//
-	typedef struct
-	{
-		TVec3				translation;
-		TVec3				rotation;
-		TVec3				scale;
-
-		TQuat				quaternion;
-
-		struct
-		{
-			TVec3			side;
-			TVec3			up;
-			TVec3			direction;
-		} axis;
-
-		struct
-		{
-			TMatrix4		orientation;
-			TMatrix4		world;
-
-		} matrix;
-	
-	} TTransform;
-
-    // ------------------------------------------------------------------//
     typedef struct
     {
-        Shape					shape;
-        Type					type;
-        bool					isVisible;
-        bool					isCulled;
-        bool					isPhysic;
-        f32						mass;
-        f32						restitution;
-        f32						friction;
-        TVec3					inertia;
+        Shape		shape;
+        Type		type;
+        bool		isVisible;
+        bool		isCulled;
+        bool		isPhysic;
+        f32			mass;
+        f32			restitution;
+        f32			friction;
+        Vec3		inertia;
 
     } TState;
 
@@ -124,34 +94,19 @@ public:
 
 	CSceneNode*						GetChild( const std::string& name );
 
-	const u32						GetID() { return m_iD; }
+    inline const u32				GetID();
 
-	inline void						SetTranslation( f32 x, f32 y, f32 z )
-									{ Vec3Set( &m_transform.translation, x, y, z ); };
+    inline Transform*               GetTransform();
+    inline Mat4*                    GetMatrix();
 
-	inline TVec3*					GetTranslation()					{ return &m_transform.translation; };
+    inline void					    SetShape(Shape shape);
+    inline Shape				    GetShape();
 
-	inline void						SetRotation( f32 x, f32 y, f32 z )
-									{ Vec3Set( &m_transform.rotation, x, y, z ); };
+    inline void					    SetVisible(bool vis);
 
-	inline TVec3*					GetRotation()						{ return &m_transform.rotation; };
-
-	inline void						SetScale( f32 x, f32 y, f32 z )
-									{ Vec3Set( &m_transform.scale, x, y, z ); }
-
-	inline TVec3*					GetScale()							{ return &m_transform.scale; };
-
-	inline TMatrix4*				GetOrientationMatrix()				{ return &m_transform.matrix.orientation; }
-	inline TMatrix4*				GetWorldMatrix()					{ return &m_transform.matrix.world; }
-
-    inline void					    SetShape(Shape shape) { m_state.shape = shape; }
-    inline Shape				    GetShape() { return m_state.shape; }
-
-    inline void					    SetVisible(bool vis) { m_state.isVisible = vis; }
-
-    inline bool					    IsVisible() { return m_state.isVisible; }
-    inline bool					    IsCulled() { return m_state.isCulled; }
-    inline bool					    IsPhysic() { return m_state.isPhysic; }
+    inline bool					    IsVisible();
+    inline bool					    IsCulled();
+    inline bool					    IsPhysic();
 
 	// ------------------------------------------------------------------//
 
@@ -162,9 +117,6 @@ public:
 	// ------------------------------------------------------------------//
 
 protected:
-    void							BindOrientationMatrix();
-    void							BindWorldMatrix();
-
 	virtual void					OnResize();
 	virtual void					OnMove();
 	// ------------------------------------------------------------------//
@@ -173,12 +125,59 @@ protected:
 	CSceneNode*						m_parent;
 	TChildren*						m_children;
 
-	TTransform						m_transform;
+	Transform						m_transform;
+    Mat4                            m_matrix;
 
     TState					        m_state;
 	// ------------------------------------------------------------------//
 };
 
+
+inline const u32 CSceneNode::GetID()
+{ 
+    return m_iD; 
+}
+
+inline Transform* CSceneNode::GetTransform()
+{
+    return &m_transform;
+}
+
+inline Mat4* CSceneNode::GetMatrix()
+{
+    return &m_matrix;
+}
+
+
+inline void CSceneNode::SetShape(Shape shape) 
+{
+    m_state.shape = shape;
+}
+
+inline CSceneNode::Shape CSceneNode::GetShape()
+{ 
+    return m_state.shape; 
+}
+
+inline void CSceneNode::SetVisible(bool vis)
+{ 
+    m_state.isVisible = vis; 
+}
+
+inline bool CSceneNode::IsVisible() 
+{ 
+    return m_state.isVisible; 
+}
+
+inline bool CSceneNode::IsCulled() 
+{ 
+    return m_state.isCulled;
+}
+
+inline bool CSceneNode::IsPhysic() 
+{
+    return m_state.isPhysic;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

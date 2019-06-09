@@ -36,11 +36,11 @@ namespace sim
 
 CMaterial::CMaterial()
 {
-	Vec4ToWhite( &m_ambient );
-	Vec4ToWhite( &m_diffuse );
-	Vec4ToWhite( &m_specular );
-	Vec4ToWhite( &m_emissive );
-	Vec4ToBlack( &m_reflective );
+	m_ambient    = col::White;
+	m_diffuse    = col::White;
+	m_specular   = col::White;
+	m_emissive   = col::White;
+	m_reflective = col::Black;
 
 	m_shininess	 = 0.0f;
 	m_refraction = 0.0f;
@@ -72,11 +72,11 @@ void CMaterial::Update( f32 dt, void *userData )
 
 void CMaterial::Render( CDriver *driver )
 {
-	driver->SetMaterialAmbient( &m_ambient );
-	driver->SetMaterialDiffuse( &m_diffuse );
-	driver->SetMaterialSpecular( &m_specular );
-	driver->SetMaterialEmissive( &m_emissive );
-	driver->SetMaterialReflective( &m_reflective );
+	driver->SetMaterialAmbient( m_ambient );
+	driver->SetMaterialDiffuse( m_diffuse );
+	driver->SetMaterialSpecular( m_specular );
+	driver->SetMaterialEmissive( m_emissive );
+	driver->SetMaterialReflective( m_reflective );
 
 	driver->SetMaterialShininess( m_shininess );
 	driver->SetMaterialRefraction( m_refraction );

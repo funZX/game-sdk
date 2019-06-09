@@ -26,7 +26,6 @@
 
 #include <render/gui/sim_widget.h>
 #include <render/sim_driver.h>
-#include <render/sim_color.h>
 
 namespace sim
 {
@@ -42,7 +41,7 @@ CWidget::CWidget()
 	m_isEnabled = true;
 	m_isVisible = true;
 
-	Vec4Copy(&m_fillcolor, &col::Blueish);
+	m_fillcolor = col::Blueish;
 }
 
 // ----------------------------------------------------------------------//
@@ -63,9 +62,9 @@ CWidget::~CWidget()
 
 // ----------------------------------------------------------------------//
 
-void CWidget::SetColor(const TVec4* color)
+void CWidget::SetColor(Vec4 color)
 {
-	Vec4Copy( &m_fillcolor, color );
+	m_fillcolor = color;
 }
 
 // ----------------------------------------------------------------------//

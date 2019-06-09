@@ -112,7 +112,7 @@ void CBoneAnimation::Load( io::CMemStream* memstream )
 		}
 	}
 
-	Vec3Copy( &m_frames[ nFrames - 1 ].m_pose->m_velocity, &m_frames[ 0 ].m_pose->m_velocity );
+	m_frames[ nFrames - 1 ].m_pose->m_velocity = m_frames[ 0 ].m_pose->m_velocity;
 }
 
 // ----------------------------------------------------------------------//

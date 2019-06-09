@@ -148,8 +148,8 @@ void CEffect::ApplyTechnique( CDriver* driver )
 	driver->EnableDepthMask( m_technique.depthmask );
 	driver->EnableCulling( m_technique.cullface );
 	driver->EnableBlending( m_technique.blending );
-	driver->EnableBlendFunc( &m_technique.blendfunc );
-	driver->EnableDepthFunc( &m_technique.depthfunc );
+	driver->EnableBlendFunc( m_technique.blendfunc );
+	driver->EnableDepthFunc( m_technique.depthfunc );
 }
 
 // ----------------------------------------------------------------------//

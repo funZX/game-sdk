@@ -24,9 +24,6 @@
     <ClCompile Include="..\..\sources\core\sim_utf.cpp" />
     <ClCompile Include="..\..\sources\core\sys\sim_mutex.cpp" />
     <ClCompile Include="..\..\sources\core\sys\sim_thread.cpp" />
-    <ClCompile Include="..\..\sources\math\sim_matrix3.cpp" />
-    <ClCompile Include="..\..\sources\math\sim_matrix4.cpp" />
-    <ClCompile Include="..\..\sources\math\sim_quat.cpp" />
     <ClCompile Include="..\..\sources\physic\sim_physic.cpp" />
     <ClCompile Include="..\..\sources\render\animation\sim_bone_animation.cpp" />
     <ClCompile Include="..\..\sources\render\animation\sim_animation_blend.cpp" />
@@ -54,7 +51,6 @@
     <ClCompile Include="..\..\sources\render\scene\sim_sky_box.cpp" />
     <ClCompile Include="..\..\sources\render\sim_batch_2d.cpp" />
     <ClCompile Include="..\..\sources\render\sim_canvas.cpp" />
-    <ClCompile Include="..\..\sources\render\sim_color.cpp" />
     <ClCompile Include="..\..\sources\render\sim_driver.cpp" />
     <ClCompile Include="..\..\sources\render\sim_effect.cpp" />
     <ClCompile Include="..\..\sources\render\sim_render_texture.cpp" />
@@ -88,6 +84,7 @@
     <ClInclude Include="..\..\include\core\sim_core.h" />
     <ClInclude Include="..\..\include\core\sim_interfaces.h" />
     <ClInclude Include="..\..\include\core\sim_list.h" />
+    <ClInclude Include="..\..\include\core\sim_math.h" />
     <ClInclude Include="..\..\include\core\sim_pool.h" />
     <ClInclude Include="..\..\include\core\sim_octree.h" />
     <ClInclude Include="..\..\include\core\sim_polygon.h" />
@@ -99,15 +96,6 @@
     <ClInclude Include="..\..\include\core\sim_utf.h" />
     <ClInclude Include="..\..\include\core\sys\sim_mutex.h" />
     <ClInclude Include="..\..\include\core\sys\sim_thread.h" />
-    <ClInclude Include="..\..\include\math\sim_math.h" />
-    <ClInclude Include="..\..\include\math\sim_matrix3.h" />
-    <ClInclude Include="..\..\include\math\sim_matrix4.h" />
-    <ClInclude Include="..\..\include\math\sim_matrix4_stack.h" />
-    <ClInclude Include="..\..\include\math\sim_plane.h" />
-    <ClInclude Include="..\..\include\math\sim_quat.h" />
-    <ClInclude Include="..\..\include\math\sim_vec2.h" />
-    <ClInclude Include="..\..\include\math\sim_vec3.h" />
-    <ClInclude Include="..\..\include\math\sim_vec4.h" />
     <ClInclude Include="..\..\include\physic\sim_physic.h" />
     <ClInclude Include="..\..\include\render\animation\sim_bone_animation.h" />
     <ClInclude Include="..\..\include\render\animation\sim_animation_blend.h" />
@@ -135,7 +123,6 @@
     <ClInclude Include="..\..\include\render\scene\sim_sky_box.h" />
     <ClInclude Include="..\..\include\render\sim_batch_2d.h" />
     <ClInclude Include="..\..\include\render\sim_canvas.h" />
-    <ClInclude Include="..\..\include\render\sim_color.h" />
     <ClInclude Include="..\..\include\render\sim_driver.h" />
     <ClInclude Include="..\..\include\render\sim_effect.h" />
     <ClInclude Include="..\..\include\render\sim_render_texture.h" />
