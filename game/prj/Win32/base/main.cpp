@@ -51,5 +51,7 @@ int main(int argc, char *argv[])
 
         zpl_platform_update(&p);
         zpl_platform_display(&p);
+
+        Sleep(1);
     }
 }

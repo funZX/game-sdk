@@ -299,7 +299,7 @@ void CFontAtlas::InitEffect()
 		"	v_Tex0			= a_TexCoord_0;"
 		"	v_Color			= u_Color * u_Material_Diffuse;"
 
-		"	gl_Position		= a_PositionL * u_Matrix_WorldViewProjection;"
+		"	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL;"
 		"}";
 
 	// ----------------------------------------------------------------------//

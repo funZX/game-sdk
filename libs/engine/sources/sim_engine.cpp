@@ -124,7 +124,7 @@ void CEngine::InitEffect()
 		"	v_Tex0			= a_TexCoord_0;"
 		"	v_Color			= u_Color * u_Material_Diffuse;"
 
-		"	gl_Position		= a_PositionL * u_Matrix_WorldViewProjection;"
+		"	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL;"
 		"}";
 
 	// ----------------------------------------------------------------------//
@@ -271,7 +271,7 @@ f32 CEngine::Smooth( f32 deltaTime )
 	sum -= ( min1 + min2 + max1 + max2 );
 	sum *= 0.1428571f;
 
-	dt	 = zpl_smooth_step( deltaTime, sum, 0.5f );
+	dt	 = zpl_lerp( deltaTime, sum, 0.5f );
 
 	for( s32 k = 0; k < 10; k++ )
 		m_dtfilter[ k ] = m_dtfilter[ k + 1 ];

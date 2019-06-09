@@ -380,7 +380,7 @@ void CRect2D::Render( CDriver* driver, const CRect2D *texRect )
 	r[2] = zpl_vec2f( m_position.x,				m_position.y + m_size.y );
 	r[3] = zpl_vec2f( m_position.x + m_size.x,	m_position.y + m_size.y );
 
-	if (m_rotation != 0.0f)
+	if ( m_rotation != 0.0f )
 	{
 		Vec2 center;
 

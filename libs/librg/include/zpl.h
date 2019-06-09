@@ -13579,7 +13579,7 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
     if ((window_flags & ZPL_WINDOW_FULLSCREEN) || (window_flags & ZPL_WINDOW_BORDERLESS)) {
         style |= WS_POPUP;
     } else {
-        style |= WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX;
+        style |= WS_POPUPWINDOW | WS_CAPTION;
     }
     
     wr.left = 0;
