@@ -27,8 +27,9 @@
 #ifndef __SIM_VERTEX_GROUP_H
 #define __SIM_VERTEX_GROUP_H
 
+#include <core/sim_core.h>
+
 #include <render/sim_render.h>
-#include <math/sim_matrix4.h>
 
 namespace sim
 {
@@ -42,8 +43,8 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-struct TSphere;
-struct TCube;
+struct Sphere;
+struct Cube;
 
 class CDriver;
 class CMaterial;

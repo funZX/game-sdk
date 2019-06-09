@@ -35,26 +35,31 @@ namespace rnr
 CSceneNode::CSceneNode()
 	: COctreeVolume()
 {
-	m_iD		= id::Get();
+	m_iD		            = id::Get();
 
-	m_parent	= nullptr;
-	m_children	= SIM_NEW TChildren();
+	m_parent	            = nullptr;
+	m_children	            = SIM_NEW TChildren();
 
-	m_radius = 1.0f;
-	Vec3ToZero( &m_box );
-	Vec3ToZero( &m_center );
+	m_radius                = 1.0f;
 
-	Vec3ToZero( &m_transform.translation );
-	Vec3ToZero( &m_transform.rotation );
-	Vec3ToOne( &m_transform.scale );
+    m_box                   = axis::Origin.xyz;
+    m_center                = axis::Origin.xyz;
 
-	Vec3ToDirX( &m_transform.axis.side );
-	Vec3ToDirY( &m_transform.axis.up );
-	Vec3ToDirZ( &m_transform.axis.direction );
+    m_state.shape           = Shape::Box;
+    m_state.type            = Type::Default;
+    m_state.isVisible       = true;
+    m_state.isCulled        = false;
+    m_state.isPhysic        = false;
+    m_state.mass            = 0.0f;
+    m_state.restitution     = 0.0f;
+    m_state.friction        = 0.0f;
+    m_state.inertia         = axis::Origin.xyz;
 
-	QuatReset( &m_transform.quaternion);
-	Matrix4ToIdentity( &m_transform.matrix.orientation );
-	Matrix4ToIdentity( &m_transform.matrix.world );
+    m_transform.translation = axis::Origin.xyz;
+    m_transform.scale       = axis::Unit.xyz;
+    m_transform.quaternion  = axis::Look;
+
+    zpl_mat4_identity( &m_matrix );
 }
 
 // ----------------------------------------------------------------------//
@@ -109,7 +114,13 @@ CSceneNode* CSceneNode::GetChild( const std::string& name )
 
 void CSceneNode::Update( f32 dt, void *userData )
 {
+    zpl_mat4_from_quat( &m_matrix, m_transform.quaternion );
 
+    m_matrix.x.x *= m_transform.scale.x;
+    m_matrix.y.y *= m_transform.scale.y;
+    m_matrix.z.z *= m_transform.scale.z;
+
+    m_matrix.w.xyz = m_transform.translation;
 }
 
 // ----------------------------------------------------------------------//
@@ -119,33 +130,6 @@ void CSceneNode::Render( CDriver *driver )
 
 }
 
-// ----------------------------------------------------------------------//
-
-void CSceneNode::BindOrientationMatrix()
-{
-	Matrix4ToIdentity( &m_transform.matrix.orientation );
-
-	if( m_transform.rotation.y != 0.0f ) {
-		Matrix4RotateY( &m_transform.matrix.orientation, m_transform.rotation.y );
-	}
-
-	if( m_transform.rotation.x != 0.0f ) {
-		Matrix4RotateX( &m_transform.matrix.orientation, m_transform.rotation.x );
-	}
-
-	if( m_transform.rotation.z != 0.0f ) {
-		Matrix4RotateZ( &m_transform.matrix.orientation, m_transform.rotation.z );
-	}
-}
-
-// ----------------------------------------------------------------------//
-
-void CSceneNode::BindWorldMatrix()
-{
-	Matrix4ToTranslate( &m_transform.matrix.world, &m_transform.translation );
-	Matrix4Multiply( &m_transform.matrix.world, &m_transform.matrix.orientation );
-	Matrix4Scale( &m_transform.matrix.world, &m_transform.scale );
-}
 // ----------------------------------------------------------------------//
 
 void CSceneNode::OnResize()

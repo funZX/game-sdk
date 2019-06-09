@@ -27,11 +27,9 @@
 #ifndef __SIM_BATCHING_2D_H
 #define __SIM_BATCHING_2D_H
 
+#include <core/sim_core.h>
 #include <core/sim_interfaces.h>
-#include <math/sim_matrix4.h>
 #include <render/sim_render.h>
-
-#include <render/sim_color.h>
 
 namespace sim
 {

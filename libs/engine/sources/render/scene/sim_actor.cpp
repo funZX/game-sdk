@@ -49,21 +49,10 @@ namespace rnr
 CActor::CActor()
 	: CSceneNode()
 {
-	m_mesh			            = nullptr;
-
-	m_properties.shape			= Shape::Box;
-	m_properties.type			= Type::Default;
-	m_properties.isVisible		= true;
-	m_properties.isCulled		= false;
-	m_properties.isPhysic		= false;
+	m_mesh			        = nullptr;
 
 	m_collisionShape			= nullptr;
 	m_rigidBody					= nullptr;
-
-	m_mass						= 0.0f;
-	m_restitution				= 0.0f;
-	m_friction					= 0.0f;
-	Vec3ToZero( &m_inertia );
 }
 // ----------------------------------------------------------------------//
 
@@ -93,11 +82,14 @@ void CActor::BindSize()
 {
 	m_radius = m_mesh->GetRadius();
 
-	Vec3Copy( &m_center, m_mesh->GetCenter() );
-	Vec3Copy( &m_box, m_mesh->GetBox() );
-	Vec3Multiply( &m_box, &m_transform.scale );
+	m_center = m_mesh->GetCenter();
+	m_box    = m_mesh->GetBox();
 
-	m_radius *= Vec3Max( &m_transform.scale );
+    m_box.x *= m_transform.scale.x;
+    m_box.y *= m_transform.scale.y;
+    m_box.z *= m_transform.scale.z;
+
+	m_radius *= zpl_max3( m_transform.scale.x, m_transform.scale.y, m_transform.scale.z );
 
 	CSceneNode::OnResize();
 }
@@ -109,7 +101,7 @@ void CActor::AddPhysic(phy::CPhysic *physic)
 	if (IsPhysic())
 		return;
 
-	switch (Value(m_properties.shape))
+	switch (Value(m_state.shape))
 	{
 	case Shape::Box:
 	{
@@ -136,18 +128,18 @@ void CActor::AddPhysic(phy::CPhysic *physic)
 	}
 	}
 
-	btScalar mass(m_mass);
-	btScalar restitution(m_restitution);
-	btScalar friction(m_friction);
+	btScalar mass(m_state.mass);
+	btScalar restitution(m_state.restitution);
+	btScalar friction(m_state.friction);
 	btVector3 inertia(0.0f, 0.0f, 0.0f);
 
 	if (mass != 0.0f)
 	{
 		m_collisionShape->calculateLocalInertia(mass, inertia);
 
-		m_inertia.x = inertia.getX();
-		m_inertia.y = inertia.getY();
-		m_inertia.z = inertia.getZ();
+        m_state.inertia.x = inertia.getX();
+        m_state.inertia.y = inertia.getY();
+        m_state.inertia.z = inertia.getZ();
 	}
 
 	btTransform groundTransform;
@@ -161,7 +153,7 @@ void CActor::AddPhysic(phy::CPhysic *physic)
 
 	physic->Add(this);
 
-	m_properties.isPhysic = true;
+	m_state.isPhysic = true;
 }
 
 // ----------------------------------------------------------------------//
@@ -179,10 +171,10 @@ void CActor::Update( f32 dt, void *userData )
 	if ( IsVisible() )
 	{
 		CCamera *camera = (CCamera*) userData;
-		m_properties.isCulled = !camera->SphereIn( &m_transform.translation, m_radius );
+		m_state.isCulled = !camera->SphereIn( &m_transform.translation, m_radius );
 
-		if( !m_properties.isCulled )
-			m_properties.isCulled = !camera->BoxIn( &m_transform.translation, &m_box, &m_transform.matrix.orientation );
+		if( !m_state.isCulled )
+			m_state.isCulled = !camera->BoxIn( &m_transform.translation, &m_box );
 	}
 
 	if ( IsPhysic() )
@@ -193,18 +185,16 @@ void CActor::Update( f32 dt, void *userData )
 		const btVector3& origin = worldTransform.getOrigin();
 		const btQuaternion& quat = worldTransform.getRotation();
 
-		Vec3Set( &m_transform.translation, origin.getX(), origin.getY(), origin.getZ());
-		QuatSet( &m_transform.quaternion, quat.getX(), quat.getY(), quat.getZ(), quat.getW() );
-		QuatGetRot( &m_transform.quaternion, &m_transform.rotation );
+        m_transform.translation.x = origin.getX();
+        m_transform.translation.y = origin.getY();
+        m_transform.translation.z = origin.getZ();
 
-		//Matrix4FromQuat( &m_orientationMatrix, &m_quaternion );
-		BindOrientationMatrix();
-		BindWorldMatrix();
+        m_transform.quaternion.x = quat.getX();
+        m_transform.quaternion.y = quat.getY();
+        m_transform.quaternion.z = quat.getZ();
+        m_transform.quaternion.w = quat.getW();
 
-		Matrix4GetSide( &m_transform.matrix.orientation, &m_transform.axis.side );
-		Matrix4GetUp( &m_transform.matrix.orientation, &m_transform.axis.up );
-		Matrix4GetFront( &m_transform.matrix.orientation, &m_transform.axis.direction );
-		//QuatGetDir( &m_quaternion, &m_direction );
+        CSceneNode::Update(dt, userData);
 
 		CSceneNode::OnMove();
 	}
@@ -214,7 +204,7 @@ void CActor::Update( f32 dt, void *userData )
 
 void CActor::Render( CDriver *driver )
 {
-	switch(Value(m_properties.type))
+	switch(Value(m_state.type))
 	{
 	case Type::Default:
 		driver->EnableCulling( true );
@@ -230,7 +220,7 @@ void CActor::Render( CDriver *driver )
 
 	driver->MatrixPush();
 	{
-		driver->MatrixMultiply( &m_transform.matrix.world );
+		driver->MatrixMultiply( &m_matrix );
 		m_mesh->Render( driver );
 	}
 	driver->MatrixPop();

@@ -11,5 +11,5 @@ void main()
 	v_Color			= u_Color;
 	
 	gl_PointSize 	= 2.0;
-	gl_Position		= a_PositionL * u_Matrix_WorldViewProjection + a_NormalL * 0.1;
+	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL + a_NormalL * 0.1;
 }

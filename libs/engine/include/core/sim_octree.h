@@ -31,12 +31,8 @@
 #include <core/sim_balance_tree.h>
 #include <core/sim_core.h>
 
-#include <math/sim_vec3.h>
-
 #ifndef __SIM_OCTREE_H
 #define __SIM_OCTREE_H
-
-using namespace sim::mat;
 
 namespace sim
 {
@@ -49,15 +45,15 @@ class COctreeVolume
 public:
 	COctreeVolume();
 
-	inline const u32		GetID() { return id::Get();  }
+	inline u32		        GetID() { return id::Get();  }
 
-	inline void				SetBox(const TVec3* box) { Vec3Copy(&m_box, box); }
-	inline const TVec3*		GetBox() const { return &m_box; }
+	inline void				SetBox( Vec3 box ) { m_box = box; }
+	inline Vec3		        GetBox() const  { return m_box; }
 
-	inline void				SetCenter(const TVec3* center) { Vec3Copy(&m_center, center); }
-	inline const TVec3*		GetCenter() const { return &m_center; }
+	inline void				SetCenter( Vec3 center) { m_center = center; }
+	inline Vec3		        GetCenter() const { return m_center; }
 
-	inline void				SetRadius(f32 radius) { m_radius = radius; }
+	inline void				SetRadius( f32 radius ) { m_radius = radius; }
 	inline f32				GetRadius() const { return m_radius; }
 
 	// ----------------------------------------------------------------------//
@@ -76,8 +72,8 @@ public:
 	// ------------------------------------------------------------------//
 
 protected:
-	TVec3					m_box;
-	TVec3					m_center;
+	Vec3					m_box;
+	Vec3					m_center;
 	f32						m_radius;
 };
 
@@ -141,7 +137,7 @@ protected:
 	COctreeNode*			m_octreeparent;
 	TVolumeTree				m_volumetree;
 
-	TVec3					m_center;
+	Vec3					m_center;
 	f32						m_radius;
 };
 

@@ -27,14 +27,12 @@
 #ifndef __SIM_CANVAS_H
 #define __SIM_CANVAS_H
 
+#include <core/sim_core.h>
 #include <core/sim_singleton.h>
 #include <core/sim_interfaces.h>
 
 #include <render/sim_render.h>
 #include <render/gui/sim_widget.h>
-
-#include <math/sim_vec2.h>
-#include <math/sim_vec3.h>
 
 namespace sim
 {

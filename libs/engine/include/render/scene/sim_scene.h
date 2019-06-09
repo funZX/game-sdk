@@ -27,11 +27,9 @@
 #ifndef __SIM_SCENE_H
 #define __SIM_SCENE_H
 
+#include <core/sim_core.h>
 #include <core/sim_interfaces.h>
 #include <core/sim_octree.h>
-
-#include <math/sim_vec3.h>
-#include <math/sim_vec4.h>
 
 #include <render/sim_render.h>
 

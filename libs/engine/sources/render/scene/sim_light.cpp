@@ -38,16 +38,11 @@ CLight::CLight()
 {
 	m_channel	= CDriver::LightChannel::Light_0;
 
-	Vec4ToOne( &m_ambient );
-	Vec4ToOne( &m_diffuse );
-	Vec4ToOne( &m_specular );
+	m_ambient   = col::White;
+	m_diffuse   = col::White;
+	m_specular  = col::White;
 
 	m_intensity	= 0.25f;
-
-	Vec3ToZero( &m_position );
-	Vec3ToRDirZ( &m_direction );
-
-	m_isVisible			= true;
 }
 
 // ----------------------------------------------------------------------//
@@ -69,23 +64,21 @@ CLight::~CLight()
 
 void CLight::Update( f32 dt, void *userData )
 {
-
+    CSceneNode::Update(dt, userData);
 }
 
 // ----------------------------------------------------------------------//
 
 void CLight::Render( CDriver *driver )
 {
-	driver->SetLightChannel( m_channel );
-
+    driver->SetLightPosition( m_transform.translation );
+    driver->SetLightDirection( m_matrix.y.xyz );
+    
+    driver->SetLightChannel(m_channel);
 	driver->SetLightIntensity( m_intensity );
-
-	driver->SetLightPosition( &m_position );
-	driver->SetLightDirection( &m_direction );
-
-	driver->SetLightAmbient( &m_ambient );
-	driver->SetLightDiffuse( &m_diffuse );
-	driver->SetLightSpecular( &m_specular );
+	driver->SetLightAmbient( m_ambient );
+	driver->SetLightDiffuse( m_diffuse );
+	driver->SetLightSpecular( m_specular );
 }
 
 // ----------------------------------------------------------------------//

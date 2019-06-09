@@ -14,11 +14,11 @@ void main()
 {
 	vec4 posV;
 	
-	posV 		= a_PositionL * u_Matrix_WorldView;
+	posV 		= u_Matrix_WorldView * a_PositionL;
 	
-	v_NormalW 	= a_NormalL * u_Matrix_Normal;
+	v_NormalW 	= u_Matrix_Normal * a_NormalL;
 	v_ToEyeDirV = -posV.xyz;
 	v_Tex0 		= a_TexCoord_0;
 	
-	gl_Position = posV * u_Matrix_Projection;
+	gl_Position = u_Matrix_Projection * posV;
 }

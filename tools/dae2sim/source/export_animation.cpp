@@ -6,7 +6,7 @@
 
 #include "dae2sim.h"
 
-void export_animation(daeElement* animation, const std::string& path)
+int export_animation(daeElement* animation, const std::string& path)
 {
-
+    return 0;
 }

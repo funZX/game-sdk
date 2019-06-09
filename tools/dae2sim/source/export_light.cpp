@@ -6,7 +6,7 @@
 
 #include "dae2sim.h"
 
-void export_light(daeElement* light, const std::string& path)
+int export_light(daeElement* light, const std::string& path)
 {
-
+    return 0;
 }

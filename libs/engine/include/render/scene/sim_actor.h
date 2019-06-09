@@ -57,52 +57,16 @@ public:
 	virtual ~CActor();
 
 	// ------------------------------------------------------------------//
-	enum class Shape : u32
-	{
-		Box,
-		Sphere,
-		Cylinder,
-		Cone,
-	};
-	// ------------------------------------------------------------------//
-	enum class Type : u32
-	{
-		Default,
-		NotCulled,
-		Billboard,
-	};
-	// ------------------------------------------------------------------//
-	typedef struct
-	{
-		Shape					shape;
-		Type					type;
-		bool					isVisible;
-		bool					isCulled;
-		bool					isPhysic;
-
-	} TProperties;
-	// ------------------------------------------------------------------//
 
 	void						BindSize();
 
 	void						AddPhysic(phy::CPhysic* physic);
 	void						DelPhysic(phy::CPhysic* physic);
 
-	inline void					SetVisible( bool vis)			{ m_properties.isVisible = vis; }
-
-	inline bool					IsVisible()						{ return m_properties.isVisible; }
-	inline bool					IsCulled()						{ return m_properties.isCulled; }
-	inline bool					IsPhysic()						{ return m_properties.isPhysic; }
-
-	TProperties*				GetProperties()					{ return &m_properties; }
-
 	void						Update( f32 dt, void *userData  );
 	void						Render( CDriver *driver );
 
-	inline void					SetShape( Shape shape )			{ m_properties.shape = shape; }
-	inline Shape				GetShape()						{ return m_properties.shape; }
-
-	void						SetMesh( CMesh *mesh );
+    void						SetMesh( CMesh *mesh );
 	inline CMesh*				GetMesh()						{ return m_mesh; }
 
 	inline btRigidBody*			GetRigidBody()					{ return m_rigidBody; }
@@ -111,16 +75,11 @@ public:
 
 protected:
 	CMesh*						m_mesh;
-	TProperties					m_properties;
 
 	btCollisionShape*			m_collisionShape;
 	btRigidBody*				m_rigidBody;
 
-	f32							m_mass;
-	f32							m_restitution;
-	f32							m_friction;
-	TVec3						m_inertia;
-	// ------------------------------------------------------------------//
+    // ------------------------------------------------------------------//
 };
 
 // ----------------------------------------------------------------------//

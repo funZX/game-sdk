@@ -39,9 +39,9 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-TSphere*	gluNewSphere( s32 numSlices, f32 radius )
+Sphere*	gluNewSphere( s32 numSlices, f32 radius )
 {
-	TSphere *sphere			= SIM_NEW TSphere;
+	Sphere *sphere			= SIM_NEW Sphere;
 	sphere->vertexGroup		= SIM_NEW CVertexGroup();
 	sphere->vertexGroup->m_vertexSource = SIM_NEW CVertexSource();
 
@@ -49,7 +49,7 @@ TSphere*	gluNewSphere( s32 numSlices, f32 radius )
 	sphere->radius			= radius;
 
 	s32 numParallels = numSlices >> 1;
-	f32 angleStep = ( 2.0f * SIM_PI ) / ( ( f32 ) numSlices );
+	f32 angleStep = ( 2.0f * ZPL_PI ) / ( ( f32 ) numSlices );
 
 	s32 numIndices	= 6 * numParallels * numSlices;
 	s32 numVertices = ( numParallels + 1 ) * ( numSlices + 1 );
@@ -70,8 +70,8 @@ TSphere*	gluNewSphere( s32 numSlices, f32 radius )
 
 	for( s32 i = 0; i < numParallels + 1; i++ )
 	{
-		f32 sx = radius * sinf ( angleStep * (f32)i );
-		f32 sy = radius * cosf ( angleStep * (f32)i );
+		f32 sx = radius * zpl_sin( angleStep * (f32)i );
+		f32 sy = radius * zpl_cos( angleStep * (f32)i );
 		f32 sz = sx;
 
 		for( s32 j = 0; j < numSlices + 1; j++ )
@@ -80,9 +80,9 @@ TSphere*	gluNewSphere( s32 numSlices, f32 radius )
 			f32*	curVertex = &sphere->vertexGroup->m_vertexSource->m_vboData[ currIndex ];
 
 			// position
-			curVertex[ 0 ] = sx * sinf ( angleStep * (f32)j );
+			curVertex[ 0 ] = sx * zpl_sin( angleStep * (f32)j );
 			curVertex[ 1 ] = sy;
-			curVertex[ 2 ] = sz * cosf ( angleStep * (f32)j );
+			curVertex[ 2 ] = sz * zpl_cos( angleStep * (f32)j );
 
 			// texCoords
 			curVertex[ 3 ] = (f32) j / (f32) numSlices;
@@ -121,7 +121,7 @@ TSphere*	gluNewSphere( s32 numSlices, f32 radius )
 
 // ----------------------------------------------------------------------//
 
-TSphere* gluDelSphere( TSphere *sphere )
+Sphere* gluDelSphere( Sphere *sphere )
 {
 	SIM_ASSERT( sphere != nullptr );
 
@@ -138,7 +138,7 @@ TSphere* gluDelSphere( TSphere *sphere )
 
 // ----------------------------------------------------------------------//
 
-void gluRenderSphere( CDriver *driver, TSphere *sphere )
+void gluRenderSphere( CDriver *driver, Sphere *sphere )
 {
 	SIM_ASSERT( sphere != nullptr );
 	SIM_ASSERT( driver != nullptr );
@@ -148,9 +148,9 @@ void gluRenderSphere( CDriver *driver, TSphere *sphere )
 
 // ----------------------------------------------------------------------//
 
-TCube* gluNewCube( f32 sideSize )
+Cube* gluNewCube( f32 sideSize )
 {
-	TCube *cube								= SIM_NEW TCube;
+	Cube *cube								= SIM_NEW Cube;
 
 	cube->vertexGroup						= SIM_NEW CVertexGroup();
 	cube->vertexGroup->m_vertexSource		= SIM_NEW CVertexSource();
@@ -375,7 +375,7 @@ TCube* gluNewCube( f32 sideSize )
 
 // ----------------------------------------------------------------------//
 
-TCube* gluDelCube( TCube *cube )
+Cube* gluDelCube( Cube *cube )
 {
 	SIM_ASSERT( cube != nullptr );
 
@@ -392,7 +392,7 @@ TCube* gluDelCube( TCube *cube )
 
 // ----------------------------------------------------------------------//
 
-void gluRenderCube( CDriver *driver, TCube *cube )
+void gluRenderCube( CDriver *driver, Cube *cube )
 {
 	SIM_ASSERT( cube != nullptr );
 	SIM_ASSERT( driver != nullptr );
@@ -402,39 +402,41 @@ void gluRenderCube( CDriver *driver, TCube *cube )
 
 // ----------------------------------------------------------------------//
 
-void gluProject( mat::TVec3 *obj, mat::TMatrix4 *modelViewMatrix, mat::TMatrix4 *projectionMatrix, CRect2D *viewPort, mat::TVec3 *screen )
+void gluProject( Vec3* out, Vec3 in, Mat4 *modelViewMatrix, Mat4 *projectionMatrix, CRect2D *viewPort )
 {
-	mat::TVec3 in, out;
+	Vec4 a, b;
 	
-	in.x = obj->x;
-	in.y = obj->y;
-	in.x = obj->z;
+    a.x = in.x;
+    a.y = in.y;
+    a.x = in.z;
+    a.w = 0.0f;
 
-	mat::Matrix4Transform( modelViewMatrix, &in, &out );
-	mat::Matrix4TransformHomogen( projectionMatrix, &out, &in );
+    zpl_mat4_mul_vec4( &b, modelViewMatrix, a );
+    zpl_mat4_mul_vec4( &a, projectionMatrix, b );
+    zpl_vec3_mul( &a.xyz, a.xyz, 1.0f / a.w );
 
-	screen->x = viewPort->Left() + ( 1.0f + in.x ) * viewPort->Right()  * 0.5f;
-	screen->y = viewPort->Top()  + ( 1.0f + in.y ) * viewPort->Bottom() * 0.5f;
+    out->x = viewPort->Left() + ( 1.0f + in.x ) * viewPort->Right()  * 0.5f;
+    out->y = viewPort->Top()  + ( 1.0f + in.y ) * viewPort->Bottom() * 0.5f;
 
-	screen->z = ( 1.0f + in.z ) * 0.5f;
+    out->z = ( 1.0f + in.z ) * 0.5f;
 }
 
 // ----------------------------------------------------------------------//
 
-void gluTBN(mat::TVec3* TAN,
-	mat::TVec3* BIN,
-			const mat::TVec3* NOR,
-			const mat::TVec3* A, const mat::TVec3* B, const mat::TVec3* C,
-			const mat::TVec2* H, const mat::TVec2* K, const mat::TVec2* L )
+void gluTBN(Vec3* TAN,
+	        Vec3* BIN,
+			Vec3* NOR,
+			Vec3 A, Vec3 B, Vec3 C,
+			Vec2 H, Vec2 K, Vec2 L )
 {
-	mat::TVec3 D, E, T, U;
-	mat::TVec2 F, G;
+	Vec3 D, E, T, U;
+	Vec2 F, G;
 
-	mat::Vec3Diff( &D, B, A );													// D = B-A
-	mat::Vec3Diff( &E, C, A );													// E = C-A
+    zpl_vec3_sub( &D, B, A );													// D = B-A
+    zpl_vec3_sub( &E, C, A );													// E = C-A
 
-	mat::Vec2Diff( &F, K, H );													// F = K-H
-	mat::Vec2Diff( &G, L, H );													// G = L-H
+    zpl_vec2_sub( &F, K, H );													// F = K-H
+    zpl_vec2_sub( &G, L, H );													// G = L-H
 
 	// Expressed as:
 	//			D = F.s * T + F.t * U
@@ -467,31 +469,32 @@ void gluTBN(mat::TVec3* TAN,
 	//			TAN = T - (NOR·T) * NOR
 	//			BIN = U - (NOR·U) * NOR - (TAN·U) * TAN
 	
-	TVec3 n, t;
+	Vec3 n, t;
+    
+    n = *NOR;
+    zpl_vec3_mul( &n, n, zpl_vec3_dot( *NOR, T ) );
+    zpl_vec3_sub( TAN, T, n );
+    zpl_vec3_norm( TAN, *TAN );
 
-	mat::Vec3Copy( &n, NOR );
-	mat::Vec3Scale( &n, &n, Vec3Dot( NOR, &T ) );
-	mat::Vec3Diff( TAN, &T, &n );
-	mat::Vec3Normalize( TAN );
+    n = *NOR;
+    zpl_vec3_mul( &n, n, zpl_vec3_dot( *NOR, U ) );
 
-	mat::Vec3Copy( &n, NOR );
-	mat::Vec3Scale( &n, &n, Vec3Dot( NOR, &U ) );
-	mat::Vec3Copy( &t, TAN );
-	mat::Vec3Scale( &t, &t, Vec3Dot( TAN, &U ) );
-	mat::Vec3Diff( BIN, &U, &n );
-	mat::Vec3Diff( BIN, BIN, &t );
-	mat::Vec3Normalize( BIN );
+	t = *TAN;
+    zpl_vec3_mul( &t, t, zpl_vec3_dot( *TAN, U ) );
+    zpl_vec3_sub( BIN, U, n );
+    zpl_vec3_sub( BIN, *BIN, t );
+    zpl_vec3_norm( BIN, *BIN );
 }
 
 
 // ----------------------------------------------------------------------//
-void gluPickMatrix(mat::TMatrix4* m,  f32 x, f32 y, f32 deltax, f32 deltay, CRect2D* viewport)
+void gluPickMatrix(Mat4* m,  f32 x, f32 y, f32 deltax, f32 deltay, CRect2D* viewport)
 {
 	if (deltax <= 0 || deltay <= 0) 
 		return;
 
-	mat::TVec3 translation;
-	mat::TVec3 scale;
+	Vec3 translation;
+	Vec3 scale;
 
 	translation.x = (viewport->Width() - 2 * (x - viewport->Left())) / deltax;
 	translation.y = (viewport->Height() - 2 * (y - viewport->Top())) / deltay;
@@ -501,8 +504,10 @@ void gluPickMatrix(mat::TMatrix4* m,  f32 x, f32 y, f32 deltax, f32 deltay, CRec
 	scale.y = viewport->Height() / deltay;
 	scale.z = 1.0f;
 
-	mat::Matrix4ToTranslate( m, &translation );
-	mat::Matrix4Scale( m, &scale );
+    zpl_mat4_translate( m, translation );
+    m->x.x *= scale.x;
+    m->y.y *= scale.y;
+    m->z.z *= scale.z;
 }
 // ----------------------------------------------------------------------//
 }; // namespace rnr

@@ -27,6 +27,12 @@
 #ifndef __SIM_CORE_H
 #define __SIM_CORE_H
 
+#ifdef WIN32
+#	include <windows.h>
+#else
+#	include <sys/time.h>
+#endif
+
 #include <iostream>
 #include <map>
 #include <vector>
@@ -37,37 +43,31 @@
 #include <pthread.h>
 #include <stdarg.h>
 
-
-#ifdef WIN32
-#	include <windows.h>
-#else
-#	include <sys/time.h>
-#endif
-
 #include <sigcxx/sigcxx.hpp>
+#include <librg.h>
 
 namespace sim
 {
-	typedef			 char 			s8;
-	typedef unsigned char 			u8;
-	typedef			 short 			s16;
-	typedef unsigned short			u16;
-	typedef			 int			s32;
-	typedef unsigned int			u32;
-	typedef			 long long		s64;
-	typedef unsigned long long		u64;
+	typedef	char 			s8;
+	typedef zpl_u8 			u8;
+	typedef	zpl_i16			s16;
+	typedef zpl_u16			u16;
+	typedef	zpl_i32			s32;
+	typedef zpl_u32			u32;
+	typedef	zpl_i64		    s64;
+	typedef zpl_u64		    u64;
 
-	typedef float					f32;
-	typedef double					f64;
+	typedef zpl_f32			f32;
+	typedef zpl_f64			f64;
 
-	typedef size_t 					handle;
-	typedef signed int 				result;
+	typedef size_t 			handle;
+	typedef zpl_i32 		result;
 
 	namespace sys
 	{
-		u32							GetTime( void );
-		u64							GetTimeMicro( void );
-		void						Wait( u64 micro );
+		u32					GetTime( void );
+		u64					GetTimeMicro( void );
+		void				Wait( u64 micro );
 	};
 
 	namespace util
@@ -77,13 +77,13 @@ namespace sim
 
 	namespace hash
 	{
-		u32							Get( const std::string& str );
-		u32							Get( const s8* buffer, u32 len );
+		u32					Get( const std::string& str );
+		u32					Get( const s8* buffer, u32 len );
 	};
 
 	namespace id
 	{
-		u32							Get();
+		u32					Get();
 	};
 
 	// ----------------------------------------------------------------------//
@@ -100,19 +100,59 @@ namespace sim
 
 #define SIM_ASSERT( x )				assert(x)
 
-#define SIM_PRINT( ... )			printf( __VA_ARGS__ )
-#define SIM_WARN( ... )				printf( __VA_ARGS__ )
-#define SIM_ERROR( ... )			printf( __VA_ARGS__ )
-#define SIM_INFO( ... )				printf( __VA_ARGS__ )
+#define SIM_PRINT( ... )			zpl_printf( __VA_ARGS__ )
+#define SIM_WARN( ... )				zpl_printf( __VA_ARGS__ )
+#define SIM_ERROR( ... )			zpl_printf_err( __VA_ARGS__ )
+#define SIM_INFO( ... )				zpl_printf( __VA_ARGS__ )
 
 #define SIM_NEW						new
 #define SIM_DELETE					delete
 
-#define SIM_MEMCPY					memcpy
-#define SIM_MEMCMP					memcmp
-#define SIM_MEMSET					memset
+#define SIM_MEMCPY					zpl_memcopy
+#define SIM_MEMCMP					zpl_memcompare
+#define SIM_MEMSET					zpl_memset
 
 #define SIM_SAFE_DELETE( x )		{ if( x ) { SIM_DELETE x; x = nullptr; } }
 #define SIM_SAFE_DELETE_ARRAY( x )	{ if( x ) { SIM_DELETE [] x; x = nullptr; } }
 
+#include "sim_math.h"
+
+namespace sim
+{
+    namespace col
+    {
+    // ----------------------------------------------------------------------//
+
+    extern Vec4 White;
+    extern Vec4 Black;
+
+    extern Vec4 Red;
+    extern Vec4 Green;
+    extern Vec4 Blue;
+
+    extern Vec4 Cyan;
+    extern Vec4 Magenta;
+    extern Vec4 Yellow;
+
+    extern Vec4 Orange;
+    extern Vec4 Blueish;
+
+    // ----------------------------------------------------------------------//
+};
+
+namespace axis
+{
+    // ----------------------------------------------------------------------//
+
+    extern Vec4 Origin;
+    extern Vec4 Unit;
+
+    extern Vec4 Up;
+    extern Vec4 Front;
+    extern Vec4 Side;
+
+    extern Quat Look;
+    // ----------------------------------------------------------------------//
+};
+}; // namespace sim
 #endif // __SIM_CORE_H

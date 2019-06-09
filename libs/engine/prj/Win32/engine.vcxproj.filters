@@ -12,17 +12,11 @@
     <Filter Include="Header Files\core">
       <UniqueIdentifier>{054a0205-3588-4e19-b4f5-73ecdaeabd75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\math">
-      <UniqueIdentifier>{91c81ebd-4752-42cf-ae17-e792f336a30a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\render">
       <UniqueIdentifier>{23c6189d-b1b3-42c6-983a-bb46256edf0a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\core">
       <UniqueIdentifier>{effdb33d-b94c-4559-b442-f5569326b770}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\math">
-      <UniqueIdentifier>{c93ab69c-02c8-4761-84d0-7e4e4f58a010}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\render">
       <UniqueIdentifier>{3b1bcbbd-fdfb-46bc-8267-d047713ce6ae}</UniqueIdentifier>
@@ -95,15 +89,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\sources\math\sim_matrix3.cpp">
-      <Filter>Source Files\math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\sources\math\sim_matrix4.cpp">
-      <Filter>Source Files\math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\sources\math\sim_quat.cpp">
-      <Filter>Source Files\math</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\sources\render\font\sim_font.cpp">
       <Filter>Source Files\render\font</Filter>
     </ClCompile>
@@ -144,9 +129,6 @@
       <Filter>Source Files\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\sources\render\sim_canvas.cpp">
-      <Filter>Source Files\render</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\sources\render\sim_color.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\sources\render\sim_driver.cpp">
@@ -287,35 +269,11 @@
     <ClCompile Include="..\..\sources\vm\sim_squirrel_bindings.cpp">
       <Filter>Source Files\vm</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\sources\render\scene\sim_curve.cpp">
+      <Filter>Source Files\render\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\math\sim_math.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\math\sim_matrix3.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\math\sim_matrix4.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\math\sim_matrix4_stack.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\math\sim_plane.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\math\sim_quat.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\math\sim_vec2.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\math\sim_vec3.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\math\sim_vec4.h">
-      <Filter>Header Files\math</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\render\font\sim_font.h">
       <Filter>Header Files\render\font</Filter>
     </ClInclude>
@@ -359,9 +317,6 @@
       <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\render\sim_canvas.h">
-      <Filter>Header Files\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\render\sim_color.h">
       <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\render\sim_driver.h">
@@ -518,6 +473,12 @@
       <Filter>Header Files\render\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\core\sim_pool.h">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\scene\sim_curve.h">
+      <Filter>Header Files\render\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\core\sim_math.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
   </ItemGroup>

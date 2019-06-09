@@ -43,8 +43,8 @@ const CRect2D*		CRect2D::OneSizeRectFlip	= &OneSizeRectFlipStatic;
 // ----------------------------------------------------------------------//
 CRect2D::CRect2D()
 {
-	Vec2ToZero(&m_position);
-	Vec2ToZero(&m_size);
+	m_position  = axis::Origin.xyz.xy;
+	m_size      = axis::Unit.xyz.xy;
 
 	m_rotation	= 0.0f;
 	m_material	= nullptr;
@@ -137,7 +137,7 @@ void CRect2D::Bound( CRect2D *r )
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::Move( TVec2 *d )
+void CRect2D::Move( Vec2 *d )
 {
 	m_position.x += d->x;
 	m_position.y += d->y;
@@ -167,7 +167,7 @@ void CRect2D::MoveTo( f32 x, f32 y )
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::MoveTo( TVec2 *pos )
+void CRect2D::MoveTo( Vec2 *pos )
 {
 	m_position.x = pos->x;
 	m_position.y = pos->y;
@@ -252,7 +252,7 @@ void CRect2D::Intersect( CRect2D *r1, CRect2D *r2, CRect2D *dst )
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::SetCenter( TVec2 *loc )
+void CRect2D::SetCenter( Vec2 *loc )
 {
 	m_position.x = loc->x - ( m_size.x * 0.5f );
 	m_position.y = loc->y - ( m_size.y * 0.5f );
@@ -262,7 +262,7 @@ void CRect2D::SetCenter( TVec2 *loc )
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::GetCenter( TVec2 *loc ) const 
+void CRect2D::GetCenter( Vec2 *loc ) const 
 {
 	loc->x = m_position.x + ( m_size.x * 0.5f );
 	loc->y = m_position.y + ( m_size.y * 0.5f );
@@ -331,7 +331,7 @@ bool CRect2D::IsInside( f32 x, f32 y )
 
 // ----------------------------------------------------------------------//
 
-bool CRect2D::IsInside( TVec2 *v )
+bool CRect2D::IsInside( Vec2 *v )
 {
 	return ( v->x >= m_position.x && v->x < this->Right() && v->y >= m_position.y && v->y < this->Top() );
 }
@@ -372,24 +372,24 @@ void CRect2D::Update( f32 dt, void *userData )
 
 void CRect2D::Render( CDriver* driver, const CRect2D *texRect )
 {
-	static f32		v[ 20 ];
-	static TVec2	r[ 4 ];
+	static f32	v[ 20 ];
+	static Vec2	r[ 4 ];
 
-	Vec2Set( &r[0], m_position.x,				m_position.y );
-	Vec2Set( &r[1], m_position.x + m_size.x,	m_position.y );
-	Vec2Set( &r[2], m_position.x,				m_position.y + m_size.y);
-	Vec2Set( &r[3], m_position.x + m_size.x,	m_position.y + m_size.y);
+	r[0] = zpl_vec2f( m_position.x,				m_position.y );
+	r[1] = zpl_vec2f( m_position.x + m_size.x,	m_position.y );
+	r[2] = zpl_vec2f( m_position.x,				m_position.y + m_size.y );
+	r[3] = zpl_vec2f( m_position.x + m_size.x,	m_position.y + m_size.y );
 
-	if (m_rotation != 0.0f)
+	if ( m_rotation != 0.0f )
 	{
-		TVec2 center;
+		Vec2 center;
 
 		GetCenter( &center );
-
-		Vec2Rotate( &r[ 0 ], &center, m_rotation );
-		Vec2Rotate( &r[ 1 ], &center, m_rotation );
-		Vec2Rotate( &r[ 2 ], &center, m_rotation );
-		Vec2Rotate( &r[ 3 ], &center, m_rotation );
+        
+        zpl_vec2_rotate( &r[ 0 ], center, m_rotation );
+        zpl_vec2_rotate( &r[ 1 ], center, m_rotation );
+        zpl_vec2_rotate( &r[ 2 ], center, m_rotation );
+        zpl_vec2_rotate( &r[ 3 ], center, m_rotation );
 	}
 
 	v[  0 ] = r[ 0 ].x;

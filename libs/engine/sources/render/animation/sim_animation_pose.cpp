@@ -27,8 +27,6 @@
 #include <render/animation/sim_bone_mask.h>
 #include <render/animation/sim_animation_pose.h>
 
-using namespace sim::mat;
-
 namespace sim
 {
 namespace rnr
@@ -77,7 +75,7 @@ void CAnimationPose::Slerp( const CAnimationPose *from, const CAnimationPose *to
 
 		for ( u32 k = 0; k < m_nBones; k++ )
 			if ( mask->IsSet( k ) )
-				QuatSlerp( &m_bones[ k ].q, &from->m_bones[ k ].q, weight, &to->m_bones[ k ].q );
+                zpl_quat_slerp(&m_bones[k].q, from->m_bones[k].q, to->m_bones[k].q, weight);
 	} 
 	else
 	{
@@ -94,7 +92,7 @@ void CAnimationPose::Slerp( const CAnimationPose *from, const CAnimationPose *to
 		m_velocity.z	= from->m_velocity.z * w0 + to->m_velocity.z * weight;
 		
 		for ( u32 k = 0; k < m_nBones; k++)
-			QuatSlerp( &m_bones[ k ].q, &from->m_bones[ k ].q, weight, &to->m_bones[ k ].q );
+            zpl_quat_slerp(&m_bones[k].q, from->m_bones[k].q, to->m_bones[k].q, weight);
 	}
 }
 

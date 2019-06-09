@@ -27,12 +27,10 @@
 #ifndef __SIM_RECT_2D_H
 #define __SIM_RECT_2D_H
 
+#include <core/sim_core.h>
 #include <core/sim_interfaces.h>
-#include <math/sim_vec2.h>
-#include <math/sim_matrix4.h>
-#include <render/sim_render.h>
 
-using namespace sim::mat;
+#include <render/sim_render.h>
 
 namespace sim
 {
@@ -77,9 +75,9 @@ public:
 	f32						    Width( void ) const;
 	f32						    Height( void ) const;
 
-	void						Move( TVec2 *d );
+	void						Move( Vec2 *d );
 	void						Move( f32 x, f32 y );
-	void						MoveTo( TVec2 *pos );
+	void						MoveTo( Vec2 *pos );
 	void						MoveTo( f32 x, f32 y );
 
 	void						Inflate( f32 dw, f32 dh );
@@ -88,12 +86,12 @@ public:
 	void						Scale( f32 kw, f32 kh );
 	void						Rotate( f32 rotation);
 
-	void						SetCenter( TVec2 *pos );
-	void						GetCenter( TVec2 *pos ) const;
+	void						SetCenter( Vec2 *pos );
+	void						GetCenter( Vec2 *pos ) const;
 
 	void						AlignTo( CRect2D *, Align align );
 
-	bool						IsInside( TVec2 *pos );
+	bool						IsInside( Vec2 *pos );
 	bool						IsInside( f32 x, f32 y );
 
 	void						Bound( f32, f32, f32, f32);
@@ -120,8 +118,8 @@ protected:
 	virtual void				OnResize();
 	virtual void				OnRotate();
 	// ------------------------------------------------------------------//
-	TVec2						m_position;
-	TVec2						m_size;
+	Vec2						m_position;
+	Vec2						m_size;
 	f32							m_rotation;
 
 	CMaterial*					m_material;

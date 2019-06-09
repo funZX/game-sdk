@@ -79,8 +79,8 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 	u32 bw = m_width >> 2;
 	u32 bh = m_height >> 2;
 
-	bw = SIM_MAX( 2, bw );
-	bh = SIM_MAX( 2, bh );
+	bw = zpl_max( 2, bw );
+	bh = zpl_max( 2, bh );
 
 	u32 pvrSize = bw * bh * ( (bs  * bpp) >> 3 );
 
@@ -105,8 +105,8 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 	bw = m_width >> 2;
 	bh = m_height >> 2;
 
-	bw = SIM_MAX( 2, bw );
-	bh = SIM_MAX( 2, bh );
+	bw = zpl_max( 2, bw );
+	bh = zpl_max( 2, bh );
 
 	pvrSize = bw * bh * ( (bs  * bpp) >> 3 );
 
@@ -131,8 +131,8 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 	bw = m_width >> 2;
 	bh = m_height >> 2;
 
-	bw = SIM_MAX( 2, bw );
-	bh = SIM_MAX( 2, bh );
+	bw = zpl_max( 2, bw );
+	bh = zpl_max( 2, bh );
 
 	pvrSize = bw * bh * ( (bs  * bpp) >> 3 );
 
@@ -157,8 +157,8 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 	bw = m_width >> 2;
 	bh = m_height >> 2;
 
-	bw = SIM_MAX( 2, bw );
-	bh = SIM_MAX( 2, bh );
+	bw = zpl_max( 2, bw );
+	bh = zpl_max( 2, bh );
 
 	pvrSize = bw * bh * ( (bs  * bpp) >> 3 );
 
@@ -183,8 +183,8 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 	bw = m_width >> 2;
 	bh = m_height >> 2;
 
-	bw = SIM_MAX( 2, bw );
-	bh = SIM_MAX( 2, bh );
+	bw = zpl_max( 2, bw );
+	bh = zpl_max( 2, bh );
 
 	pvrSize = bw * bh * ( (bs  * bpp) >> 3 );
 
@@ -209,8 +209,8 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 	bw = m_width >> 2;
 	bh = m_height >> 2;
 
-	bw = SIM_MAX( 2, bw );
-	bh = SIM_MAX( 2, bh );
+	bw = zpl_max( 2, bw );
+	bh = zpl_max( 2, bh );
 
 	pvrSize = bw * bh * ( (bs  * bpp) >> 3 );
 

@@ -27,12 +27,10 @@
 #ifndef __SIM_LIGHT_H
 #define __SIM_LIGHT_H
 
+#include <core/sim_core.h>
+
 #include <render/scene/sim_scene_node.h>
 #include <render/sim_render.h>
-
-#include <math/sim_vec4.h>
-#include <math/sim_vec3.h>
-
 #include <render/sim_driver.h>
 
 namespace sim
@@ -51,29 +49,20 @@ public:
 	virtual ~CLight();
 
 	// ------------------------------------------------------------------//
-	inline bool							IsVisible()			{ return m_isVisible; }
+    inline Vec4					        GetAmbient();
+    inline void							SetAmbient(Vec4 ambient);
 
-	inline TVec4*						GetAmbient()		{ return &m_ambient; }
-	inline void							SetAmbient( TVec4 *col ) { Vec4Copy( &m_ambient, col ); }
+    inline Vec4					        GetDiffuse();
+    inline  void						SetDiffuse(Vec4 diffuse);
 
-	inline TVec4*						GetDiffuse()		{ return &m_diffuse; }
-	inline  void						SetDiffuse( TVec4 *col ) { Vec4Copy( &m_diffuse, col ); }
+    inline Vec4					        GetSpecular();
+    inline void							SetSpecular(Vec4 specular);
 
-	inline TVec4*						GetSpecular()		{ return &m_specular; }
-	inline void							SetSpecular( TVec4 *col ) { Vec4Copy( &m_specular, col ); }
+    inline f32							GetIntensity();
+    inline void							SetIntensity(f32 intensity);
 
-	inline f32							GetIntensity() { return m_intensity; }
-	inline void							SetIntensity( f32 intens ) { m_intensity = intens; }
-
-	inline void							SetChannel( CDriver::LightChannel sel ) { m_channel = sel; };
-	inline CDriver::LightChannel		GetChanel() { return m_channel; }
-
-	inline void							SetDirection( TVec3 *dir ) { Vec3Copy( &m_direction, dir ); }
-	inline TVec3*						GetDirection() { return &m_direction; };
-
-	inline void							SetPosition( TVec3 *pos ) { Vec3Copy( &m_position, pos ); }
-
-	inline TVec3*						GetPosition() { return &m_position; };
+    inline void							SetChannel(CDriver::LightChannel channel);
+	inline CDriver::LightChannel		GetChanel();
 
 	virtual void						Update( f32 dt, void *userData );
 	virtual void						Render( CDriver *driver );
@@ -84,18 +73,64 @@ protected:
 	// ------------------------------------------------------------------//
 	CDriver::LightChannel				m_channel;
 
-	TVec4								m_ambient;
-	TVec4								m_diffuse;
-	TVec4								m_specular;
+	Vec4								m_ambient;
+	Vec4								m_diffuse;
+	Vec4								m_specular;
 
 	f32									m_intensity;
-
-	TVec3								m_position;
-	TVec3								m_direction;
-
-	bool								m_isVisible;
 	// ------------------------------------------------------------------//
 };
+
+
+inline Vec4 CLight::GetAmbient() 
+{
+    return m_ambient; 
+}
+
+inline void CLight::SetAmbient(Vec4 ambient)
+{
+    m_ambient = ambient; 
+}
+
+inline Vec4 CLight::GetDiffuse()
+{
+    return m_diffuse;
+}
+
+inline void CLight::SetDiffuse(Vec4 diffuse) 
+{ 
+    m_diffuse = diffuse;
+}
+
+inline Vec4 CLight::GetSpecular() 
+{
+    return m_specular;
+}
+
+inline void CLight::SetSpecular(Vec4 specular)
+{ 
+    m_specular = specular;
+}
+
+inline f32 CLight::GetIntensity() 
+{ 
+    return m_intensity; 
+}
+
+inline void CLight::SetIntensity(f32 intensity)
+{ 
+    m_intensity = intensity; 
+}
+
+inline void CLight::SetChannel(CDriver::LightChannel channel)
+{ 
+    m_channel = channel;
+}
+
+inline CDriver::LightChannel CLight::GetChanel()
+{ 
+    return m_channel;
+}
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr
