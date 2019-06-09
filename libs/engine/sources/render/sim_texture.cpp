@@ -504,7 +504,16 @@ u32 CTexture::Generate( io::CMemStream* memstream, Type type, Wrap wrap, Filter 
 
 	return m_iD;
 }
-
+// ----------------------------------------------------------------------//
+bool CTexture::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
+bool CTexture::Save(io::CMemStream* ms)
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

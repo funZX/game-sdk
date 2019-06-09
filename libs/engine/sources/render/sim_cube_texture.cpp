@@ -231,7 +231,16 @@ u32 CCubeTexture::Generate(io::CMemStream* front, io::CMemStream* back,
 
 	return m_iD;
 }
-
+// ----------------------------------------------------------------------//
+bool CCubeTexture::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
+bool CCubeTexture::Save(io::CMemStream* ms)
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

@@ -53,7 +53,8 @@ public:
     CScript( const std::string &name, CSquirrel* sq );
     ~CScript();
 
-	SQRESULT						Load( io::CMemStream* ms );
+	virtual bool    				Load( io::CMemStream* ms );
+    virtual bool    				Save(io::CMemStream* ms);
 
 protected:
 	static SQInteger				Read(SQUserPointer pMemObject, SQUserPointer pDest, SQInteger size);

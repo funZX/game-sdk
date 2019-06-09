@@ -78,6 +78,9 @@ public:
 
 	virtual void					Update( f32 dt, void *userData );
 	virtual void					Render( CDriver *driver );
+
+    virtual bool					Load(io::CMemStream* ms);
+    virtual bool					Save(io::CMemStream* ms);
 	// ------------------------------------------------------------------//
 
 protected:

@@ -107,6 +107,9 @@ public:
 	void						Render( CDriver *driver, const CRect2D *texRect );
 
 	virtual void				Update(f32 dt, void *userData);
+
+    virtual bool    			Load(io::CMemStream* ms);
+    virtual bool    			Save(io::CMemStream* ms);
 	// ------------------------------------------------------------------//
 
 	static const CRect2D*		OneSizeRect;

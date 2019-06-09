@@ -53,18 +53,18 @@ public:
 	virtual ~CBoneHierarchy();
 
 	// ------------------------------------------------------------------//
-	u32			GetBonesCount()			{ return m_nBones; }
-	CBone*		GetBone( u32 index )	{ return &m_bones[index]; }
+	u32			        GetBonesCount()			{ return m_nBones; }
+	CBone*		        GetBone( u32 index )	{ return &m_bones[index]; }
 
-	void		Load( io::CMemStream* ms );
-	void		Save( io::CMemStream* ms );
+	virtual bool		Load( io::CMemStream* ms );
+	virtual bool		Save( io::CMemStream* ms );
 	// ------------------------------------------------------------------//
 
 protected:
 
 	// ------------------------------------------------------------------//
-	CBone*		m_bones;
-	u32			m_nBones;
+    CBone* m_bones;
+    u32			        m_nBones;
 	// ------------------------------------------------------------------//
 };
 

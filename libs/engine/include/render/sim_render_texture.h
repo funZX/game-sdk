@@ -51,6 +51,8 @@ public:
 
 	inline u32				GetBufferID() { return m_bufferiD; }
 
+    virtual bool    		Load(io::CMemStream* ms);
+    virtual bool    		Save(io::CMemStream* ms);
 protected:
 	u32			            m_bufferiD;
 	// ------------------------------------------------------------------//

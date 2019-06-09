@@ -72,8 +72,8 @@ public:
 
 	void					        Render( CDriver *driver );
 
-	void							Load( io::CMemStream* ms );
-	void							Save( io::CMemStream* ms );
+	virtual bool					Load( io::CMemStream* ms );
+	virtual bool					Save( io::CMemStream* ms );
 
 	void							BindMaterial();
 	CMaterial*						BindMaterial( CMaterial* material );

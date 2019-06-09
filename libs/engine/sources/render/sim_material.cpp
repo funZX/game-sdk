@@ -92,7 +92,16 @@ void CMaterial::Render( CDriver *driver )
 
 	SIM_CHECK_OPENGL();
 }
-
+// ----------------------------------------------------------------------//
+bool CMaterial::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
+bool CMaterial::Save(io::CMemStream* ms)
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

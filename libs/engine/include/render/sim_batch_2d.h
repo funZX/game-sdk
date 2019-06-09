@@ -43,13 +43,12 @@ class CDriver;
 class CVertexSource;
 class CVertexGroup;
 
-class CBatch2D : public IRenderable, public IEngineItem
+class CBatch2D : public IRenderable
 {
 	friend class CVertexGroup;
 
 public:
 	CBatch2D( CDriver *driver );
-	CBatch2D( const std::string& name, CDriver *driver );
 	virtual ~CBatch2D();
 
 	// ------------------------------------------------------------------//

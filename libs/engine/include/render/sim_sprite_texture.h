@@ -54,7 +54,8 @@ public:
 	void						AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h );
 	void						Render( CDriver *driver, CRect2D *rect, s32 frame );
 
-	void						Load( io::CMemStream* ms );
+    virtual bool				Load(io::CMemStream* ms);
+    virtual bool				Save(io::CMemStream* ms);
 	// ------------------------------------------------------------------//
 
 protected:

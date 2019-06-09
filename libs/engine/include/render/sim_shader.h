@@ -171,6 +171,8 @@ public:
 	static const TAttrib*		FindAttrib( const std::string& name );
 	static const TUniform*		FindUniform( const std::string& name );
 
+    virtual bool	            Load(io::CMemStream* ms);
+    virtual bool	            Save(io::CMemStream* ms);
 protected:
 
 	// ------------------------------------------------------------------//

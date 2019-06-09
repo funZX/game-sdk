@@ -88,7 +88,16 @@ void CRenderTexture::Generate( u32 width, u32 height )
 
 	SIM_CHECK_OPENGL();
 }
-
+// ----------------------------------------------------------------------//
+bool CRenderTexture::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
+bool CRenderTexture::Save(io::CMemStream* ms)
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

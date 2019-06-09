@@ -65,6 +65,9 @@ public:
 	void							Del( CSceneNode* node );
 
     inline CCamera*                 GetCamera();
+
+    virtual bool    				Load(io::CMemStream* ms);
+    virtual bool    				Save(io::CMemStream* ms);
 	// ------------------------------------------------------------------//
 
 protected:

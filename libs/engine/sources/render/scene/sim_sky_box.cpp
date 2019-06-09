@@ -253,6 +253,18 @@ void CSkyBox::InitEffect()
 
 	m_effect->SetTechnique(&technique);
 }
+
+// ----------------------------------------------------------------------//
+bool CSkyBox::Load(io::CMemStream* ms)
+{
+    return false;
+}
+
+// ----------------------------------------------------------------------//
+bool CSkyBox::Save(io::CMemStream* ms)
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

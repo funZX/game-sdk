@@ -18,7 +18,7 @@ CState_MenuMain::CState_MenuMain()
 // ----------------------------------------------------------------------//
 CState_MenuMain::~CState_MenuMain()
 {
-
+    SIM_PRINT("\n~CState_MenuMain");
 }
 // ----------------------------------------------------------------------//
 void CState_MenuMain::Update( f32 dt, void *userData )

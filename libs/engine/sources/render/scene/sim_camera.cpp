@@ -296,7 +296,16 @@ bool CCamera::BoxIn( Vec3 *pos, Vec3 *bounds )
 
 	return false;
 }
-
+// ----------------------------------------------------------------------//
+bool CCamera::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
+bool CCamera::Save(io::CMemStream* ms)
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

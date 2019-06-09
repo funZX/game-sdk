@@ -440,7 +440,16 @@ void CRect2D::Render( CDriver* driver, const CRect2D *texRect )
 	vs.m_vboData = nullptr;
 	vg.m_vboData = nullptr;
 }
-
+// ----------------------------------------------------------------------//
+bool CRect2D::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
+bool CRect2D::Save(io::CMemStream* ms)
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

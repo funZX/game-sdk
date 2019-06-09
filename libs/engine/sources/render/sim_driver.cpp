@@ -48,7 +48,7 @@ CRect2D*			CDriver::ScreenRect = &ScreenRectStatic;
 
 CDriver::CDriver()
 {
-	m_batch2D	= SIM_NEW CBatch2D( "Driver", this );
+	m_batch2D	= SIM_NEW CBatch2D( this );
 
 	Mat4StackClear( &m_worldStack );
 	Mat4StackClear( &m_viewStack );

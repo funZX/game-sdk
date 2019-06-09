@@ -83,6 +83,9 @@ public:
 
 	void						AddAttribute( const std::string& name, int index );
 	void						AddUniform( const std::string& name, int index);
+
+    virtual bool				Load(io::CMemStream* ms);
+    virtual bool				Save(io::CMemStream* ms);
 	// ------------------------------------------------------------------//
 protected:
 	// ------------------------------------------------------------------//

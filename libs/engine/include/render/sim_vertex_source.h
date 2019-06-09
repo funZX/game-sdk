@@ -158,6 +158,9 @@ public:
 	inline u32					GetID()					{ return m_iD; }
 
 	u32							Generate();
+
+    virtual bool				Load(io::CMemStream* ms);
+    virtual bool				Save(io::CMemStream* ms);
 	// ------------------------------------------------------------------//
 
 protected:

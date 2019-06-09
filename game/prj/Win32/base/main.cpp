@@ -7,26 +7,37 @@ CGame* game = 0;
 
 void onStart()
 {
-    game = SIM_NEW CGame("../../blob/");
-    game->Start();
+    if (!game)
+    {
+        game = SIM_NEW CGame("../../blob/");
+        game->Start();
+    }
 }
 
 void onUpdate()
 {
-    if (game) 
+    if (game)
+    {
         game->Run();
+    }
 }
 
 void onResize(int w, int h)
 {
-    game->Resize(w, h);
+    if (game)
+    {
+        game->Resize(w, h);
+    }
 }
 
 void onClose()
 {
-    game->Quit();
-    delete game;
-    game = 0;
+    if (game)
+    {
+        game->Quit();
+        delete game;
+        game = 0;
+    }
 }
 
 int main(int argc, char *argv[])

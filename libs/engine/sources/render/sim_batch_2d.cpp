@@ -58,14 +58,6 @@ CBatch2D::CBatch2D( CDriver *driver )
 
 // ----------------------------------------------------------------------//
 
-CBatch2D::CBatch2D( const std::string& name, CDriver *driver )
-	: CBatch2D( driver )
-{
-	m_name = name;
-}
-
-// ----------------------------------------------------------------------//
-
 CBatch2D::~CBatch2D()
 {
 	SIM_SAFE_DELETE_ARRAY( m_vertexGroup->m_vertexSource->m_vboData );

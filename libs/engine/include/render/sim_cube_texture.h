@@ -47,6 +47,9 @@ public:
 	u32			    Generate( io::CMemStream* front,	io::CMemStream* back,
 							  io::CMemStream* left,		io::CMemStream* right,
 							  io::CMemStream* top,		io::CMemStream* bottom );
+
+    virtual bool	Load(io::CMemStream* ms);
+    virtual bool	Save(io::CMemStream* ms);
 	// ------------------------------------------------------------------//
 
 protected:

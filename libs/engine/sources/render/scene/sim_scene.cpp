@@ -92,7 +92,16 @@ void CScene::Del( CSceneNode* node )
 {
 	m_octree.Delete( node );
 }
-
+// ----------------------------------------------------------------------//
+bool CScene::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
+bool CScene::Save(io::CMemStream* ms)
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

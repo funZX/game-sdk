@@ -63,7 +63,10 @@ public:
 	CFont*								GetFont(s32 index)					{ return m_listBitmapFont[index]; }
 	bool								GetUseKerning() const				{ return m_useKerning; }
 	void								SetUseKerning( bool useKerning )	{ m_useKerning = useKerning; }
-	// ------------------------------------------------------------------//
+	
+    virtual bool					    Load(io::CMemStream* ms);
+    virtual bool					    Save(io::CMemStream* ms);
+    // ------------------------------------------------------------------//
 
 protected:
 

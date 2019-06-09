@@ -93,6 +93,9 @@ public:
 	static u8*	            LoadPVR( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, Format *format );
 	static u8*	            LoadMIP( io::CMemStream* memstream, u32 *width, u32 *height, u32 *bits, Format *format );
 
+    virtual bool	        Load(io::CMemStream* ms);
+    virtual bool	        Save(io::CMemStream* ms);
+
 	inline u32              GetID() { return m_iD; }
 	inline u32              GetWidth() { return m_width; }
 	inline u32              GetHeight() { return m_height; }

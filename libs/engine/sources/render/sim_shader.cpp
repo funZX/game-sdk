@@ -211,7 +211,17 @@ const CShader::TUniform* CShader::FindUniform(const std::string& name)
 
 	return nullptr;
 }
+// ----------------------------------------------------------------------//
+bool CShader::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
 
+bool CShader::Save(io::CMemStream* ms)
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

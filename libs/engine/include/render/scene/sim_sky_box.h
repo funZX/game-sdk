@@ -66,7 +66,10 @@ public:
 												  io::CMemStream* top,		io::CMemStream* bottom );
 
 	CTexture*							GetTexture() { return (CTexture*) m_texture; }
-	// ------------------------------------------------------------------//
+	
+    virtual bool    					Load(io::CMemStream* ms);
+    virtual bool    					Save(io::CMemStream* ms);
+    // ------------------------------------------------------------------//
 
 protected:
 	// ------------------------------------------------------------------//

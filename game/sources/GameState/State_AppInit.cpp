@@ -15,7 +15,7 @@ CState_AppInit::CState_AppInit()
 // ----------------------------------------------------------------------//
 CState_AppInit::~CState_AppInit()
 {
-	SIM_PRINT("~CState_AppInit");
+	SIM_PRINT("\n~CState_AppInit");
 }
 // ----------------------------------------------------------------------//
 void CState_AppInit::Update( f32 dt, void *userData )

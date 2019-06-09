@@ -330,7 +330,16 @@ void CEffect::Bind( CDriver *driver, CVertexSource *vertexSource )
 
 	SIM_CHECK_OPENGL();
 }
-
+// ----------------------------------------------------------------------//
+bool CEffect::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
+bool CEffect::Save(io::CMemStream* ms)
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

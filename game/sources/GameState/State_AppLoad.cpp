@@ -26,7 +26,7 @@ CState_AppLoad::~CState_AppLoad()
 {
 	SIM_SAFE_DELETE( m_fsui );
 	SIM_SAFE_DELETE( m_fsstrawberry );
-	SIM_PRINT("~CState_AppLoad");
+	SIM_PRINT("\n~CState_AppLoad");
 }
 // ----------------------------------------------------------------------//
 void CState_AppLoad::Update( f32 dt, void *userData )

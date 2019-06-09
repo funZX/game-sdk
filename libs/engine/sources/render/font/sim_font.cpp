@@ -188,7 +188,16 @@ void CFont::FinishCreating()
 		ReleaseFace();
 	}
 }
-
+// ----------------------------------------------------------------------//
+bool CFont::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
+bool CFont::Save(io::CMemStream* ms)
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
