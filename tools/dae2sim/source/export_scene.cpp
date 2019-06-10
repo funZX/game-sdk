@@ -1,10 +1,9 @@
 #include <iostream>
 
-#include <render/scene/sim_actor.h>
 #include <render/scene/sim_scene.h>
+#include <core/io/sim_mem_stream.h>
 
 #include <dae.h>
-
 #include "dae2sim.h"
 
 // ----------------------------------------------------------------------//
@@ -83,6 +82,11 @@ int export_scene(daeElement* elem, const std::string& path)
             success |= export_node(i, path);
         }
     }
+
+    sim::io::CMemStream ms(1024*1024);
+    sim:rnr::CScene* scn = SIM_NEW sim::rnr::CScene(daeGetNodeName(s.root.elem));
+    scn->Save(&ms);
+    delete scn;
 
     return success;
 }

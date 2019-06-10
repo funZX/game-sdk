@@ -48,20 +48,41 @@ public:
     CCurve( const std::string &name );
 	virtual ~CCurve();
 
+    typedef union Vertex {
+        struct {
+            Vec3 p, i, o;
+        };
+        Vec3 col[3];
+        f32  e[9];
+    } Vertex;
 	// ------------------------------------------------------------------//
-	virtual void						Update( f32 dt, void *userData );
+    void                                AddVertex(Vertex v);
+    inline bool                         GetIsClosed();
+    inline void                         SetIsClosed(bool closed);
+
+    virtual void						Update(f32 dt, void* userData);
 	virtual void						Render( CDriver *driver );
 
     virtual bool	                    Load( io::CMemStream* ms );
     virtual bool	                    Save( io::CMemStream* ms );
+
 	// ------------------------------------------------------------------//
 
 protected:
-
 	// ------------------------------------------------------------------//
-
-	// ------------------------------------------------------------------//
+    bool                                m_IsClosed;
+    sim::stl::CList<Vertex>             m_Vertices;
+    // ------------------------------------------------------------------//
 };
+inline bool CCurve::GetIsClosed()
+{
+    return m_IsClosed;
+}
+
+inline void CCurve::SetIsClosed(bool closed)
+{
+    m_IsClosed = closed;
+}
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr

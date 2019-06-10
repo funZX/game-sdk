@@ -14,7 +14,7 @@ namespace filesystem = std::experimental::filesystem::v1;
 
 struct Options
 {
-	bool			animations;
+    bool            display;
 
 	const char*		in_dae_file;
 	const char*		out_folder;
@@ -22,6 +22,7 @@ struct Options
 
 extern Options options;
 
+daeElement* daeGetSource(daeDocument* doc, daeElement* elem);
 daeElement* daeGetUrl(daeDocument* doc, daeElement* elem);
 daeString daeGetNodeName(daeElement* elem);
 std::vector<daeElement*> daeGetChildrenOfType(daeElement* elem, daeInt daeType);

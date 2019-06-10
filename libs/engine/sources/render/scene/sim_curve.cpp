@@ -23,6 +23,7 @@
 *    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 *    SOFTWARE.
 */
+#include <core/io/sim_mem_stream.h>
 
 #include <render/scene/sim_curve.h>
 #include <render/sim_driver.h>
@@ -36,7 +37,7 @@ namespace rnr
 CCurve::CCurve()
 	: CSceneNode()
 {
-
+    m_IsClosed = false;
 }
 
 // ----------------------------------------------------------------------//
@@ -56,8 +57,17 @@ CCurve::~CCurve()
 
 // ----------------------------------------------------------------------//
 
+void CCurve::AddVertex(Vertex v)
+{
+    m_Vertices.AddToEnd(v);
+}
+
+// ----------------------------------------------------------------------//
+
 void CCurve::Update( f32 dt, void *userData )
 {
+    //zpl_vec2_lerp
+
     CSceneNode::Update(dt, userData);
 }
 
@@ -71,11 +81,31 @@ void CCurve::Render( CDriver *driver )
 // ----------------------------------------------------------------------//
 bool CCurve::Load(io::CMemStream* ms)
 {
+    Vertex v;
+    u32 count = 0;
+
+    m_IsClosed = 1 == ms->ReadU16();
+    count = ms->ReadU16();
+
+    for(u32 k = 0; k < count; k++)
+    {
+        v = *((Vertex*)ms->Read(sizeof(Vertex)));
+        m_Vertices.AddToEnd( v );
+    }
+
     return false;
 }
 // ----------------------------------------------------------------------//
 bool CCurve::Save(io::CMemStream* ms)
 {
+    Vertex* v = nullptr;
+
+    ms->WriteU16(m_IsClosed ? 1 : 0);
+    ms->WriteU16(m_Vertices.Count());
+    
+    while (v = m_Vertices.Next())
+        ms->Write(v, sizeof(Vertex));
+
     return false;
 }
 // ----------------------------------------------------------------------//
