@@ -93,7 +93,7 @@ int export_dae2sim(daeDocument* doc, const char* folder)
 }
 
 // ----------------------------------------------------------------------//
-daeString daeGetNodeName(daeElement* elem)
+daeString daeGetName(daeElement* elem)
 {
     return ((domNode*)elem)->getName();
 }
@@ -165,3 +165,23 @@ void ArrayToJson(json_t* root, const sim::f32* v, const unsigned count)
 }
 // ----------------------------------------------------------------------//
 
+int dump(CMemStream& ms, const std::string& file)
+{
+    std::ofstream s;
+    s.open(file.c_str());
+
+    if (s.is_open())
+    {
+        u32 len = ms.GetCursor();
+        ms.Rewind();
+
+        s.write((char*)ms.Read(0), len);
+        s.close();
+
+        return 0;
+    }
+
+    return 1;
+}
+
+// ----------------------------------------------------------------------//

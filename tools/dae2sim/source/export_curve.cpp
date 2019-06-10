@@ -1,4 +1,3 @@
-#include <core/io/sim_mem_stream.h>
 #include <render/scene/sim_curve.h>
 
 #include <iostream>
@@ -8,6 +7,8 @@
 
 int export_curve(daeElement* curve, const std::string& path)
 {
+    int success = 0;
+
     domSpline* spline = (domSpline*)curve;
 
     auto control = spline->getControl_vertices();    
@@ -44,11 +45,12 @@ int export_curve(daeElement* curve, const std::string& path)
         c.AddVertex(v);
     }
     c.SetIsClosed(spline->getClosed());
-    c.Save(&ms);
+    success |= !c.Save(&ms);
 
-    CCurve c2;
-    ms.Rewind();
-    c2.Load(&ms);
+    std::string dir = path + "/curve/";
+    filesystem::create_directories(dir);
 
-    return 0;
+    success |= dump(ms, dir + daeGetName(spline->getParent()));
+
+    return success;
 }

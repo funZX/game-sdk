@@ -3,9 +3,11 @@
 #include <dom/domCOLLADA.h>
 
 #include <iostream>
+#include <fstream>
 #include <filesystem>
-#include <sim_engine.h>
 #include <jansson.h>
+#include <sim_engine.h>
+#include <core/io/sim_mem_stream.h>
 
 // ----------------------------------------------------------------------//
 using namespace ColladaDOM141;
@@ -24,15 +26,16 @@ extern Options options;
 
 daeElement* daeGetSource(daeDocument* doc, daeElement* elem);
 daeElement* daeGetUrl(daeDocument* doc, daeElement* elem);
-daeString daeGetNodeName(daeElement* elem);
+daeString daeGetName(daeElement* elem);
 std::vector<daeElement*> daeGetChildrenOfType(daeElement* elem, daeInt daeType);
 std::vector<daeElement*> daeGetChildrenOfType(daeElement* elem, domNodeType domType);
 
+int dump(CMemStream& ms, const std::string& file);
 
 struct daeSceneNode
 {
     daeElement*                             elem;
-    std::map<std::string, daeSceneNode*>    childs;
+    std::map<std::string, daeSceneNode>     childs;
 };
 
 struct daeContent

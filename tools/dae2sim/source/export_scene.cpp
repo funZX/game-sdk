@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include <render/scene/sim_scene.h>
-#include <core/io/sim_mem_stream.h>
 
 #include <dae.h>
 #include "dae2sim.h"
@@ -69,24 +68,20 @@ int export_scene(daeElement* elem, const std::string& path)
         daeSceneNode n;
         n.elem = node;
 
-        s.root.childs[daeGetNodeName(node)] = &n;
+        success |= export_node(n, path);
 
-        auto items = daeGetChildrenOfType(node, NODETYPE_NODE);
-        
-        for (auto item : items)
-        {
-            daeSceneNode i;
-            i.elem = item;
-
-            n.childs[daeGetNodeName(item)] = &i;
-            success |= export_node(i, path);
-        }
+        s.root.childs[daeGetName(node)] = n;
     }
 
     sim::io::CMemStream ms(1024*1024);
-    sim:rnr::CScene* scn = SIM_NEW sim::rnr::CScene(daeGetNodeName(s.root.elem));
-    scn->Save(&ms);
-    delete scn;
+    sim::rnr::CScene scn;
+
+    success |= !scn.Save(&ms);
+
+    std::string dir = path + "/scene/";
+    filesystem::create_directories(dir);
+
+    success |= dump(ms, dir + daeGetName(elem));
 
     return success;
 }
@@ -101,8 +96,9 @@ int export_node(daeSceneNode& item, const std::string& path)
         daeSceneNode n;
         n.elem = node;
 
-        item.childs[daeGetNodeName(node)] = &n;
         success |= export_node(n, path);
+
+        item.childs[daeGetName(node)] = n;
     }
 
     auto controller = item.elem->getChild("instance_controller");

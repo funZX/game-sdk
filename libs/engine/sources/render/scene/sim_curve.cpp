@@ -93,7 +93,7 @@ bool CCurve::Load(io::CMemStream* ms)
         m_Vertices.AddToEnd( v );
     }
 
-    return false;
+    return true;
 }
 // ----------------------------------------------------------------------//
 bool CCurve::Save(io::CMemStream* ms)
@@ -106,7 +106,7 @@ bool CCurve::Save(io::CMemStream* ms)
     while (v = m_Vertices.Next())
         ms->Write(v, sizeof(Vertex));
 
-    return false;
+    return true;
 }
 // ----------------------------------------------------------------------//
 }; // namespace rnr
