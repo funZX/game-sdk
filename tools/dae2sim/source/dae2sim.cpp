@@ -99,6 +99,11 @@ daeString daeGetName(daeElement* elem)
 }
 
 // ----------------------------------------------------------------------//
+daeString daeGetID(daeElement* elem)
+{
+    return ((domNode*)elem)->getID();
+}
+// ----------------------------------------------------------------------//
 
 daeElement* daeGetSource(daeDocument* doc, daeElement* elem)
 {
@@ -170,18 +175,16 @@ int dump(CMemStream& ms, const std::string& file)
     std::ofstream s;
     s.open(file.c_str());
 
-    if (s.is_open())
-    {
-        u32 len = ms.GetCursor();
-        ms.Rewind();
+    if (!s.is_open())
+        return 1;
 
-        s.write((char*)ms.Read(0), len);
-        s.close();
+    u32 len = ms.GetCursor();
+    ms.Rewind();
 
-        return 0;
-    }
+    s.write((char*)ms.Read(0), len);
+    s.close();
 
-    return 1;
+    return 0;
 }
 
 // ----------------------------------------------------------------------//

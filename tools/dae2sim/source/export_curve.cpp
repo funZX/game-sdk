@@ -5,18 +5,18 @@
 
 #include "dae2sim.h"
 
-int export_curve(daeElement* curve, const std::string& path)
+int export_curve(daeScene& scene, daeElement* elem, const std::string& path)
 {
-    int success = 0;
+    int status = 0;
 
-    domSpline* spline = (domSpline*)curve;
+    domSpline* spline = (domSpline*)elem;
 
     auto control = spline->getControl_vertices();    
     auto source  = control->getInput_array();
 
-    auto x = (domSource*)daeGetSource(curve->getDocument(), source[0]); // POSITION
-    auto y = (domSource*)daeGetSource(curve->getDocument(), source[1]); // IN_TANGENT
-    auto z = (domSource*)daeGetSource(curve->getDocument(), source[2]); // OUT_TANGENT
+    auto x = (domSource*)daeGetSource(elem->getDocument(), source[0]); // POSITION
+    auto y = (domSource*)daeGetSource(elem->getDocument(), source[1]); // IN_TANGENT
+    auto z = (domSource*)daeGetSource(elem->getDocument(), source[2]); // OUT_TANGENT
 
     auto pp = x->getFloat_array()->getValue();
     auto pi = y->getFloat_array()->getValue();
@@ -25,32 +25,36 @@ int export_curve(daeElement* curve, const std::string& path)
     sim::io::CMemStream ms(32*1024);
     sim::rnr::CCurve c;
 
-    u32 count   = x->getFloat_array()->getCount();
-    for (auto i = 0, j = 0; j < count; i++, j +=3 )
+    u32 count   = (u32)x->getFloat_array()->getCount();
+    for (u32 i = 0, j = 0; j < count; i++, j +=3 )
     {
         CCurve::Vertex v;
         
-        v.p.x = pp.get(3 * i + 0);
-        v.p.y = pp.get(3 * i + 1);
-        v.p.z = pp.get(3 * i + 2);
+        v.p.x = (f32)pp.get(3 * i + 0);
+        v.p.y = (f32)pp.get(3 * i + 1);
+        v.p.z = (f32)pp.get(3 * i + 2);
 
-        v.i.x = pi.get(3 * i + 0);
-        v.i.y = pi.get(3 * i + 1);
-        v.i.z = pi.get(3 * i + 2);
+        v.i.x = (f32)pi.get(3 * i + 0);
+        v.i.y = (f32)pi.get(3 * i + 1);
+        v.i.z = (f32)pi.get(3 * i + 2);
 
-        v.o.x = po.get(3 * i + 0);
-        v.o.y = po.get(3 * i + 1);
-        v.o.z = po.get(3 * i + 2);
+        v.o.x = (f32)po.get(3 * i + 0);
+        v.o.y = (f32)po.get(3 * i + 1);
+        v.o.z = (f32)po.get(3 * i + 2);
 
         c.AddVertex(v);
     }
     c.SetIsClosed(spline->getClosed());
-    success |= !c.Save(&ms);
+    status |= !c.Save(&ms);
 
+    daeString file = daeGetID(elem->getParent());
     std::string dir = path + "/curve/";
     filesystem::create_directories(dir);
 
-    success |= dump(ms, dir + daeGetName(spline->getParent()));
+    status |= dump(ms, dir + file);
 
-    return success;
+    if (OK == status)
+        scene.content.curves[daeGetName(elem->getParent())] = file;
+
+    return status;
 }

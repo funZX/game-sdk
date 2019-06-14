@@ -6,12 +6,12 @@
 
 #include "dae2sim.h"
 
-int export_controller(daeElement* controller, const std::string& path)
+int export_controller(daeScene& scene, daeElement* controller, const std::string& path)
 {
     return 0;
 }
 
-int export_mesh(daeElement* mesh, const std::string& path)
+int export_mesh(daeScene& scene, daeElement* mesh, const std::string& path)
 {
     return 0;
 }

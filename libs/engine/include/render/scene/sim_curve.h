@@ -55,10 +55,20 @@ public:
         Vec3 col[3];
         f32  e[9];
     } Vertex;
+
+    enum class Type : u32
+    {
+        Bezier,
+        Nurbs
+    };
 	// ------------------------------------------------------------------//
     void                                AddVertex(Vertex v);
+
     inline bool                         GetIsClosed();
     inline void                         SetIsClosed(bool closed);
+
+    inline Type                         GetType();
+    inline void                         SetType(Type type);
 
     virtual void						Update(f32 dt, void* userData);
 	virtual void						Render( CDriver *driver );
@@ -71,6 +81,7 @@ public:
 protected:
 	// ------------------------------------------------------------------//
     bool                                m_IsClosed;
+    Type                                m_Type;
     sim::stl::CList<Vertex>             m_Vertices;
     // ------------------------------------------------------------------//
 };
@@ -82,6 +93,16 @@ inline bool CCurve::GetIsClosed()
 inline void CCurve::SetIsClosed(bool closed)
 {
     m_IsClosed = closed;
+}
+
+inline CCurve::Type CCurve::GetType()
+{
+    return m_Type;
+}
+
+inline void CCurve::SetType(CCurve::Type type)
+{
+    m_Type = type;
 }
 
 // ----------------------------------------------------------------------//

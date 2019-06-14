@@ -1,5 +1,7 @@
 
-
+- integrate Dear-imGUI. get rid of old UI classes
+- integrate glsl-optimizer
+- integrate mesh-optimizer
 - move camera to scene hierarchy. keep ortho engine camera 
 - tool: exporter: camera, light, actor, scene, animation
 - tool: data builder - tex converter
@@ -9,13 +11,12 @@
 - engine: octree (http://www.piko3d.net/tutorials/space-partitioning-tutorial-piko3ds-dynamic-octree/)
 - engine: scene node interface, scene manager
 - engine: particle system & fluid simulation
-- engine: gui support (slider, checkbox, etc...) && anchors
 - engine: box2D physics
 
 2.
 - engine: line, plane & curves math
 - engine: buffered sound
-- engine: networking
+- engine: networking around librg
 - engine: recast & detour
 - engine: ragdoll physics
 - engine: automaton -> controller 
@@ -33,14 +34,9 @@
 
 1000.
 - tool: model reduction ???
-- tool: model optimize as triangle strips ???
 - tool: yed automat exporter ???
 - tool: sprite editor ???
 - tool: re-calculate normals ???
 
-- engine: vbo buffers ???
 - engine: 3d static batch ???
-- engine: const properties ???
-
-- engine: boost libraries ???
 - engine: svg vector graphics ???

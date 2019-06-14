@@ -84,8 +84,9 @@ bool CCurve::Load(io::CMemStream* ms)
     Vertex v;
     u32 count = 0;
 
-    m_IsClosed = 1 == ms->ReadU16();
-    count = ms->ReadU16();
+    m_IsClosed = 1 == ms->ReadU8();
+    m_Type  = (Type)(ms->ReadU8());
+    count   = ms->ReadU16();
 
     for(u32 k = 0; k < count; k++)
     {
@@ -100,7 +101,8 @@ bool CCurve::Save(io::CMemStream* ms)
 {
     Vertex* v = nullptr;
 
-    ms->WriteU16(m_IsClosed ? 1 : 0);
+    ms->WriteU8(m_IsClosed ? 1 : 0);
+    ms->WriteU8((u8)Value(m_Type));
     ms->WriteU16(m_Vertices.Count());
     
     while (v = m_Vertices.Next())

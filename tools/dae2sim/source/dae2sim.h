@@ -9,6 +9,9 @@
 #include <sim_engine.h>
 #include <core/io/sim_mem_stream.h>
 
+
+// ----------------------------------------------------------------------//
+#define OK          (0)
 // ----------------------------------------------------------------------//
 using namespace ColladaDOM141;
 
@@ -27,6 +30,7 @@ extern Options options;
 daeElement* daeGetSource(daeDocument* doc, daeElement* elem);
 daeElement* daeGetUrl(daeDocument* doc, daeElement* elem);
 daeString daeGetName(daeElement* elem);
+daeString daeGetID(daeElement* elem);
 std::vector<daeElement*> daeGetChildrenOfType(daeElement* elem, daeInt daeType);
 std::vector<daeElement*> daeGetChildrenOfType(daeElement* elem, domNodeType domType);
 
@@ -40,14 +44,11 @@ struct daeSceneNode
 
 struct daeContent
 {
-    std::map<std::string, daeElement*>      materials;
-    std::map<std::string, daeElement*>      lights;
-    std::map<std::string, daeElement*>      cameras;
-    std::map<std::string, daeElement*>      curves;
-    std::map<std::string, daeElement*>      meshes;
-    std::map<std::string, daeElement*>      controllers;
-    std::map<std::string, daeElement*>      animations;
-    std::map<std::string, daeElement*>      animationclips;
+    std::map<std::string, std::string>      materials;
+    std::map<std::string, std::string>      lights;
+    std::map<std::string, std::string>      cameras;
+    std::map<std::string, std::string>      curves;
+    std::map<std::string, std::string>      meshes;
 };
 
 struct daeScene
