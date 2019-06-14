@@ -34,7 +34,7 @@
 		"u_Light_Ambient_0",
 		"u_Light_Diffuse_0",
 		"u_Light_Specular_0",
-		"u_Light_Intensity_0"
+		"u_Light_Attenuation_0"
 	],
 	
 	"attributes":[
