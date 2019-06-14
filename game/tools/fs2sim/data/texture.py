@@ -89,17 +89,21 @@ def main(dirlist):
 			name = name.split('.', 1)[0]
 			
 			in_file     = d + '/' + n
-			out_file 	= dst_dir + '/' + n
 
 			file_format = parse_texture_name(os.path.basename(in_file))
 			if file_format == None:
 			    continue
 			
-			mipmaps_count = max(16, min(0, int(file_format[1])))
+			texture_name = file_format[0]
+			mipmaps_count = max(min(int(file_format[1]), 16), 0)
 			out_format = file_format[2]
 			texture_wrap = file_format[3]
 			texture_filter = file_format[4]
 			in_format = file_format[5]
+
+			out_name = texture_name + '.' + texture_wrap + '.' + texture_filter + '.' + out_format
+			out_file = dst_dir + '/' + out_name
+
 
 			if utils.newerFile(in_file, out_file):
 			    if out_format == 'tga':
@@ -108,18 +112,18 @@ def main(dirlist):
 			        command = config.EXE_MIP2SIM 
 			        if mipmaps_count > 1:
 			            command += ' -m '
-			        command += ' -f RGBA4 -k lanczos -w ' + texture_wrap + ' ' + utils.getWinPath(in_file) + ' ' + utils.getWinPath(out_file)  + '.mip'
+			        command += ' -f RGBA4 -k lanczos -w ' + texture_wrap + ' ' + utils.getWinPath(in_file) + ' ' + utils.getWinPath(out_file)
 			    elif out_format=='pvr':
 			        command = config.EXE_PVRTEX + ' -legacypvr'
 			        if mipmaps_count > 1:
 			            command += ' -m ' + str(mipmaps_count) + ' -mfilter cubic'
 			        command += ' -f PVRTC2_4'
-			        command += ' -i ' + utils.getWinPath(in_file) + ' -o ' + utils.getWinPath(out_file) + '.pvr'
+			        command += ' -i ' + utils.getWinPath(in_file) + ' -o ' + utils.getWinPath(out_file)
 			    
 			    if out_format!='tga':
 			        utils.spawnProcess(command)
 			
-			textures.append({'name' : n, 'file': ('texture/' + n), 'wrap' : texture_wrap, 'filter' : texture_filter})
+			textures.append({'name' : n, 'file': ('texture/' + out_name)})
 
 		if textures:
 			with open(dst_dir + '/content.json', 'w') as f:
