@@ -307,37 +307,35 @@ bool CFileSystem::LoadTexture(const json_t* jsonRoot, s32 index)
 
 	std::string name	= json_string_value( json_object_get( jsonValue, "name" ) );
 	std::string file	= json_string_value( json_object_get( jsonValue, "file" ) );
+    std::string format  = json_string_value( json_object_get( jsonValue, "format") );
+	std::string wrap	= json_string_value( json_object_get( jsonValue, "wrap" ) );
+	std::string filter	= json_string_value( json_object_get( jsonValue, "filter" ) );
 
 	CTexture::Type	 t;
 	CTexture::Wrap	 w;
 	CTexture::Filter f;
 
-	// TEXTURE NAME FORMAT: name.mipmaps_count.output_format.texture_wrap.texture_filter.extension
-	std::vector<std::string> tex_file_format = util::StringSplit(file, ".");
-	SIM_ASSERT( tex_file_format.size() == 4 );
-	const std::string& file_format = tex_file_format[3];
-
-	if ( file_format == "tga" )
+	if ( format == "tga" )
 		t = CTexture::Type::TGA;
-	if ( file_format == "pvr" )
+	if ( format == "pvr" )
 		t = CTexture::Type::PVR;
-	if ( file_format == "mip" )
+	if ( format == "mip" )
 		t = CTexture::Type::MIP;
 
-	if ( tex_file_format[1] == "clamp" )
+	if ( wrap == "clamp" )
 		w = CTexture::Wrap::Clamp;
-	if ( tex_file_format[1] == "repeat" )
+	if ( wrap == "repeat" )
 		w = CTexture::Wrap::Repeat;
 
-	if ( tex_file_format[2] == "nearest" )
+	if ( filter == "nearest" )
 		f = CTexture::Filter::Nearest;
-	if ( tex_file_format[2] == "linear" )
+	if ( filter == "linear" )
 		f = CTexture::Filter::Linear;
-	if ( tex_file_format[2] == "bilinear" )
+	if ( filter == "bilinear" )
 		f = CTexture::Filter::Bilinear;
-	if ( tex_file_format[2] == "trilinear" )
+	if ( filter == "trilinear" )
 		f = CTexture::Filter::Trilinear;
-	if ( tex_file_format[2] == "quadlinear" )
+	if ( filter == "quadlinear" )
 		f = CTexture::Filter::Quadlinear;
 
 	u32 offset = 0;

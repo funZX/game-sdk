@@ -4,7 +4,6 @@
 - integrate mesh-optimizer
 - move camera to scene hierarchy. keep ortho engine camera 
 - tool: exporter: camera, light, actor, scene, animation
-- tool: data builder - tex converter
 - sort opaque & transparent geometry. render order...
 
 1.

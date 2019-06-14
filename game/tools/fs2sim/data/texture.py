@@ -101,7 +101,7 @@ def main(dirlist):
 			texture_filter = file_format[4]
 			in_format = file_format[5]
 
-			out_name = texture_name + '.' + texture_wrap + '.' + texture_filter + '.' + out_format
+			out_name = texture_name + '.' + out_format
 			out_file = dst_dir + '/' + out_name
 
 
@@ -123,7 +123,7 @@ def main(dirlist):
 			    if out_format!='tga':
 			        utils.spawnProcess(command)
 			
-			textures.append({'name' : n, 'file': ('texture/' + out_name)})
+			textures.append({'name' : n, 'file': ('texture/' + out_name), 'wrap' : texture_wrap, 'filter': texture_filter, 'format': out_format})
 
 		if textures:
 			with open(dst_dir + '/content.json', 'w') as f:
