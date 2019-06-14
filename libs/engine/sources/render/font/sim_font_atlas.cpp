@@ -370,6 +370,16 @@ void CFontAtlas::InitMaterial()
 	m_material->SetDiffuse( col::Green );
 	m_material->SetEffect( m_effect );
 }
-
+// ----------------------------------------------------------------------//
+bool CFontAtlas::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
+bool CFontAtlas::Save(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

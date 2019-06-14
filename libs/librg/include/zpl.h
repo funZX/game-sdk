@@ -4005,6 +4005,14 @@ typedef struct tagBITMAPINFO {
 } BITMAPINFO, *PBITMAPINFO;
 #endif
 
+typedef struct zpl_platform_callbacks {
+    void (*zpl_window_open)();
+    void (*zpl_window_resize)(zpl_i32, zpl_i32);
+    void (*zpl_window_update)();
+    void (*zpl_window_display)();
+    void (*zpl_window_close)();
+} zpl_platform_callbacks;
+
 typedef struct zpl_platform {
     zpl_b32 is_initialized;
     
@@ -4016,6 +4024,8 @@ typedef struct zpl_platform {
     zpl_u32 window_flags;
     zpl_b16 window_is_closed, window_has_focus;
     
+    zpl_platform_callbacks callbacks;
+
     void *win32_dc;
     
     union {
@@ -13388,8 +13398,21 @@ LRESULT CALLBACK zpl__win32_window_callback(HWND hWnd, UINT msg, WPARAM wParam, 
     
     switch (msg) {
         case WM_CLOSE:
-        case WM_DESTROY: platform->window_is_closed = true; return 0;
-        
+        case WM_DESTROY: {
+            platform->window_is_closed = true;
+
+            if (platform->callbacks.zpl_window_close)
+                platform->callbacks.zpl_window_close();
+        }
+        return 0;
+        case WM_SIZE: {
+            platform->window_width  = (lParam >>  0) & 0xFFFF;
+            platform->window_height = (lParam >> 16) & 0xFFFF;
+
+            if(platform->callbacks.zpl_window_resize)
+                platform->callbacks.zpl_window_resize(platform->window_width, platform->window_height);
+        }
+        break;
         case WM_QUIT: {
             platform->quit_requested = true;
         } break;
@@ -13588,6 +13611,8 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
     wr.bottom = mode.height;
     AdjustWindowRect(&wr, style, false);
     
+    p->quit_requested = false;
+    p->window_is_closed = false;
     p->window_flags = window_flags;
     p->window_handle = CreateWindowExW(
         ex_style, wc.lpszClassName,
@@ -13675,6 +13700,13 @@ zpl_b32 zpl__platform_init(zpl_platform *p, char const *window_title, zpl_video_
     zpl_zero_array(p->keys, zpl_count_of(p->keys));
     
     p->is_initialized = true;
+
+    if (p->callbacks.zpl_window_open)
+        p->callbacks.zpl_window_open();
+
+    if (p->callbacks.zpl_window_resize)
+        p->callbacks.zpl_window_resize(p->window_width, p->window_height);
+
     return true;
 }
 
@@ -13683,6 +13715,7 @@ zpl_inline zpl_b32 zpl_platform_init(zpl_platform *p, char const *window_title, 
     mode.width = width;
     mode.height = height;
     mode.bits_per_pixel = 32;
+
     return zpl__platform_init(p, window_title, mode, window_flags);
 }
 
@@ -13914,6 +13947,9 @@ void zpl_platform_update(zpl_platform *p) {
             }
         }
     }
+
+    if (p->callbacks.zpl_window_update)
+        p->callbacks.zpl_window_update();
 }
 
 void zpl_platform_display(zpl_platform *p) {
@@ -13926,6 +13962,9 @@ void zpl_platform_display(zpl_platform *p) {
         p->dt_for_frame = curr_time - prev_time;
         p->curr_time = curr_time;
     }
+
+    if (p->callbacks.zpl_window_display)
+        p->callbacks.zpl_window_display();
 }
 
 void zpl_platform_destroy(zpl_platform *p) {

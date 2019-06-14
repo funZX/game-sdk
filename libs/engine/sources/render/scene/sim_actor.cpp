@@ -51,8 +51,8 @@ CActor::CActor()
 {
 	m_mesh			        = nullptr;
 
-	m_collisionShape			= nullptr;
-	m_rigidBody					= nullptr;
+	m_collisionShape		= nullptr;
+	m_rigidBody				= nullptr;
 }
 // ----------------------------------------------------------------------//
 
@@ -98,8 +98,7 @@ void CActor::BindSize()
 
 void CActor::AddPhysic(phy::CPhysic *physic)
 {
-	if (IsPhysic())
-		return;
+    SIM_ASSERT(!m_state.isPhysic);
 
 	switch (Value(m_state.shape))
 	{
@@ -168,15 +167,6 @@ void CActor::DelPhysic(phy::CPhysic *physic)
 
 void CActor::Update( f32 dt, void *userData )
 {
-	if ( IsVisible() )
-	{
-		CCamera *camera = (CCamera*) userData;
-		m_state.isCulled = !camera->SphereIn( &m_transform.translation, m_radius );
-
-		if( !m_state.isCulled )
-			m_state.isCulled = !camera->BoxIn( &m_transform.translation, &m_box );
-	}
-
 	if ( IsPhysic() )
 	{
 		btTransform worldTransform;
@@ -193,11 +183,10 @@ void CActor::Update( f32 dt, void *userData )
         m_transform.quaternion.y = quat.getY();
         m_transform.quaternion.z = quat.getZ();
         m_transform.quaternion.w = quat.getW();
-
-        CSceneNode::Update(dt, userData);
-
-		CSceneNode::OnMove();
 	}
+
+    CSceneNode::Update(dt, userData);
+    CSceneNode::OnMove();
 }
 
 // ----------------------------------------------------------------------//

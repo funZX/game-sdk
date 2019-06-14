@@ -62,7 +62,7 @@ CEngine::CEngine()
 	m_effect			= SIM_NEW CEffect("Driver Effect");
 	m_material			= SIM_NEW CMaterial("Driver Material");
 
-	m_activeCamera		= nullptr;
+	m_activeCamera		= m_camera;
 
 	m_currentTime		= 0;
 	m_updateTime		= 0;
@@ -226,19 +226,24 @@ void CEngine::InitOpenAL()
 
 // ----------------------------------------------------------------------//
 
-void CEngine::Start( int width, int height )
+void CEngine::Resize(int width, int height)
 {
-	m_driver->SetScreenSize( width, height );
+    m_driver->SetScreenSize(width, height);
 
-	m_canvas->Resize( (f32)width, (f32)height );	
+    m_canvas->Resize((f32)width, (f32)height);
 
-	m_camera->SetFieldOfView( 60.0f );
-	m_camera->SetNearPlane( 1.0f );
-	m_camera->SetFarPlane( 100.0f );
-	m_camera->SetOrthographic( m_canvas );
-	m_camera->SetPerspective( m_canvas );
+    m_camera->SetFieldOfView(60.0f);
+    m_camera->SetNearPlane(1.0f);
+    m_camera->SetFarPlane(100.0f);
+    m_camera->SetOrthographic(m_canvas);
+    m_camera->SetPerspective(m_canvas);
+}
 
-	m_activeCamera = m_camera;
+// ----------------------------------------------------------------------//
+
+void CEngine::Start()
+{
+    
 }
 
 // ----------------------------------------------------------------------//
@@ -282,7 +287,7 @@ f32 CEngine::Smooth( f32 deltaTime )
 
 // ----------------------------------------------------------------------//
 
-void CEngine::Run( void )
+void CEngine::Run()
 {
 	//SIM_CHECK_OPENGL();
 
@@ -309,7 +314,7 @@ void CEngine::Run( void )
 
 // ----------------------------------------------------------------------//
 
-void CEngine::Quit( void )
+void CEngine::Quit()
 {
 	alcMakeContextCurrent( nullptr );
 	
@@ -328,8 +333,6 @@ void CEngine::Update( f32 dt, void *userData )
 	m_driver->Tick( dt );
 
 	m_canvas->Update( dt, userData );
-	m_activeCamera->Update( dt, userData );
-
 	m_sm->Update( dt, userData );
 }
 
@@ -375,6 +378,13 @@ void CEngine::GoBack()
 	m_canvas->ClearEvents();
 
 	m_sm->GoBack();
+}
+
+// ----------------------------------------------------------------------//
+
+CCamera* CEngine::GetCamera()
+{
+    return m_activeCamera;
 }
 
 // ----------------------------------------------------------------------//

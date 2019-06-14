@@ -52,8 +52,6 @@ public:
 	CFont( const std::string& name, CFontAtlas* pFontAtlas );
 	virtual ~CFont();
 	// ------------------------------------------------------------------//
-	void						Load(const std::string& fileName);
-
 	s32							DrawString( CDriver* driver, s32 x, s32 y, const std::string &text, Vec4 color);
 
 	s32							GetWidth( const char* text );
@@ -70,6 +68,10 @@ public:
 	void						SetFTFace( struct FT_FaceRec_* ftFace ) { m_ftFace = ftFace; }
 	void						FinishCreating();
 	CFontChar*					GetChar(s32 charCode);
+
+    virtual bool				Load(io::CMemStream* ms);
+    virtual bool				Save(io::CMemStream* ms);
+
 	// ------------------------------------------------------------------//
 
 protected:

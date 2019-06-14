@@ -375,10 +375,10 @@ void CRect2D::Render( CDriver* driver, const CRect2D *texRect )
 	static f32	v[ 20 ];
 	static Vec2	r[ 4 ];
 
-	r[0] = zpl_vec2f( m_position.x,				m_position.y );
-	r[1] = zpl_vec2f( m_position.x + m_size.x,	m_position.y );
-	r[2] = zpl_vec2f( m_position.x,				m_position.y + m_size.y );
-	r[3] = zpl_vec2f( m_position.x + m_size.x,	m_position.y + m_size.y );
+    r[0] = { m_position.x,				m_position.y };
+    r[1] = { m_position.x + m_size.x,	m_position.y };
+    r[2] = { m_position.x,				m_position.y + m_size.y };
+    r[3] = { m_position.x + m_size.x,	m_position.y + m_size.y };
 
 	if ( m_rotation != 0.0f )
 	{
@@ -440,7 +440,16 @@ void CRect2D::Render( CDriver* driver, const CRect2D *texRect )
 	vs.m_vboData = nullptr;
 	vg.m_vboData = nullptr;
 }
-
+// ----------------------------------------------------------------------//
+bool CRect2D::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
+bool CRect2D::Save(io::CMemStream* ms)
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

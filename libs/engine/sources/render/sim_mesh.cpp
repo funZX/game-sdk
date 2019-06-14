@@ -86,7 +86,7 @@ void CMesh::Render( CDriver *driver )
 
 // ----------------------------------------------------------------------//
 
-void CMesh::Load( io::CMemStream* ms )
+bool CMesh::Load( io::CMemStream* ms )
 {
 	m_box.x = ms->ReadF32();
 	m_box.y = ms->ReadF32();
@@ -121,11 +121,13 @@ void CMesh::Load( io::CMemStream* ms )
 
 	m_vertexSource	= vertexSource;
 	m_vertexGroup	= vertexGroup;
+
+    return true;
 }
 
 // ----------------------------------------------------------------------//
 
-void CMesh::Save( io::CMemStream* ms )
+bool CMesh::Save( io::CMemStream* ms )
 {
 	ms->WriteF32( m_box.x );
 	ms->WriteF32( m_box.y );
@@ -153,6 +155,8 @@ void CMesh::Save( io::CMemStream* ms )
 
 	// vertex group
 	m_vertexGroup->Save( ms );
+
+    return true;
 }
 
 // ----------------------------------------------------------------------//

@@ -104,6 +104,9 @@ public:
 
 	const std::string& 			GetName() { return m_name; }
 
+    virtual bool				Load(io::CMemStream* ms) = 0;
+    virtual bool				Save(io::CMemStream* ms) = 0;
+
 protected:
 	std::string					m_name;
 };

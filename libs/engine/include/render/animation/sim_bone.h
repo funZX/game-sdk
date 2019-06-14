@@ -64,6 +64,9 @@ public:
 
 	inline void						SetID(s32 iD) { m_iD = iD; }
 	inline s32						GetID() { return m_iD; }
+
+    virtual bool	                Load(io::CMemStream* ms);
+    virtual bool	                Save(io::CMemStream* ms);
 	// ------------------------------------------------------------------//
 
 protected:

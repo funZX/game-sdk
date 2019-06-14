@@ -48,17 +48,62 @@ public:
     CCurve( const std::string &name );
 	virtual ~CCurve();
 
+    typedef union Vertex {
+        struct {
+            Vec3 p, i, o;
+        };
+        Vec3 col[3];
+        f32  e[9];
+    } Vertex;
+
+    enum class Type : u32
+    {
+        Bezier,
+        Nurbs
+    };
 	// ------------------------------------------------------------------//
-	virtual void						Update( f32 dt, void *userData );
+    void                                AddVertex(Vertex v);
+
+    inline bool                         GetIsClosed();
+    inline void                         SetIsClosed(bool closed);
+
+    inline Type                         GetType();
+    inline void                         SetType(Type type);
+
+    virtual void						Update(f32 dt, void* userData);
 	virtual void						Render( CDriver *driver );
+
+    virtual bool	                    Load( io::CMemStream* ms );
+    virtual bool	                    Save( io::CMemStream* ms );
+
 	// ------------------------------------------------------------------//
 
 protected:
-
 	// ------------------------------------------------------------------//
-
-	// ------------------------------------------------------------------//
+    bool                                m_isClosed;
+    Type                                m_type;
+    sim::stl::CList<Vertex>             m_vertices;
+    // ------------------------------------------------------------------//
 };
+inline bool CCurve::GetIsClosed()
+{
+    return m_isClosed;
+}
+
+inline void CCurve::SetIsClosed(bool closed)
+{
+    m_isClosed = closed;
+}
+
+inline CCurve::Type CCurve::GetType()
+{
+    return m_type;
+}
+
+inline void CCurve::SetType(CCurve::Type type)
+{
+    m_type = type;
+}
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr

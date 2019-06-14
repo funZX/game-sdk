@@ -77,8 +77,8 @@ public:
 	u32								Generate();
 	// ------------------------------------------------------------------//
 
-	void							Load( io::CMemStream* ms );
-	void							Save( io::CMemStream* ms );
+    virtual bool					Load(io::CMemStream* ms);
+    virtual bool					Save(io::CMemStream* ms);
 
 protected:
 	// ------------------------------------------------------------------//

@@ -172,27 +172,39 @@ public:
 	inline CBinaryTreeNode<K, D>*		GetRoot() { return m_root;  }
 	// ----------------------------------------------------------------------//	
 
-	void DeleteAll()
-	{
-		CStack<CBinaryTreeNode<K, D>*> stack;
-		stack.Push( m_root );
+    void Traverse(std::function<void(D)> callback)
+    {
+        CStack<CBinaryTreeNode<K, D>*> stack;
+        stack.Push(m_root);
 
-		while (stack.Count() > 0)
-		{
-			auto node = *stack.Top();
-			stack.Pop();
+        while (stack.Count() > 0)
+        {
+            auto node = *stack.Top();
+            stack.Pop();
 
-			if (node == nullptr)
-				continue;
+            if (node == nullptr)
+                continue;
 
-			SIM_DELETE(*(node->m_data));
+            stack.Push(node->GetLeft());
+            stack.Push(node->GetRight());
+        }
 
-			stack.Push(node->GetLeft());
-			stack.Push(node->GetRight());
-		}
+        while (stack.Count() > 0)
+        {
+            auto node = *stack.Top();
+            callback(*(node->m_data));
+            stack.Pop();
+        }
+    }
 
-		RemoveAll();
-	}
+    void DeleteAll()
+    {
+        Traverse([&, this](D data) {
+            SIM_DELETE(data);
+        });
+
+        RemoveAll();
+    }
 
 	// ----------------------------------------------------------------------//	
 	void RemoveAll()

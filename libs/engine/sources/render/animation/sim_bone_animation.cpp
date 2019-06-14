@@ -63,7 +63,7 @@ CBoneAnimation::~CBoneAnimation()
 
 // ----------------------------------------------------------------------//
 
-void CBoneAnimation::Load( io::CMemStream* memstream )
+bool CBoneAnimation::Load( io::CMemStream* memstream )
 {
 	u32 nFrames = memstream->ReadU32();
 
@@ -113,8 +113,14 @@ void CBoneAnimation::Load( io::CMemStream* memstream )
 	}
 
 	m_frames[ nFrames - 1 ].m_pose->m_velocity = m_frames[ 0 ].m_pose->m_velocity;
-}
 
+    return true;
+}
+// ----------------------------------------------------------------------//
+bool CBoneAnimation::Save(io::CMemStream* ms)
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

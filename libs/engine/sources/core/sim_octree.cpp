@@ -36,7 +36,7 @@ COctreeVolume::COctreeVolume()
     m_box       = axis::Origin.xyz;
     m_center    = axis::Origin.xyz;
 
-	m_radius = 1.0f;
+	m_radius    = 0.0f;
 }
 
 // ----------------------------------------------------------------------//

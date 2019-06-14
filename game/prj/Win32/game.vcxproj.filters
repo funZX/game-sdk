@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="base">
-      <UniqueIdentifier>{353d947f-d210-4747-9f3e-e2134cda3385}</UniqueIdentifier>
-    </Filter>
     <Filter Include="World">
       <UniqueIdentifier>{d413cd8a-1768-4bac-adba-df350527611a}</UniqueIdentifier>
     </Filter>
@@ -33,9 +30,6 @@
     </ClCompile>
     <ClCompile Include="..\..\sources\GameState\State_Game.cpp">
       <Filter>GameState</Filter>
-    </ClCompile>
-    <ClCompile Include="base\main.cpp">
-      <Filter>base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

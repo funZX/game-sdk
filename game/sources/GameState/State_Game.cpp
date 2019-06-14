@@ -58,6 +58,7 @@ CState_Game::CState_Game()
 CState_Game::~CState_Game()
 {
 	SIM_SAFE_DELETE( m_drawable );
+    SIM_PRINT("\n~CState_Game");
 }
 // ----------------------------------------------------------------------//
 void CState_Game::Update( f32 dt, void *userData )

@@ -52,7 +52,8 @@ public:
 	inline f32						GetFPS()				{ return m_fps; }
 	inline CAnimationFrame*			GetFrame( u32 index )	{ return &m_frames[ index ]; }
 
-	void							Load( io::CMemStream* memstream );
+    virtual bool	                Load(io::CMemStream* ms);
+    virtual bool	                Save(io::CMemStream* ms);
 	// ------------------------------------------------------------------//
 
 protected:

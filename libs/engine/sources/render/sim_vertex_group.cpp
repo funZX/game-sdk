@@ -89,8 +89,8 @@ void CVertexGroup::SetMaterial( CMaterial *material )
 {
 	m_material = material;
 }
-
-void CVertexGroup::Load( io::CMemStream* ms )
+// ----------------------------------------------------------------------//
+bool CVertexGroup::Load( io::CMemStream* ms )
 {
 	m_vboSize		= ms->ReadU16();
 
@@ -105,9 +105,11 @@ void CVertexGroup::Load( io::CMemStream* ms )
 		m_boneHierarchy = SIM_NEW CBoneHierarchy();
 		m_boneHierarchy->Load( ms );
 	}
-}
 
-void CVertexGroup::Save( io::CMemStream* ms )
+    return true;
+}
+// ----------------------------------------------------------------------//
+bool CVertexGroup::Save( io::CMemStream* ms )
 {
 	ms->WriteU16( m_vboSize );
 	ms->Write( ( void* ) m_vboData, m_vboSize * sizeof( u16 ) );
@@ -119,6 +121,8 @@ void CVertexGroup::Save( io::CMemStream* ms )
 	}
 	else
 		ms->WriteU8( 0 );
+
+    return true;
 }
 
 // ----------------------------------------------------------------------//

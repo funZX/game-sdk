@@ -73,7 +73,7 @@ SQInteger CScript::Read(SQUserPointer pObj, SQUserPointer pDest, SQInteger size)
 }
 // ----------------------------------------------------------------------//
 
-SQRESULT CScript::Load( io::CMemStream* ms )
+bool CScript::Load( io::CMemStream* ms )
 {
 	SQRESULT result = sq_readclosure(vm, CScript::Read, (SQUserPointer)(ms));
 
@@ -81,8 +81,15 @@ SQRESULT CScript::Load( io::CMemStream* ms )
     sq_addref(vm, &obj);
     sq_pop(vm, 1);
 
-	return result;
+	return SQ_OK == result;
 }
+// ----------------------------------------------------------------------//
+
+bool CScript::Save(io::CMemStream* ms)
+{
+    return false;
+}
+
 // ----------------------------------------------------------------------//
 }; // namespace vm
 }; // namespace sim

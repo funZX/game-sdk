@@ -49,22 +49,24 @@ CBoneHierarchy::~CBoneHierarchy()
 
 // ----------------------------------------------------------------------//
 
-void CBoneHierarchy::Load(io::CMemStream* ms)
+bool CBoneHierarchy::Load(io::CMemStream* ms)
 {
 	m_nBones = ms->ReadU16();
 
 	SIM_ASSERT(m_nBones > 0);
 
 	m_bones = SIM_NEW CBone[m_nBones];
+
+    return false;
 }
 
 // ----------------------------------------------------------------------//
 
-void CBoneHierarchy::Save(io::CMemStream* ms)
+bool CBoneHierarchy::Save(io::CMemStream* ms)
 {
 	ms->WriteU16(m_nBones);
 
-
+    return false;
 }
 
 // ----------------------------------------------------------------------//

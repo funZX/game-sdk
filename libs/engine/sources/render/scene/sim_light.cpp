@@ -36,13 +36,18 @@ namespace rnr
 CLight::CLight()
 	: CSceneNode()
 {
-	m_channel	= CDriver::LightChannel::Light_0;
+	m_channel	    = CDriver::LightChannel::Light_0;
 
-	m_ambient   = col::White;
-	m_diffuse   = col::White;
-	m_specular  = col::White;
+	m_ambient       = col::White;
+	m_diffuse       = col::White;
+	m_specular      = col::White;
 
-	m_intensity	= 0.25f;
+    m_type          = Type::Directional;
+    m_kind          = Kind::Linear;
+
+	m_attenuation   = 0.05f;
+    m_fallOffAngle  = 0.0f;
+    m_fallOffExponent = 0.0f;
 }
 
 // ----------------------------------------------------------------------//
@@ -75,12 +80,25 @@ void CLight::Render( CDriver *driver )
     driver->SetLightDirection( m_matrix.y.xyz );
     
     driver->SetLightChannel(m_channel);
-	driver->SetLightIntensity( m_intensity );
+	driver->SetLightAttenuation( m_attenuation );
+    driver->SetLightFallOffAngle( m_fallOffAngle );
+    driver->SetLightFallOffExponent( m_fallOffExponent );
+
 	driver->SetLightAmbient( m_ambient );
 	driver->SetLightDiffuse( m_diffuse );
 	driver->SetLightSpecular( m_specular );
 }
 
+// ----------------------------------------------------------------------//
+bool CLight::Load(io::CMemStream* ms)
+{
+    return true;
+}
+// ----------------------------------------------------------------------//
+bool CLight::Save(io::CMemStream* ms)
+{
+    return true;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

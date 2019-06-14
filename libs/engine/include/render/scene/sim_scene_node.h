@@ -65,6 +65,7 @@ public:
         bool		isVisible;
         bool		isCulled;
         bool		isPhysic;
+        bool        isStatic;
         f32			mass;
         f32			restitution;
         f32			friction;
@@ -107,6 +108,7 @@ public:
     inline bool					    IsVisible();
     inline bool					    IsCulled();
     inline bool					    IsPhysic();
+    inline bool					    IsStatic();
 
 	// ------------------------------------------------------------------//
 
@@ -177,6 +179,11 @@ inline bool CSceneNode::IsCulled()
 inline bool CSceneNode::IsPhysic() 
 {
     return m_state.isPhysic;
+}
+
+inline bool CSceneNode::IsStatic()
+{
+    return m_state.isStatic;
 }
 // ----------------------------------------------------------------------//
 }; // namespace rnr

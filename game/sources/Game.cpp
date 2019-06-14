@@ -71,7 +71,6 @@ const std::string CGame::GetFsPath( const std::string& fs)
 
 // ----------------------------------------------------------------------//
 
-
 void CGame::Update( f32 dt, void *userData )
 {
 	CEngine::Update( dt, userData );

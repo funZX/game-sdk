@@ -105,7 +105,9 @@ public:
 		Light_Ambient_0,
 		Light_Diffuse_0,
 		Light_Specular_0,
-		Light_Intensity_0,
+		Light_Attenuation_0,
+        Light_FallOffAngle_0,
+        Light_FallOffExp_0,
 
 		Light_Enable_1,
 		Light_Position_1,
@@ -113,7 +115,9 @@ public:
 		Light_Ambient_1,
 		Light_Diffuse_1,
 		Light_Specular_1,
-		Light_Intensity_1,
+        Light_Attenuation_1,
+        Light_FallOffAngle_1,
+        Light_FallOffExp_1,
 
 		Light_Enable_2,
 		Light_Position_2,
@@ -121,7 +125,9 @@ public:
 		Light_Ambient_2,
 		Light_Diffuse_2,
 		Light_Specular_2,
-		Light_Intensity_2,
+        Light_Attenuation_2,
+        Light_FallOffAngle_2,
+        Light_FallOffExp_2,
 
 		Light_Enable_3,
 		Light_Position_3,
@@ -129,10 +135,12 @@ public:
 		Light_Ambient_3,
 		Light_Diffuse_3,
 		Light_Specular_3,
-		Light_Intensity_3,
+        Light_Attenuation_3,
+        Light_FallOffAngle_3,
+        Light_FallOffExp_3,
 	};
 
-	enum { k_Uniform_Count = 69  }; //yeah... sixtynine
+	enum { k_Uniform_Count = 77  }; //yeah... seventyseven
 	// ------------------------------------------------------------------//
 	struct TUniform
 	{
@@ -171,6 +179,8 @@ public:
 	static const TAttrib*		FindAttrib( const std::string& name );
 	static const TUniform*		FindUniform( const std::string& name );
 
+    virtual bool	            Load(io::CMemStream* ms);
+    virtual bool	            Save(io::CMemStream* ms);
 protected:
 
 	// ------------------------------------------------------------------//

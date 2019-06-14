@@ -10,7 +10,7 @@ uniform float u_Material_Shininess;
 uniform vec4 u_Light_Ambient_0;
 uniform vec4 u_Light_Diffuse_0;
 uniform vec4 u_Light_Specular_0;
-uniform float u_Light_Intensity_0;
+uniform float u_Light_Attenuation_0;
 
 varying vec2 v_Tex0;
 varying vec3 v_ToEyeDirV;
@@ -34,5 +34,5 @@ void main()
 	vec4 col 		= vec4( ambient + diffuse + spec, u_Light_Diffuse_0.a );
 	vec4 tex0 		= texture2D( u_Sampler_Tex_0, v_Tex0.xy );
 	
-	gl_FragColor 	= mix( tex0, col, u_Light_Intensity_0 );
+	gl_FragColor 	= u_Light_Attenuation_0 * ( tex0 + col );
 }

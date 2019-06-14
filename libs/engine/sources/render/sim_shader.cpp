@@ -109,7 +109,9 @@ CShader::TUniform CShader::Uniforms[] =
 	{ "u_Light_Ambient_0",			-1,		CShader::UniformIndex::Light_Ambient_0 },
 	{ "u_Light_Diffuse_0",			-1,		CShader::UniformIndex::Light_Diffuse_0 },
 	{ "u_Light_Specular_0",			-1,		CShader::UniformIndex::Light_Specular_0 },
-	{ "u_Light_Intensity_0",		-1,		CShader::UniformIndex::Light_Intensity_0 },
+	{ "u_Light_Attenuation_0",		-1,		CShader::UniformIndex::Light_Attenuation_0 },
+    { "u_Light_FallOffAngle_0",		-1,		CShader::UniformIndex::Light_FallOffAngle_0 },
+    { "u_Light_FallOffExp_0",		-1,		CShader::UniformIndex::Light_FallOffExp_0 },
 
 	{ "u_Light_Enable_1",			-1,		CShader::UniformIndex::Light_Enable_1 },
 	{ "u_Light_Position_1",			-1,		CShader::UniformIndex::Light_Position_1 },
@@ -117,7 +119,9 @@ CShader::TUniform CShader::Uniforms[] =
 	{ "u_Light_Ambient_1",			-1,		CShader::UniformIndex::Light_Ambient_1 },
 	{ "u_Light_Diffuse_1",			-1,		CShader::UniformIndex::Light_Diffuse_1 },
 	{ "u_Light_Specular_1",			-1,		CShader::UniformIndex::Light_Specular_1 },
-	{ "u_Light_Intensity_1",		-1,		CShader::UniformIndex::Light_Intensity_1 },
+	{ "u_Light_Attenuation_1",		-1,		CShader::UniformIndex::Light_Attenuation_1 },
+    { "u_Light_FallOffAngle_1",		-1,		CShader::UniformIndex::Light_FallOffAngle_1 },
+    { "u_Light_FallOffExp_1",		-1,		CShader::UniformIndex::Light_FallOffExp_1 },
 
 	{ "u_Light_Enable_2",			-1,		CShader::UniformIndex::Light_Enable_2 },
 	{ "u_Light_Position_2",			-1,		CShader::UniformIndex::Light_Position_2 },
@@ -125,7 +129,9 @@ CShader::TUniform CShader::Uniforms[] =
 	{ "u_Light_Ambient_2",			-1,		CShader::UniformIndex::Light_Ambient_2 },
 	{ "u_Light_Diffuse_2",			-1,		CShader::UniformIndex::Light_Diffuse_2 },
 	{ "u_Light_Specular_2",			-1,		CShader::UniformIndex::Light_Specular_2 },
-	{ "u_Light_Intensity_2",		-1,		CShader::UniformIndex::Light_Intensity_2 },
+	{ "u_Light_Attenuation_2",		-1,		CShader::UniformIndex::Light_Attenuation_2 },
+    { "u_Light_FallOffAngle_2",		-1,		CShader::UniformIndex::Light_FallOffAngle_2 },
+    { "u_Light_FallOffExp_2",		-1,		CShader::UniformIndex::Light_FallOffExp_2 },
 
 	{ "u_Light_Enable_3",			-1,		CShader::UniformIndex::Light_Enable_3 },
 	{ "u_Light_Position_3",			-1,		CShader::UniformIndex::Light_Position_3 },
@@ -133,7 +139,9 @@ CShader::TUniform CShader::Uniforms[] =
 	{ "u_Light_Ambient_3",			-1,		CShader::UniformIndex::Light_Ambient_3 },
 	{ "u_Light_Diffuse_3",			-1,		CShader::UniformIndex::Light_Diffuse_3 },
 	{ "u_Light_Specular_3",			-1,		CShader::UniformIndex::Light_Specular_3 },
-	{ "u_Light_Intensity_3",		-1,		CShader::UniformIndex::Light_Intensity_3 },
+	{ "u_Light_Attenuation_3",		-1,		CShader::UniformIndex::Light_Attenuation_3 },
+    { "u_Light_FallOffAngle_3",		-1,		CShader::UniformIndex::Light_FallOffAngle_3 },
+    { "u_Light_FallOffExp_3",		-1,		CShader::UniformIndex::Light_FallOffExp_3 },
 };
 
 // ----------------------------------------------------------------------//
@@ -211,7 +219,17 @@ const CShader::TUniform* CShader::FindUniform(const std::string& name)
 
 	return nullptr;
 }
+// ----------------------------------------------------------------------//
+bool CShader::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
 
+bool CShader::Save(io::CMemStream* ms)
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

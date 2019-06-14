@@ -25,10 +25,13 @@
 */
 
 #include <core/sim_core.h>
+#include <core/io/sim_mem_stream.h>
 
 #include <render/scene/sim_camera.h>
 #include <render/sim_rect_2d.h>
 #include <render/sim_driver.h>
+
+#include <jansson.h>
 
 namespace sim
 {
@@ -67,8 +70,8 @@ CCamera::~CCamera()
 void CCamera::SetPerspective( CRect2D *rect )
 {
 	Vec2 size;
-	size.x = ( f32 ) rect->Width();
-	size.y = ( f32 ) rect->Height();
+	size.x = rect->Width();
+	size.y = rect->Height();
 
     zpl_mat4_perspective( &m_perspectiveMatrix, zpl_to_radians(m_fieldOfView), size.x / size.y, m_nearPlane, m_farPlane );
 }
@@ -296,7 +299,41 @@ bool CCamera::BoxIn( Vec3 *pos, Vec3 *bounds )
 
 	return false;
 }
+// ----------------------------------------------------------------------//
+bool CCamera::Load(io::CMemStream* ms)
+{
+    json_error_t error;
+    json_t* root    = json_loads((const char*)ms->Read(0), 0, &error);
 
+    m_fieldOfView   = (f32)json_real_value(json_object_get(root, "fov"));
+    m_nearPlane     = (f32)json_real_value(json_object_get(root, "near"));
+    m_farPlane      = (f32)json_real_value(json_object_get(root, "far"));
+
+    return true;
+}
+// ----------------------------------------------------------------------//
+bool CCamera::Save(io::CMemStream* ms)
+{
+    json_t* root = json_object();
+
+    json_t* fov = json_real(m_fieldOfView);
+    json_object_set(root, "fov", fov);
+    
+    json_t* nearPlane = json_real(m_nearPlane);
+    json_object_set(root, "near", nearPlane);
+    
+    json_t* farPlane = json_real(m_farPlane);
+    json_object_set(root, "far", farPlane);
+    
+    ms->WriteString(json_dumps(root, JSON_COMPACT));
+
+    json_delete(fov);
+    json_delete(nearPlane);
+    json_delete(farPlane);
+    json_delete(root);
+
+    return true;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

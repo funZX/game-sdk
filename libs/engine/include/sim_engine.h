@@ -170,9 +170,10 @@ public:
 	inline CDriver*					GetDriver()		{ return m_driver; }
 	inline CSquirrel*				GetVM()			{ return m_vm; }
 
-	virtual void					Start( int width, int height );
-	virtual void					Run( void );
-	virtual void					Quit( void );
+    virtual void					Resize(int width, int height);
+	virtual void					Start();
+	virtual void					Run();
+	virtual void					Quit();
 
 	u64								GetTime()			{ return m_currentTime; }
 	u64								GetFrameTime()		{ return m_frameTime; }
@@ -188,6 +189,7 @@ public:
 	void							GoBack();
 
 	void							SetCamera( CCamera *camera );
+    CCamera*                        GetCamera();
 
 	void							PointerDown( u32 x, u32 y );
 	void							PointerDrag( u32 x, u32 y );

@@ -1,37 +1,38 @@
 #include <iostream>
 
-#include <render/scene/sim_actor.h>
 #include <render/scene/sim_scene.h>
 
 #include <dae.h>
-
 #include "dae2sim.h"
 
 // ----------------------------------------------------------------------//
-int export_material(daeElement* elem, const std::string& path);
-int export_animation(daeElement* animation, const std::string& path);
-int export_geometry(daeElement* db, const std::string& path);
-int export_mesh(daeElement* db, const std::string& path); 
-int export_curve(daeElement* curve, const std::string& path);
-int export_light(daeElement* light, const std::string& path);
-int export_camera(daeElement* camera, const std::string& path);
-int export_item(daeElement* scene, const std::string& path);
-int export_scene(daeElement* scene, const std::string& path);
-int export_controller(daeElement* scene, const std::string& path);
+int export_material(daeScene& scene, daeElement* material, const std::string& path);
+int export_animation(daeScene& scene, daeElement* animation, const std::string& path);
+int export_animationclip(daeScene& scene, daeElement* animationclip, const std::string& path);
+int export_geometry(daeScene& scene, daeElement* geom, const std::string& path);
+int export_mesh(daeScene& scene, daeElement* mesh, const std::string& path);
+int export_curve(daeScene& scene, daeElement* curve, const std::string& path);
+int export_light(daeScene& scene, daeElement* light, const std::string& path);
+int export_camera(daeScene& scene, daeElement* camera, const std::string& path);
+int export_controller(daeScene& scene, daeElement* controller, const std::string& path);
+// ----------------------------------------------------------------------//
 
+
+
+// ----------------------------------------------------------------------//
+int export_node(daeScene& scene, daeSceneNode& item, const std::string& path);
+int export_scene(daeElement* elem, const std::string& path);
 // ----------------------------------------------------------------------//
 
 int export_scenes(daeDocument* doc, const std::string& path)
 {
+    int status = OK;
+
     daeDatabase* db     = doc->getDatabase();
     daeElement* root    = doc->getDomRoot();
     daeElement*  scene  = root->getChild("scene");
 
-    if (!scene)
-    {
-        SIM_ERROR("'scene' not found in document %s!\n", doc->getDocumentURI()->str().c_str());
-        return 1;
-    }
+    status |= (nullptr != scene);
 
     auto children = scene->getChildren();
 
@@ -40,81 +41,86 @@ int export_scenes(daeDocument* doc, const std::string& path)
         auto child = children[i];
         auto instance = daeGetUrl(doc, child);
 
-        if (0 != export_scene(instance, path))
-        {
-            SIM_ERROR("Failed export 'instance_visual_scene': %s!\n", child->getID());
-            return 1;
-        }
+        status |= export_scene(instance, path);
     }
 
-    return 0;
+    return status;
 }
 
-int export_scene(daeElement* scene, const std::string& path)
+int export_scene(daeElement* elem, const std::string& path)
 {
-    int success = 0;
+    int status = OK;
 
-    CScene* data = SIM_NEW CScene(scene->getElementName());
+    daeScene s;
+    s.root.elem = elem;
 
-    auto nodes = daeGetChildrenOfType(scene, NODETYPE_NODE);
+    auto nodes = daeGetChildrenOfType(elem, NODETYPE_NODE);
     
     for (auto node : nodes)
     {
-        node->setUserData(data);
-        auto items = daeGetChildrenOfType(node, NODETYPE_NODE);
-        
-        for (auto item : items)
-            success |= export_item(item, path);
+        daeSceneNode n;
+        n.elem = node;
+
+        status |= export_node(s, n, path);
+
+        s.root.childs[daeGetName(node)] = n;
     }
 
-    SIM_SAFE_DELETE(data);
+    sim::io::CMemStream ms(1024*1024);
+    sim::rnr::CScene scn;
 
-    return success;
+    status |= !scn.Save(&ms);
+
+    std::string dir = path + "/scene/";
+    filesystem::create_directories(dir);
+
+    status |= dump(ms, dir + daeGetName(elem));
+
+    return status;
 }
 
-int export_item(daeElement* item, const std::string& path)
+int export_node(daeScene& scene, daeSceneNode& item, const std::string& path)
 {
-    auto controller = item->getChild("instance_controller");
+    int status = OK;
+    auto nodes  = daeGetChildrenOfType(item.elem, NODETYPE_NODE);
+
+    for (auto node : nodes)
+    {
+        daeSceneNode n;
+        n.elem = node;
+
+        status |= export_node(scene, n, path);
+
+        item.childs[daeGetName(node)] = n;
+    }
+
+    auto controller = item.elem->getChild("instance_controller");
     if (controller)
     {
-        auto instance = daeGetUrl(item->getDocument(), controller);
-        instance->setUserData(item->getUserData());
-
-        return export_controller(instance, path);
+        auto instance = daeGetUrl(item.elem->getDocument(), controller);
+        return export_controller(scene, instance, path);
     }
 
-    auto geometry = item->getChild("instance_geometry");
+    auto geometry = item.elem->getChild("instance_geometry");
     if (geometry)
     {
-        auto instance = daeGetUrl(item->getDocument(), geometry);
-        instance->setUserData(item->getUserData());
-
-        return export_geometry(instance, path);
+        auto instance = daeGetUrl(item.elem->getDocument(), geometry);
+        return export_geometry(scene, instance, path);
     }
 
-    auto camera = item->getChild("instance_camera");
+    auto camera = item.elem->getChild("instance_camera");
     if (camera)
     {
-        auto instance = daeGetUrl(item->getDocument(), camera);
-        instance->setUserData(item->getUserData());
-
-        return export_camera(instance, path);
+        auto instance = daeGetUrl(item.elem->getDocument(), camera);
+        return export_camera(scene, instance, path);
     }
 
-    auto light = item->getChild("instance_light");
+    auto light = item.elem->getChild("instance_light");
     if (light)
     {
-        auto instance = daeGetUrl(item->getDocument(), light);
-        instance->setUserData(item->getUserData());
-
-        return export_light(instance, path);
+        auto instance = daeGetUrl(item.elem->getDocument(), light);
+        return export_light(scene, instance, path);
     }
 
-    return 0;
+    return status;
 }
-
-int export_controller(daeElement* scene, const std::string& path)
-{
-    return 0;
-}
-

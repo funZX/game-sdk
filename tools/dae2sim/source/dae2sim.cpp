@@ -6,6 +6,7 @@ void onStart();
 int export_dae2sim(daeDocument* doc, const char* folder);
 
 Options options;
+daeScene S;
 
 int main(int argc, char** argv)
 {
@@ -13,15 +14,16 @@ int main(int argc, char** argv)
 
 	options.in_dae_file = 0;
 	options.out_folder = 0;
+    options.display = false;
 
 	for (int i = 1; i < argc; i++)
 	{
-		if (strcmp("-animation", argv[i]) == 0)
-		{
-			if (i + 1 == argc) break;
+        if (strcmp("-display", argv[i]) == 0)
+        {
+            if (i + 1 == argc) break;
 
-			options.animations = true;
-		}
+            options.display = true;
+        }
 		else if (argv[i][0] != '-')
 		{
 			options.in_dae_file = argv[i];
@@ -40,7 +42,7 @@ int main(int argc, char** argv)
 		printf("|                  Copyright (c) Adrian SIMINCIUC 2019               |\n");
 		printf("|                       Authors: Adrian SIMINCIUC                    |\n");
 		printf("|____________________________________________________________________|\n\n");
-		printf("USAGE: dae2sim input_dae_file_v1.5 output_folder\n\n");
+		printf("USAGE: dae2sim [-display] input_dae_file_v1.5 output_folder\n\n");
 
 
 		return 0;
@@ -88,6 +90,27 @@ int export_dae2sim(daeDocument* doc, const char* folder)
 	std::string path(folder);
 
 	return export_scenes(doc, path);
+}
+
+// ----------------------------------------------------------------------//
+daeString daeGetName(daeElement* elem)
+{
+    return ((domNode*)elem)->getName();
+}
+
+// ----------------------------------------------------------------------//
+daeString daeGetID(daeElement* elem)
+{
+    return ((domNode*)elem)->getID();
+}
+// ----------------------------------------------------------------------//
+
+daeElement* daeGetSource(daeDocument* doc, daeElement* elem)
+{
+    std::string url = elem->getAttribute("source");
+    url.erase(0, 1);
+
+    return doc->getDatabase()->idLookup(url, doc);
 }
 
 // ----------------------------------------------------------------------//
@@ -147,3 +170,21 @@ void ArrayToJson(json_t* root, const sim::f32* v, const unsigned count)
 }
 // ----------------------------------------------------------------------//
 
+int dump(CMemStream& ms, const std::string& file)
+{
+    std::ofstream s;
+    s.open(file.c_str());
+
+    if (!s.is_open())
+        return 1;
+
+    u32 len = ms.GetCursor();
+    ms.Rewind();
+
+    s.write((char*)ms.Read(0), len);
+    s.close();
+
+    return 0;
+}
+
+// ----------------------------------------------------------------------//

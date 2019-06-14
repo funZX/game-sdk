@@ -6,7 +6,12 @@
 
 #include "dae2sim.h"
 
-int export_animation(daeElement* animation, const std::string& path)
+int export_animation(daeScene& scene, daeElement* animation, const std::string& path)
+{
+    return 0;
+}
+
+int export_animationclip(daeScene& scene, daeElement* animationclip, const std::string& path)
 {
     return 0;
 }

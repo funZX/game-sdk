@@ -80,5 +80,17 @@ u32 CVertexSource::Generate()
 	return m_iD;
 }
 // ----------------------------------------------------------------------//
+
+bool CVertexSource::Load(io::CMemStream* ms)
+{
+    return false;
+}
+
+// ----------------------------------------------------------------------//
+bool CVertexSource::Save(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

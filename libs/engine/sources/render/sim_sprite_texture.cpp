@@ -81,9 +81,16 @@ void CSpriteTexture::Render( CDriver *driver, CRect2D *rect, s32 frame )
 
 // ----------------------------------------------------------------------//
 
-void CSpriteTexture::Load(io::CMemStream* ms)
+bool CSpriteTexture::Load(io::CMemStream* ms)
 {
+    return false;
+}
 
+// ----------------------------------------------------------------------//
+
+bool CSpriteTexture::Save(io::CMemStream* ms)
+{
+    return false;
 }
 
 // ----------------------------------------------------------------------//

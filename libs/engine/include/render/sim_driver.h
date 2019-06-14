@@ -114,7 +114,9 @@ public:
 		Vec4	m_diffuse;
 		Vec4	m_specular;
 
-		f32		m_intensity;
+		f32		m_attenuation;
+        f32		m_fallOffAngle;
+        f32     m_fallOffExponent;
 	} TLightParameters;
 	
 	// ------------------------------------------------------------------//
@@ -251,8 +253,14 @@ public:
     inline void					SetLightSpecular(Vec4 specular);
     inline Vec4                 GetLightSpecular() ;
 
-    inline void					SetLightIntensity(f32 intensity);
-    inline f32				    GetLightIntensity() ;
+    inline void					SetLightAttenuation(f32 attenuation);
+    inline f32				    GetLightAttenuation() ;
+
+    inline void					SetLightFallOffAngle(f32 fallOffAngle);
+    inline f32				    GetLightFallOffAngle();
+
+    inline void					SetLightFallOffExponent(f32 fallOffExp);
+    inline f32				    GetLightFallOffExponent();
 
     inline void					SetMaterialShininess(f32 shininess);
     inline f32				    GetMaterialShininess() ;
@@ -577,14 +585,34 @@ inline Vec4 CDriver::GetLightSpecular()
     return m_lightParameters[Value(m_lightChannel)].m_specular; 
 }
 
-inline void CDriver::SetLightIntensity(f32 intensity)
+inline void CDriver::SetLightAttenuation(f32 attenuation)
 { 
-    m_lightParameters[Value(m_lightChannel)].m_intensity = intensity;
+    m_lightParameters[Value(m_lightChannel)].m_attenuation = attenuation;
 }
 
-inline f32 CDriver::GetLightIntensity()  
+inline f32 CDriver::GetLightAttenuation()
 { 
-    return m_lightParameters[Value(m_lightChannel)].m_intensity;
+    return m_lightParameters[Value(m_lightChannel)].m_attenuation;
+}
+
+inline void CDriver::SetLightFallOffAngle(f32 fallOffAngle)
+{
+    m_lightParameters[Value(m_lightChannel)].m_fallOffAngle = fallOffAngle;
+}
+
+inline f32 CDriver::GetLightFallOffAngle()
+{
+    return m_lightParameters[Value(m_lightChannel)].m_fallOffAngle;
+}
+
+inline void CDriver::SetLightFallOffExponent(f32 fallOffExp)
+{
+    m_lightParameters[Value(m_lightChannel)].m_fallOffExponent = fallOffExp;
+}
+
+inline f32 CDriver::GetLightFallOffExponent()
+{
+    return m_lightParameters[Value(m_lightChannel)].m_fallOffExponent;
 }
 
 inline void CDriver::SetMaterialShininess(f32 shininess)

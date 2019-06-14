@@ -48,6 +48,20 @@ public:
 	CLight( const std::string &name );
 	virtual ~CLight();
 
+    enum class Type : u32
+    {
+        Directional,
+        Point,
+        Spot
+    };
+
+    enum class Kind : u32
+    {
+        Linear,
+        Constant,
+        Quadratic
+    };
+
 	// ------------------------------------------------------------------//
     inline Vec4					        GetAmbient();
     inline void							SetAmbient(Vec4 ambient);
@@ -58,14 +72,29 @@ public:
     inline Vec4					        GetSpecular();
     inline void							SetSpecular(Vec4 specular);
 
-    inline f32							GetIntensity();
-    inline void							SetIntensity(f32 intensity);
+    inline f32							GetAttenuation();
+    inline void							SetAttenuation(f32 attenuation);
+
+    inline f32							GetFallOffAngle();
+    inline void							SetFallOffAngle(f32 fallOffAngle);
+
+    inline f32							GetFallOffExponent();
+    inline void							SetFallOffExponent(f32 fallOffExp);
 
     inline void							SetChannel(CDriver::LightChannel channel);
 	inline CDriver::LightChannel		GetChanel();
 
 	virtual void						Update( f32 dt, void *userData );
 	virtual void						Render( CDriver *driver );
+
+    inline Type                         GetType();
+    inline void                         SetType(Type type);
+
+    inline Kind                         GetKind();
+    inline void                         SetKind(Kind kind);
+
+    virtual bool	                    Load(io::CMemStream* ms);
+    virtual bool	                    Save(io::CMemStream* ms);
 	// ------------------------------------------------------------------//
 
 protected:
@@ -77,7 +106,11 @@ protected:
 	Vec4								m_diffuse;
 	Vec4								m_specular;
 
-	f32									m_intensity;
+    Type                                m_type;
+    Kind                                m_kind;
+	f32									m_attenuation;
+    f32									m_fallOffAngle;
+    f32									m_fallOffExponent;
 	// ------------------------------------------------------------------//
 };
 
@@ -112,14 +145,34 @@ inline void CLight::SetSpecular(Vec4 specular)
     m_specular = specular;
 }
 
-inline f32 CLight::GetIntensity() 
+inline f32 CLight::GetAttenuation()
 { 
-    return m_intensity; 
+    return m_attenuation; 
 }
 
-inline void CLight::SetIntensity(f32 intensity)
+inline void CLight::SetAttenuation(f32 attenuation)
 { 
-    m_intensity = intensity; 
+    m_attenuation = attenuation;
+}
+
+inline f32 CLight::GetFallOffAngle()
+{
+    return m_fallOffAngle;
+}
+
+inline void CLight::SetFallOffAngle(f32 fallOffAngle)
+{
+    m_fallOffAngle = fallOffAngle;
+}
+
+inline f32 CLight::GetFallOffExponent()
+{
+    return m_fallOffExponent;
+}
+
+inline void CLight::SetFallOffExponent(f32 fallOffExp)
+{
+    m_fallOffExponent = fallOffExp;
 }
 
 inline void CLight::SetChannel(CDriver::LightChannel channel)
@@ -132,6 +185,26 @@ inline CDriver::LightChannel CLight::GetChanel()
     return m_channel;
 }
 
+inline CLight::Type CLight::GetType()
+{
+    return m_type;
+}
+
+inline void CLight::SetType(CLight::Type type)
+{
+    m_type = type;
+}
+
+
+inline CLight::Kind CLight::GetKind()
+{
+    return m_kind;
+}
+
+inline void CLight::SetKind(CLight::Kind kind)
+{
+    m_kind = kind;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

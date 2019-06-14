@@ -55,7 +55,16 @@ CBone::CBone( const std::string& name )
 CBone::~CBone()
 {
 }
-
+// ----------------------------------------------------------------------//
+bool CBone::Load(io::CMemStream* ms)
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
+bool CBone::Save(io::CMemStream* ms)
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

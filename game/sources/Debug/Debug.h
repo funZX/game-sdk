@@ -17,6 +17,8 @@ public:
 		CTiming( char *dbgName )
 		{
 			m_beginTime = GetTimeMicro();
+            m_endTime = m_beginTime;
+
 			m_debugName	= dbgName;
 		}
 
