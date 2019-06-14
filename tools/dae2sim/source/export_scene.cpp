@@ -26,16 +26,13 @@ int export_scene(daeElement* elem, const std::string& path);
 
 int export_scenes(daeDocument* doc, const std::string& path)
 {
+    int status = OK;
+
     daeDatabase* db     = doc->getDatabase();
     daeElement* root    = doc->getDomRoot();
     daeElement*  scene  = root->getChild("scene");
 
-    if (!scene)
-    {
-        SIM_ERROR("'scene' not found in document %s!\n", doc->getDocumentURI()->str().c_str());
-        return 1;
-    }
-
+    status |= (nullptr != scene);
 
     auto children = scene->getChildren();
 
@@ -44,19 +41,15 @@ int export_scenes(daeDocument* doc, const std::string& path)
         auto child = children[i];
         auto instance = daeGetUrl(doc, child);
 
-        if (0 != export_scene(instance, path))
-        {
-            SIM_ERROR("Failed export 'instance_visual_scene': %s!\n", child->getID());
-            return 1;
-        }
+        status |= export_scene(instance, path);
     }
 
-    return 0;
+    return status;
 }
 
 int export_scene(daeElement* elem, const std::string& path)
 {
-    int status = 0;
+    int status = OK;
 
     daeScene s;
     s.root.elem = elem;
@@ -88,7 +81,7 @@ int export_scene(daeElement* elem, const std::string& path)
 
 int export_node(daeScene& scene, daeSceneNode& item, const std::string& path)
 {
-    int status = 0;
+    int status = OK;
     auto nodes  = daeGetChildrenOfType(item.elem, NODETYPE_NODE);
 
     for (auto node : nodes)

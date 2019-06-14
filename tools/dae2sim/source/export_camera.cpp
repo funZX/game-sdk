@@ -9,18 +9,16 @@ int export_camera(daeScene& scene, daeElement* elem, const std::string& path)
 {
     int status = 0;
 
-    domCamera* camera = (domCamera*)elem;
-
-    auto perspective = camera->getOptics()->getTechnique_common()->getPerspective();
+    auto perspective = ((domCamera*)elem)->getOptics()->getTechnique_common()->getPerspective();
 
     sim::io::CMemStream ms(1024);
-    sim::rnr::CCamera cam;
+    sim::rnr::CCamera camera;
 
-    cam.SetFieldOfView((f32)perspective->getYfov()->getValue());
-    cam.SetNearPlane((f32)perspective->getZnear()->getValue());
-    cam.SetFarPlane((f32)perspective->getZfar()->getValue());
+    camera.SetFieldOfView((f32)perspective->getYfov()->getValue());
+    camera.SetNearPlane((f32)perspective->getZnear()->getValue());
+    camera.SetFarPlane((f32)perspective->getZfar()->getValue());
 
-    status |= !cam.Save(&ms);
+    status |= !camera.Save(&ms);
 
     daeString file = daeGetID(elem);
     std::string dir = path + "/camera/";

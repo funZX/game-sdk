@@ -37,7 +37,7 @@ namespace rnr
 CCurve::CCurve()
 	: CSceneNode()
 {
-    m_IsClosed = false;
+    m_isClosed = false;
 }
 
 // ----------------------------------------------------------------------//
@@ -59,7 +59,7 @@ CCurve::~CCurve()
 
 void CCurve::AddVertex(Vertex v)
 {
-    m_Vertices.AddToEnd(v);
+    m_vertices.AddToEnd(v);
 }
 
 // ----------------------------------------------------------------------//
@@ -84,14 +84,14 @@ bool CCurve::Load(io::CMemStream* ms)
     Vertex v;
     u32 count = 0;
 
-    m_IsClosed = 1 == ms->ReadU8();
-    m_Type  = (Type)(ms->ReadU8());
+    m_isClosed = 1 == ms->ReadU8();
+    m_type  = (Type)(ms->ReadU8());
     count   = ms->ReadU16();
 
     for(u32 k = 0; k < count; k++)
     {
         v = *((Vertex*)ms->Read(sizeof(Vertex)));
-        m_Vertices.AddToEnd( v );
+        m_vertices.AddToEnd( v );
     }
 
     return true;
@@ -101,11 +101,11 @@ bool CCurve::Save(io::CMemStream* ms)
 {
     Vertex* v = nullptr;
 
-    ms->WriteU8(m_IsClosed ? 1 : 0);
-    ms->WriteU8((u8)Value(m_Type));
-    ms->WriteU16(m_Vertices.Count());
+    ms->WriteU8(m_isClosed ? 1 : 0);
+    ms->WriteU8((u8)Value(m_type));
+    ms->WriteU16(m_vertices.Count());
     
-    while (v = m_Vertices.Next())
+    while (v = m_vertices.Next())
         ms->Write(v, sizeof(Vertex));
 
     return true;

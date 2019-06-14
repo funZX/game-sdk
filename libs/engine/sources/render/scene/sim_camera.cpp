@@ -303,7 +303,7 @@ bool CCamera::BoxIn( Vec3 *pos, Vec3 *bounds )
 bool CCamera::Load(io::CMemStream* ms)
 {
     json_error_t error;
-    json_t* root = json_loads((const char*)ms->Read(0), 0, &error);
+    json_t* root    = json_loads((const char*)ms->Read(0), 0, &error);
 
     m_fieldOfView   = (f32)json_real_value(json_object_get(root, "fov"));
     m_nearPlane     = (f32)json_real_value(json_object_get(root, "near"));

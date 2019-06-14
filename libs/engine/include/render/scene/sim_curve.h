@@ -80,29 +80,29 @@ public:
 
 protected:
 	// ------------------------------------------------------------------//
-    bool                                m_IsClosed;
-    Type                                m_Type;
-    sim::stl::CList<Vertex>             m_Vertices;
+    bool                                m_isClosed;
+    Type                                m_type;
+    sim::stl::CList<Vertex>             m_vertices;
     // ------------------------------------------------------------------//
 };
 inline bool CCurve::GetIsClosed()
 {
-    return m_IsClosed;
+    return m_isClosed;
 }
 
 inline void CCurve::SetIsClosed(bool closed)
 {
-    m_IsClosed = closed;
+    m_isClosed = closed;
 }
 
 inline CCurve::Type CCurve::GetType()
 {
-    return m_Type;
+    return m_type;
 }
 
 inline void CCurve::SetType(CCurve::Type type)
 {
-    m_Type = type;
+    m_type = type;
 }
 
 // ----------------------------------------------------------------------//
