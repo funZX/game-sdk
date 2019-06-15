@@ -27,12 +27,6 @@
     <Filter Include="Source Files\network">
       <UniqueIdentifier>{883d7af1-d44a-48b2-806c-c1869274f941}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\render\font">
-      <UniqueIdentifier>{4df36ddf-4318-4622-9091-6134f30c6c5a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\render\font">
-      <UniqueIdentifier>{ba072429-e274-4bfd-b744-b46db5251cfb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\sound">
       <UniqueIdentifier>{e732a530-46cc-4cd3-9747-c9f2a8a4a61a}</UniqueIdentifier>
     </Filter>
@@ -83,18 +77,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\sources\render\font\sim_font.cpp">
-      <Filter>Source Files\render\font</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\sources\render\font\sim_font_atlas.cpp">
-      <Filter>Source Files\render\font</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\sources\render\font\sim_font_char.cpp">
-      <Filter>Source Files\render\font</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\sources\render\font\sim_font_node.cpp">
-      <Filter>Source Files\render\font</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\sources\render\sim_glaux.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
@@ -254,20 +236,17 @@
     <ClCompile Include="..\..\sources\render\sim_drawable.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_font.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_widget.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_font_atlas.cpp">
+      <Filter>Source Files\render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\render\font\sim_font.h">
-      <Filter>Header Files\render\font</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\render\font\sim_font_atlas.h">
-      <Filter>Header Files\render\font</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\render\font\sim_font_char.h">
-      <Filter>Header Files\render\font</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\render\font\sim_font_node.h">
-      <Filter>Header Files\render\font</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\render\sim_glaux.h">
       <Filter>Header Files\render</Filter>
     </ClInclude>
@@ -449,6 +428,15 @@
       <Filter>Header Files\core</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\render\sim_drawable.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_font.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_widget.h">
+      <Filter>Header Files\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_font_atlas.h">
       <Filter>Header Files\render</Filter>
     </ClInclude>
   </ItemGroup>

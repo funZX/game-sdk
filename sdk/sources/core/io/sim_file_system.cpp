@@ -42,16 +42,18 @@
 #include <render/sim_shader.h>
 #include <render/sim_effect.h>
 #include <render/sim_mesh.h>
+#include <render/sim_font.h>
+#include <render/sim_font_atlas.h>
 #include <render/sim_texture.h>
 #include <render/sim_cube_texture.h>
 #include <render/sim_material.h>
 #include <render/sim_sprite_texture.h>
-#include <render/font/sim_font.h>
-#include <render/font/sim_font_atlas.h>
 
 #include <sound/sim_sound_data.h>
 #include <vm/sim_script.h>
 #include <vm/sim_squirrel.h>
+
+#include <imgui.h>
 
 namespace sim
 {
@@ -65,10 +67,10 @@ CFileSystem::CFileSystem( const std::string &filename )
 
 	m_filename		= filename;
 	m_driver		= engine->GetDriver();
-	m_squirrel		= engine->GetVM();
+	m_vm		    = engine->GetVM();
 
+    m_fontAtlas     = SIM_NEW rnr::CFontAtlas(filename);
 	m_lzmaStream	= SIM_NEW io::CLzmaStream(filename);
-	m_fontAtlas		= SIM_NEW CFontAtlas(m_filename);
 
 	m_buffer		= nullptr;
 	m_bufferSize	= 0;
@@ -95,7 +97,6 @@ CFileSystem::~CFileSystem()
 	UnloadTextures();
 	UnloadFonts();
 
-	SIM_SAFE_DELETE( m_fontAtlas );
 	SIM_SAFE_DELETE( m_lzmaStream );
 }
 
@@ -172,7 +173,6 @@ void CFileSystem::Close()
 
 	u32 tex =
 	m_driver->BindTexture(0);
-	m_fontAtlas->Create();
 	m_driver->BindTexture(tex);
 }
 
@@ -214,6 +214,8 @@ bool CFileSystem::LoadNext( void )
 			sq->AddRootSlot( "filesystem", this );
 			on_load->Run();
 		}
+
+        m_fontAtlas->Create();
 	}
 
 	return ( m_crtStep != m_lastStep );
@@ -268,26 +270,21 @@ bool CFileSystem::LoadInit(const json_t* jsonRoot, s32 index)
 
 bool CFileSystem::LoadFont(const json_t* jsonRoot, s32 index)
 {
-	const char* szLetters = 
-		" ~`!@#$%^&*()-_=+0123456789:;'\"\\|<>?,./?{}[]@ABCDEFGHI"
-		"JKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÁáÉéÍíÑñÓóÚú";
-
 	json_t* jsonValue	= json_array_get( jsonRoot, index );
 
 	std::string name	= json_string_value( json_object_get( jsonValue, "name" ) );
 	std::string file	= json_string_value( json_object_get( jsonValue, "file" ) );
-	s32	size			= json_integer_value( json_object_get( jsonValue, "size" ) );
+	f32	size			= (f32)json_integer_value( json_object_get( jsonValue, "size" ) );
 
 	u32 offset = 0;
 	m_lzmaStream->OpenFile( file, &m_buffer, &offset, &m_bufferSize );
-	
-	CFont* font =
-	m_fontAtlas->AddFont( name, &m_buffer[ offset ], m_bufferSize, size, szLetters );
+
+    CMemStream ms(&m_buffer[offset], m_bufferSize);
+    rnr::CFont* font = m_fontAtlas->AddFont( name, &ms, size );
+    m_fontList.Insert(hash::Get(name), font);
 
 	m_lzmaStream->CloseCurrent( &m_buffer );
 	m_buffer = nullptr;
-
-	m_fontList.Insert( hash::Get( name ), font );
 
 	m_loadMessage.clear();
 	m_loadMessage = "Loading font ";
@@ -813,7 +810,7 @@ bool CFileSystem::LoadScript(const json_t* jsonRoot, s32 index)
 	std::string name	= json_string_value( json_object_get( jsonValue, "name" ) );
 	std::string file	= json_string_value( json_object_get( jsonValue, "file" ) );
 
-	CScript* script = SIM_NEW CScript( name, m_squirrel );
+	CScript* script = SIM_NEW CScript( name, m_vm );
 
 	u32 offset = 0;
 	m_lzmaStream->OpenFile( file, &m_buffer, &offset, &m_bufferSize );
@@ -869,18 +866,19 @@ bool CFileSystem::LoadScene(const json_t* jsonRoot, s32 index)
 
 void CFileSystem::UnloadFonts()
 {
-	m_fontList.Print(m_fontList.GetRoot(), 1);
-	m_fontList.DeleteAll();
+    m_fontList.Print( m_fontList.GetRoot(), 1 );
+    m_fontList.DeleteAll();
 }
 
 // ----------------------------------------------------------------------//
 
-rnr::CFont* CFileSystem::GetFont( const std::string &name )
+rnr::CFont* CFileSystem::GetFont(const std::string& name)
 {
-	auto item = m_fontList.Search(hash::Get(name));
+    auto item = m_fontList.Search(hash::Get(name));
 
-	return item ? *(item->m_data) : nullptr;
+    return item ? *(item->m_data) : nullptr;
 }
+
 
 // ----------------------------------------------------------------------//
 

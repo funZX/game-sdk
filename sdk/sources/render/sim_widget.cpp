@@ -24,9 +24,12 @@
 *    SOFTWARE.
 */
 
-#include <render/sim_sprite_texture.h>
+#include <render/sim_widget.h>
 #include <render/sim_driver.h>
-#include <render/sim_material.h>
+
+#include <render/sim_font_atlas.h>
+
+#include <imgui_internal.h>
 
 namespace sim
 {
@@ -34,64 +37,44 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CSpriteTexture::CSpriteTexture()
-	: CTexture()
+CWidget::CWidget( CFontAtlas* atlas )
+	: CRect2D()
 {
+    m_imContext = ImGui::CreateContext( atlas->m_imAtlas );
 }
 
 // ----------------------------------------------------------------------//
 
-CSpriteTexture::CSpriteTexture( const std::string& name )
-	: CSpriteTexture()
+CWidget::CWidget( const std::string& name, CFontAtlas* atlas )
+	: CWidget(atlas)
 {
 	m_name = name;
 }
 
 // ----------------------------------------------------------------------//
 
-void CSpriteTexture::AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h  )
+CWidget::~CWidget()
 {
-	CRect2D m;
-
-	f32 rw = 1.0f / GetWidth();
-	f32 rh = 1.0f / GetHeight();
-
-	m.Bound(
-		x * rw,
-		y * rw,
-		w * rw,
-		h * rh
-	);
-
-	m_frames[frame] = m;
+    ImGui::DestroyContext( m_imContext );
 }
 
 // ----------------------------------------------------------------------//
 
-void CSpriteTexture::Render( CDriver *driver, CRect2D *rect, s32 frame )
+void CWidget::Update( f32 dt, void* userData )
 {
-	auto m = m_frames.find(frame);
+    m_imContext->IO.DisplaySize = ImVec2( m_size.x, m_size.y );
+    m_imContext->IO.DeltaTime = dt;
 
-	SIM_ASSERT( this == rect->GetMaterial()->GetTexture( 0 ) );
-
-	if (m != m_frames.end())
-		rect->Render(driver, &m->second);
+    CRect2D::Update( dt, userData );
 }
-
 // ----------------------------------------------------------------------//
 
-bool CSpriteTexture::Load(io::CMemStream* ms)
+void CWidget::Render( CDriver *driver )
 {
-    return false;
-}
-
-// ----------------------------------------------------------------------//
-
-bool CSpriteTexture::Save(io::CMemStream* ms)
-{
-    return false;
+	CRect2D::Render( driver, m_texRect );
 }
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
+

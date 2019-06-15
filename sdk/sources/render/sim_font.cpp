@@ -23,10 +23,11 @@
 *    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 *    SOFTWARE.
 */
+#include <core/io/sim_mem_stream.h>
+#include <render/sim_font.h>
 
-#include <render/sim_sprite_texture.h>
-#include <render/sim_driver.h>
 #include <render/sim_material.h>
+#include <render/sim_driver.h>
 
 namespace sim
 {
@@ -34,64 +35,43 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CSpriteTexture::CSpriteTexture()
-	: CTexture()
+CFont::CFont( CFontAtlas* atlas )
 {
-}
+    m_fontAtlas = atlas;
 
+    m_pixelSize = 1.0f;
+    m_imFont    = nullptr;
+}
 // ----------------------------------------------------------------------//
 
-CSpriteTexture::CSpriteTexture( const std::string& name )
-	: CSpriteTexture()
+CFont::CFont(const std::string& name, CFontAtlas* atlas)
+	: CFont( atlas )
 {
 	m_name = name;
 }
-
 // ----------------------------------------------------------------------//
 
-void CSpriteTexture::AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h  )
+CFont::~CFont()
 {
-	CRect2D m;
-
-	f32 rw = 1.0f / GetWidth();
-	f32 rh = 1.0f / GetHeight();
-
-	m.Bound(
-		x * rw,
-		y * rw,
-		w * rw,
-		h * rh
-	);
-
-	m_frames[frame] = m;
 }
 
 // ----------------------------------------------------------------------//
 
-void CSpriteTexture::Render( CDriver *driver, CRect2D *rect, s32 frame )
+void CFont::DrawString( CDriver* driver, s32 x, s32 y, const std::string &text, Vec4 color)
 {
-	auto m = m_frames.find(frame);
 
-	SIM_ASSERT( this == rect->GetMaterial()->GetTexture( 0 ) );
-
-	if (m != m_frames.end())
-		rect->Render(driver, &m->second);
 }
 
 // ----------------------------------------------------------------------//
-
-bool CSpriteTexture::Load(io::CMemStream* ms)
+bool CFont::Load( io::CMemStream* ms )
 {
-    return false;
+    return true;
 }
-
 // ----------------------------------------------------------------------//
-
-bool CSpriteTexture::Save(io::CMemStream* ms)
+bool CFont::Save(io::CMemStream* ms)
 {
-    return false;
+    return true;
 }
-
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

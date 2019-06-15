@@ -24,9 +24,14 @@
 *    SOFTWARE.
 */
 
-#include <render/sim_sprite_texture.h>
-#include <render/sim_driver.h>
-#include <render/sim_material.h>
+#ifndef __SIM_FONT_H_
+#define __SIM_FONT_H_
+
+#include <core/sim_core.h>
+#include <core/sim_interfaces.h>
+
+#include <render/sim_render.h>
+#include <imgui.h>
 
 namespace sim
 {
@@ -34,64 +39,49 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CSpriteTexture::CSpriteTexture()
-	: CTexture()
+class CDriver;
+
+class CFont : public IEngineItem
 {
+public:
+    friend class CFontAtlas;
+
+    CFont( CFontAtlas* atlas );
+	CFont( const std::string& name, CFontAtlas* atlas);
+	virtual ~CFont();
+	// ------------------------------------------------------------------//
+	void						DrawString( CDriver* driver, s32 x, s32 y, const std::string &text, Vec4 color);
+
+    inline void                 SetPixelSize( f32 pixelSize );
+    inline f32                  GetPixelSize();
+
+    virtual bool				Load( io::CMemStream* ms );
+    virtual bool				Save( io::CMemStream* ms );
+
+	// ------------------------------------------------------------------//
+
+protected:
+
+	// ------------------------------------------------------------------//
+    f32                         m_pixelSize;
+    ImFont*                     m_imFont;
+
+    CFontAtlas*                 m_fontAtlas;
+
+
+	// ------------------------------------------------------------------//
+};
+
+inline void CFont::SetPixelSize( f32 pixelSize)
+{
+    m_pixelSize = pixelSize;
 }
 
-// ----------------------------------------------------------------------//
-
-CSpriteTexture::CSpriteTexture( const std::string& name )
-	: CSpriteTexture()
+inline f32 CFont::GetPixelSize()
 {
-	m_name = name;
+    return m_pixelSize;
 }
-
-// ----------------------------------------------------------------------//
-
-void CSpriteTexture::AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h  )
-{
-	CRect2D m;
-
-	f32 rw = 1.0f / GetWidth();
-	f32 rh = 1.0f / GetHeight();
-
-	m.Bound(
-		x * rw,
-		y * rw,
-		w * rw,
-		h * rh
-	);
-
-	m_frames[frame] = m;
-}
-
-// ----------------------------------------------------------------------//
-
-void CSpriteTexture::Render( CDriver *driver, CRect2D *rect, s32 frame )
-{
-	auto m = m_frames.find(frame);
-
-	SIM_ASSERT( this == rect->GetMaterial()->GetTexture( 0 ) );
-
-	if (m != m_frames.end())
-		rect->Render(driver, &m->second);
-}
-
-// ----------------------------------------------------------------------//
-
-bool CSpriteTexture::Load(io::CMemStream* ms)
-{
-    return false;
-}
-
-// ----------------------------------------------------------------------//
-
-bool CSpriteTexture::Save(io::CMemStream* ms)
-{
-    return false;
-}
-
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
+#endif // __SIM_FONT_H_

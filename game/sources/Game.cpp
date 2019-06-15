@@ -8,9 +8,7 @@
 #include <render/sim_shader.h>
 #include <render/sim_effect.h>
 #include <render/sim_material.h>
-
-#include <render/font/sim_font.h>
-#include <render/font/sim_font_atlas.h>
+#include <render/sim_font.h>
 
 #include <vm/sim_squirrel.h>
 

@@ -5,7 +5,7 @@
 #include <render/sim_drawable.h>
 
 
-#include <render/font/sim_font.h>
+#include <render/sim_font.h>
 #include <render/sim_canvas.h>
 #include <render/sim_texture.h>
 #include <render/sim_material.h>
@@ -108,9 +108,9 @@ void CState_Game::Render2D( CDriver *driver )
 	filltex->SetTechnique(&techique);
 	driver->EnableBatch2D(isBatchEnabled);
 
-	O.font.roboto.bold20->DrawString(driver,
+	O.font.engine->DrawString(driver,
 		10,
-		(s32)(O.canvas->Height() - 2 * O.font.roboto.bold20->GetHeight()),
+		(s32)(O.canvas->Height() - 2 * O.font.engine->GetPixelSize()),
 		"The quick brown fox jumps over the lazy dog! :;.,'\"(?)+=*/=1234567890", col::Magenta);
 }
 // ----------------------------------------------------------------------//

@@ -24,74 +24,43 @@
 *    SOFTWARE.
 */
 
-#include <render/sim_sprite_texture.h>
-#include <render/sim_driver.h>
-#include <render/sim_material.h>
+#ifndef __SIM_WIDGET_H
+#define __SIM_WIDGET_H
+
+#include <core/sim_interfaces.h>
+#include <render/sim_render.h>
+#include <render/sim_rect_2d.h>
+
+#include <imgui.h>
 
 namespace sim
 {
 namespace rnr
 {
 // ----------------------------------------------------------------------//
-
-CSpriteTexture::CSpriteTexture()
-	: CTexture()
-{
-}
-
+class CFontAtlas;
 // ----------------------------------------------------------------------//
 
-CSpriteTexture::CSpriteTexture( const std::string& name )
-	: CSpriteTexture()
+class CWidget : public CRect2D
 {
-	m_name = name;
-}
+public:
+	CWidget( CFontAtlas* atlas );
+	CWidget( const std::string& name, CFontAtlas* atlas);
+	virtual	~CWidget();
 
-// ----------------------------------------------------------------------//
+	// ------------------------------------------------------------------//
 
-void CSpriteTexture::AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h  )
-{
-	CRect2D m;
+	// ------------------------------------------------------------------//
+    virtual void				Update( f32 dt, void* userData );
+    virtual void				Render( CDriver* driver );
+	// ------------------------------------------------------------------//
 
-	f32 rw = 1.0f / GetWidth();
-	f32 rh = 1.0f / GetHeight();
-
-	m.Bound(
-		x * rw,
-		y * rw,
-		w * rw,
-		h * rh
-	);
-
-	m_frames[frame] = m;
-}
-
-// ----------------------------------------------------------------------//
-
-void CSpriteTexture::Render( CDriver *driver, CRect2D *rect, s32 frame )
-{
-	auto m = m_frames.find(frame);
-
-	SIM_ASSERT( this == rect->GetMaterial()->GetTexture( 0 ) );
-
-	if (m != m_frames.end())
-		rect->Render(driver, &m->second);
-}
-
-// ----------------------------------------------------------------------//
-
-bool CSpriteTexture::Load(io::CMemStream* ms)
-{
-    return false;
-}
-
-// ----------------------------------------------------------------------//
-
-bool CSpriteTexture::Save(io::CMemStream* ms)
-{
-    return false;
-}
+protected:
+    ImGuiContext*               m_imContext;
+	// ------------------------------------------------------------------//
+};
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
+#endif // __WIDGET_ABSTRACT_H

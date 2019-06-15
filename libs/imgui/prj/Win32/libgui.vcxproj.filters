@@ -15,9 +15,6 @@
     <ClCompile Include="..\..\sources\imgui_draw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sources\imgui_freetype.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\sources\imgui_stdlib.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -30,9 +27,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\imgui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\imgui_freetype.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\imgui_internal.h">

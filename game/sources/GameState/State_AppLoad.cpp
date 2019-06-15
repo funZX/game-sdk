@@ -1,7 +1,7 @@
 #include <core/io/sim_file_system.h>
 
 #include <render/scene/sim_actor.h>
-#include <render/font/sim_font.h>
+#include <render/sim_font.h>
 #include <render/sim_canvas.h>
 #include <render/sim_driver.h>
 
@@ -50,7 +50,7 @@ void CState_AppLoad::Render2D( CDriver *driver )
 	{
 		O.game->Print(driver,
 			0,
-			(s32)(O.canvas->Height() - 2 * O.font.engine->GetHeight()),
+			(s32)(O.canvas->Height() - 2 * O.font.engine->GetPixelSize()),
 			m_fsCrt->GetLoadMessage());
 	}
 }
@@ -81,31 +81,6 @@ void CState_AppLoad::OnExit()
 // ----------------------------------------------------------------------//
 void CState_AppLoad::InitO()
 {
-	// FONTS
-	O.font.roboto.bold12 = m_fsui->GetFont("roboto/Roboto-Bold12");
-	O.font.roboto.bold16 = m_fsui->GetFont("roboto/Roboto-Bold16");
-	O.font.roboto.bold20 = m_fsui->GetFont("roboto/Roboto-Bold20");
-
-	O.font.roboto.italic12 = m_fsui->GetFont("roboto/Roboto-Italic12");
-	O.font.roboto.italic16 = m_fsui->GetFont("roboto/Roboto-Italic16");
-	O.font.roboto.italic20 = m_fsui->GetFont("roboto/Roboto-Italic20");
-
-	O.font.roboto.light12 = m_fsui->GetFont("roboto/Roboto-Light12");
-	O.font.roboto.light16 = m_fsui->GetFont("roboto/Roboto-Light16");
-	O.font.roboto.light20 = m_fsui->GetFont("roboto/Roboto-Light20");
-
-	O.font.roboto.medium12 = m_fsui->GetFont("roboto/Roboto-Medium12");
-	O.font.roboto.medium16 = m_fsui->GetFont("roboto/Roboto-Medium16");
-	O.font.roboto.medium20 = m_fsui->GetFont("roboto/Roboto-Medium20");
-
-	O.font.roboto.regular12 = m_fsui->GetFont("roboto/Roboto-Regular12");
-	O.font.roboto.regular16 = m_fsui->GetFont("roboto/Roboto-Regular16");
-	O.font.roboto.regular20 = m_fsui->GetFont("roboto/Roboto-Regular20");
-
-	O.font.roboto.thin12 = m_fsui->GetFont("roboto/Roboto-Thin12");
-	O.font.roboto.thin16 = m_fsui->GetFont("roboto/Roboto-Thin16");
-	O.font.roboto.thin20 = m_fsui->GetFont("roboto/Roboto-Thin20");
-
 	// EFFECTS
 	O.effect.color = m_fsworld->GetEffect("default");
 	O.effect.vertex = m_fsworld->GetEffect("vertex");

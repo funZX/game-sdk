@@ -28,13 +28,11 @@
 
 #include <core/sys/sim_thread.h>
 #include <core/sim_state_machine.h>
+#include <core/io/sim_mem_stream.h>
 
 #include <vm/sim_squirrel.h>
 
 #include <render/scene/sim_camera.h>
-
-#include <render/font/sim_font.h>
-#include <render/font/sim_font_atlas.h>
 
 #include <render/sim_batch_2d.h>
 #include <render/sim_material.h>
@@ -42,6 +40,8 @@
 #include <render/sim_render_texture.h>
 #include <render/sim_driver.h>
 #include <render/sim_canvas.h>
+#include <render/sim_font.h>
+#include <render/sim_font_atlas.h>
 
 namespace sim
 {
@@ -56,7 +56,8 @@ CEngine::CEngine()
 	m_vm				= SIM_NEW CSquirrel();
 	m_sm				= SIM_NEW CStateMachine();	
 
-	m_fontAtlas			= SIM_NEW CFontAtlas( "Driver Atlas" );
+    m_fontAtlas         = SIM_NEW CFontAtlas("Driver FontAtlas");
+    m_font              = SIM_NEW CFont( "Driver Font", m_fontAtlas);
 	m_canvas			= SIM_NEW CCanvas( "Driver Canvas" );
 	m_camera			= SIM_NEW rnr::CCamera( "Driver Camera" );
 	m_effect			= SIM_NEW CEffect("Driver Effect");
@@ -81,13 +82,14 @@ CEngine::CEngine()
 
 CEngine::~CEngine()
 {
-	SIM_SAFE_DELETE( m_fontAtlas );
-	SIM_SAFE_DELETE( m_font );
+    Shutdown();
 
 	SIM_SAFE_DELETE( m_camera );
 	SIM_SAFE_DELETE( m_canvas );
 	SIM_SAFE_DELETE( m_effect );
 	SIM_SAFE_DELETE( m_material );
+    SIM_SAFE_DELETE( m_font );
+    SIM_SAFE_DELETE( m_fontAtlas );
 
 	SIM_SAFE_DELETE( m_sm );
 	SIM_SAFE_DELETE( m_vm );
@@ -103,6 +105,12 @@ void CEngine::Initialize()
 	InitFont();
 	InitEffect();
 	InitMaterial();
+}
+
+// ----------------------------------------------------------------------//
+
+void CEngine::Shutdown()
+{
 }
 
 // ----------------------------------------------------------------------//
@@ -193,15 +201,13 @@ void CEngine::InitMaterial()
 // ----------------------------------------------------------------------//
 void CEngine::InitFont()
 {
-	const char* szLetters = 
-		" ~`!@#$%^&*()-_=+0123456789:;'\"\\|<>?,./?{}[]@ABCDEFGHI"
-		"JKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÁáÉéÍíÑñÓóÚú";
-
 	sim::u8* buffer		= (sim::u8*) &BlobFont[0];
 	sim::s32 bufferSize = 4 * 28948;
 
-	m_font = m_fontAtlas->AddFont( "Default", buffer, bufferSize, 9, szLetters );	
-	m_fontAtlas->Create();
+    io::CMemStream ms(buffer, bufferSize);
+
+    m_fontAtlas->AddFont( m_font->GetName(), &ms, 1.0f );
+    m_fontAtlas->Create();
 }
 
 // ----------------------------------------------------------------------//
@@ -545,7 +551,7 @@ void CEngine::ShowStats( CDriver* driver )
 	m_vertexCount		= vrtxCount - prevVrtxCount;
 
 	Print( driver, 0,  0, "D: %d    V: %d", m_drawCount, m_vertexCount );
-	Print( driver, 0, m_font->GetHeight(), "FPS:   %.1f", m_fps );
+	Print( driver, 0, (u32)m_font->GetPixelSize(), "FPS:   %.1f", m_fps );
 
 	prevDrawCount = drawCount;
 	prevVrtxCount = vrtxCount;

@@ -24,74 +24,61 @@
 *    SOFTWARE.
 */
 
-#include <render/sim_sprite_texture.h>
-#include <render/sim_driver.h>
-#include <render/sim_material.h>
+#ifndef __SIM_FONT_ATLAS_H
+#define __SIM_FONT_ATLAS_H
+
+#include <core/sim_pool.h>
+#include <core/sim_core.h>
+#include <core/sim_interfaces.h>
+#include <render/sim_render.h>
+
+#include <imgui.h>
 
 namespace sim
 {
 namespace rnr
 {
 // ----------------------------------------------------------------------//
+class CFont;
+class CMaterial;
+class CTexture;
+class CEffect;
+class CBatch2D;
 
-CSpriteTexture::CSpriteTexture()
-	: CTexture()
+class CFontAtlas : public IEngineItem
 {
-}
+public:
+    friend class CWidget;
 
-// ----------------------------------------------------------------------//
+	CFontAtlas();
+	CFontAtlas( const std::string &name );
+	virtual ~CFontAtlas();
+	// ------------------------------------------------------------------//
+	CFont*								AddFont( const std::string name, io::CMemStream* ms, f32 pixelSize );
+	void								Create();
 
-CSpriteTexture::CSpriteTexture( const std::string& name )
-	: CSpriteTexture()
-{
-	m_name = name;
-}
+	CMaterial*							GetMaterial()						{ return m_material; }
+	
+    virtual bool					    Load( io::CMemStream* ms );
+    virtual bool					    Save( io::CMemStream* ms );
+    // ------------------------------------------------------------------//
 
-// ----------------------------------------------------------------------//
+protected:
 
-void CSpriteTexture::AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h  )
-{
-	CRect2D m;
+	// ------------------------------------------------------------------//
+	void								InitEffect();
+	void								InitMaterial();
+	// ------------------------------------------------------------------//
 
-	f32 rw = 1.0f / GetWidth();
-	f32 rh = 1.0f / GetHeight();
+    ImFontAtlas*                        m_imAtlas;
 
-	m.Bound(
-		x * rw,
-		y * rw,
-		w * rw,
-		h * rh
-	);
-
-	m_frames[frame] = m;
-}
-
-// ----------------------------------------------------------------------//
-
-void CSpriteTexture::Render( CDriver *driver, CRect2D *rect, s32 frame )
-{
-	auto m = m_frames.find(frame);
-
-	SIM_ASSERT( this == rect->GetMaterial()->GetTexture( 0 ) );
-
-	if (m != m_frames.end())
-		rect->Render(driver, &m->second);
-}
-
-// ----------------------------------------------------------------------//
-
-bool CSpriteTexture::Load(io::CMemStream* ms)
-{
-    return false;
-}
-
-// ----------------------------------------------------------------------//
-
-bool CSpriteTexture::Save(io::CMemStream* ms)
-{
-    return false;
-}
+	CMaterial*							m_material;
+	CEffect*							m_effect;
+	CTexture*							m_texture;
+	// ------------------------------------------------------------------//
+};
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
+#endif // __SIM_FONT_ATLAS_H

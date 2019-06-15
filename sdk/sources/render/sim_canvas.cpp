@@ -37,6 +37,7 @@ namespace rnr
 CCanvas::CCanvas() 
 	: CRect2D()
 {
+
 }
 
 // ----------------------------------------------------------------------//
@@ -50,6 +51,7 @@ CCanvas::CCanvas( const std::string& name )
 
 CCanvas::~CCanvas()
 {
+
 }
 
 // ----------------------------------------------------------------------//
@@ -92,6 +94,8 @@ void CCanvas::ClearEvents()
 void CCanvas::Render( CDriver* driver )
 {
 	driver->SetViewport( (u32) m_size.x, (u32) m_size.y );
+
+    
 }
 
 // ----------------------------------------------------------------------//

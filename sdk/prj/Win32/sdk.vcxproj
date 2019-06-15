@@ -33,10 +33,6 @@
     <ClCompile Include="..\..\sources\render\animation\sim_bone.cpp" />
     <ClCompile Include="..\..\sources\render\animation\sim_bone_hierarchy.cpp" />
     <ClCompile Include="..\..\sources\render\animation\sim_bone_mask.cpp" />
-    <ClCompile Include="..\..\sources\render\font\sim_font.cpp" />
-    <ClCompile Include="..\..\sources\render\font\sim_font_atlas.cpp" />
-    <ClCompile Include="..\..\sources\render\font\sim_font_char.cpp" />
-    <ClCompile Include="..\..\sources\render\font\sim_font_node.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_actor.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_camera.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_curve.cpp" />
@@ -49,6 +45,8 @@
     <ClCompile Include="..\..\sources\render\sim_drawable.cpp" />
     <ClCompile Include="..\..\sources\render\sim_driver.cpp" />
     <ClCompile Include="..\..\sources\render\sim_effect.cpp" />
+    <ClCompile Include="..\..\sources\render\sim_font.cpp" />
+    <ClCompile Include="..\..\sources\render\sim_font_atlas.cpp" />
     <ClCompile Include="..\..\sources\render\sim_render_texture.cpp" />
     <ClCompile Include="..\..\sources\render\sim_glaux.cpp" />
     <ClCompile Include="..\..\sources\render\sim_material.cpp" />
@@ -61,6 +59,7 @@
     <ClCompile Include="..\..\sources\render\sim_texture.cpp" />
     <ClCompile Include="..\..\sources\render\sim_vertex_group.cpp" />
     <ClCompile Include="..\..\sources\render\sim_vertex_source.cpp" />
+    <ClCompile Include="..\..\sources\render\sim_widget.cpp" />
     <ClCompile Include="..\..\sources\sim_engine.cpp" />
     <ClCompile Include="..\..\sources\sound\sim_sound.cpp" />
     <ClCompile Include="..\..\sources\sound\sim_sound_data.cpp" />
@@ -101,10 +100,6 @@
     <ClInclude Include="..\..\include\render\animation\sim_bone.h" />
     <ClInclude Include="..\..\include\render\animation\sim_bone_hierarchy.h" />
     <ClInclude Include="..\..\include\render\animation\sim_bone_mask.h" />
-    <ClInclude Include="..\..\include\render\font\sim_font.h" />
-    <ClInclude Include="..\..\include\render\font\sim_font_atlas.h" />
-    <ClInclude Include="..\..\include\render\font\sim_font_char.h" />
-    <ClInclude Include="..\..\include\render\font\sim_font_node.h" />
     <ClInclude Include="..\..\include\render\scene\sim_actor.h" />
     <ClInclude Include="..\..\include\render\scene\sim_camera.h" />
     <ClInclude Include="..\..\include\render\scene\sim_curve.h" />
@@ -117,6 +112,8 @@
     <ClInclude Include="..\..\include\render\sim_drawable.h" />
     <ClInclude Include="..\..\include\render\sim_driver.h" />
     <ClInclude Include="..\..\include\render\sim_effect.h" />
+    <ClInclude Include="..\..\include\render\sim_font.h" />
+    <ClInclude Include="..\..\include\render\sim_font_atlas.h" />
     <ClInclude Include="..\..\include\render\sim_render_texture.h" />
     <ClInclude Include="..\..\include\render\sim_glaux.h" />
     <ClInclude Include="..\..\include\render\sim_material.h" />
@@ -129,6 +126,7 @@
     <ClInclude Include="..\..\include\render\sim_texture.h" />
     <ClInclude Include="..\..\include\render\sim_vertex_group.h" />
     <ClInclude Include="..\..\include\render\sim_vertex_source.h" />
+    <ClInclude Include="..\..\include\render\sim_widget.h" />
     <ClInclude Include="..\..\include\sim_engine.h" />
     <ClInclude Include="..\..\include\sound\sim_sound.h" />
     <ClInclude Include="..\..\include\sound\sim_sound_data.h" />
@@ -187,7 +185,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;WIN32_LEAN_AND_MEAN;HAVE_STRUCT_TIMESPEC;GL_GLEXT_PROTOTYPES;SIM_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../include;../../../include;../../../libs/async/include;../../../libs/jansson/include;../../../libs/freetype/include;../../../libs/pthread/include;../../../libs/openal/include;../../../libs/opengles/include;../../../libs/librg/include;../../../libs/squirrel/include;../../../libs/bullet/sources;../../../libs/lzma/include;../../../libs/detour/include;../../../libs/recast/include;../../../libs/sigcxx/include;../../../libs/libgui/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include;../../../include;../../../libs/async/include;../../../libs/jansson/include;../../../libs/pthread/include;../../../libs/openal/include;../../../libs/opengles/include;../../../libs/librg/include;../../../libs/squirrel/include;../../../libs/bullet/sources;../../../libs/lzma/include;../../../libs/detour/include;../../../libs/recast/include;../../../libs/sigcxx/include;../../../libs/imgui/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -203,7 +201,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_STRUCT_TIMESPEC;WIN32;NDEBUG;_LIB;WIN32_LEAN_AND_MEAN;GL_GLEXT_PROTOTYPES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../include;../../../include;../../../libs/async/include;../../../libs/jansson/include;../../../libs/freetype/include;../../../libs/pthread/include;../../../libs/openal/include;../../../libs/opengles/include;../../../libs/librg/include;../../../libs/squirrel/include;../../../libs/bullet/sources;../../../libs/lzma/include;../../../libs/detour/include;../../../libs/recast/include;../../../libs/sigcxx/include;../../../libs/libgui/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include;../../../include;../../../libs/async/include;../../../libs/jansson/include;../../../libs/pthread/include;../../../libs/openal/include;../../../libs/opengles/include;../../../libs/librg/include;../../../libs/squirrel/include;../../../libs/bullet/sources;../../../libs/lzma/include;../../../libs/detour/include;../../../libs/recast/include;../../../libs/sigcxx/include;../../../libs/imgui/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

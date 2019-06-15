@@ -67,8 +67,6 @@ namespace sim
 	{
 		class CDriver;
 		class CBatch2D;
-		class CFont;
-		class CFontAtlas;
 
 		class CTexture;
 		class CRenderTexture;
@@ -97,9 +95,12 @@ namespace sim
 		class CAnimationBlend;
 		class CAnimationPlayer;
 
-		class CRect2D;
-		class CCanvas;
-		class CDrawable;
+        class CFontAtlas;
+        class CFont;
+        class CRect2D;
+        class CWidget;
+        class CDrawable;
+		class CCanvas;		
 
 		struct TColor;
 	};
@@ -195,6 +196,7 @@ protected:
 	void							Initialize();
 	void							InitOpenGL();
 	void							InitOpenAL();
+    void							Shutdown();
 	
 	void							On2D();
 	void							Off2D();
@@ -223,9 +225,8 @@ protected:
 	rnr::CMaterial*					m_material;
 	rnr::CEffect*					m_effect;
 	rnr::CCanvas*					m_canvas;
-
-	rnr::CFontAtlas*				m_fontAtlas;
-	rnr::CFont*						m_font;
+    rnr::CFont*                     m_font;
+    rnr::CFontAtlas*                m_fontAtlas;
 
 	ALCdevice*						m_ALDevice;
 	ALCcontext*						m_ALContext;

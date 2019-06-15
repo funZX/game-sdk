@@ -1685,7 +1685,7 @@ ImFont* ImFontAtlas::AddFontFromMemoryTTF(void* ttf_data, int ttf_size, float si
 {
     IM_ASSERT(!Locked && "Cannot modify a locked ImFontAtlas between NewFrame() and EndFrame/Render()!");
     ImFontConfig font_cfg = font_cfg_template ? *font_cfg_template : ImFontConfig();
-    IM_ASSERT(font_cfg.FontData == NULL);
+
     font_cfg.FontData = ttf_data;
     font_cfg.FontDataSize = ttf_size;
     font_cfg.SizePixels = size_pixels;
