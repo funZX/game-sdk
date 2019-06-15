@@ -24,47 +24,65 @@
 *    SOFTWARE.
 */
 
-#ifndef __SIM_SPRITE_H
-#define __SIM_SPRITE_H
+#ifndef __SIM_DRAWABLE_H
+#define __SIM_DRAWABLE_H
 
-#include <core/sim_interfaces.h>
+#include <core/sim_core.h>
 
 #include <render/sim_render.h>
-#include <render/sim_material.h>
-#include <render/sim_texture.h>
 #include <render/sim_rect_2d.h>
 
 namespace sim
 {
-namespace io { class CMemoryStream;  }
 namespace rnr
 {
 // ----------------------------------------------------------------------//
-
-class CRect2D;
+class CCamera;
+class CRenderTexture;
 class CDriver;
+// ----------------------------------------------------------------------//
 
-class CSpriteTexture : public CTexture
+class CDrawable: public CRect2D
 {
 public:
 	// ------------------------------------------------------------------//
-	CSpriteTexture();
-	CSpriteTexture( const std::string& name );
+	CDrawable();
+	CDrawable( const std::string& name );
+	virtual ~CDrawable();
 	// ------------------------------------------------------------------//
-	void						AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h );
+	void							Draw( CDriver *driver );	
+	CRenderTexture*					GetTexture() { return m_rendertexture; }
+	virtual void					Render(CDriver *driver);
 
-    virtual bool				Load(io::CMemStream* ms);
-    virtual bool				Save(io::CMemStream* ms);
+    inline Vec4				        GetColor();
+    inline void						SetColor(Vec4 ambient);
+	// ------------------------------------------------------------------//
+public: // Signals
+	// ------------------------------------------------------------------//
+	sigcxx::Signal<CDriver*>		OnDraw;
 	// ------------------------------------------------------------------//
 
 protected:
-
 	// ------------------------------------------------------------------//
-	std::map<s32, CRect2D>		m_frames;
+	virtual void					OnResize();
+	// ------------------------------------------------------------------//
+	CRenderTexture*					m_rendertexture;
+	CCamera*						m_camera;
+
+    Vec4                            m_color;
 	// ------------------------------------------------------------------//
 };
 
+inline Vec4 CDrawable::GetColor()
+{
+    return m_color;
+}
+
+inline void CDrawable::SetColor(Vec4 color)
+{
+    m_color = color;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
-#endif // __SIM_SPRITE_H
+#endif // __SIM_DRAWABLE_H

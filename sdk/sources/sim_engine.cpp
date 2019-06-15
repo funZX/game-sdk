@@ -28,20 +28,19 @@
 
 #include <core/sys/sim_thread.h>
 #include <core/sim_state_machine.h>
+#include <core/io/sim_mem_stream.h>
 
 #include <vm/sim_squirrel.h>
 
 #include <render/scene/sim_camera.h>
 
-#include <render/font/sim_font.h>
-#include <render/font/sim_font_atlas.h>
-
-#include <render/sim_batch_2d.h>
 #include <render/sim_material.h>
 #include <render/sim_effect.h>
 #include <render/sim_render_texture.h>
 #include <render/sim_driver.h>
 #include <render/sim_canvas.h>
+#include <render/sim_font.h>
+#include <render/sim_font_atlas.h>
 
 namespace sim
 {
@@ -56,18 +55,20 @@ CEngine::CEngine()
 	m_vm				= SIM_NEW CSquirrel();
 	m_sm				= SIM_NEW CStateMachine();	
 
-	m_fontAtlas			= SIM_NEW CFontAtlas( "Driver Atlas" );
-	m_canvas			= SIM_NEW CCanvas( "Driver Canvas" );
-	m_camera			= SIM_NEW rnr::CCamera( "Driver Camera" );
-	m_effect			= SIM_NEW CEffect("Driver Effect");
-	m_material			= SIM_NEW CMaterial("Driver Material");
+    m_fontAtlas         = SIM_NEW CFontAtlas( "engine.Atlas" );
+    m_font              = SIM_NEW CFont( m_fontAtlas);
+
+	m_canvas			= SIM_NEW CCanvas( "engine.Canvas", m_fontAtlas );
+	m_camera			= SIM_NEW rnr::CCamera( "engine.Camera" );
+	m_effect			= SIM_NEW CEffect( "engine.Effect" );
+	m_material			= SIM_NEW CMaterial( "engine.Material" );
 
 	m_activeCamera		= m_camera;
 
-	m_currentTime		= 0;
-	m_updateTime		= 0;
-	m_frameTime			= 0;
-	m_deltaTime			= 0.0f;
+	m_currentTime		=  0;
+	m_updateTime		= -1;
+	m_frameTime			=  0;
+	m_deltaTime			=  0.00f;
 
 	m_drawCount			= 0;
 	m_vertexCount		= 0;
@@ -81,13 +82,14 @@ CEngine::CEngine()
 
 CEngine::~CEngine()
 {
-	SIM_SAFE_DELETE( m_fontAtlas );
-	SIM_SAFE_DELETE( m_font );
+    Shutdown();
 
 	SIM_SAFE_DELETE( m_camera );
 	SIM_SAFE_DELETE( m_canvas );
 	SIM_SAFE_DELETE( m_effect );
 	SIM_SAFE_DELETE( m_material );
+    SIM_SAFE_DELETE( m_font );
+    SIM_SAFE_DELETE( m_fontAtlas );
 
 	SIM_SAFE_DELETE( m_sm );
 	SIM_SAFE_DELETE( m_vm );
@@ -103,6 +105,12 @@ void CEngine::Initialize()
 	InitFont();
 	InitEffect();
 	InitMaterial();
+}
+
+// ----------------------------------------------------------------------//
+
+void CEngine::Shutdown()
+{
 }
 
 // ----------------------------------------------------------------------//
@@ -193,15 +201,13 @@ void CEngine::InitMaterial()
 // ----------------------------------------------------------------------//
 void CEngine::InitFont()
 {
-	const char* szLetters = 
-		" ~`!@#$%^&*()-_=+0123456789:;'\"\\|<>?,./?{}[]@ABCDEFGHI"
-		"JKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÁáÉéÍíÑñÓóÚú";
-
 	sim::u8* buffer		= (sim::u8*) &BlobFont[0];
 	sim::s32 bufferSize = 4 * 28948;
 
-	m_font = m_fontAtlas->AddFont( "Default", buffer, bufferSize, 9, szLetters );	
-	m_fontAtlas->Create();
+    io::CMemStream ms(buffer, bufferSize);
+
+    m_fontAtlas->AddFont( "engine.Font", &ms, 1.0f );
+    m_fontAtlas->Create();
 }
 
 // ----------------------------------------------------------------------//
@@ -254,7 +260,8 @@ f32 CEngine::Smooth( f32 deltaTime )
 	f32 min1, min2, max1, max2;
 	f32 dt		= 0.0f;
 
-	min1 = min2 = max1 = max2 = m_dtfilter[ 0 ];
+    min1 = min2 = m_dtfilter[0];
+    max1 = max2 = 0.0f;
 
 	for( s32 k = 0; k < 11; k++ )
 	{
@@ -271,16 +278,24 @@ f32 CEngine::Smooth( f32 deltaTime )
 			max2 = dt;
 
 		sum += dt;
-	}
 
+        SIM_ASSERT(min1 >= 0.0f);
+        SIM_ASSERT(min2 >= 0.0f);
+        SIM_ASSERT(max1 >= 0.0f);
+        SIM_ASSERT(max2 >= 0.0f);
+	}
+    
 	sum -= ( min1 + min2 + max1 + max2 );
 	sum *= 0.1428571f;
+    SIM_ASSERT(sum >= 0.0f);
 
 	dt	 = zpl_lerp( deltaTime, sum, 0.5f );
+    SIM_ASSERT( dt >= 0.0f );
 
 	for( s32 k = 0; k < 10; k++ )
 		m_dtfilter[ k ] = m_dtfilter[ k + 1 ];
-	m_dtfilter[ 10 ] = dt;
+
+    m_dtfilter[ 10 ] = dt;
 
 	return dt;
 }
@@ -352,12 +367,11 @@ void CEngine::Render( CDriver *driver )
 	// 2D rendering
 	On2D();
 	{
-		m_canvas->Render( driver );
-		m_sm->Render2D( driver );
-
 #if SIM_DEBUG
-		ShowStats( m_driver );
+        ShowStats(m_driver);
 #endif
+        m_sm->Render2D(driver);
+        m_canvas->Render( driver );
 	}
 	Off2D();
 }
@@ -434,15 +448,12 @@ void CEngine::On2D()
 
 	m_driver->SetMatrixMode( CDriver::MatrixMode::World );
 	m_driver->MatrixLoadIdentity();
-
-	m_driver->EnableBatch2D( true );
 }
 
 // ----------------------------------------------------------------------//
 
 void CEngine::Off2D()
 {
-	m_driver->EnableBatch2D( false );
 }
 
 // ----------------------------------------------------------------------//
@@ -471,22 +482,22 @@ void CEngine::Off3D()
 
 void  CEngine::Print( CDriver* driver, s32 x, s32 y, const std::string &text )
 {
-	m_font->DrawString( driver, x, y, text, col::Green);
+	m_canvas->DrawString( driver, x, y, text, col::Green );
 }
 
 // ----------------------------------------------------------------------//
 
 void  CEngine::Print( CDriver* driver, s32 x, s32 y, char *format, ... )
 {
-	static char buf[ CBatch2D::MaxQuads ];
+	static char buf[ 1024 ];
 	
 	va_list args;
 	
 	va_start( args, format );
-	vsnprintf( buf, CBatch2D::MaxQuads, format, args );
+	vsnprintf( buf, 1024, format, args );
 	va_end( args );
 
-	m_font->DrawString( driver, x, y, buf, col::Green);
+	m_canvas->DrawString( driver, x, y, buf, col::Green );
 }
 // ----------------------------------------------------------------------//
 
@@ -545,7 +556,7 @@ void CEngine::ShowStats( CDriver* driver )
 	m_vertexCount		= vrtxCount - prevVrtxCount;
 
 	Print( driver, 0,  0, "D: %d    V: %d", m_drawCount, m_vertexCount );
-	Print( driver, 0, m_font->GetHeight(), "FPS:   %.1f", m_fps );
+	Print( driver, 0, (u32)m_font->GetHeight(), "FPS:   %.1f", m_fps );
 
 	prevDrawCount = drawCount;
 	prevVrtxCount = vrtxCount;

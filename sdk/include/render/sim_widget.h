@@ -24,47 +24,45 @@
 *    SOFTWARE.
 */
 
-#ifndef __SIM_SPRITE_H
-#define __SIM_SPRITE_H
+#ifndef __SIM_WIDGET_H
+#define __SIM_WIDGET_H
 
 #include <core/sim_interfaces.h>
-
 #include <render/sim_render.h>
-#include <render/sim_material.h>
-#include <render/sim_texture.h>
 #include <render/sim_rect_2d.h>
+
+#include <imgui.h>
 
 namespace sim
 {
-namespace io { class CMemoryStream;  }
 namespace rnr
 {
 // ----------------------------------------------------------------------//
+class CFontAtlas;
+// ----------------------------------------------------------------------//
 
-class CRect2D;
-class CDriver;
-
-class CSpriteTexture : public CTexture
+class CWidget : public CRect2D
 {
 public:
-	// ------------------------------------------------------------------//
-	CSpriteTexture();
-	CSpriteTexture( const std::string& name );
-	// ------------------------------------------------------------------//
-	void						AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h );
+	CWidget( CFontAtlas* atlas );
+	CWidget( const std::string& name, CFontAtlas* atlas);
+	virtual	~CWidget();
 
-    virtual bool				Load(io::CMemStream* ms);
-    virtual bool				Save(io::CMemStream* ms);
+	// ------------------------------------------------------------------//
+    void                        DrawString(CDriver* driver, s32 x, s32 y, const std::string& text, Vec4 color);
+
+	// ------------------------------------------------------------------//
+    virtual void				Update( f32 dt, void* userData );
+    virtual void				Render( CDriver* driver );
 	// ------------------------------------------------------------------//
 
 protected:
-
-	// ------------------------------------------------------------------//
-	std::map<s32, CRect2D>		m_frames;
+    ImGuiContext*               m_imContext;
+    ImGuiStyle*                 m_imStyle;
 	// ------------------------------------------------------------------//
 };
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
-#endif // __SIM_SPRITE_H
+#endif // __WIDGET_ABSTRACT_H

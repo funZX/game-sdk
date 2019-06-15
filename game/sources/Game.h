@@ -41,34 +41,6 @@ typedef struct
 	struct 
 	{
 		CFont*					engine;
-
-		struct 
-		{
-			CFont*				bold12;
-			CFont*				bold16;
-			CFont*				bold20;
-
-			CFont*				italic12;
-			CFont*				italic16;
-			CFont*				italic20;
-
-			CFont*				light12;
-			CFont*				light16;
-			CFont*				light20;
-
-			CFont*				medium12;
-			CFont*				medium16;
-			CFont*				medium20;
-
-			CFont*				regular12;
-			CFont*				regular16;
-			CFont*				regular20;
-
-			CFont*				thin12;
-			CFont*				thin16;
-			CFont*				thin20;
-
-		} roboto;
 	} font;
 	
 	struct 

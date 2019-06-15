@@ -24,12 +24,13 @@
 *    SOFTWARE.
 */
 
-#include <render/sim_batch_2d.h>
 #include <render/sim_rect_2d.h>
 #include <render/sim_effect.h>
 #include <render/sim_material.h>
 #include <render/sim_vertex_source.h>
 #include <render/sim_vertex_group.h>
+
+#include <imgui.h>
 
 namespace sim
 {
@@ -46,7 +47,6 @@ CRect2D::CRect2D()
 	m_position  = axis::Origin.xyz.xy;
 	m_size      = axis::Unit.xyz.xy;
 
-	m_rotation	= 0.0f;
 	m_material	= nullptr;
 
 	m_texRect = &OneSizeRectStatic;
@@ -219,13 +219,6 @@ void CRect2D::Scale( f32 kw, f32 kh )
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::Rotate( f32 rotation)
-{
-	m_rotation = rotation;
-}
-
-// ----------------------------------------------------------------------//
-
 void CRect2D::Union( CRect2D *r1, CRect2D *r2, CRect2D *dst )
 {
 
@@ -356,89 +349,19 @@ void CRect2D::OnRotate()
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::Render(CDriver* driver)
-{
-	Render( driver, CRect2D::OneSizeRect );
-}
-
-// ----------------------------------------------------------------------//
-
-void CRect2D::Update( f32 dt, void *userData )
+void CRect2D::Update(f32 dt, void* userData)
 {
 
 }
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::Render( CDriver* driver, const CRect2D *texRect )
+void CRect2D::Render( CDriver* driver )
 {
-	static f32	v[ 20 ];
-	static Vec2	r[ 4 ];
+    ImGui::SetNextWindowPos( ImVec2( m_position.x, m_position.y ) );
+    ImGui::BeginChild( ImGui::GetID(this), ImVec2( m_size.x, m_size.y ) );
 
-    r[0] = { m_position.x,				m_position.y };
-    r[1] = { m_position.x + m_size.x,	m_position.y };
-    r[2] = { m_position.x,				m_position.y + m_size.y };
-    r[3] = { m_position.x + m_size.x,	m_position.y + m_size.y };
-
-	if ( m_rotation != 0.0f )
-	{
-		Vec2 center;
-
-		GetCenter( &center );
-        
-        zpl_vec2_rotate( &r[ 0 ], center, m_rotation );
-        zpl_vec2_rotate( &r[ 1 ], center, m_rotation );
-        zpl_vec2_rotate( &r[ 2 ], center, m_rotation );
-        zpl_vec2_rotate( &r[ 3 ], center, m_rotation );
-	}
-
-	v[  0 ] = r[ 0 ].x;
-	v[  1 ] = r[ 0 ].y;
-	v[  2 ] = 1.0f;
-	v[  3 ] = texRect->Left();
-	v[  4 ] = texRect->Top();
-
-	v[  5 ] = r[ 1 ].x;
-	v[  6 ] = r[ 1 ].y;
-	v[  7 ] = 1.0f;
-	v[  8 ] = texRect->Right();
-	v[  9 ] = texRect->Top();
-
-	v[ 10 ] = r[ 2 ].x;
-	v[ 11 ] = r[ 2 ].y;
-	v[ 12 ] = 1.0f;
-	v[ 13 ] = texRect->Left();
-	v[ 14 ] = texRect->Bottom();
-
-	v[ 15 ] = r[ 3 ].x;
-	v[ 16 ] = r[ 3 ].y;
-	v[ 17 ] = 1.0f;
-	v[ 18 ] = texRect->Right();
-	v[ 19 ] = texRect->Bottom();
-
-	CVertexSource	vs;
-	vs.m_type			= CVertexSource::Type::Triangle;
-	vs.m_vertexFormat	= CVertexSource::AttributeFormat::Position | CVertexSource::AttributeFormat::TexCoord_0;
-	vs.m_vertexStride	= CVertexSource::AttributeStride::Position + CVertexSource::AttributeStride::TexCoord_0;
-	vs.m_vboSize		= 4;
-
-	vs.m_vboData		= &v[0];
-
-	static u16 i[6];
-
-	i[ 0 ] = 2; i[ 1 ] = 1; i[ 2 ] = 0;
-	i[ 3 ] = 2; i[ 4 ] = 3; i[ 5 ] = 1;
-
-	CVertexGroup	vg;
-	vg.m_vboData	= &i[0];
-	vg.m_vboSize = 6;
-	vg.SetMaterial( m_material );
-	vg.SetVertexSource( &vs );
-
-	driver->Render(&vg);
-
-	vs.m_vboData = nullptr;
-	vg.m_vboData = nullptr;
+    ImGui::EndChild();
 }
 // ----------------------------------------------------------------------//
 bool CRect2D::Load(io::CMemStream* ms)

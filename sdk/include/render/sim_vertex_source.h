@@ -44,8 +44,6 @@ class CEffect;
 class CMaterial;
 class CDriver;
 class CRect2D;
-class CBatch2D;
-class CBatch3D;
 class CFontChar;
 
 class CVertexSource : public IEngineItem

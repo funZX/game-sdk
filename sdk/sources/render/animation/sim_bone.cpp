@@ -25,7 +25,6 @@
 */
 
 #include <core/io/sim_mem_stream.h>
-#include <render/sim_batch_2d.h>
 #include <render/sim_material.h>
 
 #include <render/animation/sim_bone.h>

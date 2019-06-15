@@ -24,47 +24,60 @@
 *    SOFTWARE.
 */
 
-#ifndef __SIM_SPRITE_H
-#define __SIM_SPRITE_H
+#ifndef __SIM_FONT_ATLAS_H
+#define __SIM_FONT_ATLAS_H
 
+#include <core/sim_pool.h>
+#include <core/sim_core.h>
 #include <core/sim_interfaces.h>
-
 #include <render/sim_render.h>
-#include <render/sim_material.h>
-#include <render/sim_texture.h>
-#include <render/sim_rect_2d.h>
+
+#include <imgui.h>
 
 namespace sim
 {
-namespace io { class CMemoryStream;  }
 namespace rnr
 {
 // ----------------------------------------------------------------------//
+class CFont;
+class CMaterial;
+class CTexture;
+class CEffect;
 
-class CRect2D;
-class CDriver;
-
-class CSpriteTexture : public CTexture
+class CFontAtlas : public IEngineItem
 {
 public:
-	// ------------------------------------------------------------------//
-	CSpriteTexture();
-	CSpriteTexture( const std::string& name );
-	// ------------------------------------------------------------------//
-	void						AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h );
+    friend class CWidget;
 
-    virtual bool				Load(io::CMemStream* ms);
-    virtual bool				Save(io::CMemStream* ms);
+	CFontAtlas();
+	CFontAtlas( const std::string &name );
+	virtual ~CFontAtlas();
 	// ------------------------------------------------------------------//
+	CFont*								AddFont( const std::string name, io::CMemStream* ms, f32 pixelSize );
+	void								Create();
+
+	CMaterial*							GetMaterial()						{ return m_material; }
+	
+    virtual bool					    Load( io::CMemStream* ms );
+    virtual bool					    Save( io::CMemStream* ms );
+    // ------------------------------------------------------------------//
 
 protected:
 
 	// ------------------------------------------------------------------//
-	std::map<s32, CRect2D>		m_frames;
+	void								InitEffect();
+	void								InitMaterial();
+	// ------------------------------------------------------------------//
+
+    ImFontAtlas*                        m_imAtlas;
+
+	CMaterial*							m_material;
+	CEffect*							m_effect;
+	CTexture*							m_texture;
 	// ------------------------------------------------------------------//
 };
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
-#endif // __SIM_SPRITE_H
+#endif // __SIM_FONT_ATLAS_H

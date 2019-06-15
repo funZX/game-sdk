@@ -24,9 +24,12 @@
 *    SOFTWARE.
 */
 
-#include <render/sim_sprite_texture.h>
+#include <sim_engine.h>
+#include <render/sim_render_texture.h>
+#include <render/scene/sim_camera.h>
 #include <render/sim_driver.h>
-#include <render/sim_material.h>
+
+#include <render/sim_drawable.h>
 
 namespace sim
 {
@@ -34,52 +37,76 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CSpriteTexture::CSpriteTexture()
-	: CTexture()
+CDrawable::CDrawable()
+	: CRect2D()
 {
+	m_color     = col::Black;
+
+	m_rendertexture = nullptr;
+	m_camera		= new CCamera();
+
+	// flip
+	m_texRect		= SIM_NEW CRect2D();
+	m_texRect->MoveTo(  1.0f,  1.0f );
+	m_texRect->Resize( -1.0f, -1.0f );
 }
 
 // ----------------------------------------------------------------------//
 
-CSpriteTexture::CSpriteTexture( const std::string& name )
-	: CSpriteTexture()
+CDrawable::CDrawable( const std::string& name )
+	:CDrawable()
 {
 	m_name = name;
 }
-
 // ----------------------------------------------------------------------//
 
-void CSpriteTexture::AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h  )
+CDrawable::~CDrawable()
 {
-	CRect2D m;
-
-	f32 rw = 1.0f / GetWidth();
-	f32 rh = 1.0f / GetHeight();
-
-	m.Bound(
-		x * rw,
-		y * rw,
-		w * rw,
-		h * rh
-	);
-
-	m_frames[frame] = m;
+	SIM_SAFE_DELETE( m_camera );
+	SIM_SAFE_DELETE( m_rendertexture );
+	SIM_SAFE_DELETE( m_texRect );
 }
 
 // ----------------------------------------------------------------------//
 
-bool CSpriteTexture::Load(io::CMemStream* ms)
+void CDrawable::OnResize()
 {
-    return false;
+	if (m_rendertexture)
+		return;
+
+	m_rendertexture = SIM_NEW CRenderTexture();
+	m_rendertexture->Generate( (u32)m_size.x, (u32)m_size.y );
+
+	CRect2D r;
+	r.Resize( (f32)m_rendertexture->GetWidth(), (f32)m_rendertexture->GetHeight() );
+	m_camera->SetPerspective( &r );
 }
 
 // ----------------------------------------------------------------------//
 
-bool CSpriteTexture::Save(io::CMemStream* ms)
+void CDrawable::Draw( CDriver *driver )
 {
-    return false;
+	static CEngine *engine = CEngine::GetSingletonPtr();
+
+	if ( m_rendertexture == nullptr )
+		return;
+
+	CRenderTexture* fb =
+	driver->BindRenderTexture(m_rendertexture);
+	driver->ClearColor( m_color);
+	engine->SetCamera( m_camera );
+
+	OnDraw.Emit( driver );
+	
+	engine->SetCamera( 0 );
+	driver->BindRenderTexture( 0 );
 }
 
+// ----------------------------------------------------------------------//
+void CDrawable::Render( CDriver *driver )
+{
+	CRect2D::Render( driver );
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

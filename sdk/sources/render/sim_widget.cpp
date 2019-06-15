@@ -24,9 +24,12 @@
 *    SOFTWARE.
 */
 
-#include <render/sim_sprite_texture.h>
+#include <render/sim_widget.h>
 #include <render/sim_driver.h>
-#include <render/sim_material.h>
+
+#include <render/sim_font_atlas.h>
+
+#include <imgui_internal.h>
 
 namespace sim
 {
@@ -34,52 +37,80 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CSpriteTexture::CSpriteTexture()
-	: CTexture()
+CWidget::CWidget( CFontAtlas* atlas )
+	: CRect2D()
 {
+    m_imContext = ImGui::CreateContext( atlas->m_imAtlas );
+
+    m_imStyle = SIM_NEW ImGuiStyle();
+    ImGui::StyleColorsDark(m_imStyle);
 }
 
 // ----------------------------------------------------------------------//
 
-CSpriteTexture::CSpriteTexture( const std::string& name )
-	: CSpriteTexture()
+CWidget::CWidget( const std::string& name, CFontAtlas* atlas )
+	: CWidget(atlas)
 {
 	m_name = name;
 }
 
 // ----------------------------------------------------------------------//
 
-void CSpriteTexture::AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h  )
+CWidget::~CWidget()
 {
-	CRect2D m;
-
-	f32 rw = 1.0f / GetWidth();
-	f32 rh = 1.0f / GetHeight();
-
-	m.Bound(
-		x * rw,
-		y * rw,
-		w * rw,
-		h * rh
-	);
-
-	m_frames[frame] = m;
+    SIM_SAFE_DELETE( m_imStyle );
+    ImGui::DestroyContext( m_imContext );
 }
 
 // ----------------------------------------------------------------------//
 
-bool CSpriteTexture::Load(io::CMemStream* ms)
+void CWidget::Update( f32 dt, void* userData )
 {
-    return false;
+    m_imContext->IO.DisplaySize = ImVec2( m_size.x, m_size.y );
+    m_imContext->IO.DeltaTime = dt;
+    
+    ImGui::SetCurrentContext(m_imContext);
+    ImGui::NewFrame();
+    ImGui::Begin( m_name.c_str() );
+}
+// ----------------------------------------------------------------------//
+
+void CWidget::Render( CDriver *driver )
+{
+    ImGui::End();
+    ImGui::EndFrame();
+    ImGui::Render();
+
+    ImDrawData* imData = ImGui::GetDrawData();
+
+    for ( s32 n = 0; n < imData->CmdListsCount; n++ )
+    {
+        const ImDrawList* cmdList   = imData->CmdLists[n];
+        const ImDrawVert* vtxBuffer = cmdList->VtxBuffer.Data;
+        const ImDrawIdx* idxBuffer  = cmdList->IdxBuffer.Data;
+
+        for ( s32 i = 0; i < cmdList->CmdBuffer.Size; i++ )
+        {
+            const ImDrawCmd* pcmd = &cmdList->CmdBuffer[ i ];
+
+            /*
+            CRect2D r;
+            r.Bound((f32)x, (f32)y, (f32)m_width, (f32)m_height);
+            r.SetMaterial( m_material );
+
+            r.Render(driver, &m_texRect);
+            */
+        }
+    }
 }
 
 // ----------------------------------------------------------------------//
 
-bool CSpriteTexture::Save(io::CMemStream* ms)
+void CWidget::DrawString( CDriver* driver, s32 x, s32 y, const std::string& text, Vec4 color )
 {
-    return false;
+    ImGui::Text( text.c_str() );
 }
-
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
+

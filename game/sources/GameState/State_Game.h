@@ -27,7 +27,7 @@ protected:
 	CFileSystem*		m_fs;
 
 	CMesh*				m_mesh;
-	CWidgetDrawable*	m_drawable;
+	CDrawable*	        m_drawable;
 // ----------------------------------------------------------------------//
 };
 

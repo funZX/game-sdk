@@ -24,47 +24,51 @@
 *    SOFTWARE.
 */
 
-#ifndef __SIM_SPRITE_H
-#define __SIM_SPRITE_H
+#ifndef __SIM_FONT_H_
+#define __SIM_FONT_H_
 
+#include <core/sim_core.h>
 #include <core/sim_interfaces.h>
 
 #include <render/sim_render.h>
-#include <render/sim_material.h>
-#include <render/sim_texture.h>
-#include <render/sim_rect_2d.h>
+#include <imgui.h>
 
 namespace sim
 {
-namespace io { class CMemoryStream;  }
 namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CRect2D;
 class CDriver;
 
-class CSpriteTexture : public CTexture
+class CFont
 {
 public:
-	// ------------------------------------------------------------------//
-	CSpriteTexture();
-	CSpriteTexture( const std::string& name );
-	// ------------------------------------------------------------------//
-	void						AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h );
+    friend class CFontAtlas;
 
-    virtual bool				Load(io::CMemStream* ms);
-    virtual bool				Save(io::CMemStream* ms);
+    CFont( CFontAtlas* atlas );
+	virtual ~CFont();
+	// ------------------------------------------------------------------//
+    inline f32              GetHeight();
 	// ------------------------------------------------------------------//
 
 protected:
 
 	// ------------------------------------------------------------------//
-	std::map<s32, CRect2D>		m_frames;
+    f32                     m_pixelSize;
+    ImFont*                 m_imFont;
+
+    CFontAtlas*             m_fontAtlas;
+
+
 	// ------------------------------------------------------------------//
 };
 
+inline f32 CFont::GetHeight()
+{
+    return m_pixelSize;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
-#endif // __SIM_SPRITE_H
+#endif // __SIM_FONT_H_

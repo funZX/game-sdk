@@ -66,9 +66,6 @@ namespace sim
 	namespace rnr
 	{
 		class CDriver;
-		class CBatch2D;
-		class CFont;
-		class CFontAtlas;
 
 		class CTexture;
 		class CRenderTexture;
@@ -97,14 +94,12 @@ namespace sim
 		class CAnimationBlend;
 		class CAnimationPlayer;
 
-		class CRect2D;
-		class CCanvas;
-
-		class CWidget;
-		class CWidgetLabel;
-		class CWidgetButton;
-		class CWidgetDrawable;
-		class CWidgetSprite;
+        class CFontAtlas;
+        class CFont;
+        class CRect2D;
+        class CWidget;
+        class CDrawable;
+		class CCanvas;		
 
 		struct TColor;
 	};
@@ -200,6 +195,10 @@ protected:
 	void							Initialize();
 	void							InitOpenGL();
 	void							InitOpenAL();
+    void							InitFont();
+    void							InitEffect();
+    void							InitMaterial();
+    void							Shutdown();
 	
 	void							On2D();
 	void							Off2D();
@@ -208,10 +207,6 @@ protected:
 
 	void							ShowStats( CDriver* driver );
 	f32								Smooth( f32 dt );
-
-	void							InitFont();
-	void							InitEffect();
-	void							InitMaterial();
 
 protected:
 
@@ -228,9 +223,8 @@ protected:
 	rnr::CMaterial*					m_material;
 	rnr::CEffect*					m_effect;
 	rnr::CCanvas*					m_canvas;
-
-	rnr::CFontAtlas*				m_fontAtlas;
-	rnr::CFont*						m_font;
+    rnr::CFont*                     m_font;
+    rnr::CFontAtlas*                m_fontAtlas;
 
 	ALCdevice*						m_ALDevice;
 	ALCcontext*						m_ALContext;

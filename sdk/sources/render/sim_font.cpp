@@ -23,48 +23,33 @@
 *    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 *    SOFTWARE.
 */
+#include <core/io/sim_mem_stream.h>
+#include <render/sim_font.h>
 
-#ifndef __SIM_SPRITE_H
-#define __SIM_SPRITE_H
-
-#include <core/sim_interfaces.h>
-
-#include <render/sim_render.h>
 #include <render/sim_material.h>
-#include <render/sim_texture.h>
-#include <render/sim_rect_2d.h>
+#include <render/sim_driver.h>
 
 namespace sim
 {
-namespace io { class CMemoryStream;  }
 namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-class CRect2D;
-class CDriver;
-
-class CSpriteTexture : public CTexture
+CFont::CFont( CFontAtlas* atlas )
 {
-public:
-	// ------------------------------------------------------------------//
-	CSpriteTexture();
-	CSpriteTexture( const std::string& name );
-	// ------------------------------------------------------------------//
-	void						AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h );
+    m_fontAtlas = atlas;
 
-    virtual bool				Load(io::CMemStream* ms);
-    virtual bool				Save(io::CMemStream* ms);
-	// ------------------------------------------------------------------//
+    m_pixelSize = 1.0f;
+    m_imFont    = nullptr;
+}
 
-protected:
+// ----------------------------------------------------------------------//
 
-	// ------------------------------------------------------------------//
-	std::map<s32, CRect2D>		m_frames;
-	// ------------------------------------------------------------------//
-};
+CFont::~CFont()
+{
+
+}
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
-#endif // __SIM_SPRITE_H
