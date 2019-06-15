@@ -63,10 +63,6 @@ CState_Game::~CState_Game()
 // ----------------------------------------------------------------------//
 void CState_Game::Update( f32 dt, void *userData )
 {
-	f32 ds = 3.0f * O.game->GetDriver()->GetTimerSin();
-	f32 dc = 3.0f * O.game->GetDriver()->GetTimerCos();
-	
-	m_drawable->Zoom(ds, dc);
 	O.world->Update( dt, userData );
 }
 // ----------------------------------------------------------------------//
@@ -76,8 +72,6 @@ void CState_Game::Render2D( CDriver *driver )
 
 	CEffect* fill = O.effect.color;
 	CEffect* filltex = O.effect.fill.texture;
-
-	f32 dr = 10.0f * driver->GetTimerRot();
 
 	CMaterial m;
 	CRect2D r;
@@ -89,7 +83,6 @@ void CState_Game::Render2D( CDriver *driver )
 
 	r.Bound(m_drawable);
 	r.Zoom(6.0f, 6.0f);
-	r.Rotate(dr);
 	r.Render(driver, CRect2D::OneSizeRect);
 
 	bool isBatchEnabled =
@@ -99,7 +92,6 @@ void CState_Game::Render2D( CDriver *driver )
 	filltex->CopyTechnique(&techique);
 	filltex->m_technique.depthtest = false;
 
-	m_drawable->Rotate(dr);
 	m_drawable->SetMaterial(&m);
 	m.SetEffect(filltex);
 	m.SetTexture(m_drawable->GetTexture(), 0);
@@ -108,9 +100,9 @@ void CState_Game::Render2D( CDriver *driver )
 	filltex->SetTechnique(&techique);
 	driver->EnableBatch2D(isBatchEnabled);
 
-	O.font.engine->DrawString(driver,
+	O.canvas->DrawString(driver,
 		10,
-		(s32)(O.canvas->Height() - 2 * O.font.engine->GetPixelSize()),
+		(s32)(O.canvas->Height() - 2 * O.font.engine->GetHeight()),
 		"The quick brown fox jumps over the lazy dog! :;.,'\"(?)+=*/=1234567890", col::Magenta);
 }
 // ----------------------------------------------------------------------//
@@ -126,8 +118,6 @@ void CState_Game::DrawToWidget(CDriver* driver, sigcxx::SLOT slot)
 	if (!m_mesh)
 		return;
 
-	f32 dr = driver->GetTimerRot();
-
 	driver->MatrixPush();
     driver->MatrixTranslate({ 0.0f, -0.5f, -2.0f });
 	m_mesh->Render(driver);
@@ -135,14 +125,12 @@ void CState_Game::DrawToWidget(CDriver* driver, sigcxx::SLOT slot)
 
 	driver->MatrixPush();
     driver->MatrixTranslate({ -0.4f, -0.2f, -1.5f });
-	driver->MatrixRotate(axis::Up.xyz, dr * 20.0f);
 	m_mesh->Render(driver);
 	driver->MatrixPop();
 
 	driver->MatrixPush();
     driver->MatrixTranslate({ 0.4f, -0.2f, -1.5f });
     driver->MatrixScale( { 0.5f, 0.5f, 0.5f } );
-	driver->MatrixRotate(axis::Up.xyz, dr * 40.0f);
 	m_mesh->Render(driver);
 	driver->MatrixPop();
 }

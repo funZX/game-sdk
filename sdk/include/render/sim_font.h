@@ -41,43 +41,30 @@ namespace rnr
 
 class CDriver;
 
-class CFont : public IEngineItem
+class CFont
 {
 public:
     friend class CFontAtlas;
 
     CFont( CFontAtlas* atlas );
-	CFont( const std::string& name, CFontAtlas* atlas);
 	virtual ~CFont();
 	// ------------------------------------------------------------------//
-	void						DrawString( CDriver* driver, s32 x, s32 y, const std::string &text, Vec4 color);
-
-    inline void                 SetPixelSize( f32 pixelSize );
-    inline f32                  GetPixelSize();
-
-    virtual bool				Load( io::CMemStream* ms );
-    virtual bool				Save( io::CMemStream* ms );
-
+    inline f32              GetHeight();
 	// ------------------------------------------------------------------//
 
 protected:
 
 	// ------------------------------------------------------------------//
-    f32                         m_pixelSize;
-    ImFont*                     m_imFont;
+    f32                     m_pixelSize;
+    ImFont*                 m_imFont;
 
-    CFontAtlas*                 m_fontAtlas;
+    CFontAtlas*             m_fontAtlas;
 
 
 	// ------------------------------------------------------------------//
 };
 
-inline void CFont::SetPixelSize( f32 pixelSize)
-{
-    m_pixelSize = pixelSize;
-}
-
-inline f32 CFont::GetPixelSize()
+inline f32 CFont::GetHeight()
 {
     return m_pixelSize;
 }

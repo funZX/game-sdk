@@ -32,7 +32,7 @@
 #include <core/sim_interfaces.h>
 
 #include <render/sim_render.h>
-#include <render/sim_rect_2d.h>
+#include <render/sim_widget.h>
 
 namespace sim
 {
@@ -42,11 +42,11 @@ namespace rnr
 
 class CCamera;
 
-class CCanvas : public CRect2D
+class CCanvas : public CWidget
 {
 public:
-	CCanvas();
-	CCanvas( const std::string& name );
+	CCanvas( CFontAtlas *fontAtlas );
+	CCanvas( const std::string& name, CFontAtlas* fontAtlas );
 	virtual ~CCanvas();
 	// ------------------------------------------------------------------//
 	void				Resize( f32 width, f32 height );

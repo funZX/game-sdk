@@ -42,36 +42,14 @@ CFont::CFont( CFontAtlas* atlas )
     m_pixelSize = 1.0f;
     m_imFont    = nullptr;
 }
-// ----------------------------------------------------------------------//
 
-CFont::CFont(const std::string& name, CFontAtlas* atlas)
-	: CFont( atlas )
-{
-	m_name = name;
-}
 // ----------------------------------------------------------------------//
 
 CFont::~CFont()
 {
-}
-
-// ----------------------------------------------------------------------//
-
-void CFont::DrawString( CDriver* driver, s32 x, s32 y, const std::string &text, Vec4 color)
-{
 
 }
 
-// ----------------------------------------------------------------------//
-bool CFont::Load( io::CMemStream* ms )
-{
-    return true;
-}
-// ----------------------------------------------------------------------//
-bool CFont::Save(io::CMemStream* ms)
-{
-    return true;
-}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

@@ -120,9 +120,6 @@ CDriver::CDriver()
 	m_materialRefraction	= 0.0f;
 
 	m_timer					= 0.0f;
-	m_timerSin				= 0.0f;
-	m_timerCos				= 0.0f;
-	m_timerRot				= 0.0f;
 
 	m_pointSize				= 1.0f;
 
@@ -264,18 +261,7 @@ bool  CDriver::EnableDepthMask( bool val )
 
 void CDriver::Tick( f32 dt )
 {
-	m_timerRot += (dt * 1000.0f) / 360.0f;
-
-	f32 angle = 100.0f * m_timerRot;
-	while (angle > 360.0f )
-		angle -= 360.0f;
-
-	f32 toRad	= zpl_to_radians( angle );
-
-	m_timerSin	= zpl_sin( toRad );
-	m_timerCos	= zpl_cos( toRad );
-
-	m_timer += dt; 
+    m_timer += dt;
 }
 
 // ----------------------------------------------------------------------//

@@ -49,6 +49,7 @@ public:
 	virtual	~CWidget();
 
 	// ------------------------------------------------------------------//
+    void                        DrawString(CDriver* driver, s32 x, s32 y, const std::string& text, Vec4 color);
 
 	// ------------------------------------------------------------------//
     virtual void				Update( f32 dt, void* userData );

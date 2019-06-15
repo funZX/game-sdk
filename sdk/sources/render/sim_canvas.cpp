@@ -34,16 +34,16 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CCanvas::CCanvas() 
-	: CRect2D()
+CCanvas::CCanvas( CFontAtlas* fontAtlas )
+	: CWidget( fontAtlas )
 {
 
 }
 
 // ----------------------------------------------------------------------//
 
-CCanvas::CCanvas( const std::string& name )
-	: CCanvas()
+CCanvas::CCanvas( const std::string& name, CFontAtlas* fontAtlas)
+	: CCanvas( fontAtlas )
 {
 	m_name = name;
 }
@@ -91,18 +91,18 @@ void CCanvas::ClearEvents()
 
 // ----------------------------------------------------------------------//
 
-void CCanvas::Render( CDriver* driver )
+void CCanvas::Update(f32 dt, void* userData)
 {
-	driver->SetViewport( (u32) m_size.x, (u32) m_size.y );
-
-    
+    CWidget::Update( dt, userData );
 }
 
 // ----------------------------------------------------------------------//
 
-void CCanvas::Update( f32 dt, void *userData )
+void CCanvas::Render( CDriver* driver )
 {
+	driver->SetViewport( (u32) m_size.x, (u32) m_size.y );
 
+    CWidget::Render( driver );
 }
 
 // ----------------------------------------------------------------------//

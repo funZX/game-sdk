@@ -185,11 +185,8 @@ public:
 	void						EnableDepthFunc(u32 equation);
 	bool						EnableBatch2D( bool isEnabled);
 
-	void						Tick( f32 dt );
-	inline f32				    GetTimer()   { return m_timer; }
-	inline f32					GetTimerSin()  { return m_timerSin; }
-	inline f32					GetTimerCos()   { return m_timerCos; }
-	inline f32					GetTimerRot()  { return m_timerRot; }
+    void						Tick(f32 dt);
+    inline f32				    GetTime() { return m_timer; }
 
 	void						MatrixPush();
 	void						MatrixPop();
@@ -406,9 +403,6 @@ protected:
 	bool						m_isDepthMaskEnabled;
 
 	f32						    m_timer;
-	f32						    m_timerSin;
-	f32							m_timerCos;
-	f32							m_timerRot;
 
 	Vec4						m_color;
 	f32							m_pointSize;

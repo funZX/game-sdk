@@ -64,16 +64,28 @@ void CWidget::Update( f32 dt, void* userData )
 {
     m_imContext->IO.DisplaySize = ImVec2( m_size.x, m_size.y );
     m_imContext->IO.DeltaTime = dt;
-
-    CRect2D::Update( dt, userData );
+    
+    ImGui::SetCurrentContext(m_imContext);
+    ImGui::NewFrame();
+    ImGui::Begin( m_name.c_str() );
 }
 // ----------------------------------------------------------------------//
 
 void CWidget::Render( CDriver *driver )
 {
-	CRect2D::Render( driver, m_texRect );
+    ImGui::End();
+    ImGui::EndFrame();
+    ImGui::Render();
+
+    ImDrawData* imData = ImGui::GetDrawData();
 }
 
+// ----------------------------------------------------------------------//
+
+void CWidget::DrawString( CDriver* driver, s32 x, s32 y, const std::string& text, Vec4 color )
+{
+    ImGui::Text( text.c_str() );
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

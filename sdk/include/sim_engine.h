@@ -196,6 +196,9 @@ protected:
 	void							Initialize();
 	void							InitOpenGL();
 	void							InitOpenAL();
+    void							InitFont();
+    void							InitEffect();
+    void							InitMaterial();
     void							Shutdown();
 	
 	void							On2D();
@@ -205,10 +208,6 @@ protected:
 
 	void							ShowStats( CDriver* driver );
 	f32								Smooth( f32 dt );
-
-	void							InitFont();
-	void							InitEffect();
-	void							InitMaterial();
 
 protected:
 

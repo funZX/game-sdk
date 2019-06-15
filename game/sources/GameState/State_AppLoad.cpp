@@ -50,7 +50,7 @@ void CState_AppLoad::Render2D( CDriver *driver )
 	{
 		O.game->Print(driver,
 			0,
-			(s32)(O.canvas->Height() - 2 * O.font.engine->GetPixelSize()),
+			(s32)(O.canvas->Height() - 2 * O.font.engine->GetHeight()),
 			m_fsCrt->GetLoadMessage());
 	}
 }
