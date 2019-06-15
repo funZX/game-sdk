@@ -85,9 +85,6 @@ void CState_Game::Render2D( CDriver *driver )
 	r.Zoom(6.0f, 6.0f);
 	r.Render(driver, CRect2D::OneSizeRect);
 
-	bool isBatchEnabled =
-	driver->EnableBatch2D(false);
-
 	CEffect::TTechnique techique;
 	filltex->CopyTechnique(&techique);
 	filltex->m_technique.depthtest = false;
@@ -98,7 +95,6 @@ void CState_Game::Render2D( CDriver *driver )
 	m_drawable->Render(driver);
 
 	filltex->SetTechnique(&techique);
-	driver->EnableBatch2D(isBatchEnabled);
 
 	O.canvas->DrawString(driver,
 		10,

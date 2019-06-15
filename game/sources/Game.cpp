@@ -3,7 +3,6 @@
 
 #include <render/scene/sim_camera.h>
 
-#include <render/sim_batch_2d.h>
 #include <render/sim_canvas.h>
 #include <render/sim_shader.h>
 #include <render/sim_effect.h>

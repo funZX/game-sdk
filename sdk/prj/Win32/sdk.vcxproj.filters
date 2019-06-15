@@ -95,9 +95,6 @@
     <ClCompile Include="..\..\sources\render\sim_vertex_source.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sources\render\sim_batch_2d.cpp">
-      <Filter>Source Files\render</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\sources\render\sim_canvas.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
@@ -266,9 +263,6 @@
       <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\render\sim_vertex_source.h">
-      <Filter>Header Files\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\render\sim_batch_2d.h">
       <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\render\sim_canvas.h">

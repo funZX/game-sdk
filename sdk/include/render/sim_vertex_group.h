@@ -49,8 +49,6 @@ struct Cube;
 class CDriver;
 class CMaterial;
 class CRect2D;
-class CBatch2D;
-class CBatch3D;
 class CFontChar;
 class CVertexSource;
 class CBoneHierarchy;

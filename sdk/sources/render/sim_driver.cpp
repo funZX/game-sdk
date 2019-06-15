@@ -31,7 +31,6 @@
 #include <render/sim_driver.h>
 #include <render/sim_render_texture.h>
 #include <render/sim_rect_2d.h>
-#include <render/sim_batch_2d.h>
 #include <render/sim_effect.h>
 #include <render/sim_material.h>
 
@@ -48,8 +47,6 @@ CRect2D*			CDriver::ScreenRect = &ScreenRectStatic;
 
 CDriver::CDriver()
 {
-	m_batch2D	= SIM_NEW CBatch2D( this );
-
 	Mat4StackClear( &m_worldStack );
 	Mat4StackClear( &m_viewStack );
 	Mat4StackClear( &m_projectionStack );
@@ -85,8 +82,6 @@ CDriver::CDriver()
     zpl_mat3_identity( &m_normalMatrix );
 	m_isNormalMatrixDirty	= true;
 	m_isActiveStackAlteringNormalMatrix = true;
-
-	m_isEnabledBatch2D = false;
 
     SIM_MEMSET( m_vertexAttributeInfo, 0, sizeof( m_vertexAttributeInfo ) );
 	SIM_MEMSET( m_lightParameters, 0, sizeof( m_lightParameters ) );
@@ -173,16 +168,6 @@ void CDriver::Initialize()
 
 CDriver::~CDriver()
 {
-	SIM_SAFE_DELETE( m_batch2D );
-}
-
-// ----------------------------------------------------------------------//
-
-void CDriver::Flush2D()
-{
-	m_batch2D->Render( this );
-
-	m_crtVertexSource = nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -555,22 +540,6 @@ CDriver::MatrixMode CDriver::SetMatrixMode(MatrixMode matrixMode)
 }
 
 // ----------------------------------------------------------------------//
-bool CDriver::EnableBatch2D( bool isEnabled )
-{
-	bool wasBatchEnabled = m_isEnabledBatch2D;
-
-	if ( m_isEnabledBatch2D != isEnabled )
-	{
-		m_isEnabledBatch2D = isEnabled;
-
-		if ( wasBatchEnabled )
-			Flush2D();
-	}
-
-	return wasBatchEnabled;
-}
-
-// ----------------------------------------------------------------------//
 
 void CDriver::MatrixPush()
 {
@@ -868,53 +837,32 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 	CMaterial* material			= vertexGroup->GetMaterial();
 	CVertexSource* vertexSource = vertexGroup->GetVertexSource();
 
-	if ( m_isEnabledBatch2D )
+
+	static Primitive primitives[] = {
+		Primitive::Lines,
+		Primitive::LineStrip,
+		Primitive::Points,
+		Primitive::Triangles,
+		Primitive::TriangleStrips
+	};
+
+	SIM_ASSERT(vertexSource != nullptr);
+
+	material->Render(this);
+	effect->Render(this);
+
+	if (vertexSource != m_crtVertexSource)
 	{
-		s32 vboSize = vertexSource->GetVboSize();
-		f32* vboData = (f32*)vertexSource->GetVboData();
-		u32 vboStride = Value(vertexSource->GetVertexStride());
-		u32 vtxSize = vboStride / sizeof(f32);
+		effect->Bind(this, vertexSource);
 
-		for (s32 q = 0; q < vboSize >> 2; q++)
-		{
-			s32 qOff = (q << 2) * vtxSize;
-
-			m_batch2D->AddQuad(
-				material,
-				&vboData[qOff + vtxSize * 0],
-				&vboData[qOff + vtxSize * 1],
-				&vboData[qOff + vtxSize * 2],
-				&vboData[qOff + vtxSize * 3]);
-		}
+		m_crtVertexSource = vertexSource;
 	}
-	else
-	{
-		static Primitive primitives[] = {
-			Primitive::Lines,
-			Primitive::LineStrip,
-			Primitive::Points,
-			Primitive::Triangles,
-			Primitive::TriangleStrips
-		};
 
-		SIM_ASSERT(vertexSource != nullptr);
+	m_drawCallCount += 1;
+	m_vertexCount += vertexGroup->GetVboSize();
 
-		material->Render(this);
-		effect->Render(this);
-
-		if (vertexSource != m_crtVertexSource)
-		{
-			effect->Bind(this, vertexSource);
-
-			m_crtVertexSource = vertexSource;
-		}
-
-		m_drawCallCount += 1;
-		m_vertexCount += vertexGroup->GetVboSize();
-
-		u32 rt = Value(primitives[Value(vertexSource->GetType())]);
-		glDrawElements(rt, vertexGroup->GetVboSize(), GL_UNSIGNED_SHORT, vertexGroup->GetVboData());
-	}
+	u32 rt = Value(primitives[Value(vertexSource->GetType())]);
+	glDrawElements(rt, vertexGroup->GetVboSize(), GL_UNSIGNED_SHORT, vertexGroup->GetVboData());
 }
 
 // ----------------------------------------------------------------------//

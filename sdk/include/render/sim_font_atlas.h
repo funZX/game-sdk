@@ -43,7 +43,6 @@ class CFont;
 class CMaterial;
 class CTexture;
 class CEffect;
-class CBatch2D;
 
 class CFontAtlas : public IEngineItem
 {

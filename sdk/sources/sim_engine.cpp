@@ -34,7 +34,6 @@
 
 #include <render/scene/sim_camera.h>
 
-#include <render/sim_batch_2d.h>
 #include <render/sim_material.h>
 #include <render/sim_effect.h>
 #include <render/sim_render_texture.h>
@@ -449,15 +448,12 @@ void CEngine::On2D()
 
 	m_driver->SetMatrixMode( CDriver::MatrixMode::World );
 	m_driver->MatrixLoadIdentity();
-
-	m_driver->EnableBatch2D( true );
 }
 
 // ----------------------------------------------------------------------//
 
 void CEngine::Off2D()
 {
-	m_driver->EnableBatch2D( false );
 }
 
 // ----------------------------------------------------------------------//
@@ -493,12 +489,12 @@ void  CEngine::Print( CDriver* driver, s32 x, s32 y, const std::string &text )
 
 void  CEngine::Print( CDriver* driver, s32 x, s32 y, char *format, ... )
 {
-	static char buf[ CBatch2D::MaxQuads ];
+	static char buf[ 1024 ];
 	
 	va_list args;
 	
 	va_start( args, format );
-	vsnprintf( buf, CBatch2D::MaxQuads, format, args );
+	vsnprintf( buf, 1024, format, args );
 	va_end( args );
 
 	m_canvas->DrawString( driver, x, y, buf, col::Green );

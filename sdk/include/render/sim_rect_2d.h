@@ -84,7 +84,6 @@ public:
 	void						Zoom( f32 dw, f32 dh );
 	void						Resize( f32 w, f32 h );
 	void						Scale( f32 kw, f32 kh );
-	void						Rotate( f32 rotation);
 
 	void						SetCenter( Vec2 *pos );
 	void						GetCenter( Vec2 *pos ) const;
@@ -123,7 +122,6 @@ protected:
 	// ------------------------------------------------------------------//
 	Vec2						m_position;
 	Vec2						m_size;
-	f32							m_rotation;
 
 	CMaterial*					m_material;
 	CRect2D*					m_texRect;

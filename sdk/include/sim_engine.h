@@ -66,7 +66,6 @@ namespace sim
 	namespace rnr
 	{
 		class CDriver;
-		class CBatch2D;
 
 		class CTexture;
 		class CRenderTexture;

@@ -78,6 +78,26 @@ void CWidget::Render( CDriver *driver )
     ImGui::Render();
 
     ImDrawData* imData = ImGui::GetDrawData();
+
+    for ( s32 n = 0; n < imData->CmdListsCount; n++ )
+    {
+        const ImDrawList* cmdList   = imData->CmdLists[n];
+        const ImDrawVert* vtxBuffer = cmdList->VtxBuffer.Data;
+        const ImDrawIdx* idxBuffer  = cmdList->IdxBuffer.Data;
+
+        for ( s32 i = 0; i < cmdList->CmdBuffer.Size; i++ )
+        {
+            const ImDrawCmd* pcmd = &cmdList->CmdBuffer[ i ];
+
+            /*
+            CRect2D r;
+            r.Bound((f32)x, (f32)y, (f32)m_width, (f32)m_height);
+            r.SetMaterial( m_material );
+
+            r.Render(driver, &m_texRect);
+            */
+        }
+    }
 }
 
 // ----------------------------------------------------------------------//

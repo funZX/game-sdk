@@ -164,7 +164,6 @@ public:
 	// ------------------------------------------------------------------//
 	void						Clear( Vec4 color );
 	void						ClearColor( Vec4 color );
-	void						Flush2D();
 	// ------------------------------------------------------------------//
 
 	TextureChannel				SetTextureChannel( TextureChannel textureSelect );
@@ -183,10 +182,9 @@ public:
 	void						EnableBlendFunc( u32 equation, u32 src, u32 dst );
 	void						EnableDepthFunc( TDepthFunc blendfunc);
 	void						EnableDepthFunc(u32 equation);
-	bool						EnableBatch2D( bool isEnabled);
 
     void						Tick(f32 dt);
-    inline f32				    GetTime() { return m_timer; }
+    inline f32				    GetTimer() { return m_timer; }
 
 	void						MatrixPush();
 	void						MatrixPop();
@@ -324,9 +322,6 @@ protected:
 	// ------------------------------------------------------------------//
 	TUniformInfo				m_uniformInfo[ CShader::k_Uniform_Count ];
 	// ------------------------------------------------------------------//
-
-	CBatch2D*					m_batch2D;
-	bool						m_isEnabledBatch2D;
 
     Mat4Stack				    m_worldStack;
     Mat4Stack				    m_viewStack;

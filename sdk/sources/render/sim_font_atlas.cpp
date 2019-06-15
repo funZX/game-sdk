@@ -32,7 +32,6 @@
 #include <render/sim_driver.h>
 #include <render/sim_material.h>
 #include <render/sim_effect.h>
-#include <render/sim_batch_2d.h>
 #include <render/sim_texture.h>
 
 namespace sim
@@ -108,12 +107,14 @@ void CFontAtlas::Create()
 		, CTexture::Filter::Nearest
 		, CTexture::Format::Alpha
 	);
-	
+
 	InitEffect();
 	InitMaterial();
 
     m_imAtlas->ClearTexData();
     m_imAtlas->ClearInputData();
+
+    m_imAtlas->TexID = m_material;
 }
 
 // ----------------------------------------------------------------------//

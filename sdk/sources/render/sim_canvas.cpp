@@ -25,7 +25,6 @@
 */
 
 #include <render/sim_driver.h>
-#include <render/sim_batch_2d.h>
 #include <render/sim_canvas.h>
 
 namespace sim
