@@ -49,7 +49,7 @@ CRect2D::CRect2D()
 
 	m_material	= nullptr;
 
-	m_texRect = &OneSizeRectStatic;
+	m_texRect   = &OneSizeRectStatic;
 }
 // ----------------------------------------------------------------------//
 
@@ -358,10 +358,9 @@ void CRect2D::Update(f32 dt, void* userData)
 
 void CRect2D::Render( CDriver* driver )
 {
-    ImGui::SetNextWindowPos( ImVec2( m_position.x, m_position.y ) );
-    ImGui::BeginChild( ImGui::GetID(this), ImVec2( m_size.x, m_size.y ) );
-
-    ImGui::EndChild();
+    ImGui::GetWindowDrawList()->PushTextureID( m_material );
+    ImGui::GetWindowDrawList()->AddRect(ImVec2(m_position.x, m_position.y), ImVec2(m_size.x, m_size.y), IM_COL32_BLACK);
+    ImGui::GetWindowDrawList()->PopTextureID();
 }
 // ----------------------------------------------------------------------//
 bool CRect2D::Load(io::CMemStream* ms)
