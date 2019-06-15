@@ -52,7 +52,6 @@ public:
 	CSpriteTexture( const std::string& name );
 	// ------------------------------------------------------------------//
 	void						AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h );
-	void						Render( CDriver *driver, CRect2D *rect, s32 frame );
 
     virtual bool				Load(io::CMemStream* ms);
     virtual bool				Save(io::CMemStream* ms);

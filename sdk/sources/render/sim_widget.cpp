@@ -41,6 +41,9 @@ CWidget::CWidget( CFontAtlas* atlas )
 	: CRect2D()
 {
     m_imContext = ImGui::CreateContext( atlas->m_imAtlas );
+
+    m_imStyle = SIM_NEW ImGuiStyle();
+    ImGui::StyleColorsDark(m_imStyle);
 }
 
 // ----------------------------------------------------------------------//
@@ -55,6 +58,7 @@ CWidget::CWidget( const std::string& name, CFontAtlas* atlas )
 
 CWidget::~CWidget()
 {
+    SIM_SAFE_DELETE( m_imStyle );
     ImGui::DestroyContext( m_imContext );
 }
 

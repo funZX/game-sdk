@@ -68,18 +68,6 @@ void CSpriteTexture::AddFrame( s32 frame, s32 x, s32 y, s32 w, s32 h  )
 
 // ----------------------------------------------------------------------//
 
-void CSpriteTexture::Render( CDriver *driver, CRect2D *rect, s32 frame )
-{
-	auto m = m_frames.find(frame);
-
-	SIM_ASSERT( this == rect->GetMaterial()->GetTexture( 0 ) );
-
-	if (m != m_frames.end())
-		rect->Render(driver, &m->second);
-}
-
-// ----------------------------------------------------------------------//
-
 bool CSpriteTexture::Load(io::CMemStream* ms)
 {
     return false;

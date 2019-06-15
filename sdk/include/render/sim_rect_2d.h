@@ -103,7 +103,6 @@ public:
 	CMaterial*					GetMaterial() { return m_material; }
 
 	virtual void				Render( CDriver *driver );
-	void						Render( CDriver *driver, const CRect2D *texRect );
 
 	virtual void				Update(f32 dt, void *userData);
 

@@ -58,6 +58,7 @@ public:
 
 protected:
     ImGuiContext*               m_imContext;
+    ImGuiStyle*                 m_imStyle;
 	// ------------------------------------------------------------------//
 };
 

@@ -358,14 +358,10 @@ void CRect2D::Update(f32 dt, void* userData)
 
 void CRect2D::Render( CDriver* driver )
 {
-    ImGui::BeginChildFrame(ImGui::GetID(this), ImVec2(m_size.x, m_size.y), ImGuiWindowFlags_NoMove);
+    ImGui::SetNextWindowPos( ImVec2( m_position.x, m_position.y ) );
+    ImGui::BeginChild( ImGui::GetID(this), ImVec2( m_size.x, m_size.y ) );
 
-    ImGui::EndChildFrame();
-}
-// ----------------------------------------------------------------------//
-void CRect2D::Render(CDriver* driver, const CRect2D* texRect)
-{
-
+    ImGui::EndChild();
 }
 // ----------------------------------------------------------------------//
 bool CRect2D::Load(io::CMemStream* ms)

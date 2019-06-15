@@ -83,7 +83,7 @@ void CState_Game::Render2D( CDriver *driver )
 
 	r.Bound(m_drawable);
 	r.Zoom(6.0f, 6.0f);
-	r.Render(driver, CRect2D::OneSizeRect);
+	r.Render(driver);
 
 	CEffect::TTechnique techique;
 	filltex->CopyTechnique(&techique);
