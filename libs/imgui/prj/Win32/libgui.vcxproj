@@ -28,7 +28,7 @@
     <ClInclude Include="..\..\include\imstb_truetype.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{680BA01E-9667-4D85-A82F-AC20A1DF1182}</ProjectGuid>
+    <ProjectGuid>{8D7C8554-01D5-4DCE-B6E0-1159702CF91A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>libgui</RootNamespace>
   </PropertyGroup>

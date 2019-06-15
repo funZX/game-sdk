@@ -2,7 +2,7 @@
 #include <render/scene/sim_light.h>
 #include <render/scene/sim_camera.h>
 
-#include <render/gui/sim_widget_drawable.h>
+#include <render/sim_drawable.h>
 
 
 #include <render/font/sim_font.h>
@@ -39,7 +39,7 @@ CState_Game::CState_Game()
 	m_fs = O.world->GetFs();
 	m_mesh = m_fs->GetMesh("melonman");
 
-	m_drawable = SIM_NEW CWidgetDrawable();
+	m_drawable = SIM_NEW CDrawable();
 	m_drawable->MoveTo(100.0f, 100.0f);
 	m_drawable->Resize(200, 200);
 	m_drawable->SetColor(col::Blueish);

@@ -32,7 +32,7 @@
 #include <core/sim_interfaces.h>
 
 #include <render/sim_render.h>
-#include <render/gui/sim_widget.h>
+#include <render/sim_rect_2d.h>
 
 namespace sim
 {
@@ -42,7 +42,7 @@ namespace rnr
 
 class CCamera;
 
-class CCanvas : public CWidget
+class CCanvas : public CRect2D
 {
 public:
 	CCanvas();

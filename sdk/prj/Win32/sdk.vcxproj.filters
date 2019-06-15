@@ -30,14 +30,8 @@
     <Filter Include="Header Files\render\font">
       <UniqueIdentifier>{4df36ddf-4318-4622-9091-6134f30c6c5a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\render\gui">
-      <UniqueIdentifier>{8c151a18-14e2-4b10-926a-40ca1debc7c2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\render\font">
       <UniqueIdentifier>{ba072429-e274-4bfd-b744-b46db5251cfb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\render\gui">
-      <UniqueIdentifier>{073395c5-797c-46b0-8fab-56b3c2585320}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\sound">
       <UniqueIdentifier>{e732a530-46cc-4cd3-9747-c9f2a8a4a61a}</UniqueIdentifier>
@@ -100,12 +94,6 @@
     </ClCompile>
     <ClCompile Include="..\..\sources\render\font\sim_font_node.cpp">
       <Filter>Source Files\render\font</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\sources\render\gui\sim_widget_button.cpp">
-      <Filter>Source Files\render\gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\sources\render\gui\sim_widget_label.cpp">
-      <Filter>Source Files\render\gui</Filter>
     </ClCompile>
     <ClCompile Include="..\..\sources\render\sim_glaux.cpp">
       <Filter>Source Files\render</Filter>
@@ -254,15 +242,6 @@
     <ClCompile Include="..\..\sources\render\sim_sprite_texture.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sources\render\gui\sim_widget.cpp">
-      <Filter>Source Files\render\gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\sources\render\gui\sim_widget_drawable.cpp">
-      <Filter>Source Files\render\gui</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\sources\render\gui\sim_widget_sprite.cpp">
-      <Filter>Source Files\render\gui</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\sources\core\sim_octree.cpp">
       <Filter>Source Files\core</Filter>
     </ClCompile>
@@ -271,6 +250,9 @@
     </ClCompile>
     <ClCompile Include="..\..\sources\render\scene\sim_curve.cpp">
       <Filter>Source Files\render\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\render\sim_drawable.cpp">
+      <Filter>Source Files\render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -285,12 +267,6 @@
     </ClInclude>
     <ClInclude Include="..\..\include\render\font\sim_font_node.h">
       <Filter>Header Files\render\font</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\render\gui\sim_widget_button.h">
-      <Filter>Header Files\render\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\render\gui\sim_widget_label.h">
-      <Filter>Header Files\render\gui</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\render\sim_glaux.h">
       <Filter>Header Files\render</Filter>
@@ -463,15 +439,6 @@
     <ClInclude Include="..\..\include\render\sim_sprite_texture.h">
       <Filter>Header Files\render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\render\gui\sim_widget.h">
-      <Filter>Header Files\render\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\render\gui\sim_widget_drawable.h">
-      <Filter>Header Files\render\gui</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\render\gui\sim_widget_sprite.h">
-      <Filter>Header Files\render\gui</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\core\sim_pool.h">
       <Filter>Header Files\core</Filter>
     </ClInclude>
@@ -480,6 +447,9 @@
     </ClInclude>
     <ClInclude Include="..\..\include\core\sim_math.h">
       <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\render\sim_drawable.h">
+      <Filter>Header Files\render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

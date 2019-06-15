@@ -37,11 +37,6 @@
     <ClCompile Include="..\..\sources\render\font\sim_font_atlas.cpp" />
     <ClCompile Include="..\..\sources\render\font\sim_font_char.cpp" />
     <ClCompile Include="..\..\sources\render\font\sim_font_node.cpp" />
-    <ClCompile Include="..\..\sources\render\gui\sim_widget.cpp" />
-    <ClCompile Include="..\..\sources\render\gui\sim_widget_button.cpp" />
-    <ClCompile Include="..\..\sources\render\gui\sim_widget_label.cpp" />
-    <ClCompile Include="..\..\sources\render\gui\sim_widget_drawable.cpp" />
-    <ClCompile Include="..\..\sources\render\gui\sim_widget_sprite.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_actor.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_camera.cpp" />
     <ClCompile Include="..\..\sources\render\scene\sim_curve.cpp" />
@@ -51,6 +46,7 @@
     <ClCompile Include="..\..\sources\render\scene\sim_sky_box.cpp" />
     <ClCompile Include="..\..\sources\render\sim_batch_2d.cpp" />
     <ClCompile Include="..\..\sources\render\sim_canvas.cpp" />
+    <ClCompile Include="..\..\sources\render\sim_drawable.cpp" />
     <ClCompile Include="..\..\sources\render\sim_driver.cpp" />
     <ClCompile Include="..\..\sources\render\sim_effect.cpp" />
     <ClCompile Include="..\..\sources\render\sim_render_texture.cpp" />
@@ -109,11 +105,6 @@
     <ClInclude Include="..\..\include\render\font\sim_font_atlas.h" />
     <ClInclude Include="..\..\include\render\font\sim_font_char.h" />
     <ClInclude Include="..\..\include\render\font\sim_font_node.h" />
-    <ClInclude Include="..\..\include\render\gui\sim_widget.h" />
-    <ClInclude Include="..\..\include\render\gui\sim_widget_button.h" />
-    <ClInclude Include="..\..\include\render\gui\sim_widget_label.h" />
-    <ClInclude Include="..\..\include\render\gui\sim_widget_drawable.h" />
-    <ClInclude Include="..\..\include\render\gui\sim_widget_sprite.h" />
     <ClInclude Include="..\..\include\render\scene\sim_actor.h" />
     <ClInclude Include="..\..\include\render\scene\sim_camera.h" />
     <ClInclude Include="..\..\include\render\scene\sim_curve.h" />
@@ -123,6 +114,7 @@
     <ClInclude Include="..\..\include\render\scene\sim_sky_box.h" />
     <ClInclude Include="..\..\include\render\sim_batch_2d.h" />
     <ClInclude Include="..\..\include\render\sim_canvas.h" />
+    <ClInclude Include="..\..\include\render\sim_drawable.h" />
     <ClInclude Include="..\..\include\render\sim_driver.h" />
     <ClInclude Include="..\..\include\render\sim_effect.h" />
     <ClInclude Include="..\..\include\render\sim_render_texture.h" />
@@ -195,7 +187,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;WIN32_LEAN_AND_MEAN;HAVE_STRUCT_TIMESPEC;GL_GLEXT_PROTOTYPES;SIM_DEBUG=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../include;../../../include;../../../libs/async/include;../../../libs/jansson/include;../../../libs/freetype/include;../../../libs/pthread/include;../../../libs/openal/include;../../../libs/opengles/include;../../../libs/librg/include;../../../libs/squirrel/include;../../../libs/bullet/sources;../../../libs/lzma/include;../../../libs/detour/include;../../../libs/recast/include;../../../libs/sigcxx/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include;../../../include;../../../libs/async/include;../../../libs/jansson/include;../../../libs/freetype/include;../../../libs/pthread/include;../../../libs/openal/include;../../../libs/opengles/include;../../../libs/librg/include;../../../libs/squirrel/include;../../../libs/bullet/sources;../../../libs/lzma/include;../../../libs/detour/include;../../../libs/recast/include;../../../libs/sigcxx/include;../../../libs/libgui/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -211,7 +203,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_STRUCT_TIMESPEC;WIN32;NDEBUG;_LIB;WIN32_LEAN_AND_MEAN;GL_GLEXT_PROTOTYPES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../include;../../../include;../../../libs/async/include;../../../libs/jansson/include;../../../libs/freetype/include;../../../libs/pthread/include;../../../libs/openal/include;../../../libs/opengles/include;../../../libs/librg/include;../../../libs/squirrel/include;../../../libs/bullet/sources;../../../libs/lzma/include;../../../libs/detour/include;../../../libs/recast/include;../../../libs/sigcxx/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include;../../../include;../../../libs/async/include;../../../libs/jansson/include;../../../libs/freetype/include;../../../libs/pthread/include;../../../libs/openal/include;../../../libs/opengles/include;../../../libs/librg/include;../../../libs/squirrel/include;../../../libs/bullet/sources;../../../libs/lzma/include;../../../libs/detour/include;../../../libs/recast/include;../../../libs/sigcxx/include;../../../libs/libgui/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

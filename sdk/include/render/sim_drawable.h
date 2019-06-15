@@ -24,10 +24,11 @@
 *    SOFTWARE.
 */
 
-#ifndef __SIM_WIDGET_H
-#define __SIM_WIDGET_H
+#ifndef __SIM_DRAWABLE_H
+#define __SIM_DRAWABLE_H
 
-#include <core/sim_interfaces.h>
+#include <core/sim_core.h>
+
 #include <render/sim_render.h>
 #include <render/sim_rect_2d.h>
 
@@ -36,65 +37,52 @@ namespace sim
 namespace rnr
 {
 // ----------------------------------------------------------------------//
+class CCamera;
+class CRenderTexture;
+class CDriver;
+// ----------------------------------------------------------------------//
 
-class CWidget : public CRect2D
+class CDrawable: public CRect2D
 {
 public:
-	CWidget();
-	CWidget( const std::string& name );
-	virtual	~CWidget();
-
 	// ------------------------------------------------------------------//
-	typedef union
-	{
-		s32		  m_param;
-		struct
-		{
-			u16 m_loParam;
-			u16 m_hiParam;
-		};
-
-	} TPointerParam;
+	CDrawable();
+	CDrawable( const std::string& name );
+	virtual ~CDrawable();
 	// ------------------------------------------------------------------//
+	void							Draw( CDriver *driver );	
+	CRenderTexture*					GetTexture() { return m_rendertexture; }
+	virtual void					Render(CDriver *driver);
 
-	void							SetParent( CWidget* parent );
-	CWidget*						GetParent() { return m_parent; }
-
-	void							SetEnabled(bool enabled) {m_isEnabled = enabled;}
-	bool							IsEnabled() {return m_isEnabled;}
-
-	void							SetVisible(bool visible) {m_isVisible = visible;}
-	bool							IsVisible() {return m_isVisible;}
-
-	void							AddChild( CWidget *child );
-	void							RemChild( CWidget *child );
-	void							DelChild( CWidget *child );
-
-	void							RemAllChilds( void );
-	void							DelAllChilds( void );
-
-    virtual void					Render( CDriver *driver );
-
-	virtual void					PointerDown( u32 x, u32 y );
-	virtual void					PointerDrag( u32 x, u32 y );
-	virtual void					PointerUp( u32 x, u32 y );
-
-	void							SetColor( Vec4 color);
+    inline Vec4				        GetColor();
+    inline void						SetColor(Vec4 ambient);
+	// ------------------------------------------------------------------//
+public: // Signals
+	// ------------------------------------------------------------------//
+	sigcxx::Signal<CDriver*>		OnDraw;
 	// ------------------------------------------------------------------//
 
 protected:
-
 	// ------------------------------------------------------------------//
-	CWidget*						m_parent;
-	std::map< CWidget*, CWidget* > 	m_childs;
+	virtual void					OnResize();
+	// ------------------------------------------------------------------//
+	CRenderTexture*					m_rendertexture;
+	CCamera*						m_camera;
 
-	bool							m_isEnabled;
-	bool							m_isVisible;
-
-	Vec4							m_fillcolor;
+    Vec4                            m_color;
+	// ------------------------------------------------------------------//
 };
 
+inline Vec4 CDrawable::GetColor()
+{
+    return m_color;
+}
+
+inline void CDrawable::SetColor(Vec4 color)
+{
+    m_color = color;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
-#endif // __WIDGET_ABSTRACT_H
+#endif // __SIM_DRAWABLE_H

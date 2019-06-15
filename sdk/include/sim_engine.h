@@ -99,12 +99,7 @@ namespace sim
 
 		class CRect2D;
 		class CCanvas;
-
-		class CWidget;
-		class CWidgetLabel;
-		class CWidgetButton;
-		class CWidgetDrawable;
-		class CWidgetSprite;
+		class CDrawable;
 
 		struct TColor;
 	};
