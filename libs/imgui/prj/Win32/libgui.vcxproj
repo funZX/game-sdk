@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\sources\imgui.cpp" />
+    <ClCompile Include="..\..\sources\imgui_demo.cpp" />
     <ClCompile Include="..\..\sources\imgui_draw.cpp" />
     <ClCompile Include="..\..\sources\imgui_stdlib.cpp" />
     <ClCompile Include="..\..\sources\imgui_widgets.cpp" />

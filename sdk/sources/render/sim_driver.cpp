@@ -860,7 +860,7 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 	material->Render(this);
 	effect->Render(this);
 
-	if (vertexSource != m_crtVertexSource)
+	if ( vertexSource != m_crtVertexSource )
 	{
 		effect->Bind(this, vertexSource);
 
@@ -871,7 +871,7 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 	m_vertexCount += vertexGroup->GetVboSize();
 
 	u32 rt = Value(primitives[Value(vertexSource->GetType())]);
-	glDrawElements(rt, vertexGroup->GetVboSize(), GL_UNSIGNED_SHORT, vertexGroup->GetVboData());
+	glDrawElements( rt, vertexGroup->GetVboSize(), GL_UNSIGNED_SHORT, vertexGroup->GetVboData() );
 }
 
 // ----------------------------------------------------------------------//
