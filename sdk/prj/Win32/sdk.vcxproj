@@ -131,7 +131,7 @@
     <ClInclude Include="..\..\include\vm\sim_squirrel.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\TODO.txt" />
+    <Text Include="..\..\TODO.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CED2AAC1-80AE-427E-BDAB-D920211C9F8B}</ProjectGuid>

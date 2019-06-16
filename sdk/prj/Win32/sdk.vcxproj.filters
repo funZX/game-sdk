@@ -429,6 +429,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\TODO.txt" />
+    <Text Include="..\..\TODO.txt" />
   </ItemGroup>
 </Project>
