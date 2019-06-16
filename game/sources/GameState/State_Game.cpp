@@ -73,25 +73,12 @@ void CState_Game::Render2D( CDriver *driver )
 	CEffect* fill = O.effect.color;
 	CEffect* filltex = O.effect.fill.texture;
 
-	CMaterial m;
-	CRect2D r;
-
-	r.SetMaterial(&m);
-
-	m.SetEffect(fill);
-	m.SetTexture(0, 0);
-
-	r.Bound(m_drawable);
-	r.Zoom(6.0f, 6.0f);
-	r.Render(driver);
 
 	CEffect::TTechnique techique;
 	filltex->CopyTechnique(&techique);
 	filltex->m_technique.depthtest = false;
 
-	m_drawable->SetMaterial(&m);
-	m.SetEffect(filltex);
-	m.SetTexture(m_drawable->GetTexture(), 0);
+    m_drawable->SetEffect( filltex );
 	m_drawable->Render(driver);
 
 	filltex->SetTechnique(&techique);

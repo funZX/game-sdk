@@ -44,12 +44,10 @@ const CRect2D*		CRect2D::OneSizeRectFlip	= &OneSizeRectFlipStatic;
 // ----------------------------------------------------------------------//
 CRect2D::CRect2D()
 {
-	m_position  = axis::Origin.xyz.xy;
-	m_size      = axis::Unit.xyz.xy;
-
-	m_material	= nullptr;
-
-	m_texRect   = &OneSizeRectStatic;
+	m_position          = axis::Origin.xyz.xy;
+	m_size              = axis::Unit.xyz.xy;
+    m_vertexColor.rgba  = IM_COL32_WHITE;
+	m_material	        = nullptr;
 }
 // ----------------------------------------------------------------------//
 
@@ -245,20 +243,38 @@ void CRect2D::Intersect( CRect2D *r1, CRect2D *r2, CRect2D *dst )
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::SetCenter( Vec2 *loc )
+void CRect2D::SetCenter( Vec2 center)
 {
-	m_position.x = loc->x - ( m_size.x * 0.5f );
-	m_position.y = loc->y - ( m_size.y * 0.5f );
+	m_position.x = center.x - ( m_size.x * 0.5f );
+	m_position.y = center.y - ( m_size.y * 0.5f );
 
 	OnMove();
 }
 
 // ----------------------------------------------------------------------//
 
-void CRect2D::GetCenter( Vec2 *loc ) const 
+Vec2 CRect2D::GetCenter() const 
 {
-	loc->x = m_position.x + ( m_size.x * 0.5f );
-	loc->y = m_position.y + ( m_size.y * 0.5f );
+    Vec2 center;
+
+	center.x = m_position.x + ( m_size.x * 0.5f );
+	center.y = m_position.y + ( m_size.y * 0.5f );
+
+    return center;
+}
+
+// ----------------------------------------------------------------------//
+
+void CRect2D::SetVertexColor( Rgba color )
+{
+    m_vertexColor = color;
+}
+
+// ----------------------------------------------------------------------//
+
+Rgba CRect2D::GetVertexColor() const
+{
+    return m_vertexColor;
 }
 
 // ----------------------------------------------------------------------//
@@ -359,7 +375,7 @@ void CRect2D::Update(f32 dt, void* userData)
 void CRect2D::Render( CDriver* driver )
 {
     ImGui::GetWindowDrawList()->PushTextureID( m_material );
-    ImGui::GetWindowDrawList()->AddRect(ImVec2(m_position.x, m_position.y), ImVec2(m_size.x, m_size.y), IM_COL32_BLACK);
+    ImGui::GetWindowDrawList()->AddRect( ImVec2( m_position.x, m_position.y ), ImVec2( m_size.x, m_size.y ), m_vertexColor.rgba );
     ImGui::GetWindowDrawList()->PopTextureID();
 }
 // ----------------------------------------------------------------------//

@@ -25,6 +25,7 @@
 */
 
 #include <sim_engine.h>
+#include <render/sim_material.h>
 #include <render/sim_render_texture.h>
 #include <render/scene/sim_camera.h>
 #include <render/sim_driver.h>
@@ -40,15 +41,13 @@ namespace rnr
 CDrawable::CDrawable()
 	: CRect2D()
 {
-	m_color     = col::Black;
+	m_color         = col::Black;
 
 	m_rendertexture = nullptr;
 	m_camera		= new CCamera();
 
-	// flip
-	m_texRect		= SIM_NEW CRect2D();
-	m_texRect->MoveTo(  1.0f,  1.0f );
-	m_texRect->Resize( -1.0f, -1.0f );
+    m_material      = SIM_NEW CMaterial( m_name );
+    m_effect        = nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -64,7 +63,7 @@ CDrawable::~CDrawable()
 {
 	SIM_SAFE_DELETE( m_camera );
 	SIM_SAFE_DELETE( m_rendertexture );
-	SIM_SAFE_DELETE( m_texRect );
+    SIM_SAFE_DELETE( m_material );
 }
 
 // ----------------------------------------------------------------------//
@@ -93,7 +92,7 @@ void CDrawable::Draw( CDriver *driver )
 
 	CRenderTexture* fb =
 	driver->BindRenderTexture(m_rendertexture);
-	driver->ClearColor( m_color);
+	driver->ClearColor( m_color );
 	engine->SetCamera( m_camera );
 
 	OnDraw.Emit( driver );
@@ -105,6 +104,9 @@ void CDrawable::Draw( CDriver *driver )
 // ----------------------------------------------------------------------//
 void CDrawable::Render( CDriver *driver )
 {
+    m_material->SetTexture( m_rendertexture, 0 );
+    m_material->SetEffect( m_effect );
+
 	CRect2D::Render( driver );
 }
 // ----------------------------------------------------------------------//

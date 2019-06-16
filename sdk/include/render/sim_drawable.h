@@ -30,7 +30,7 @@
 #include <core/sim_core.h>
 
 #include <render/sim_render.h>
-#include <render/sim_rect_2d.h>
+#include <render/sim_widget.h>
 
 namespace sim
 {
@@ -50,12 +50,13 @@ public:
 	CDrawable( const std::string& name );
 	virtual ~CDrawable();
 	// ------------------------------------------------------------------//
-	void							Draw( CDriver *driver );	
-	CRenderTexture*					GetTexture() { return m_rendertexture; }
+	void							Draw( CDriver *driver );
 	virtual void					Render(CDriver *driver);
 
     inline Vec4				        GetColor();
     inline void						SetColor(Vec4 ambient);
+
+    inline void                     SetEffect( CEffect* effect );
 	// ------------------------------------------------------------------//
 public: // Signals
 	// ------------------------------------------------------------------//
@@ -70,6 +71,7 @@ protected:
 	CCamera*						m_camera;
 
     Vec4                            m_color;
+    CEffect*                        m_effect;
 	// ------------------------------------------------------------------//
 };
 
@@ -78,9 +80,14 @@ inline Vec4 CDrawable::GetColor()
     return m_color;
 }
 
-inline void CDrawable::SetColor(Vec4 color)
+inline void CDrawable::SetColor( Vec4 color )
 {
     m_color = color;
+}
+
+inline void CDrawable::SetEffect( CEffect* effect )
+{
+    m_effect = effect;
 }
 // ----------------------------------------------------------------------//
 }; // namespace rnr

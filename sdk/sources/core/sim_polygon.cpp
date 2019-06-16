@@ -205,8 +205,8 @@ void CPolygon::Render( rnr::CDriver *driver, rnr::CMaterial *material )
 	vg.m_vboSize = nVerts;
 
 	vg.m_vertexSource->m_type			= CVertexSource::Type::LineStrip;
-	vg.m_vertexSource->m_vertexFormat	= CVertexSource::AttributeFormat::Position;
-	vg.m_vertexSource->m_vertexStride	= CVertexSource::AttributeStride::Position;
+	vg.m_vertexSource->m_vertexFormat	= CVertexSource::AttributeFormat::WorldPos;
+	vg.m_vertexSource->m_vertexStride	= CVertexSource::AttributeStride::WorldPos;
 	vg.m_vertexSource->m_vboSize		= nVerts;
 
 	s32 vtxSize		= Value(vg.m_vertexSource->m_vertexStride) / sizeof( f32 );

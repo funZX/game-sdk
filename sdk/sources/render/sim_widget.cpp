@@ -77,6 +77,8 @@ void CWidget::Update( f32 dt, void* userData )
 
 void CWidget::Render( CDriver *driver )
 {
+    CRect2D::Render( driver );
+
     ImGui::End();
     ImGui::EndFrame();
     ImGui::Render();
@@ -89,18 +91,31 @@ void CWidget::Render( CDriver *driver )
         const ImDrawVert* vtxBuffer = cmdList->VtxBuffer.Data;
         const ImDrawIdx* idxBuffer  = cmdList->IdxBuffer.Data;
 
+        CVertexSource vs;
+        vs.m_type = CVertexSource::Type::Triangle;
+        vs.m_vertexFormat = CVertexSource::AttributeFormat::ScreenPos | CVertexSource::AttributeFormat::TexCoord_0 | CVertexSource::AttributeFormat::Color;
+        vs.m_vertexStride = CVertexSource::AttributeStride::ScreenPos + CVertexSource::AttributeStride::TexCoord_0 + CVertexSource::AttributeStride::Color;
+
+        vs.m_vboSize = imData->TotalVtxCount * Value(vs.m_vertexStride);
+
+        CVertexGroup vg;
+        vg.SetVertexSource(&vs);
+
         for ( s32 i = 0; i < cmdList->CmdBuffer.Size; i++ )
         {
             const ImDrawCmd* pcmd = &cmdList->CmdBuffer[ i ];
 
-            /*
-            CRect2D r;
-            r.Bound((f32)x, (f32)y, (f32)m_width, (f32)m_height);
-            r.SetMaterial( m_material );
+            vs.m_vboData = (f32*)(vtxBuffer + pcmd->VtxOffset);
+            vg.m_vboData = (u16*)(idxBuffer + pcmd->IdxOffset);
 
-            r.Render(driver, &m_texRect);
-            */
+            vg.m_vboSize = pcmd->ElemCount;
+
+            vg.SetMaterial((CMaterial*)pcmd->TextureId);
+            driver->Render( &vg );
         }
+        
+        vs.m_vboData = nullptr;
+        vg.m_vboData = nullptr;
     }
 }
 

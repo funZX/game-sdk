@@ -116,66 +116,66 @@ void CEngine::Shutdown()
 // ----------------------------------------------------------------------//
 void CEngine::InitEffect()
 {
-	static const s8* vsource =
-		"attribute vec4 a_PositionL;"
-		"attribute vec2 a_TexCoord_0;"
+    static const s8* vsource =
+        "attribute vec4 a_PositionL;"
+        "attribute vec2 a_TexCoord_0;"
+        "attribute vec4 a_Color;"
 
-		"uniform mat4 u_Matrix_WorldViewProjection;"
-		"uniform vec4 u_Color;"
-		"uniform vec4 u_Material_Diffuse;"
+        "uniform mat4 u_Matrix_WorldViewProjection;"
+        "uniform vec4 u_Color;"
 
-		"varying vec2 v_Tex0;"
-		"varying vec4 v_Color;"
+        "varying vec2 v_Tex0;"
+        "varying vec4 v_Color;"
 
-		"void main()"
-		"{"
-		"	v_Tex0			= a_TexCoord_0;"
-		"	v_Color			= u_Color * u_Material_Diffuse;"
+        "void main()"
+        "{"
+        "	v_Tex0			= a_TexCoord_0;"
+        "	v_Color			= u_Color * a_Color;"
 
-		"	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL;"
-		"}";
+        "	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL;"
+        "}";
 
 	// ----------------------------------------------------------------------//
 
-	static const s8* psource =
-		"precision mediump float;"
+    static const s8* psource =
+        "precision mediump float;"
 
-		"uniform sampler2D	u_Sampler_Tex_0;"
+        "uniform sampler2D	u_Sampler_Tex_0;"
 
-		"varying vec2 v_Tex0;"
-		"varying vec4 v_Color;"
+        "varying vec2 v_Tex0;"
+        "varying vec4 v_Color;"
 
-		"void main()"
-		"{"
-		"	vec4 tex = texture2D( u_Sampler_Tex_0, v_Tex0 );"
-		"	vec4 col = tex * v_Color;"
+        "void main()"
+        "{"
+        "	vec4 tex = texture2D( u_Sampler_Tex_0, v_Tex0 );"
+        "	vec4 col = tex * v_Color;"
 
-		"	gl_FragColor = col;"
-		"}";
+        "	gl_FragColor = col;"
+        "}";
 
-	static const s8* attributes[] =
-	{
-		"a_PositionL",
-		"a_TexCoord_0"
-	};
+    static const s8* attributes[] =
+    {
+        "a_PositionL",
+        "a_TexCoord_0",
+        "a_Color",
+    };
 
-	u32 nAttrib = 2;
-	m_effect->InitAttributes(nAttrib);
-	for (u32 k = 0; k < nAttrib; k++)
-		m_effect->AddAttribute(attributes[k], k);
+    u32 nAttrib = 3;
+    m_effect->InitAttributes(nAttrib);
+    for (u32 k = 0; k < nAttrib; k++)
+        m_effect->AddAttribute(attributes[k], k);
 
-	static const s8* uniforms[] =
-	{
-		"u_Matrix_WorldViewProjection",
-		"u_Color",
-		"u_Material_Diffuse",
-		"u_Sampler_Tex_0"
-	};
+    static const s8* uniforms[] =
+    {
+        "u_Matrix_WorldViewProjection",
+        "u_Color",
+        "u_Sampler_Tex_0"
+    };
 
-	u32 nUniform = 4;
-	m_effect->InitUniforms(nUniform);
-	for (u32 k = 0; k < nUniform; k++)
-		m_effect->AddUniform(uniforms[k], k);
+    u32 nUniform = 2;
+    m_effect->InitUniforms(nUniform);
+    for (u32 k = 0; k < nUniform; k++)
+        m_effect->AddUniform(uniforms[k], k);
 
 	m_effect->Load( vsource, psource );
 
@@ -196,6 +196,8 @@ void CEngine::InitEffect()
 void CEngine::InitMaterial()
 {
 	m_material->SetEffect(m_effect);
+
+    m_canvas->SetMaterial(m_material);
 }
 
 // ----------------------------------------------------------------------//
