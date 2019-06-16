@@ -1,4 +1,4 @@
-attribute vec4		a_PositionL;
+attribute vec4		a_WorldPosL;
 attribute vec2		a_TexCoord_0;
 attribute vec3		a_NormalL;
 attribute vec3		a_TangentL;
@@ -22,7 +22,7 @@ void main(void)
 
 	mat3 eyeToTangent = mat3( t.x, b.x, n.x, t.y, b.y, n.y, t.z, b.z, n.z);
 	
-	vec4 pos	= a_PositionL * u_Matrix_WorldViewProjection;
+	vec4 pos	= a_WorldPosL * u_Matrix_WorldViewProjection;
 
 	v_eyeDir	= pos.xyz;
 	v_eyeDir	= normalize( v_eyeDir * eyeToTangent ) * k_Parallax_Scale;
@@ -31,5 +31,5 @@ void main(void)
 	
 	v_Tex0		= a_TexCoord_0;
 
-	gl_Position = u_Matrix_WorldViewProjection * a_PositionL;
+	gl_Position = u_Matrix_WorldViewProjection * a_WorldPosL;
 }

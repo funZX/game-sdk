@@ -167,7 +167,7 @@ void CSkyBox::Render( CDriver *driver )
 void CSkyBox::InitEffect()
 {
 	const char* vsource =
-		"attribute vec4 a_PositionL;"
+		"attribute vec4 a_WorldPosL;"
 
 		"uniform mat4 u_Matrix_WorldViewProjection;"
 		"uniform vec4 u_Material_Diffuse;"
@@ -182,10 +182,10 @@ void CSkyBox::InitEffect()
 		"{"
 		"	vec4 p;"
 
-		"	p.xyz			= a_PositionL.xyz + u_Eye_Position.xyz; "
+		"	p.xyz			= a_WorldPosL.xyz + u_Eye_Position.xyz; "
 		"	p.w				= 1.0;"
 
-		"	v_EyeDirL		= -a_PositionL.xyz;"
+		"	v_EyeDirL		= -a_WorldPosL.xyz;"
 		"	v_Color			= u_Color * u_Material_Diffuse;"
 
 		"	gl_Position		= u_Matrix_WorldViewProjection * p;"
@@ -211,7 +211,7 @@ void CSkyBox::InitEffect()
 
 	static const char* attributes[] =
 	{
-		"a_PositionL"
+		"a_WorldPosL"
 	};
 
 	m_effect = SIM_NEW CEffect( m_name );

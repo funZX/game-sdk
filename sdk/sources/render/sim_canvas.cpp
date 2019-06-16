@@ -190,7 +190,7 @@ void CCanvas::Render( CDriver* driver )
 
 void CCanvas::DrawString(CDriver* driver, s32 x, s32 y, const std::string& text, Vec4 color)
 {
-    ImGui::Text(text.c_str());
+    //ImGui::Text(text.c_str());
 }
 
 // ----------------------------------------------------------------------//

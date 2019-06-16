@@ -1,4 +1,4 @@
-attribute vec4 a_PositionL;
+attribute vec4 a_WorldPosL;
 attribute vec2 a_TexCoord_0;
 
 uniform mat4 u_Matrix_WorldViewProjection;
@@ -15,5 +15,5 @@ void main()
 	v_Color			= u_Material_Diffuse * u_Color;
 
 	gl_PointSize 	= u_Point_Size;
-	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL;
+	gl_Position		= u_Matrix_WorldViewProjection * a_WorldPosL;
 }

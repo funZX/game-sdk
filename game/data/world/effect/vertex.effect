@@ -25,7 +25,7 @@
 	],
 	
 	"attributes":[
-		"a_PositionL",
+		"a_WorldPosL",
 		"a_Color"
 	],
 	

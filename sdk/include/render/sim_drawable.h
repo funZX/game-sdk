@@ -50,10 +50,10 @@ public:
 	virtual ~CDrawable();
 	// ------------------------------------------------------------------//
 	void							Draw( CDriver *driver );
-	virtual void					Render(CDriver *driver);
+	virtual void					Render( CDriver *driver );
 
     inline Vec4				        GetColor();
-    inline void						SetColor(Vec4 ambient);
+    inline void						SetColor( Vec4 ambient );
 
     inline void                     SetEffect( CEffect* effect );
 	// ------------------------------------------------------------------//

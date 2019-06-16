@@ -330,7 +330,7 @@ protected:
 
 	Mat4Stack*				    m_activeStack;
 
-	Mat4Stack				    m_textureStack[k_Texture_Channels_Count];
+	Mat4Stack				    m_textureStack[ k_Texture_Channels_Count ];
 	TextureChannel				m_textureChannel;
 
 	Mat4					    m_worldInverseMatrix;

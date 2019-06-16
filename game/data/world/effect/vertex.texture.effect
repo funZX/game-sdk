@@ -27,7 +27,7 @@
 	],
 	
 	"attributes":[
-		"a_PositionL",
+		"a_WorldPosL",
 		"a_TexCoord_0",
 		"a_Color"
 	],

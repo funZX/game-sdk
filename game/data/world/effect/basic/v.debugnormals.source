@@ -1,4 +1,4 @@
-attribute vec4 a_PositionL;
+attribute vec4 a_WorldPosL;
 attribute vec4 a_NormalL;
 
 uniform mat4 u_Matrix_WorldViewProjection;
@@ -11,5 +11,5 @@ void main()
 	v_Color			= u_Color;
 	
 	gl_PointSize 	= 2.0;
-	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL + a_NormalL * 0.1;
+	gl_Position		= u_Matrix_WorldViewProjection * a_WorldPosL + a_NormalL * 0.1;
 }

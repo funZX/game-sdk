@@ -117,7 +117,7 @@ void CEngine::Shutdown()
 void CEngine::InitEffect()
 {
     static const s8* vsource =
-        "attribute vec4 a_PositionL;"
+        "attribute vec4 a_WorldPosL;"
         "attribute vec2 a_TexCoord_0;"
 
         "uniform mat4 u_Matrix_WorldViewProjection;"
@@ -131,7 +131,7 @@ void CEngine::InitEffect()
         "	v_Tex0			= a_TexCoord_0;"
         "	v_Color			= u_Color;"
 
-        "	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL;"
+        "	gl_Position		= u_Matrix_WorldViewProjection * a_WorldPosL;"
         "}";
 
 	// ----------------------------------------------------------------------//
@@ -154,7 +154,7 @@ void CEngine::InitEffect()
 
     static const s8* attributes[] =
     {
-        "a_PositionL",
+        "a_WorldPosL",
         "a_TexCoord_0",
     };
 
@@ -347,7 +347,7 @@ void CEngine::Update( f32 dt, void *userData )
 {
 	m_driver->Tick( dt );
 
-	m_canvas->Update( dt, userData );
+	//m_canvas->Update( dt, userData );
 	m_sm->Update( dt, userData );
 }
 
@@ -371,7 +371,7 @@ void CEngine::Render( CDriver *driver )
         ShowStats(m_driver);
 #endif
         m_sm->Render2D(driver);
-        m_canvas->Render( driver );
+        //m_canvas->Render( driver );
 	}
 	Off2D();
 }

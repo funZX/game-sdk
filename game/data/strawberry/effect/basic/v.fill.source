@@ -1,4 +1,4 @@
-attribute vec4 a_PositionL;
+attribute vec4 a_WorldPosL;
 attribute vec2 a_TexCoord_0;
 attribute vec4 a_Color;
 
@@ -35,5 +35,5 @@ void main()
 	v_Tex0 = a_TexCoord_0;
 #endif
 	v_Color 		= col;	
-	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL;
+	gl_Position		= u_Matrix_WorldViewProjection * a_WorldPosL;
 }	
