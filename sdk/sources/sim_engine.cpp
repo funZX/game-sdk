@@ -360,7 +360,7 @@ void CEngine::Render( CDriver *driver )
 	// 3D rendering
 	On3D();
 	{
-		m_sm->Render3D( driver );
+		m_sm->Render( driver );
 	}
 	Off3D();
 
@@ -370,7 +370,6 @@ void CEngine::Render( CDriver *driver )
 #if SIM_DEBUG
         ShowStats(m_driver);
 #endif
-        m_sm->Render2D(driver);
         m_canvas->Render( driver );
 	}
 	Off2D();

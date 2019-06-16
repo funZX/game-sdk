@@ -99,16 +99,10 @@ void CStateMachine::Update( f32 dt, void *userData )
 
 // ----------------------------------------------------------------------//
 
-void CStateMachine::Render2D( rnr::CDriver *driver )
+void CStateMachine::Render( rnr::CDriver *driver )
 {
-	m_currState->Render2D( driver );
-}
-
-// ----------------------------------------------------------------------//
-
-void CStateMachine::Render3D( rnr::CDriver *driver )
-{
-	m_currState->Render3D( driver );
+    m_currState->OnGui( driver );
+	m_currState->Render( driver );
 }
 
 // ----------------------------------------------------------------------//

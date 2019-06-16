@@ -100,10 +100,11 @@ void CCanvas::ClearEvents()
 
 void CCanvas::Update(f32 dt, void* userData)
 {
-    m_imContext->IO.DisplaySize = ImVec2( m_size.x, m_size.y );
+    m_imContext->IO.DisplaySize = { m_size.x, m_size.y };
     m_imContext->IO.DeltaTime = dt;
 
     ImGui::SetCurrentContext( m_imContext );
+    ImGui::SetNextWindowSize( { m_size.x, m_size.y } );
     ImGui::NewFrame();
     ImGui::Begin( m_name.c_str() );
 

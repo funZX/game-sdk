@@ -66,27 +66,9 @@ void CState_Game::Update( f32 dt, void *userData )
 {
 	O.world->Update( dt, userData );
 }
+
 // ----------------------------------------------------------------------//
-void CState_Game::Render2D( CDriver *driver )
-{
-	CEffect* fill = O.effect.color;
-
-	CEffect::TTechnique techique;
-    fill->CopyTechnique(&techique);
-    fill->m_technique.depthtest = false;
-
-    m_drawable->SetEffect(fill);
-	m_drawable->Render(driver);
-
-    fill->SetTechnique(&techique);
-
-	O.canvas->DrawString(driver,
-		10,
-		(s32)(O.canvas->Height() - 2 * O.font.engine->GetHeight()),
-		"The quick brown fox jumps over the lazy dog! :;.,'\"(?)+=*/=1234567890", col::Magenta);
-}
-// ----------------------------------------------------------------------//
-void CState_Game::Render3D( CDriver *driver )
+void CState_Game::Render( CDriver *driver )
 {
 	O.world->Render( driver );
 	m_drawable->Draw(driver);
@@ -98,5 +80,35 @@ void CState_Game::DrawToWidget(CDriver* driver, sigcxx::SLOT slot)
     CDebug d;
 
     d.Render( driver );
+}
+// ----------------------------------------------------------------------//
+void CState_Game::OnEnter()
+{
+
+}
+// ----------------------------------------------------------------------//
+void CState_Game::OnGui(CDriver* driver)
+{
+    CEffect* fill = O.effect.color;
+
+    CEffect::TTechnique techique;
+    fill->CopyTechnique(&techique);
+    fill->m_technique.depthtest = false;
+
+    m_drawable->SetEffect(fill);
+    m_drawable->Render(driver);
+
+    fill->SetTechnique(&techique);
+
+    O.canvas->DrawString(driver,
+        10,
+        (s32)(O.canvas->Height() - 2 * O.font.engine->GetHeight()),
+        "The quick brown fox jumps over the lazy dog! :;.,'\"(?)+=*/=1234567890", col::Magenta);
+}
+// ----------------------------------------------------------------------//
+
+void CState_Game::OnExit()
+{
+
 }
 // ----------------------------------------------------------------------//
