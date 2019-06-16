@@ -347,7 +347,7 @@ void CEngine::Update( f32 dt, void *userData )
 {
 	m_driver->Tick( dt );
 
-	//m_canvas->Update( dt, userData );
+	m_canvas->Update( dt, userData );
 	m_sm->Update( dt, userData );
 }
 
@@ -371,7 +371,7 @@ void CEngine::Render( CDriver *driver )
         ShowStats(m_driver);
 #endif
         m_sm->Render2D(driver);
-        //m_canvas->Render( driver );
+        m_canvas->Render( driver );
 	}
 	Off2D();
 }
