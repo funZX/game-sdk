@@ -17,6 +17,7 @@ EXE_7Z						=	os.path.abspath(TOOL_DIR + '/7z.exe')
 EXE_PVRTEX					=   os.path.abspath(TOOL_DIR + '/PVRTexToolCLI.exe')
 EXE_SQ  					=	os.path.abspath(TOOL_DIR + '/sq.exe')
 EXE_MIP2SIM					= 	os.path.abspath(TOOL_DIR + '/mip2sim.exe')
+EXE_GLSL_OPTIMIZER		    = 	os.path.abspath(TOOL_DIR + '/glsl-optimizer.exe')
 
 EXE_MCPP                    = 	os.path.abspath(TOOL_DIR + '/mcpp.exe')
 

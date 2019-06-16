@@ -81,9 +81,11 @@ def main(dirlist):
                     
                     command = config.EXE_MCPP + DV
                     utils.spawnProcess(command)
+                    utils.spawnProcess(config.EXE_GLSL_OPTIMIZER + ' -v '  + utils.getWinPath(out_vsource) + ' ' + utils.getWinPath(out_vsource))
 
                     command = config.EXE_MCPP + DP
                     utils.spawnProcess(command)
+                    utils.spawnProcess(config.EXE_GLSL_OPTIMIZER + ' -p '  + utils.getWinPath(out_psource) + ' ' + utils.getWinPath(out_psource))
 
                     effect['vsource'] = os.path.dirname(effect['vsource']) +'/'+out_vsource_name
                     effect['psource'] = os.path.dirname(effect['psource']) +'/'+out_psource_name
