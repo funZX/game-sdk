@@ -123,10 +123,9 @@ void CFontAtlas::InitEffect()
 	const s8* vsource =
 		"attribute vec4 a_PositionL;"
 		"attribute vec2 a_TexCoord_0;"
+        "attribute vec4 a_Color;"
 
 		"uniform mat4 u_Matrix_WorldViewProjection;"
-		"uniform vec4 u_Material_Diffuse;"
-		"uniform vec4 u_Color;"
 
 		"varying vec2 v_Tex0;"
 		"varying vec4 v_Color;"
@@ -134,7 +133,7 @@ void CFontAtlas::InitEffect()
 		"void main()"
 		"{"
 		"	v_Tex0			= a_TexCoord_0;"
-		"	v_Color			= u_Color * u_Material_Diffuse;"
+		"	v_Color			= a_Color;"
 
 		"	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL;"
 		"}";

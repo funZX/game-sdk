@@ -24,18 +24,10 @@ CWorld::CWorld()
 
 	m_isEnabled			= true;
 	m_isVisible			= true;
-
-#if SIM_DEBUG
-	m_debug				= SIM_NEW CDebug();
-#endif
 }
 
 CWorld::~CWorld()
 {
-#if SIM_DEBUG
-	SIM_SAFE_DELETE( m_debug );
-#endif
-
 	SIM_SAFE_DELETE( m_scene );
 	SIM_SAFE_DELETE( m_physic );
 	SIM_SAFE_DELETE( m_fs );
@@ -62,18 +54,8 @@ void CWorld::Render( CDriver *driver )
 	skybox->Render( driver );
 
 	m_scene->Render( driver );
-
-#if SIM_DEBUG
-	m_debug->Render( driver );
-#endif
 }
 
-void CWorld::Render2D(CDriver *driver)
-{
-#if SIM_DEBUG
-	m_debug->Render2D(driver);
-#endif
-}
 
 void CWorld::AddActor( CActor* actor )
 {

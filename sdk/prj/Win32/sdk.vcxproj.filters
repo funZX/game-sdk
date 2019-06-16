@@ -236,9 +236,6 @@
     <ClCompile Include="..\..\sources\render\sim_font.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sources\render\sim_widget.cpp">
-      <Filter>Source Files\render</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\sources\render\sim_font_atlas.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
@@ -425,9 +422,6 @@
       <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\render\sim_font.h">
-      <Filter>Header Files\render</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\render\sim_widget.h">
       <Filter>Header Files\render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\render\sim_font_atlas.h">

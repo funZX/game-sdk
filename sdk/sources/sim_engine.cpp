@@ -119,7 +119,6 @@ void CEngine::InitEffect()
     static const s8* vsource =
         "attribute vec4 a_PositionL;"
         "attribute vec2 a_TexCoord_0;"
-        "attribute vec4 a_Color;"
 
         "uniform mat4 u_Matrix_WorldViewProjection;"
         "uniform vec4 u_Color;"
@@ -130,7 +129,7 @@ void CEngine::InitEffect()
         "void main()"
         "{"
         "	v_Tex0			= a_TexCoord_0;"
-        "	v_Color			= u_Color * a_Color;"
+        "	v_Color			= u_Color;"
 
         "	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL;"
         "}";
@@ -157,10 +156,9 @@ void CEngine::InitEffect()
     {
         "a_PositionL",
         "a_TexCoord_0",
-        "a_Color",
     };
 
-    u32 nAttrib = 3;
+    u32 nAttrib = 2;
     m_effect->InitAttributes(nAttrib);
     for (u32 k = 0; k < nAttrib; k++)
         m_effect->AddAttribute(attributes[k], k);
@@ -234,11 +232,11 @@ void CEngine::InitOpenAL()
 
 // ----------------------------------------------------------------------//
 
-void CEngine::Resize(int width, int height)
+void CEngine::Resize( u32 width, u32 height )
 {
-    m_driver->SetScreenSize(width, height);
+    m_driver->SetScreenSize( width, height );
 
-    m_canvas->Resize((f32)width, (f32)height);
+    m_canvas->Resize( (f32)width, (f32)height );
 
     m_camera->SetFieldOfView(60.0f);
     m_camera->SetNearPlane(1.0f);

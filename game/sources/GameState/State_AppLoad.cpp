@@ -39,7 +39,7 @@ void CState_AppLoad::Update( f32 dt, void *userData )
 
 	else if (m_fsCrt == m_fsstrawberry && !m_fsCrt->LoadNext())
 		m_fsCrt = NULL;
-
+    //return;
 	if (m_fsCrt == NULL)
 		O.game->GoNext(SIM_NEW CState_MenuMain());
 }

@@ -29,7 +29,7 @@ void CState_MenuMain::Update( f32 dt, void *userData )
 // ----------------------------------------------------------------------//
 void CState_MenuMain::Render2D( CDriver *driver )
 {
-	O.world->Render2D(driver);
+
 }
 // ----------------------------------------------------------------------//
 void CState_MenuMain::Render3D( CDriver *driver )

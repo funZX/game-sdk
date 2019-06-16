@@ -47,7 +47,7 @@ class CEffect;
 class CFontAtlas : public IEngineItem
 {
 public:
-    friend class CWidget;
+    friend class CCanvas;
 
 	CFontAtlas();
 	CFontAtlas( const std::string &name );

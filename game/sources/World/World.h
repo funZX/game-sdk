@@ -13,7 +13,6 @@ public:
 	
 	void						Update( f32 dt, void *userData );
 	void						Render( CDriver *driver );
-	void						Render2D(CDriver *driver);
 
 	void						SetEnabled(bool enabled) {m_isEnabled = enabled;}
 	bool						IsEnabled() {return m_isEnabled;}
@@ -33,10 +32,6 @@ protected:
 	bool						m_isVisible;
 
 	CScene*						m_scene;
-
-#if SIM_DEBUG
-	CDebug*						m_debug;
-#endif
 };
 
 #endif // __WORLD_H

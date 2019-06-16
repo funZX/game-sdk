@@ -134,10 +134,11 @@ CDriver::CDriver()
 	m_crtVertexSource		= nullptr;
 	m_crtRenderTexture		= nullptr;
 
-	m_viewportWidth			= 0;
-	m_viewportHeight		= 0;
 	m_screenWidth			= 0;
 	m_screenHeight			= 0;
+
+    m_viewport              = { 0, 0, 0, 0 };
+    m_scissor               = { 0, 0, 0, 0 };
 
 	m_drawCallCount			= 0;
 	m_vertexCount			= 0;
@@ -292,14 +293,14 @@ CRenderTexture* CDriver::BindRenderTexture( CRenderTexture* texture )
 		glBindFramebuffer( GL_FRAMEBUFFER, texture->GetBufferID() );
 		SIM_CHECK_OPENGL();
 
-		SetViewport( texture->GetWidth(), texture->GetHeight() );
+		SetViewport( 0, 0, texture->GetWidth(), texture->GetHeight() );
 	}
 	else
 	{
 		glBindFramebuffer( GL_FRAMEBUFFER, 0 );
 		SIM_CHECK_OPENGL();
 
-		SetViewport( m_screenWidth, m_screenHeight );
+		SetViewport( 0, 0, m_screenWidth, m_screenHeight );
 	}
 
 
@@ -601,8 +602,6 @@ void CDriver::ClearColor( Vec4 color )
 
 void CDriver::SetScreenSize( u32 width, u32 height )
 {
-	// Should be called only once.
-
 	m_screenWidth = width;
 	m_screenHeight = height;
 
@@ -611,15 +610,26 @@ void CDriver::SetScreenSize( u32 width, u32 height )
 
 // ----------------------------------------------------------------------//
 
-void CDriver::SetViewport( u32 width, u32 height )
+void CDriver::SetViewport(u32 x, u32 y, u32 w, u32 h)
 {
-	if (width != m_viewportWidth || height != m_viewportHeight)
-	{
-		glViewport(0, 0, width, height);
+    if ( x != m_viewport.x || y != m_viewport.y || 
+         w != m_viewport.w || h != m_viewport.h )
+    {
+        m_viewport = { x, y, w, h };
+        glViewport( x, y, w, h );
+    }
+}
 
-		m_viewportWidth = width;
-		m_viewportHeight = height;
-	}
+// ----------------------------------------------------------------------//
+
+void CDriver::SetScissor(u32 x, u32 y, u32 w, u32 h)
+{
+    if (x != m_scissor.x || y != m_scissor.y ||
+        w != m_scissor.w || h != m_scissor.h)
+    {
+        m_scissor = { x, y, w, h };
+        glScissor( x, y, w, h );
+    }
 }
 
 // ----------------------------------------------------------------------//
@@ -833,11 +843,10 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 	SIM_ASSERT( vertexGroup->GetMaterial() != nullptr );
 	SIM_ASSERT( vertexGroup->GetMaterial()->GetEffect() != nullptr );
 
-	CEffect* effect				= vertexGroup->GetMaterial()->GetEffect();
-	CMaterial* material			= vertexGroup->GetMaterial();
-	CVertexSource* vertexSource = vertexGroup->GetVertexSource();
-
-
+    CVertexSource* vertexSource = vertexGroup->GetVertexSource();
+    CMaterial* material         = vertexGroup->GetMaterial();
+    CEffect* effect             = material->GetEffect();
+    
 	static Primitive primitives[] = {
 		Primitive::Lines,
 		Primitive::LineStrip,

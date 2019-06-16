@@ -28,9 +28,8 @@
 #define __SIM_DRAWABLE_H
 
 #include <core/sim_core.h>
-
 #include <render/sim_render.h>
-#include <render/sim_widget.h>
+#include <render/sim_rect_2d.h>
 
 namespace sim
 {

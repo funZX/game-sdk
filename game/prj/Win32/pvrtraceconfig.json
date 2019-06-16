@@ -1,6 +1,6 @@
 {
 	"*": {
-		"Enabled": false,
+		"Enabled": true,
 		"Tracing": {
 			"OutputFilename": "D:/Work/game-sdk/%pname.pvrtrace",
 			"RecordData": true,
