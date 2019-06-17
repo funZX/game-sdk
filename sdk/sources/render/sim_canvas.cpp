@@ -143,10 +143,7 @@ void CCanvas::Render( CDriver* driver )
         vs.m_vertexStride = CVertexSource::AttributeStride::ScreenPos + CVertexSource::AttributeStride::TexCoord_0 + CVertexSource::AttributeStride::Color;
 
         vs.m_vboData = (f32*)vtxBuffer;
-        vs.m_vboSize = imData->TotalVtxCount;
-
-        CVertexGroup vg;
-        vg.m_vboData = (u16*)idxBuffer;
+        vs.m_vboSize = cmdList->VtxBuffer.Size;
 
         for (s32 i = 0; i < cmdList->CmdBuffer.Size; i++)
         {
@@ -161,21 +158,26 @@ void CCanvas::Render( CDriver* driver )
 
             if (clipRect.x < fbWidth && clipRect.y < fbHeight && clipRect.z >= 0.0f && clipRect.w >= 0.0f)
             {
-                u32 x = (u32)zpl_floor(clipRect.x);
-                u32 y = (u32)zpl_floor(fbHeight - clipRect.w);
-                u32 w = (u32)zpl_floor(clipRect.z - clipRect.x);
-                u32 h = (u32)zpl_floor(clipRect.w - clipRect.y);
+                CVertexGroup vg;
 
+                vg.m_vboData = (u16*)idxBuffer;
                 vg.m_vboSize = pcmd->ElemCount;
 
                 vg.SetMaterial((CMaterial*)pcmd->TextureId);
                 vg.SetVertexSource(&vs);
+
+                u32 x = (u32)zpl_floor(clipRect.x);
+                u32 y = (u32)zpl_floor(fbHeight - clipRect.w);
+                u32 w = (u32)zpl_floor(clipRect.z - clipRect.x);
+                u32 h = (u32)zpl_floor(clipRect.w - clipRect.y);
 
                 driver->SetScissor(x, y, w, h);
                 driver->Render( &vg );
 
                 vg.m_vboData = nullptr;
             }
+
+            idxBuffer += pcmd->ElemCount;
         }
 
         vs.m_vboData = nullptr;

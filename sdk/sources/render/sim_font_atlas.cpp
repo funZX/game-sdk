@@ -124,7 +124,7 @@ void CFontAtlas::InitEffect()
 		"attribute vec2 a_TexCoord_0;"
         "attribute vec4 a_Color;"
 
-		"uniform mat4 u_Matrix_WorldViewProjection;"
+		"uniform mat4 u_Matrix_Projection;"
         "uniform vec4 u_Material_Diffuse;"
 		"varying vec2 v_Tex0;"
 		"varying vec4 v_Color;"
@@ -150,8 +150,7 @@ void CFontAtlas::InitEffect()
 		"void main()"
 		"{"
 		"	vec4 tex = texture2D( u_Sampler_Tex_0, v_Tex0 );"
-		"	vec4 col = v_Color;"
-		//"	col.a	 = tex.a;"
+		"	vec4 col = mix( v_Color, tex, 0.3 );"
 
 		"	gl_FragColor = col;"
 		"}";
