@@ -539,8 +539,8 @@ void CEngine::OnGui( CCanvas* canvas, sigcxx::SLOT slot )
 
     //if (ImGui::Begin("engine.Stats"))
     //{
-    //    ImGui::Text( "D: %d V: %d", m_drawCount, m_vertexCount );
-    //    ImGui::Text( "FPS: %.1f", m_fps );
+    //    ImGui::Text("D: %d V: %d", m_drawCount, m_vertexCount);
+    //    ImGui::Text("FPS: %.1f", m_fps);
     //}
     //ImGui::End();
 }
