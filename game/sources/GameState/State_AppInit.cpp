@@ -20,7 +20,7 @@ CState_AppInit::~CState_AppInit()
 // ----------------------------------------------------------------------//
 void CState_AppInit::Update( f32 dt, void *userData )
 {
-	O.game->GoNext(SIM_NEW CState_AppLoad());
+	//O.game->GoNext(SIM_NEW CState_AppLoad());
 }
 // ----------------------------------------------------------------------//
 void CState_AppInit::Render( CDriver *driver )

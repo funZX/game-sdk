@@ -67,7 +67,6 @@ void CCanvas::Resize( f32 w, f32 h )
 {
 	Bound( 0, 0, w, h );
     ImGui::GetIO().DisplaySize = { m_size.x, m_size.y };
-
 }
 
 // ----------------------------------------------------------------------//

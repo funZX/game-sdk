@@ -120,21 +120,20 @@ void CFontAtlas::Create()
 void CFontAtlas::InitEffect()
 {
 	const s8* vsource =
-		"attribute vec2 a_ScreenPosL;"
+		"attribute vec4 a_ScreenPosL;"
 		"attribute vec2 a_TexCoord_0;"
         "attribute vec4 a_Color;"
 
-		"uniform mat4 u_Matrix_WorldViewProjection;"
-        "uniform vec4 u_Material_Diffuse;"
+		"uniform mat4 u_Matrix_Projection;"
 		"varying vec2 v_Tex0;"
 		"varying vec4 v_Color;"
 
 		"void main()"
 		"{"
 		"	v_Tex0			= a_TexCoord_0;"
-		"	v_Color			= a_Color * u_Material_Diffuse;"
+		"	v_Color			= a_Color / 256.0;"
 
-		"	gl_Position		= u_Matrix_WorldViewProjection * vec4(a_ScreenPosL, 0.0, 1.0);"
+		"	gl_Position		= u_Matrix_Projection * a_ScreenPosL;"
 		"}";
 
 	// ----------------------------------------------------------------------//
@@ -150,7 +149,8 @@ void CFontAtlas::InitEffect()
 		"void main()"
 		"{"
 		"	vec4 tex = texture2D( u_Sampler_Tex_0, v_Tex0 );"
-		"	vec4 col = mix( v_Color, tex, 0.9 );"
+		"	vec4 col = v_Color;"
+        "	col.a    = tex.a;"
 
 		"	gl_FragColor = col;"
 		"}";
@@ -171,12 +171,11 @@ void CFontAtlas::InitEffect()
 
 	static const s8* uniforms[] =
 	{
-		"u_Matrix_WorldViewProjection",
+		"u_Matrix_Projection",
         "u_Sampler_Tex_0",
-        "u_Material_Diffuse"
 	};
 
-	u32 nUniform = 3;
+	u32 nUniform = 2;
 	m_effect->InitUniforms(nUniform);
 	for (u32 k = 0; k < nUniform; k++)
 		m_effect->AddUniform(uniforms[k], k);
@@ -188,7 +187,7 @@ void CFontAtlas::InitEffect()
 	m_effect->m_technique.cullface  = false;
 	m_effect->m_technique.alphatest = false;
 
-	m_effect->m_technique.blending = true;
+	m_effect->m_technique.blending  = true;
 	m_effect->m_technique.blendfunc.equation = GL_FUNC_ADD;
 	m_effect->m_technique.blendfunc.src = GL_SRC_ALPHA;
 	m_effect->m_technique.blendfunc.dst = GL_ONE_MINUS_SRC_ALPHA;

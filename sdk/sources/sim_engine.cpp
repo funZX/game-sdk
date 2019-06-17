@@ -201,7 +201,7 @@ void CEngine::InitFont()
 
     io::CMemStream ms(buffer, bufferSize);
 
-    m_fontAtlas->AddFont( "engine.Font", &ms, 10.0f );
+    m_fontAtlas->AddFont( "engine.Font", &ms, 14.0f );
     m_fontAtlas->Create();
 }
 

@@ -24,7 +24,7 @@ CState_MenuMain::~CState_MenuMain()
 void CState_MenuMain::Update( f32 dt, void *userData )
 {
 	O.world->Update( dt, userData );
-	//O.game->GoNext(SIM_NEW CState_Game());
+	O.game->GoNext(SIM_NEW CState_Game());
 }
 
 // ----------------------------------------------------------------------//
