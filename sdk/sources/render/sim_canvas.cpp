@@ -44,6 +44,7 @@ CCanvas::CCanvas( CFontAtlas* fontAtlas )
 
     ImGui::CreateContext( m_fontAtlas->m_imAtlas );
     ImGui::StyleColorsDark();
+
     ImGui::GetIO().BackendPlatformName = m_name.c_str();
 }
 
@@ -66,6 +67,7 @@ CCanvas::~CCanvas()
 void CCanvas::Resize( f32 w, f32 h )
 {
 	Bound( 0, 0, w, h );
+    ImGui::GetIO().DisplaySize = { Width(), Height() };
 }
 
 // ----------------------------------------------------------------------//
@@ -100,7 +102,6 @@ void CCanvas::ClearEvents()
 
 void CCanvas::Update(f32 dt, void* userData)
 {
-    ImGui::GetIO().DisplaySize = { m_size.x, m_size.y };
     ImGui::GetIO().DeltaTime = dt;
 
     ImGui::NewFrame();
@@ -120,11 +121,11 @@ void CCanvas::Render( CDriver* driver )
 
     ImDrawData* imData = ImGui::GetDrawData();
 
-    ImVec2 clipOff = imData->DisplayPos;
+    ImVec2 clipOff   = imData->DisplayPos;
     ImVec2 clipScale = imData->FramebufferScale;
 
-    s32 fbWidth     = (s32)(imData->DisplaySize.x * imData->FramebufferScale.x);
-    s32 fbHeight    = (s32)(imData->DisplaySize.y * imData->FramebufferScale.y);
+    s32 fbWidth      = (s32)(imData->DisplaySize.x * imData->FramebufferScale.x);
+    s32 fbHeight     = (s32)(imData->DisplaySize.y * imData->FramebufferScale.y);
 
     if ( fbWidth == 0 || fbHeight == 0)
         return;
@@ -185,3 +186,4 @@ void CCanvas::Render( CDriver* driver )
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim
+

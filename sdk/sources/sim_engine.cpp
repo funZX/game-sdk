@@ -204,7 +204,9 @@ void CEngine::InitFont()
 
     io::CMemStream ms(buffer, bufferSize);
 
+    m_fontAtlas->AddFont( "engine.Font", &ms, 14.0f );
     m_fontAtlas->AddFont( "engine.Font", &ms, 12.0f );
+    m_fontAtlas->AddFont( "engine.Font", &ms, 10.0f );
     m_fontAtlas->Create();
 }
 
@@ -537,12 +539,12 @@ void CEngine::OnGui( CCanvas* canvas, sigcxx::SLOT slot )
     prevDrawCount = drawCount;
     prevVrtxCount = vrtxCount;
 
-    //if (ImGui::Begin("engine.Stats"))
-    //{
-    //    ImGui::Text("D: %d V: %d", m_drawCount, m_vertexCount);
-    //    ImGui::Text("FPS: %.1f", m_fps);
-    //}
-    //ImGui::End();
+    if (ImGui::Begin("engine.Stats"))
+    {
+        ImGui::Text("D: %d V: %d", m_drawCount, m_vertexCount);
+        ImGui::Text("FPS: %.1f", m_fps);
+    }
+    ImGui::End();
 }
 
 // ----------------------------------------------------------------------//

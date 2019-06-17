@@ -51,8 +51,7 @@ CDriver::CDriver()
 	Mat4StackClear( &m_viewStack );
 	Mat4StackClear( &m_projectionStack );
 
-	for( s32 i = 0; i < k_Texture_Channels_Count; i++ )
-		Mat4StackClear( &m_textureStack[ i ] );
+	Mat4StackClear( &m_textureStack );
 
 	for( s32 i = 0; i < k_Animation_Bones_Max; i++ )
 		zpl_mat4_identity( &m_boneArrayMatrix[ i ] );
@@ -86,8 +85,8 @@ CDriver::CDriver()
     SIM_MEMSET( m_vertexAttributeInfo, 0, sizeof( m_vertexAttributeInfo ) );
 	SIM_MEMSET( m_lightParameters, 0, sizeof( m_lightParameters ) );
 
+    m_textureChannel        = TextureChannel::Texture_0;
 	m_matrixMode			= MatrixMode::World;
-	m_textureChannel        = TextureChannel::Texture_0;
 	m_lightChannel          = LightChannel::Light_0;
 	m_cullingMode           = CullingMode::CW;
 
@@ -262,21 +261,18 @@ void  CDriver::SetDepthRange( f32 start, f32 end )
 
 // ----------------------------------------------------------------------//
 
-u32  CDriver::BindTexture( u32 tex )
+u32  CDriver::BindTexture( TextureTarget target, u32 tex )
 {
-	u32 old = 0;
+	u32 old = m_textureBind[ Value(m_textureChannel) ];
 
-	auto texChannel = Value(m_textureChannel);
-
-	if( m_textureBind[texChannel] != tex )
+	if( m_textureBind[Value(m_textureChannel)] != tex )
 	{
-		glBindTexture( GL_TEXTURE_2D, tex );
-
-		old = m_textureBind[texChannel];
-		m_textureBind[texChannel] = tex;
+		glBindTexture( Value(target), tex );
 
 		SIM_CHECK_OPENGL();
-	}
+
+        m_textureBind[Value(m_textureChannel)] = tex;
+    }
 
 	return old;
 }
@@ -327,20 +323,20 @@ void CDriver::ComputeNormalMatrix()
 
 // ----------------------------------------------------------------------//
 
-CDriver::TextureChannel CDriver::SetTextureChannel(TextureChannel texChannel)
+CDriver::TextureChannel CDriver::SetTextureChannel( TextureChannel texChannel )
 {
-	TextureChannel old = m_textureChannel;
+    TextureChannel old = m_textureChannel;
 
-	if(m_textureChannel == texChannel)
-		return old;
+    if ( old != texChannel )
+    {
+        glActiveTexture(GL_TEXTURE0 + Value(texChannel));
 
-	glActiveTexture( GL_TEXTURE0 + Value(texChannel));
+        SIM_CHECK_OPENGL();
 
-	m_textureChannel = texChannel;
+        m_textureChannel = texChannel;
+    }
 
-	SIM_CHECK_OPENGL();
-
-	return old;
+    return old;
 }
 
 // ----------------------------------------------------------------------//
@@ -522,7 +518,7 @@ CDriver::MatrixMode CDriver::SetMatrixMode(MatrixMode matrixMode)
 
 	case MatrixMode::Texture:
 		{
-			m_activeStack = &m_textureStack[ Value(m_textureChannel) ];
+			m_activeStack = &m_textureStack;
 
 			m_isActiveStackAlteringWorldMatrix = false;
 			m_isActiveStackAlteringViewMatrix = false;

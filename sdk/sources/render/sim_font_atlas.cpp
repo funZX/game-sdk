@@ -102,7 +102,7 @@ void CFontAtlas::Create()
 	m_texture = SIM_NEW CTexture( m_name );
 
     CDriver* driver = CDriver::GetSingletonPtr();
-    u32 tex = driver->BindTexture(0);
+    u32 tex = driver->BindTexture( CDriver::TextureTarget::Texture2D, 0 );
 	m_texture->Generate( texBuf
 		, texWidth
 		, texHeight
@@ -111,7 +111,7 @@ void CFontAtlas::Create()
 		, CTexture::Filter::Nearest
 		, CTexture::Format::Alpha
 	);
-    driver->BindTexture(tex);
+    driver->BindTexture(CDriver::TextureTarget::Texture2D, tex);
 
 	InitEffect();
 	InitMaterial();

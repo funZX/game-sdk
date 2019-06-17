@@ -67,8 +67,8 @@ void CState_Game::Update( f32 dt, void *userData )
 // ----------------------------------------------------------------------//
 void CState_Game::Render( CDriver *driver )
 {
-	O.world->Render( driver );
-	m_drawable->Draw( driver );
+    m_drawable->Draw(driver);
+    O.world->Render( driver );
 }
 
 // ----------------------------------------------------------------------//
@@ -77,6 +77,7 @@ void CState_Game::DrawToWidget(CDriver* driver, sigcxx::SLOT slot)
     CDebug d;
 
     d.Render( driver );
+    O.world->Render(driver);
 }
 // ----------------------------------------------------------------------//
 void CState_Game::OnEnter()
@@ -86,8 +87,7 @@ void CState_Game::OnEnter()
 // ----------------------------------------------------------------------//
 void CState_Game::ShowGui( CCanvas* canvas )
 {
-    ImGui::ShowDemoWindow();
-    return;
+    //ImGui::ShowDemoWindow();
 
     //@TODO: fix flipped drawable
 

@@ -31,16 +31,14 @@ CState_AppLoad::~CState_AppLoad()
 // ----------------------------------------------------------------------//
 void CState_AppLoad::ShowGui( CCanvas* canvas )
 {
-    if (m_fsCrt != NULL)
-    {
-        ImGui::SetNextWindowPos({ 0, canvas->Height() - 50 }, ImGuiCond_FirstUseEver);
-        ImGui::SetNextWindowSize({ canvas->Width(), 50 }, ImGuiCond_FirstUseEver);
-        if (ImGui::Begin("Loading"))
-        {
-            ImGui::Text( m_fsCrt->GetLoadMessage().c_str() );
-        }
-        ImGui::End();
-    }
+    //if ( m_fsCrt != NULL )
+    //{
+    //    if (ImGui::Begin("Loading"))
+    //    {
+    //        ImGui::Text(m_fsCrt->GetLoadMessage().c_str());
+    //    }
+    //    ImGui::End();
+    //}
 }
 // ----------------------------------------------------------------------//
 void CState_AppLoad::Update( f32 dt, void *userData )
@@ -54,8 +52,8 @@ void CState_AppLoad::Update( f32 dt, void *userData )
 	else if (m_fsCrt == m_fsstrawberry && !m_fsCrt->LoadNext())
 		m_fsCrt = NULL;
 
-	if (m_fsCrt == NULL)
-		O.game->GoNext(SIM_NEW CState_MenuMain());        
+    if (m_fsCrt == NULL)
+        O.game->GoNext(SIM_NEW CState_MenuMain());
 }
 
 // ----------------------------------------------------------------------//

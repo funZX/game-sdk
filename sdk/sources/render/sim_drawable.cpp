@@ -77,9 +77,9 @@ void CDrawable::OnResize()
 
     CDriver* driver = CDriver::GetSingletonPtr();
 
-    u32 tex = driver->BindTexture( 0 );
+    u32 tex = driver->BindTexture( CDriver::TextureTarget::Texture2D, 0 );
 	m_rendertexture->Generate( (u32)m_size.x, (u32)m_size.y );
-    driver->BindTexture(tex);
+    driver->BindTexture( CDriver::TextureTarget::Texture2D, tex );
 
 	CRect2D r;
 	r.Resize( (f32)m_rendertexture->GetWidth(), (f32)m_rendertexture->GetHeight() );

@@ -161,7 +161,7 @@ void CEffect::ApplyTextures( CDriver* driver )
 		if ( m_textures[ i ] != nullptr )
 		{
 			driver->SetTextureChannel( static_cast<CDriver::TextureChannel>(i) );
-			driver->BindTexture( m_textures[ i ]->GetID() );
+			driver->BindTexture( CDriver::TextureTarget::Texture2D, m_textures[ i ]->GetID() );
 		}
 	}
 }

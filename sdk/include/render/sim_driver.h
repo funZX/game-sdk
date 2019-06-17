@@ -100,6 +100,12 @@ public:
 		TriangleStrips	= GL_TRIANGLE_STRIP,
 	};
 
+    enum class TextureTarget : u32
+    {
+        Texture2D       = GL_TEXTURE_2D,
+        TextureCubeMap  = GL_TEXTURE_CUBE_MAP,
+    };
+
 	// ------------------------------------------------------------------//
 	enum { k_Animation_Bones_Max = 64 };
 	// ------------------------------------------------------------------//
@@ -171,7 +177,7 @@ public:
 	CullingMode					SetCullingMode( CullingMode cullingMode );
 	MatrixMode					SetMatrixMode( MatrixMode matrixMode );
 	
-	u32							BindTexture ( u32 tex );
+	u32							BindTexture ( TextureTarget target, u32 tex );
 	CRenderTexture*				BindRenderTexture( CRenderTexture* framebuffer );
 
 	bool						EnableCulling( bool val );
@@ -330,8 +336,7 @@ protected:
 
 	Mat4Stack*				    m_activeStack;
 
-	Mat4Stack				    m_textureStack[ k_Texture_Channels_Count ];
-	TextureChannel				m_textureChannel;
+	Mat4Stack				    m_textureStack;
 
 	Mat4					    m_worldInverseMatrix;
 	Mat4					    m_worldInverseTMatrix;
@@ -363,6 +368,7 @@ protected:
 	Mat4					    m_boneArrayMatrix[ k_Animation_Bones_Max ];
 
 	u32				            m_textureBind[ k_Texture_Channels_Count ];
+    TextureChannel              m_textureChannel;
 
     TVertexAttributeInfo        m_vertexAttributeInfo[ CVertexSource::k_Vertex_Attributes_Count ];
 	TLightParameters			m_lightParameters[ k_Light_Channels_Count ];
@@ -461,7 +467,7 @@ inline Mat4* CDriver::GetProjectionMatrix()
 
 inline Mat4* CDriver::GetTextureMatrix(TextureChannel texChannel)  
 {
-    return m_textureStack[Value(texChannel)].topmatrix; 
+    return m_textureStack.topmatrix; 
 }
 
 void CDriver::SetColor(Vec4 col) 
