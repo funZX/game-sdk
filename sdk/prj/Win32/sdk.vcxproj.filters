@@ -236,9 +236,6 @@
     <ClCompile Include="..\..\sources\render\sim_font.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sources\render\sim_widget.cpp">
-      <Filter>Source Files\render</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\sources\render\sim_font_atlas.cpp">
       <Filter>Source Files\render</Filter>
     </ClCompile>
@@ -427,14 +424,11 @@
     <ClInclude Include="..\..\include\render\sim_font.h">
       <Filter>Header Files\render</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\render\sim_widget.h">
-      <Filter>Header Files\render</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\render\sim_font_atlas.h">
       <Filter>Header Files\render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\TODO.txt" />
+    <Text Include="..\..\TODO.txt" />
   </ItemGroup>
 </Project>

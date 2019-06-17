@@ -85,8 +85,11 @@ public:
 	void						Resize( f32 w, f32 h );
 	void						Scale( f32 kw, f32 kh );
 
-	void						SetCenter( Vec2 *pos );
-	void						GetCenter( Vec2 *pos ) const;
+	void						SetCenter( Vec2 center );
+	Vec2						GetCenter() const;
+
+    void						SetVertexColor(Rgba color);
+    Rgba						GetVertexColor() const;
 
 	void						AlignTo( CRect2D *, Align align );
 
@@ -121,9 +124,9 @@ protected:
 	// ------------------------------------------------------------------//
 	Vec2						m_position;
 	Vec2						m_size;
+    Rgba                        m_vertexColor;
 
 	CMaterial*					m_material;
-	CRect2D*					m_texRect;
 	// ------------------------------------------------------------------//
 };
 

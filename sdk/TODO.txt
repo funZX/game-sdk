@@ -1,0 +1,39 @@
+
+- integrate mesh-optimizer
+- move camera to scene hierarchy. keep ortho engine camera 
+- tool: exporter: camera, light, actor, scene, animation
+- sort opaque & transparent geometry. render order...
+
+1.
+- engine: octree (http://www.piko3d.net/tutorials/space-partitioning-tutorial-piko3ds-dynamic-octree/)
+- engine: scene node interface, scene manager
+- engine: particle system & fluid simulation
+- engine: box2D physics
+
+2.
+- engine: line, plane & curves math
+- engine: buffered sound
+- engine: networking around librg
+- engine: recast & detour
+- engine: ragdoll physics
+- engine: automaton -> controller 
+- engine: colision meshes
+- engine: animations 2d & 3d, animator
+
+
+
+
+
+
+
+
+
+
+1000.
+- tool: model reduction ???
+- tool: yed automat exporter ???
+- tool: sprite editor ???
+- tool: re-calculate normals ???
+
+- engine: 3d static batch ???
+- engine: svg vector graphics ???

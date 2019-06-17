@@ -29,6 +29,7 @@
 #include <vm/sim_squirrel.h>
 
 #include "../Game.h"
+#include "../Debug/Debug.h"
 
 #include "../World/World.h"
 
@@ -40,7 +41,7 @@ CState_Game::CState_Game()
 	m_mesh = m_fs->GetMesh("melonman");
 
 	m_drawable = SIM_NEW CDrawable();
-	m_drawable->MoveTo(100.0f, 100.0f);
+	m_drawable->MoveTo(300.0f, 100.0f);
 	m_drawable->Resize(200, 200);
 	m_drawable->SetColor(col::Blueish);
 	m_drawable->OnDraw.Connect(this, &CState_Game::DrawToWidget);
@@ -65,44 +66,9 @@ void CState_Game::Update( f32 dt, void *userData )
 {
 	O.world->Update( dt, userData );
 }
+
 // ----------------------------------------------------------------------//
-void CState_Game::Render2D( CDriver *driver )
-{
-	O.world->Render2D(driver);
-
-	CEffect* fill = O.effect.color;
-	CEffect* filltex = O.effect.fill.texture;
-
-	CMaterial m;
-	CRect2D r;
-
-	r.SetMaterial(&m);
-
-	m.SetEffect(fill);
-	m.SetTexture(0, 0);
-
-	r.Bound(m_drawable);
-	r.Zoom(6.0f, 6.0f);
-	r.Render(driver);
-
-	CEffect::TTechnique techique;
-	filltex->CopyTechnique(&techique);
-	filltex->m_technique.depthtest = false;
-
-	m_drawable->SetMaterial(&m);
-	m.SetEffect(filltex);
-	m.SetTexture(m_drawable->GetTexture(), 0);
-	m_drawable->Render(driver);
-
-	filltex->SetTechnique(&techique);
-
-	O.canvas->DrawString(driver,
-		10,
-		(s32)(O.canvas->Height() - 2 * O.font.engine->GetHeight()),
-		"The quick brown fox jumps over the lazy dog! :;.,'\"(?)+=*/=1234567890", col::Magenta);
-}
-// ----------------------------------------------------------------------//
-void CState_Game::Render3D( CDriver *driver )
+void CState_Game::Render( CDriver *driver )
 {
 	O.world->Render( driver );
 	m_drawable->Draw(driver);
@@ -111,23 +77,38 @@ void CState_Game::Render3D( CDriver *driver )
 // ----------------------------------------------------------------------//
 void CState_Game::DrawToWidget(CDriver* driver, sigcxx::SLOT slot)
 {
-	if (!m_mesh)
-		return;
+    CDebug d;
 
-	driver->MatrixPush();
-    driver->MatrixTranslate({ 0.0f, -0.5f, -2.0f });
-	m_mesh->Render(driver);
-	driver->MatrixPop();
+    d.Render( driver );
+}
+// ----------------------------------------------------------------------//
+void CState_Game::OnEnter()
+{
 
-	driver->MatrixPush();
-    driver->MatrixTranslate({ -0.4f, -0.2f, -1.5f });
-	m_mesh->Render(driver);
-	driver->MatrixPop();
+}
+// ----------------------------------------------------------------------//
+void CState_Game::OnGui(CDriver* driver)
+{
+    CEffect* fill = O.effect.color;
 
-	driver->MatrixPush();
-    driver->MatrixTranslate({ 0.4f, -0.2f, -1.5f });
-    driver->MatrixScale( { 0.5f, 0.5f, 0.5f } );
-	m_mesh->Render(driver);
-	driver->MatrixPop();
+    CEffect::TTechnique techique;
+    fill->CopyTechnique(&techique);
+    fill->m_technique.depthtest = false;
+
+    m_drawable->SetEffect(fill);
+    m_drawable->Render(driver);
+
+    fill->SetTechnique(&techique);
+
+    O.canvas->DrawString(driver,
+        10,
+        (s32)(O.canvas->Height() - 2 * O.font.engine->GetHeight()),
+        "The quick brown fox jumps over the lazy dog! :;.,'\"(?)+=*/=1234567890", col::Magenta);
+}
+// ----------------------------------------------------------------------//
+
+void CState_Game::OnExit()
+{
+
 }
 // ----------------------------------------------------------------------//

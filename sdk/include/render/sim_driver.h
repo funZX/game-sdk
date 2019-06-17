@@ -211,8 +211,9 @@ public:
     inline Mat4*                GetProjectionMatrix() ;
     inline Mat4*                GetTextureMatrix(TextureChannel texChannel) ;
 
-	void						SetScreenSize(u32 width, u32 height);
-	void						SetViewport( u32 width, u32 height );
+	void						SetScreenSize( u32 width, u32 height );
+	void						SetViewport( u32 x, u32 y, u32 w, u32 h );
+    void						SetScissor( u32 x, u32 y, u32 w, u32 h );
 
     inline void					SetColor(Vec4 col);
     inline Vec4                 GetColor() ;
@@ -295,7 +296,7 @@ public:
 	void						UpdateUniforms( CEffect *effect );
 	void						SetUniform( CShader::TUniform* uni );
 	// ------------------------------------------------------------------//
-	void						Render( CVertexGroup* vertexGroup );
+    void						Render( CVertexGroup* vertexGroup );
 	// ------------------------------------------------------------------//
 	void						Log( char *fmt, ... );
 	// ------------------------------------------------------------------//
@@ -329,7 +330,7 @@ protected:
 
 	Mat4Stack*				    m_activeStack;
 
-	Mat4Stack				    m_textureStack[k_Texture_Channels_Count];
+	Mat4Stack				    m_textureStack[ k_Texture_Channels_Count ];
 	TextureChannel				m_textureChannel;
 
 	Mat4					    m_worldInverseMatrix;
@@ -404,8 +405,10 @@ protected:
 
 	u32							m_screenWidth;
 	u32							m_screenHeight;
-	u32							m_viewportWidth;
-	u32							m_viewportHeight;
+
+    struct { u32 x; u32 y; u32 w; u32 h; } m_viewport;
+    struct { u32 x; u32 y; u32 w; u32 h; } m_scissor;
+
 	// ------------------------------------------------------------------//
 	CVertexSource*				m_crtVertexSource;
 	CRenderTexture*				m_crtRenderTexture;

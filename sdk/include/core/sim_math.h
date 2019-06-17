@@ -142,12 +142,13 @@ namespace sim
         struct {
             u8 r, g, b, a;
         };
+        u32 rgba;
         Rgb rgb;
         u8  e[4];
     } Rgba;
 
     // ----------------------------------------------------------------------//
-    static inline void RgbaToVec4(const Rgba* col, Vec4* vcol)
+    static inline void RgbaToVec4( Vec4* vcol, const Rgba* col )
     {
         vcol->x = zpl_clamp(col->r / 255.0f, 0.0f, 1.0f);
         vcol->y = zpl_clamp(col->g / 255.0f, 0.0f, 1.0f);
@@ -155,7 +156,7 @@ namespace sim
         vcol->w = zpl_clamp(col->a / 255.0f, 0.0f, 1.0f);
     }
 
-    static inline void Vec4ToRgba(const Vec4* vcol, Rgba* col)
+    static inline void Vec4ToRgba( Rgba* col, const Vec4* vcol )
     {
         col->r = (u8)zpl_clamp(vcol->x * 255.0f, 0, 255);
         col->g = (u8)zpl_clamp(vcol->y * 255.0f, 0, 255);

@@ -51,9 +51,7 @@ public:
 	IState*				GetCurrentState()			{ m_currState; }
 
 	void				Update( f32 dt, void *userData );
-
-	void				Render2D( rnr::CDriver *driver );
-	void				Render3D( rnr::CDriver *driver );
+	void				Render( rnr::CDriver *driver );
 
 	void				GoNext( IState* state );
 	void				GoBack();

@@ -28,7 +28,7 @@
 		"u_Point_Size"
 	],
 	"attributes":[
-		"a_PositionL",
+		"a_WorldPosL",
 		"a_TexCoord_0"
 	],
 	

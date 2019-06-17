@@ -12,12 +12,11 @@ public:
 	~CState_AppLoad();
 // ----------------------------------------------------------------------//	
 	void				Update( f32 dt, void *userData );
+	void				Render( CDriver *driver );
 
-	void				Render2D( CDriver *driver );
-	void				Render3D( CDriver *driver );
-
-	void				OnEnter();
-	void				OnExit();
+    void				OnEnter();
+    void				OnGui(rnr::CDriver* driver);
+    void				OnExit();
 
 protected:
 	void				InitO();

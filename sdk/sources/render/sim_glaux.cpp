@@ -58,8 +58,8 @@ Sphere*	gluNewSphere( s32 numSlices, f32 radius )
 	sphere->vertexGroup->m_vboSize = numIndices;
 
 	sphere->vertexGroup->m_vertexSource->m_type			= CVertexSource::Type::Triangle;
-	sphere->vertexGroup->m_vertexSource->m_vertexFormat	= CVertexSource::AttributeFormat::Position | CVertexSource::AttributeFormat::TexCoord_0 | CVertexSource::AttributeFormat::Normal;
-	sphere->vertexGroup->m_vertexSource->m_vertexStride	= CVertexSource::AttributeStride::Position + CVertexSource::AttributeStride::TexCoord_0 + CVertexSource::AttributeStride::Normal;
+	sphere->vertexGroup->m_vertexSource->m_vertexFormat	= CVertexSource::AttributeFormat::WorldPos | CVertexSource::AttributeFormat::TexCoord_0 | CVertexSource::AttributeFormat::Normal;
+	sphere->vertexGroup->m_vertexSource->m_vertexStride	= CVertexSource::AttributeStride::WorldPos + CVertexSource::AttributeStride::TexCoord_0 + CVertexSource::AttributeStride::Normal;
 	sphere->vertexGroup->m_vertexSource->m_vboSize		= numVertices;
 
 	s32 vtxSize							= Value(sphere->vertexGroup->m_vertexSource->m_vertexStride) / sizeof( f32 );
@@ -329,8 +329,8 @@ Cube* gluNewCube( f32 sideSize )
 	cube->vertexGroup->m_vboSize	= numIndices;
 
 	cube->vertexGroup->m_vertexSource->m_type			= CVertexSource::Type::Triangle;
-	cube->vertexGroup->m_vertexSource->m_vertexFormat	= CVertexSource::AttributeFormat::Position | CVertexSource::AttributeFormat::TexCoord_0 | CVertexSource::AttributeFormat::Normal;
-	cube->vertexGroup->m_vertexSource->m_vertexStride	= CVertexSource::AttributeStride::Position + CVertexSource::AttributeStride::TexCoord_0 + CVertexSource::AttributeStride::Normal;
+	cube->vertexGroup->m_vertexSource->m_vertexFormat	= CVertexSource::AttributeFormat::WorldPos | CVertexSource::AttributeFormat::TexCoord_0 | CVertexSource::AttributeFormat::Normal;
+	cube->vertexGroup->m_vertexSource->m_vertexStride	= CVertexSource::AttributeStride::WorldPos + CVertexSource::AttributeStride::TexCoord_0 + CVertexSource::AttributeStride::Normal;
 	cube->vertexGroup->m_vertexSource->m_vboSize	= numVertices;
 
 	s32 vtxSize							= Value(cube->vertexGroup->m_vertexSource->m_vertexStride) / sizeof( f32 );

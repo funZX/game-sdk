@@ -32,7 +32,9 @@
 #include <core/sim_interfaces.h>
 
 #include <render/sim_render.h>
-#include <render/sim_widget.h>
+#include <render/sim_rect_2d.h>
+
+#include <imgui.h>
 
 namespace sim
 {
@@ -41,15 +43,19 @@ namespace rnr
 // ----------------------------------------------------------------------//
 
 class CCamera;
+class CFontAtlas;
 
-class CCanvas : public CWidget
+class CCanvas : public CRect2D
 {
 public:
 	CCanvas( CFontAtlas *fontAtlas );
 	CCanvas( const std::string& name, CFontAtlas* fontAtlas );
 	virtual ~CCanvas();
 	// ------------------------------------------------------------------//
-	void				Resize( f32 width, f32 height );
+    void                DrawString(CDriver* driver, s32 x, s32 y, const std::string& text, Vec4 color);
+
+    void				Resize( f32 width, f32 height );
+
 	virtual void		Update( f32 dt, void *userData );
 	virtual void		Render( CDriver* driver );
 
@@ -60,7 +66,8 @@ public:
 	virtual void		ClearEvents();
 	// ------------------------------------------------------------------//
 protected:
-
+    ImGuiContext*       m_imContext;
+    ImGuiStyle*         m_imStyle;
 	// ------------------------------------------------------------------//
 };
 

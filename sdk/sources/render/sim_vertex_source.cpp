@@ -40,8 +40,8 @@ CVertexSource::CVertexSource()
 	m_vboData			= nullptr;
 	m_vboSize			= 0;
 
-	m_vertexStride		= AttributeStride::Position;
-	m_vertexFormat 		= AttributeFormat::Position;
+	m_vertexStride		= AttributeStride::WorldPos;
+	m_vertexFormat 		= AttributeFormat::WorldPos;
 
 	m_type				= Type::Triangle;
 }

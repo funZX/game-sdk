@@ -12,12 +12,11 @@ public:
 	~CState_Game();
 // ----------------------------------------------------------------------//	
 	void				Update( f32 dt, void *userData );
+	void				Render( CDriver *driver );
 
-	void				Render2D( CDriver *drivers );
-	void				Render3D( CDriver *driver );
-
-	void				OnEnter()	{};
-	void				OnExit()	{};
+    void				OnEnter();
+    void				OnGui (CDriver* driver );
+    void				OnExit();
 
 protected:
 	// ----------------------------------------------------------------------//	

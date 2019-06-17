@@ -39,23 +39,13 @@ void CState_AppLoad::Update( f32 dt, void *userData )
 
 	else if (m_fsCrt == m_fsstrawberry && !m_fsCrt->LoadNext())
 		m_fsCrt = NULL;
-
+    //return;
 	if (m_fsCrt == NULL)
 		O.game->GoNext(SIM_NEW CState_MenuMain());
 }
+
 // ----------------------------------------------------------------------//
-void CState_AppLoad::Render2D( CDriver *driver )
-{
-	if (m_fsCrt != NULL)
-	{
-		O.game->Print(driver,
-			0,
-			(s32)(O.canvas->Height() - 2 * O.font.engine->GetHeight()),
-			m_fsCrt->GetLoadMessage());
-	}
-}
-// ----------------------------------------------------------------------//
-void CState_AppLoad::Render3D( CDriver *driver )
+void CState_AppLoad::Render( CDriver *driver )
 {
 
 }
@@ -65,6 +55,17 @@ void CState_AppLoad::OnEnter()
 	m_fsui->Open();
 	m_fsworld->Open();
 	m_fsstrawberry->Open();
+}
+// ----------------------------------------------------------------------//
+void CState_AppLoad::OnGui(CDriver* driver)
+{
+    if (m_fsCrt != NULL)
+    {
+        O.game->Print(driver,
+            0,
+            (s32)(O.canvas->Height() - 2 * O.font.engine->GetHeight()),
+            m_fsCrt->GetLoadMessage());
+    }
 }
 // ----------------------------------------------------------------------//
 void CState_AppLoad::OnExit()

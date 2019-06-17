@@ -56,7 +56,8 @@ public:
 	// ------------------------------------------------------------------//
 	enum class AttributeIndex : u32
 	{
-		Position,
+        ScreenPos,
+		WorldPos,
 		TexCoord_0,
 		TexCoord_1,
 		TexCoord_2,
@@ -74,24 +75,26 @@ public:
 	{
 		None			= 0,
 
-        Position		=   ( 1 <<  0 ),
-        TexCoord_0		=   ( 1 <<  1 ),
-        TexCoord_1		=   ( 1 <<  2 ),
-        TexCoord_2		=   ( 1 <<  3 ),
-        TexCoord_3		=   ( 1 <<  4 ),
-        Color			=   ( 1 <<  5 ),
-        Normal			=   ( 1 <<  6 ),
-        Tangent			=   ( 1 <<  7 ),
-        Binormal		=   ( 1 <<  8 ),
-		WeightArraySize =	( 1 <<  9 ),
-		WeightArray		=	( 1 << 10 ),
+        ScreenPos       =   ( 1 <<  0 ),
+        WorldPos		=   ( 1 <<  1 ),
+        TexCoord_0		=   ( 1 <<  2 ),
+        TexCoord_1		=   ( 1 <<  3 ),
+        TexCoord_2		=   ( 1 <<  4 ),
+        TexCoord_3		=   ( 1 <<  5 ),
+        Color			=   ( 1 <<  6 ),
+        Normal			=   ( 1 <<  7 ),
+        Tangent			=   ( 1 <<  8 ),
+        Binormal		=   ( 1 <<  9 ),
+		WeightArraySize =	( 1 << 10 ),
+		WeightArray		=	( 1 << 11 ),
 	};
 	// ------------------------------------------------------------------//
 	enum { k_Vertex_Bones_Influences_Max = 16 };
 
 	enum class AttributeSize : u32
 	{
-        Position		=   ( 3 ),
+        ScreenPos       =   ( 2 ),
+        WorldPos		=   ( 3 ),
         TexCoord_0		=   ( 2 ),
 		TexCoord_1		=	( 2 ),
 		TexCoord_2		=	( 2 ),
@@ -106,7 +109,8 @@ public:
 	// ------------------------------------------------------------------//
 	enum class AttributeStride : u32
 	{
-        Position		=   ( 3 * sizeof( float ) ),
+        ScreenPos       =   ( 2 * sizeof( float ) ),
+        WorldPos		=   ( 3 * sizeof( float ) ),
         TexCoord_0		=   ( 2 * sizeof( float ) ),
         TexCoord_1		=   ( 2 * sizeof( float ) ),
         TexCoord_2		=   ( 2 * sizeof( float ) ),
@@ -121,7 +125,8 @@ public:
 	// ------------------------------------------------------------------//	
 	enum class AttributeType : u32
 	{
-        Position		=   ( GL_FLOAT ),
+        ScreenPos       =   ( GL_FLOAT ),
+        WorldPos		=   ( GL_FLOAT ),
         TexCoord_0		=   ( GL_FLOAT ),
         TexCoord_1		=   ( GL_FLOAT ),
         TexCoord_2		=   ( GL_FLOAT ),
@@ -134,7 +139,7 @@ public:
 		WeightArray		=   ( GL_FLOAT ),
 	};
 
-	enum { k_Vertex_Attributes_Count = 11 };
+	enum { k_Vertex_Attributes_Count = 12 };
 	// ------------------------------------------------------------------//
 	
 	enum class Type : u32

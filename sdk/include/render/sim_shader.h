@@ -138,9 +138,11 @@ public:
         Light_Attenuation_3,
         Light_FallOffAngle_3,
         Light_FallOffExp_3,
+
+        Uniform_Count
 	};
 
-	enum { k_Uniform_Count = 77  }; //yeah... seventyseven
+	enum { k_Uniform_Count = Value(UniformIndex::Uniform_Count)  };
 	// ------------------------------------------------------------------//
 	struct TUniform
 	{

@@ -13,11 +13,10 @@ public:
 	~CState_AppInit();
 // ----------------------------------------------------------------------//	
 	void				Update( f32 dt, void *userData );
-
-	void				Render2D( CDriver *driver );
-	void				Render3D( CDriver *driver );
+	void				Render( CDriver *driver );
 
 	void				OnEnter();
+    void				OnGui(rnr::CDriver* driver);
 	void				OnExit();
 
 // ----------------------------------------------------------------------//

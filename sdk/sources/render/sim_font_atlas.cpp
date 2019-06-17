@@ -121,22 +121,21 @@ void CFontAtlas::Create()
 void CFontAtlas::InitEffect()
 {
 	const s8* vsource =
-		"attribute vec4 a_PositionL;"
+		"attribute vec4 a_ScreenPosL;"
 		"attribute vec2 a_TexCoord_0;"
+        "attribute vec4 a_Color;"
 
 		"uniform mat4 u_Matrix_WorldViewProjection;"
-		"uniform vec4 u_Material_Diffuse;"
-		"uniform vec4 u_Color;"
-
+        "uniform vec4 u_Material_Diffuse;"
 		"varying vec2 v_Tex0;"
 		"varying vec4 v_Color;"
 
 		"void main()"
 		"{"
 		"	v_Tex0			= a_TexCoord_0;"
-		"	v_Color			= u_Color * u_Material_Diffuse;"
+		"	v_Color			= a_Color * u_Material_Diffuse;"
 
-		"	gl_Position		= u_Matrix_WorldViewProjection * a_PositionL;"
+		"	gl_Position		= u_Matrix_WorldViewProjection * a_ScreenPosL;"
 		"}";
 
 	// ----------------------------------------------------------------------//
@@ -160,7 +159,7 @@ void CFontAtlas::InitEffect()
 
 	static const s8* attributes[] =
 	{
-		"a_PositionL",
+		"a_ScreenPosL",
 		"a_TexCoord_0"
 	};
 	
@@ -174,12 +173,11 @@ void CFontAtlas::InitEffect()
 	static const s8* uniforms[] =
 	{
 		"u_Matrix_WorldViewProjection",
-		"u_Sampler_Tex_0",
-		"u_Material_Diffuse",
-		"u_Color"
+        "u_Sampler_Tex_0",
+        "u_Material_Diffuse"
 	};
 
-	u32 nUniform = 4;
+	u32 nUniform = 3;
 	m_effect->InitUniforms(nUniform);
 	for (u32 k = 0; k < nUniform; k++)
 		m_effect->AddUniform(uniforms[k], k);

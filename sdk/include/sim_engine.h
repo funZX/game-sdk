@@ -97,7 +97,6 @@ namespace sim
         class CFontAtlas;
         class CFont;
         class CRect2D;
-        class CWidget;
         class CDrawable;
 		class CCanvas;		
 
@@ -165,7 +164,7 @@ public:
 	inline CDriver*					GetDriver()		{ return m_driver; }
 	inline CSquirrel*				GetVM()			{ return m_vm; }
 
-    virtual void					Resize(int width, int height);
+    virtual void					Resize( u32 width, u32 height );
 	virtual void					Start();
 	virtual void					Run();
 	virtual void					Quit();

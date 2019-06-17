@@ -36,7 +36,8 @@ namespace rnr
 
 CShader::TAttrib CShader::Attributes[CVertexSource::k_Vertex_Attributes_Count] =
 {
-	{ "a_PositionL",	-1,		CVertexSource::AttributeIndex::Position,	CVertexSource::AttributeFormat::Position,	CVertexSource::AttributeSize::Position,		CVertexSource::AttributeStride::Position,		CVertexSource::AttributeType::Position, },
+    { "a_ScreenPosL",	-1,		CVertexSource::AttributeIndex::ScreenPos,	CVertexSource::AttributeFormat::ScreenPos,	CVertexSource::AttributeSize::ScreenPos,		CVertexSource::AttributeStride::ScreenPos,	CVertexSource::AttributeType::ScreenPos, },
+	{ "a_WorldPosL",	-1,		CVertexSource::AttributeIndex::WorldPos,	CVertexSource::AttributeFormat::WorldPos,	CVertexSource::AttributeSize::WorldPos,		CVertexSource::AttributeStride::WorldPos,		CVertexSource::AttributeType::WorldPos, },
 	{ "a_TexCoord_0",	-1,		CVertexSource::AttributeIndex::TexCoord_0,	CVertexSource::AttributeFormat::TexCoord_0,	CVertexSource::AttributeSize::TexCoord_0,	CVertexSource::AttributeStride::TexCoord_0,		CVertexSource::AttributeType::TexCoord_0, },
 	{ "a_TexCoord_1",	-1,		CVertexSource::AttributeIndex::TexCoord_1,	CVertexSource::AttributeFormat::TexCoord_1,	CVertexSource::AttributeSize::TexCoord_1,	CVertexSource::AttributeStride::TexCoord_1,		CVertexSource::AttributeType::TexCoord_1, },
 	{ "a_TexCoord_2",	-1,		CVertexSource::AttributeIndex::TexCoord_2,	CVertexSource::AttributeFormat::TexCoord_2,	CVertexSource::AttributeSize::TexCoord_2,	CVertexSource::AttributeStride::TexCoord_2,		CVertexSource::AttributeType::TexCoord_2, },

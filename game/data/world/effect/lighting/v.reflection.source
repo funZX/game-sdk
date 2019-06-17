@@ -1,4 +1,4 @@
-attribute vec4 a_PositionL;
+attribute vec4 a_WorldPosL;
 attribute vec2 a_TexCoord_0;
 attribute vec3 a_NormalL;
 
@@ -14,7 +14,7 @@ void main()
 {
 	vec4 posV;
 	
-	posV 		= u_Matrix_WorldView * a_PositionL;
+	posV 		= u_Matrix_WorldView * a_WorldPosL;
 	
 	v_NormalW 	= u_Matrix_Normal * a_NormalL;
 	v_ToEyeDirV = -posV.xyz;
