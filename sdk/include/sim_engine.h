@@ -191,12 +191,12 @@ public:
 
 
 protected:
-	void							Initialize();
 	void							InitOpenGL();
 	void							InitOpenAL();
     void							InitFont();
     void							InitEffect();
     void							InitMaterial();
+    void							InitCanvas();
     void							Shutdown();
 	
 	void							On2D();

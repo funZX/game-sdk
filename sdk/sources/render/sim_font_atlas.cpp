@@ -60,7 +60,7 @@ CFontAtlas::CFontAtlas( const std::string &name )
 
 CFontAtlas::~CFontAtlas()
 {
-    m_imAtlas->ClearFonts();
+    m_imAtlas->Clear();
     SIM_SAFE_DELETE( m_imAtlas );
 
 	SIM_SAFE_DELETE( m_material );
@@ -79,10 +79,11 @@ CFont* CFontAtlas::AddFont( const std::string name, io::CMemStream* ms, f32 pixe
     fontConfig.FontDataOwnedByAtlas = true;
     fontConfig.SizePixels = pixelSize;
     fontConfig.FontDataSize = ms->GetSize();
-    fontConfig.FontData = (void*) SIM_NEW u8[ fontConfig.FontDataSize ];
-    SIM_MEMCPY( fontConfig.FontData, ms->Read(0), fontConfig.FontDataSize );
 
-    font->m_imFont      = m_imAtlas->AddFontFromMemoryTTF(fontConfig.FontData, fontConfig.FontDataSize, (f32)pixelSize, &fontConfig);
+    void* buffer = (void*) SIM_NEW u8[ fontConfig.FontDataSize ];
+    SIM_MEMCPY( buffer, ms->Read(0), fontConfig.FontDataSize );
+
+    font->m_imFont      = m_imAtlas->AddFontFromMemoryTTF( buffer, fontConfig.FontDataSize, (f32)pixelSize, &fontConfig );
     font->m_pixelSize   = pixelSize;
 
     return font;
@@ -112,8 +113,6 @@ void CFontAtlas::Create()
 	InitMaterial();
 
     m_imAtlas->ClearTexData();
-    m_imAtlas->ClearInputData();
-
     m_imAtlas->TexID = m_material;
 }
 
@@ -121,7 +120,7 @@ void CFontAtlas::Create()
 void CFontAtlas::InitEffect()
 {
 	const s8* vsource =
-		"attribute vec4 a_ScreenPosL;"
+		"attribute vec2 a_ScreenPosL;"
 		"attribute vec2 a_TexCoord_0;"
         "attribute vec4 a_Color;"
 
@@ -135,7 +134,7 @@ void CFontAtlas::InitEffect()
 		"	v_Tex0			= a_TexCoord_0;"
 		"	v_Color			= a_Color * u_Material_Diffuse;"
 
-		"	gl_Position		= u_Matrix_WorldViewProjection * a_ScreenPosL;"
+		"	gl_Position		= u_Matrix_WorldViewProjection * vec4(a_ScreenPosL, 0.0, 1.0);"
 		"}";
 
 	// ----------------------------------------------------------------------//
@@ -152,7 +151,7 @@ void CFontAtlas::InitEffect()
 		"{"
 		"	vec4 tex = texture2D( u_Sampler_Tex_0, v_Tex0 );"
 		"	vec4 col = v_Color;"
-		"	col.a	 = tex.a;"
+		//"	col.a	 = tex.a;"
 
 		"	gl_FragColor = col;"
 		"}";
@@ -160,12 +159,13 @@ void CFontAtlas::InitEffect()
 	static const s8* attributes[] =
 	{
 		"a_ScreenPosL",
-		"a_TexCoord_0"
+		"a_TexCoord_0",
+        "a_Color"
 	};
 	
 	m_effect = SIM_NEW CEffect( m_name );
 
-	u32 nAttrib = 2;
+	u32 nAttrib = 3;
 	m_effect->InitAttributes(nAttrib);
 	for (u32 k = 0; k < nAttrib; k++)
 		m_effect->AddAttribute(attributes[k], k);
@@ -184,9 +184,9 @@ void CFontAtlas::InitEffect()
 
 	m_effect->Load( vsource, psource );
 
-	m_effect->m_technique.depthtest = true;
-	m_effect->m_technique.depthmask = true;
-	m_effect->m_technique.cullface = true;
+	m_effect->m_technique.depthtest = false;
+	m_effect->m_technique.depthmask = false;
+	m_effect->m_technique.cullface  = false;
 	m_effect->m_technique.alphatest = false;
 
 	m_effect->m_technique.blending = true;
@@ -202,7 +202,7 @@ void CFontAtlas::InitMaterial()
 // ----------------------------------------------------------------------//
 	m_material = SIM_NEW CMaterial( m_name );
 	m_material->SetTexture( m_texture, 0 );
-	m_material->SetDiffuse( col::Green );
+    m_material->SetDiffuse( col::Orange );
 	m_material->SetEffect( m_effect );
 }
 // ----------------------------------------------------------------------//

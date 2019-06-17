@@ -55,13 +55,23 @@ CEngine::CEngine()
 	m_vm				= SIM_NEW CSquirrel();
 	m_sm				= SIM_NEW CStateMachine();	
 
+    InitOpenGL();
+    InitOpenAL();
+
+    m_effect            = SIM_NEW CEffect("engine.Effect");
+    m_material          = SIM_NEW CMaterial("engine.Material");
+    InitEffect();
+    InitMaterial();
+
     m_fontAtlas         = SIM_NEW CFontAtlas( "engine.Atlas" );
     m_font              = SIM_NEW CFont( m_fontAtlas);
 
+    InitFont();
+
 	m_canvas			= SIM_NEW CCanvas( "engine.Canvas", m_fontAtlas );
+    InitCanvas();
+
 	m_camera			= SIM_NEW rnr::CCamera( "engine.Camera" );
-	m_effect			= SIM_NEW CEffect( "engine.Effect" );
-	m_material			= SIM_NEW CMaterial( "engine.Material" );
 
 	m_activeCamera		= m_camera;
 
@@ -74,8 +84,6 @@ CEngine::CEngine()
 	m_vertexCount		= 0;
 	m_fps				= 0;
 	SIM_MEMSET( &m_dtfilter[ 0 ], 0, sizeof( m_dtfilter ) );
-
-	Initialize();
 }
 
 // ----------------------------------------------------------------------//
@@ -94,17 +102,6 @@ CEngine::~CEngine()
 	SIM_SAFE_DELETE( m_sm );
 	SIM_SAFE_DELETE( m_vm );
 	SIM_SAFE_DELETE( m_driver );
-}
-
-// ----------------------------------------------------------------------//
-
-void CEngine::Initialize()
-{
-	InitOpenGL();
-	InitOpenAL();
-	InitFont();
-	InitEffect();
-	InitMaterial();
 }
 
 // ----------------------------------------------------------------------//
@@ -194,8 +191,6 @@ void CEngine::InitEffect()
 void CEngine::InitMaterial()
 {
 	m_material->SetEffect(m_effect);
-
-    m_canvas->SetMaterial(m_material);
 }
 
 // ----------------------------------------------------------------------//
@@ -210,6 +205,11 @@ void CEngine::InitFont()
     m_fontAtlas->Create();
 }
 
+// ----------------------------------------------------------------------//
+void CEngine::InitCanvas()
+{
+    m_canvas->SetMaterial( m_material );
+}
 // ----------------------------------------------------------------------//
 
 void CEngine::InitOpenGL( void )

@@ -40,10 +40,11 @@ namespace rnr
 CCanvas::CCanvas( CFontAtlas* fontAtlas )
 	: CRect2D()
 {
-    m_imContext = ImGui::CreateContext( fontAtlas->m_imAtlas );
+    m_fontAtlas = fontAtlas;
 
-    m_imStyle = SIM_NEW ImGuiStyle();
-    ImGui::StyleColorsDark(m_imStyle);
+    ImGui::CreateContext( m_fontAtlas->m_imAtlas );
+    ImGui::StyleColorsDark();
+    ImGui::GetIO().BackendPlatformName = m_name.c_str();
 }
 
 // ----------------------------------------------------------------------//
@@ -57,8 +58,7 @@ CCanvas::CCanvas( const std::string& name, CFontAtlas* fontAtlas)
 
 CCanvas::~CCanvas()
 {
-    SIM_SAFE_DELETE(m_imStyle);
-    ImGui::DestroyContext(m_imContext);
+    ImGui::DestroyContext();
 }
 
 // ----------------------------------------------------------------------//
@@ -66,6 +66,8 @@ CCanvas::~CCanvas()
 void CCanvas::Resize( f32 w, f32 h )
 {
 	Bound( 0, 0, w, h );
+    ImGui::GetIO().DisplaySize = { m_size.x, m_size.y };
+
 }
 
 // ----------------------------------------------------------------------//
@@ -100,32 +102,23 @@ void CCanvas::ClearEvents()
 
 void CCanvas::Update(f32 dt, void* userData)
 {
-    m_imContext->IO.DisplaySize = { m_size.x, m_size.y };
-    m_imContext->IO.DeltaTime = dt;
+    ImGui::GetIO().DeltaTime = dt;
 
-    ImGui::SetCurrentContext( m_imContext );
-    ImGui::SetNextWindowSize( { m_size.x, m_size.y } );
     ImGui::NewFrame();
-    ImGui::Begin( m_name.c_str() );
-
-    CRect2D::Update( dt, userData );
 }
 
 // ----------------------------------------------------------------------//
 
 void CCanvas::Render( CDriver* driver )
 {
-    u32 x = (u32)zpl_floor( m_position.x );
-    u32 y = (u32)zpl_floor( m_position.y );
-    u32 w = (u32)zpl_floor( m_size.x );
-    u32 h = (u32)zpl_floor( m_size.y );
-
-	driver->SetViewport( x, y, w, h );
-
     ImGui::ShowDemoWindow();
-
-    ImGui::End();
     ImGui::Render();
+
+    u32 x = (u32)zpl_floor(m_position.x);
+    u32 y = (u32)zpl_floor(m_position.y);
+    u32 w = (u32)zpl_floor(m_size.x);
+    u32 h = (u32)zpl_floor(m_size.y);
+    driver->SetViewport(x, y, w, h);
 
     ImDrawData* imData = ImGui::GetDrawData();
 
@@ -149,8 +142,11 @@ void CCanvas::Render( CDriver* driver )
         vs.m_vertexFormat = CVertexSource::AttributeFormat::ScreenPos | CVertexSource::AttributeFormat::TexCoord_0 | CVertexSource::AttributeFormat::Color;
         vs.m_vertexStride = CVertexSource::AttributeStride::ScreenPos + CVertexSource::AttributeStride::TexCoord_0 + CVertexSource::AttributeStride::Color;
 
-        vs.m_vboData = (f32*)(vtxBuffer);
-        vs.m_vboSize = imData->TotalVtxCount * Value(vs.m_vertexStride);
+        vs.m_vboData = (f32*)vtxBuffer;
+        vs.m_vboSize = imData->TotalVtxCount;
+
+        CVertexGroup vg;
+        vg.m_vboData = (u16*)idxBuffer;
 
         for (s32 i = 0; i < cmdList->CmdBuffer.Size; i++)
         {
@@ -170,8 +166,6 @@ void CCanvas::Render( CDriver* driver )
                 u32 w = (u32)zpl_floor(clipRect.z - clipRect.x);
                 u32 h = (u32)zpl_floor(clipRect.w - clipRect.y);
 
-                CVertexGroup vg;
-                vg.m_vboData = (u16*)(idxBuffer);
                 vg.m_vboSize = pcmd->ElemCount;
 
                 vg.SetMaterial((CMaterial*)pcmd->TextureId);

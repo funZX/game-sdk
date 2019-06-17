@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
     p.callbacks.zpl_window_update = onUpdate;
     p.callbacks.zpl_window_close = onClose;
 
-    zpl_platform_init(&p, "game-sdk", 640, 480, ZPL_WINDOW_RESIZABLE);
+    zpl_platform_init(&p, "game-sdk", 1024, 860, ZPL_WINDOW_RESIZABLE);
 
     while (game)
     {

@@ -66,8 +66,7 @@ public:
 	virtual void		ClearEvents();
 	// ------------------------------------------------------------------//
 protected:
-    ImGuiContext*       m_imContext;
-    ImGuiStyle*         m_imStyle;
+    CFontAtlas*         m_fontAtlas;
 	// ------------------------------------------------------------------//
 };
 
