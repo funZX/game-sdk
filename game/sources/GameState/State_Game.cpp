@@ -38,7 +38,6 @@
 CState_Game::CState_Game()
 {
 	m_fs = O.world->GetFs();
-	m_mesh = m_fs->GetMesh("melonman");
 
 	m_drawable = SIM_NEW CDrawable();
 	m_drawable->MoveTo(300.0f, 100.0f);
@@ -46,8 +45,6 @@ CState_Game::CState_Game()
 	m_drawable->SetColor(col::Blueish);
 	m_drawable->OnDraw.Connect(this, &CState_Game::DrawToWidget);
 
-	CScript* script = O.world->GetFs()->GetScript("deltatime");
-	script->Run();
 	/*
 	CBinaryTree<u32, CScript> bt;
 	bt.Insert(0, *script);
@@ -64,14 +61,14 @@ CState_Game::~CState_Game()
 // ----------------------------------------------------------------------//
 void CState_Game::Update( f32 dt, void *userData )
 {
-	O.world->Update( dt, userData );
+    O.world->Update( dt, userData );
 }
 
 // ----------------------------------------------------------------------//
 void CState_Game::Render( CDriver *driver )
 {
 	O.world->Render( driver );
-	m_drawable->Draw(driver);
+	m_drawable->Draw( driver );
 }
 
 // ----------------------------------------------------------------------//
@@ -87,23 +84,23 @@ void CState_Game::OnEnter()
 
 }
 // ----------------------------------------------------------------------//
-void CState_Game::OnGui(CDriver* driver)
+void CState_Game::ShowGui( CCanvas* canvas )
 {
-    CEffect* fill = O.effect.color;
+    ImGui::ShowDemoWindow();
+    return;
 
-    CEffect::TTechnique techique;
-    fill->CopyTechnique(&techique);
-    fill->m_technique.depthtest = false;
+    //@TODO: fix flipped drawable
 
-    m_drawable->SetEffect(fill);
-    m_drawable->Render(driver);
+    //CEffect* fill = O.effect.color;
 
-    fill->SetTechnique(&techique);
+    //CEffect::TTechnique techique;
+    //fill->CopyTechnique(&techique);
+    //fill->m_technique.depthtest = false;
 
-    O.canvas->DrawString(driver,
-        10,
-        (s32)(O.canvas->Height() - 2 * O.font.engine->GetHeight()),
-        "The quick brown fox jumps over the lazy dog! :;.,'\"(?)+=*/=1234567890", col::Magenta);
+    //m_drawable->SetEffect(fill);
+    //m_drawable->Render( driver );
+
+    //fill->SetTechnique(&techique);
 }
 // ----------------------------------------------------------------------//
 

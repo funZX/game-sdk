@@ -11,11 +11,11 @@ public:
 	CState_AppLoad();
 	~CState_AppLoad();
 // ----------------------------------------------------------------------//	
-	void				Update( f32 dt, void *userData );
+    void				ShowGui( CCanvas* canvas );
+    void				Update( f32 dt, void *userData );
 	void				Render( CDriver *driver );
 
     void				OnEnter();
-    void				OnGui(rnr::CDriver* driver);
     void				OnExit();
 
 protected:

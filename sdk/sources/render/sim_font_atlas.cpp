@@ -100,6 +100,9 @@ void CFontAtlas::Create()
     m_imAtlas->GetTexDataAsAlpha8( &texBuf, &texWidth, &texHeight );
 
 	m_texture = SIM_NEW CTexture( m_name );
+
+    CDriver* driver = CDriver::GetSingletonPtr();
+    u32 tex = driver->BindTexture(0);
 	m_texture->Generate( texBuf
 		, texWidth
 		, texHeight
@@ -108,6 +111,7 @@ void CFontAtlas::Create()
 		, CTexture::Filter::Nearest
 		, CTexture::Format::Alpha
 	);
+    driver->BindTexture(tex);
 
 	InitEffect();
 	InitMaterial();
@@ -125,6 +129,7 @@ void CFontAtlas::InitEffect()
         "attribute vec4 a_Color;"
 
 		"uniform mat4 u_Matrix_Projection;"
+
 		"varying vec2 v_Tex0;"
 		"varying vec4 v_Color;"
 
@@ -172,7 +177,7 @@ void CFontAtlas::InitEffect()
 	static const s8* uniforms[] =
 	{
 		"u_Matrix_Projection",
-        "u_Sampler_Tex_0",
+        "u_Sampler_Tex_0"
 	};
 
 	u32 nUniform = 2;
@@ -200,7 +205,6 @@ void CFontAtlas::InitMaterial()
 // ----------------------------------------------------------------------//
 	m_material = SIM_NEW CMaterial( m_name );
 	m_material->SetTexture( m_texture, 0 );
-    m_material->SetDiffuse( col::Orange );
 	m_material->SetEffect( m_effect );
 }
 // ----------------------------------------------------------------------//

@@ -37,7 +37,7 @@ namespace sm
 {
 // ----------------------------------------------------------------------//
 
-class CStateMachine : public stl::CStack < IState* >, public sim::IUpdatable
+class CStateMachine : public stl::CStack < IState* >, public sigcxx::Trackable
 {
 protected:
 	IState*				m_prevState;
@@ -45,7 +45,7 @@ protected:
 	IState*				m_nextState;
 
 public:
-	CStateMachine();
+	CStateMachine( rnr::CCanvas* canvas );
 	virtual ~CStateMachine();
 
 	IState*				GetCurrentState()			{ m_currState; }
@@ -57,6 +57,9 @@ public:
 	void				GoBack();
 
 	void				PopAll();
+
+protected:
+    void				ShowGui( rnr::CCanvas* canvas, sigcxx::SLOT slot = nullptr );
 };
 
 // ----------------------------------------------------------------------//

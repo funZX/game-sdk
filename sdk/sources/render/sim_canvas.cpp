@@ -66,7 +66,6 @@ CCanvas::~CCanvas()
 void CCanvas::Resize( f32 w, f32 h )
 {
 	Bound( 0, 0, w, h );
-    ImGui::GetIO().DisplaySize = { m_size.x, m_size.y };
 }
 
 // ----------------------------------------------------------------------//
@@ -101,18 +100,18 @@ void CCanvas::ClearEvents()
 
 void CCanvas::Update(f32 dt, void* userData)
 {
+    ImGui::GetIO().DisplaySize = { m_size.x, m_size.y };
     ImGui::GetIO().DeltaTime = dt;
 
     ImGui::NewFrame();
+    OnGui.Emit( this );
+    ImGui::Render();
 }
 
 // ----------------------------------------------------------------------//
 
 void CCanvas::Render( CDriver* driver )
 {
-    ImGui::ShowDemoWindow();
-    ImGui::Render();
-
     u32 x = (u32)zpl_floor(m_position.x);
     u32 y = (u32)zpl_floor(m_position.y);
     u32 w = (u32)zpl_floor(m_size.x);
@@ -181,13 +180,6 @@ void CCanvas::Render( CDriver* driver )
 
         vs.m_vboData = nullptr;
     }
-}
-
-// ----------------------------------------------------------------------//
-
-void CCanvas::DrawString(CDriver* driver, s32 x, s32 y, const std::string& text, Vec4 color)
-{
-    //ImGui::Text(text.c_str());
 }
 
 // ----------------------------------------------------------------------//
