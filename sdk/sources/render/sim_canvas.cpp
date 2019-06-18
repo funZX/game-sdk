@@ -159,7 +159,7 @@ void CCanvas::Render( CDriver* driver )
             {
                 CVertexGroup vg;
 
-                vg.m_vboData = (u16*)idxBuffer;
+                vg.m_vboData = (u16*)&idxBuffer[pcmd->IdxOffset];
                 vg.m_vboSize = pcmd->ElemCount;
 
                 vg.SetMaterial((CMaterial*)pcmd->TextureId);
@@ -175,8 +175,6 @@ void CCanvas::Render( CDriver* driver )
 
                 vg.m_vboData = nullptr;
             }
-
-            idxBuffer += pcmd->ElemCount;
         }
 
         vs.m_vboData = nullptr;

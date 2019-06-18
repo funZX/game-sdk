@@ -643,8 +643,7 @@ void CDriver::SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData,
 			Value(attrib->m_compType),
 			GL_FALSE,
 			Value(vertexStride),
-			vertexData 
-			);
+			vertexData );
 
         attribInfo->m_vertexData = vertexData;
     }
@@ -654,13 +653,13 @@ void CDriver::SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData,
 
 // ----------------------------------------------------------------------//
 
-void CDriver::EnableVertexAttribute( CShader::TAttrib* attrib )
+void CDriver::EnableVertexAttribute( s32 location )
 {
-	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[ Value(attrib->m_compIndex) ];
+	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[ location ];
 
 	if( !attribInfo->m_isEnabled )
     {
-		glEnableVertexAttribArray( attrib->m_location );
+		glEnableVertexAttribArray( location );
         attribInfo->m_isEnabled = true;
     }
 
@@ -669,13 +668,13 @@ void CDriver::EnableVertexAttribute( CShader::TAttrib* attrib )
 
 // ----------------------------------------------------------------------//
 
-void CDriver::DisableVertexAttribute( CShader::TAttrib* attrib )
+void CDriver::DisableVertexAttribute( s32 location )
 {
-	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[Value(attrib->m_compIndex)];
+	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[ location ];
 
     if( attribInfo->m_isEnabled )
 	{
-		glDisableVertexAttribArray( attrib->m_location );
+		glDisableVertexAttribArray( location );
         attribInfo->m_isEnabled = false;
     }
 
@@ -697,10 +696,10 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isWorldMatrixDirty )
 	{
-		if( effect->m_isUsingWorldInverseMatrix )
+		if( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingWorldInverseMatrix ) )
 			zpl_mat4_inverse( GetWorldMatrix(), &m_worldInverseMatrix );
 
-        if (effect->m_isUsingWorldInverseTMatrix)
+        if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingWorldInverseTMatrix ) )
         {
             zpl_mat4_copy( &m_worldInverseTMatrix, &m_worldInverseMatrix );
             zpl_mat4_transpose( &m_worldInverseTMatrix );
@@ -711,10 +710,10 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isViewMatrixDirty )
 	{
-		if ( effect->m_isUsingViewInverseMatrix )
+		if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingViewInverseMatrix ) )
             zpl_mat4_inverse( GetViewMatrix(), &m_viewInverseMatrix );
 
-        if (effect->m_isUsingViewInverseTMatrix)
+        if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingViewInverseTMatrix ) )
         {
             zpl_mat4_copy(&m_viewInverseTMatrix, &m_viewInverseMatrix);
             zpl_mat4_transpose(&m_viewInverseTMatrix);
@@ -725,7 +724,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isWorldViewMatrixDirty )
 	{
-		if ( effect->m_isUsingWorldViewMatrix )
+		if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingWorldViewMatrix ) )
 			zpl_mat4_mul( &m_worldViewMatrix, GetWorldMatrix(), GetViewMatrix());
 
 		m_isWorldViewMatrixDirty = false;
@@ -733,7 +732,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isViewProjectionMatrixDirty )
 	{
-		if ( effect->m_isUsingViewProjectionMatrix )
+		if (zpl_bit_get( effect->m_uniformMask, CEffect::isUsingViewProjectionMatrix ) )
             zpl_mat4_mul( &m_viewProjectionMatrix, GetViewMatrix(), GetProjectionMatrix());
 
 		m_isViewProjectionMatrixDirty = false;
@@ -741,7 +740,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isWorldViewProjectionMatrixDirty )
 	{
-		if ( effect->m_isUsingWorldViewProjectionMatrix )
+		if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingWorldViewProjectionMatrix ) )
 		{
 			static Mat4 m;
 
@@ -754,7 +753,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isNormalMatrixDirty )
 	{
-		if ( effect->m_isUsingNormalMatrix )
+		if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingNormalMatrix ) )
 			ComputeNormalMatrix();
 
 		m_isNormalMatrixDirty = false;

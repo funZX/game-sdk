@@ -87,7 +87,7 @@ void CState_Game::OnEnter()
 // ----------------------------------------------------------------------//
 void CState_Game::ShowGui( CCanvas* canvas )
 {
-    //ImGui::ShowDemoWindow();
+    ImGui::ShowDemoWindow();
 
     //@TODO: fix flipped drawable
 

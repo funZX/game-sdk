@@ -50,8 +50,8 @@ void CWorld::Render( CDriver *driver )
 	if( !m_isVisible )
 		return;
 
-	static CSkyBox* skybox = m_fs->GetSkybox("sunny");
-	skybox->Render( driver );
+    static CSkyBox* skybox = m_fs->GetSkybox("sunny");
+    skybox->Render(driver);
 
 	m_scene->Render( driver );
 }

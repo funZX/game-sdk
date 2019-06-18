@@ -296,8 +296,8 @@ public:
 
 	// ------------------------------------------------------------------//
 	void                        SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData, CVertexSource::AttributeStride vertexStride );
-    void                        EnableVertexAttribute( CShader::TAttrib* attrib );
-    void                        DisableVertexAttribute( CShader::TAttrib* attrib );
+    void                        EnableVertexAttribute( s32 location );
+    void                        DisableVertexAttribute( s32 location );
 	// ------------------------------------------------------------------//
 	void						UpdateUniforms( CEffect *effect );
 	void						SetUniform( CShader::TUniform* uni );

@@ -11615,7 +11615,7 @@ zpl_i32 zpl_next_pow2(zpl_i32 x) {
 }
 
 void zpl_bit_set(zpl_u32* x, zpl_u32 bit) { *x = *x | (1 << bit); }
-zpl_b8 zpl_bit_get(zpl_u32 x, zpl_u32 bit) { return (x && (1 << bit)); }
+zpl_b8 zpl_bit_get(zpl_u32 x, zpl_u32 bit) { return (x & (1 << bit)); }
 void zpl_bit_reset(zpl_u32* x, zpl_u32 bit) { *x = *x & ~(1 << bit); }
 
 zpl_f32 zpl_to_radians(zpl_f32 degrees) { return degrees * ZPL_TAU / 360.0f; }

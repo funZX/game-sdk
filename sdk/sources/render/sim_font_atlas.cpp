@@ -124,7 +124,7 @@ void CFontAtlas::Create()
 void CFontAtlas::InitEffect()
 {
 	const s8* vsource =
-		"attribute vec4 a_ScreenPosL;"
+		"attribute vec2 a_ScreenPosL;"
 		"attribute vec2 a_TexCoord_0;"
         "attribute vec4 a_Color;"
 
@@ -138,7 +138,7 @@ void CFontAtlas::InitEffect()
 		"	v_Tex0			= a_TexCoord_0;"
 		"	v_Color			= a_Color / 256.0;"
 
-		"	gl_Position		= u_Matrix_Projection * a_ScreenPosL;"
+		"	gl_Position		= u_Matrix_Projection * vec4(a_ScreenPosL, 0.0, 1.0);"
 		"}";
 
 	// ----------------------------------------------------------------------//
