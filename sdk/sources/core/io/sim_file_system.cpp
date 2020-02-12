@@ -491,12 +491,11 @@ bool CFileSystem::LoadEffect(const json_t* jsonRoot, s32 index)
 	SIM_ASSERT(json_is_array(jsonAttributes));
 
 	u32 nAttrib = json_array_size(jsonAttributes);
-	effect->InitAttributes( nAttrib );
 	for (s32 k = 0; k < (s32)nAttrib; k++)
 	{
 		std::string attribute = json_string_value( json_array_get(jsonAttributes, k));
 
-		effect->AddAttribute( attribute, k );
+		effect->AddAttribute( attribute );
 	}
 
 	json_t*  jsonUniforms = json_object_get(jsonValue, "uniforms");

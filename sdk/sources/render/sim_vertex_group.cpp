@@ -44,10 +44,14 @@ CVertexGroup::CVertexGroup()
 
 	m_vboSize		= 0;
 	m_vboData       = nullptr;
+    m_vboOffset     = 0;
 
 	m_material      = nullptr;
 
 	m_boneHierarchy = nullptr;
+
+    glGenBuffers(1, &m_iD);
+    SIM_CHECK_OPENGL();
 }
 
 // ----------------------------------------------------------------------//
@@ -67,19 +71,16 @@ CVertexGroup::~CVertexGroup()
 }
 
 // ----------------------------------------------------------------------//
-
-u32 CVertexGroup::Generate()
+void CVertexGroup::BufferData( u32 glUsage, bool isDataOwned )
 {
-	glGenBuffers( 1, &m_iD );
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_iD );
-	glBufferData( GL_ELEMENT_ARRAY_BUFFER, m_vboSize * sizeof(u16), m_vboData, GL_DYNAMIC_DRAW);
-	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_iD );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, m_vboSize, m_vboData, glUsage );
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
-	SIM_CHECK_OPENGL();
+    if ( isDataOwned )
+        SIM_SAFE_DELETE_ARRAY( m_vboData );
 
-	SIM_SAFE_DELETE_ARRAY( m_vboData );
-
-	return m_iD;
+    SIM_CHECK_OPENGL();
 }
 
 // ----------------------------------------------------------------------//

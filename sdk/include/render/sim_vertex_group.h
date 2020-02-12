@@ -64,6 +64,7 @@ public:
 	// ------------------------------------------------------------------//
 	inline u16						GetVboSize() const		{ return m_vboSize; }
 	inline u16*						GetVboData() const		{ return m_vboData; }
+    inline u32                      GetVboOffset() const    { return m_vboOffset; }
 
 	CMaterial*						GetMaterial()			{ return m_material; }
 	void							SetMaterial( CMaterial *mtl );
@@ -72,13 +73,14 @@ public:
 	void							SetVertexSource( CVertexSource* vertexSource )	{ m_vertexSource = vertexSource; }
 
 	inline u32						GetID()					{ return m_iD; }
-	u32								Generate();
+    void                            BufferData( u32 glUsage = GL_STATIC_DRAW, bool isDataOwned = true );
 	// ------------------------------------------------------------------//
 
     virtual bool					Load(io::CMemStream* ms);
     virtual bool					Save(io::CMemStream* ms);
 
 protected:
+
 	// ------------------------------------------------------------------//
 	u32								m_iD;
 	CMaterial*						m_material;
@@ -88,6 +90,7 @@ public:
 
 	u16								m_vboSize;
 	u16*							m_vboData;
+    u32                             m_vboOffset;
 
 	CBoneHierarchy*					m_boneHierarchy;
 };

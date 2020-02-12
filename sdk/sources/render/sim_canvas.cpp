@@ -40,7 +40,15 @@ namespace rnr
 CCanvas::CCanvas( CFontAtlas* fontAtlas )
 	: CRect2D()
 {
-    m_fontAtlas = fontAtlas;
+    m_fontAtlas     = fontAtlas;
+    m_vertexSource  = SIM_NEW CVertexSource;
+    m_vertexGroup   = SIM_NEW CVertexGroup;
+
+    m_vertexSource->m_type = CVertexSource::Type::Triangle;
+    m_vertexSource->m_vertexFormat = CVertexSource::AttributeFormat::ScreenPos | CVertexSource::AttributeFormat::TexCoord_0 | CVertexSource::AttributeFormat::Color;
+    m_vertexSource->m_vertexStride = CVertexSource::AttributeStride::ScreenPos + CVertexSource::AttributeStride::TexCoord_0 + CVertexSource::AttributeStride::Color;
+
+    m_vertexGroup->SetVertexSource( m_vertexSource );
 
     ImGui::CreateContext( m_fontAtlas->m_imAtlas );
     ImGui::StyleColorsDark();
@@ -59,6 +67,12 @@ CCanvas::CCanvas( const std::string& name, CFontAtlas* fontAtlas)
 
 CCanvas::~CCanvas()
 {
+    m_vertexSource->m_vboData   = nullptr;
+    m_vertexGroup->m_vboData    = nullptr;
+
+    SIM_SAFE_DELETE( m_vertexSource );
+    SIM_SAFE_DELETE( m_vertexGroup );
+
     ImGui::DestroyContext();
 }
 
@@ -136,13 +150,15 @@ void CCanvas::Render( CDriver* driver )
         const ImDrawVert* vtxBuffer = cmdList->VtxBuffer.Data;
         const ImDrawIdx* idxBuffer = cmdList->IdxBuffer.Data;
 
-        CVertexSource vs;
-        vs.m_type = CVertexSource::Type::Triangle;
-        vs.m_vertexFormat = CVertexSource::AttributeFormat::ScreenPos | CVertexSource::AttributeFormat::TexCoord_0 | CVertexSource::AttributeFormat::Color;
-        vs.m_vertexStride = CVertexSource::AttributeStride::ScreenPos + CVertexSource::AttributeStride::TexCoord_0 + CVertexSource::AttributeStride::Color;
+        m_vertexSource->m_vboData = (f32*)cmdList->VtxBuffer.Data;
+        m_vertexSource->m_vboSize = cmdList->VtxBuffer.Size * m_vertexSource->GetVertexStride();
+        m_vertexSource->BufferData( GL_STREAM_DRAW, false );
+        SIM_CHECK_OPENGL();
 
-        vs.m_vboData = (f32*)vtxBuffer;
-        vs.m_vboSize = cmdList->VtxBuffer.Size;
+        m_vertexGroup->m_vboData = (u16*)cmdList->IdxBuffer.Data;
+        m_vertexGroup->m_vboSize = cmdList->IdxBuffer.Size * sizeof(u16);
+        m_vertexGroup->BufferData( GL_STREAM_DRAW, false );
+        SIM_CHECK_OPENGL();
 
         for (s32 i = 0; i < cmdList->CmdBuffer.Size; i++)
         {
@@ -157,27 +173,19 @@ void CCanvas::Render( CDriver* driver )
 
             if (clipRect.x < fbWidth && clipRect.y < fbHeight && clipRect.z >= 0.0f && clipRect.w >= 0.0f)
             {
-                CVertexGroup vg;
-
-                vg.m_vboData = (u16*)&idxBuffer[pcmd->IdxOffset];
-                vg.m_vboSize = pcmd->ElemCount;
-
-                vg.SetMaterial((CMaterial*)pcmd->TextureId);
-                vg.SetVertexSource(&vs);
-
                 u32 x = (u32)zpl_floor(clipRect.x);
                 u32 y = (u32)zpl_floor(fbHeight - clipRect.w);
                 u32 w = (u32)zpl_floor(clipRect.z - clipRect.x);
                 u32 h = (u32)zpl_floor(clipRect.w - clipRect.y);
 
-                driver->SetScissor(x, y, w, h);
-                driver->Render( &vg );
+                m_vertexGroup->m_vboSize    = pcmd->ElemCount * sizeof(u16);
+                m_vertexGroup->m_vboOffset  = pcmd->IdxOffset * sizeof(u16);
+                m_vertexGroup->SetMaterial((CMaterial*)pcmd->TextureId);
 
-                vg.m_vboData = nullptr;
+                driver->SetScissor(x, y, w, h);
+                driver->Render( m_vertexGroup );
             }
         }
-
-        vs.m_vboData = nullptr;
     }
 }
 

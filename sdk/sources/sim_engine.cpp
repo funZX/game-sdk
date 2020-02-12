@@ -159,9 +159,8 @@ void CEngine::InitEffect()
     };
 
     u32 nAttrib = 2;
-    m_effect->InitAttributes(nAttrib);
     for (u32 k = 0; k < nAttrib; k++)
-        m_effect->AddAttribute(attributes[k], k);
+        m_effect->AddAttribute(attributes[k]);
 
     static const s8* uniforms[] =
     {
@@ -376,6 +375,8 @@ void CEngine::Render( CDriver *driver )
         m_canvas->Render( driver );
     }
 	Off2D();
+
+    driver->Flush();
 }
 
 // ----------------------------------------------------------------------//

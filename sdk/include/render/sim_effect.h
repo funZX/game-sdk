@@ -79,10 +79,10 @@ public:
 	inline TTechnique*			GetTechnique() { return &m_technique; }
 	inline void					SetTechnique( const TTechnique* technique ) { SIM_MEMCPY( &m_technique, technique, sizeof(m_technique)); }
 
-	void						InitAttributes( unsigned int numAttrib );
-	void						InitUniforms( unsigned int numUniform );
+	void						InitAttributes();
+	void						AddAttribute(const std::string& name);
 
-	void						AddAttribute( const std::string& name, int index );
+	void						InitUniforms( unsigned int numUniform );
 	void						AddUniform( const std::string& name, int index);
 
     virtual bool				Load(io::CMemStream* ms);
@@ -132,7 +132,7 @@ protected:
 	CShader::TUniform*			m_uniforms;
     u32                         m_uniformMask;
 
-	s32							m_numAttrib;
+	u32							m_numAttribs;
 	CShader::TAttrib*			m_attributes;
     u32                         m_attributeMask;
 

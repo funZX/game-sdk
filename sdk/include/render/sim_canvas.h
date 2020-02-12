@@ -44,6 +44,8 @@ namespace rnr
 
 class CCamera;
 class CFontAtlas;
+class CVertexGroup;
+class CVertexSource;
 
 class CCanvas : public CRect2D
 {
@@ -70,6 +72,9 @@ public: // Signals
 	// ------------------------------------------------------------------//
 protected:
     CFontAtlas*                 m_fontAtlas;
+
+    CVertexSource*              m_vertexSource;
+    CVertexGroup*               m_vertexGroup;
 	// ------------------------------------------------------------------//
 };
 

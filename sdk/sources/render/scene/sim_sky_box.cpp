@@ -106,13 +106,13 @@ void CSkyBox::Generate( f32 size,
 	s32 numVertices			= 24;
 	s32 numIndices			= 36;
 
-	m_vertexGroup->m_vboData		= SIM_NEW u16[ numIndices ];
-	m_vertexGroup->m_vboSize		= numIndices;
+    m_vertexGroup->m_vboSize = numIndices * sizeof(u16);
+    m_vertexGroup->m_vboData = SIM_NEW u16[ numIndices ];
 
 	m_vertexGroup->m_vertexSource->m_type			= CVertexSource::Type::Triangle;
 	m_vertexGroup->m_vertexSource->m_vertexFormat	= CVertexSource::AttributeFormat::WorldPos;
 	m_vertexGroup->m_vertexSource->m_vertexStride	= CVertexSource::AttributeStride::WorldPos;
-	m_vertexGroup->m_vertexSource->m_vboSize		= numVertices;
+	m_vertexGroup->m_vertexSource->m_vboSize		= numVertices * m_vertexGroup->m_vertexSource->GetVertexStride();
 
 	s32 vtxSize						= Value(m_vertexGroup->m_vertexSource->m_vertexStride) / sizeof( f32 );
 	s32 newFloats 					= numVertices * vtxSize;
@@ -131,8 +131,10 @@ void CSkyBox::Generate( f32 size,
 		curVertex[ 1 ] = cubeVerts[ i3 + 1 ] * size;
 		curVertex[ 2 ] = cubeVerts[ i3 + 2 ] * size;
 	}
+    m_vertexGroup->m_vertexSource->BufferData( GL_STATIC_DRAW );
 
 	SIM_MEMCPY( m_vertexGroup->m_vboData, cubeIndices, numIndices * sizeof( u16 ) );
+    m_vertexGroup->BufferData(GL_STATIC_DRAW);
 
 	m_texture->Generate( front, back, left, right, top, bottom );
 }
@@ -141,16 +143,17 @@ void CSkyBox::Generate( f32 size,
 
 void CSkyBox::Render( CDriver *driver )
 {
+    return;
 	driver->SetDepthRange( 0.99f, 1.0f );
 
 	driver->SetMaterialAmbient( m_material->GetAmbient() );
 	driver->SetMaterialDiffuse( m_material->GetDiffuse() );
 	driver->SetMaterialSpecular( m_material->GetSpecular() );
 	driver->SetMaterialEmissive( m_material->GetEmissive() );
-	driver->SetMaterialReflective(m_material->GetReflective());
+	driver->SetMaterialReflective( m_material->GetReflective() );
 
-	driver->SetMaterialShininess(m_material->GetShininess());
-	driver->SetMaterialRefraction(m_material->GetRefraction());
+	driver->SetMaterialShininess( m_material->GetShininess() );
+	driver->SetMaterialRefraction( m_material->GetRefraction() );
 
 	driver->SetTextureChannel( CDriver::TextureChannel::Texture_4 );
 	driver->BindTexture( CDriver::TextureTarget::TextureCubeMap, m_texture->GetID() );
@@ -207,17 +210,16 @@ void CSkyBox::InitEffect()
 		"	gl_FragColor = col;"
 		"}";
 
-	static const char* attributes[] =
-	{
-		"a_WorldPosL"
-	};
+    static const char* attributes[] =
+    {
+        "a_WorldPosL"
+    };
 
-	m_effect = SIM_NEW CEffect( m_name );
+    m_effect = SIM_NEW CEffect(m_name);
 
-	u32 nAttrib = 1;
-	m_effect->InitAttributes(nAttrib);
-	for ( u32 k = 0; k < nAttrib; k++ )
-		m_effect->AddAttribute(attributes[k], k);
+    u32 nAttrib = 1;
+    for (u32 k = 0; k < nAttrib; k++)
+        m_effect->AddAttribute(attributes[k]);
 
 	static const char* uniforms[] =
 	{

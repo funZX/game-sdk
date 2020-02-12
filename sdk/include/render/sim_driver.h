@@ -147,8 +147,8 @@ public:
 
 	typedef struct
 	{
-        void*       m_vertexData;
-        bool        m_isEnabled;
+        CVertexSource*         m_vertexSource;
+        bool                   m_isEnabled;
 	} TVertexAttributeInfo;
 	
 	// ------------------------------------------------------------------//
@@ -170,6 +170,7 @@ public:
 	// ------------------------------------------------------------------//
 	void						Clear( Vec4 color );
 	void						ClearColor( Vec4 color );
+    void                        Flush();
 	// ------------------------------------------------------------------//
 
 	TextureChannel				SetTextureChannel( TextureChannel textureSelect );
@@ -295,7 +296,7 @@ public:
 	void						SetDepthRange( f32 start, f32 end );
 
 	// ------------------------------------------------------------------//
-	void                        SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData, CVertexSource::AttributeStride vertexStride );
+	void                        SetVertexAttribute( CShader::TAttrib* attrib, CVertexSource* vertexSource );
     void                        EnableVertexAttribute( s32 location );
     void                        DisableVertexAttribute( s32 location );
 	// ------------------------------------------------------------------//
@@ -417,6 +418,7 @@ protected:
 
 	// ------------------------------------------------------------------//
 	CVertexSource*				m_crtVertexSource;
+    CVertexGroup*               m_crtVertexGroup;
 	CRenderTexture*				m_crtRenderTexture;
 	// ------------------------------------------------------------------//
 	u32							m_drawCallCount;
