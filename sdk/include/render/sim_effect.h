@@ -29,6 +29,7 @@
 
 #include <core/sim_interfaces.h>
 #include <core/sim_list.h>
+#include <core/sim_core.h>
 
 #include <render/sim_render.h>
 #include <render/sim_driver.h>
@@ -78,10 +79,10 @@ public:
 	inline TTechnique*			GetTechnique() { return &m_technique; }
 	inline void					SetTechnique( const TTechnique* technique ) { SIM_MEMCPY( &m_technique, technique, sizeof(m_technique)); }
 
-	void						InitAttributes( unsigned int numAttrib );
-	void						InitUniforms( unsigned int numUniform );
+	void						InitAttributes();
+	void						AddAttribute(const std::string& name);
 
-	void						AddAttribute( const std::string& name, int index );
+	void						InitUniforms( unsigned int numUniform );
 	void						AddUniform( const std::string& name, int index);
 
     virtual bool				Load(io::CMemStream* ms);
@@ -96,26 +97,44 @@ protected:
 	void						SetUniforms();
 	// ------------------------------------------------------------------//
 protected:
+    enum UniformMask{
+        isUsingWorldInverseMatrix           = (1 << 0),
+        isUsingWorldInverseTMatrix          = (1 << 1),
+        isUsingViewInverseMatrix            = (1 << 2),
+        isUsingViewInverseTMatrix           = (1 << 3),
+        isUsingNormalMatrix                 = (1 << 4),
+        isUsingWorldViewMatrix              = (1 << 5),
+        isUsingViewProjectionMatrix         = (1 << 6),
+        isUsingWorldViewProjectionMatrix    = (1 << 7),
+    };
+
+    enum AttributeMask {
+        isUsingScreenPos                    = (1 <<  0), //CVertexSource::ScreenPos
+        isUsingWorldPos                     = (1 <<  1), //CVertexSource::WorldPos
+        isUsingTexCoord_0                   = (1 <<  2), //CVertexSource::TexCoord_0
+        isUsingTexCoord_1                   = (1 <<  3), //CVertexSource::TexCoord_1
+        isUsingTexCoord_2                   = (1 <<  4), //CVertexSource::TexCoord_2
+        isUsingTexCoord_3                   = (1 <<  5), //CVertexSource::TexCoord_3
+        isUsingColor                        = (1 <<  6), //CVertexSource::Color
+        isUsingNormal                       = (1 <<  7), //CVertexSource::Normal
+        isUsingTangent                      = (1 <<  8), //CVertexSource::Tangent
+        isUsingBinormal                     = (1 <<  9), //CVertexSource::Binormal
+        isUsingWeightArraySize              = (1 << 10), //CVertexSource::WeightArraySize
+        isUsingWeightArray                  = (1 << 11), //CVertexSource::WeightArray
+    };
 
 	// ------------------------------------------------------------------//
 	u32							m_iD;
 
 	CTexture*					m_textures[ CDriver::k_Texture_Channels_Count ];
 
-	bool						m_isUsingWorldInverseMatrix;
-	bool						m_isUsingWorldInverseTMatrix;
-	bool						m_isUsingViewInverseMatrix;
-	bool						m_isUsingViewInverseTMatrix;
-	bool						m_isUsingNormalMatrix;
-	bool						m_isUsingWorldViewMatrix;
-	bool						m_isUsingViewProjectionMatrix;
-	bool						m_isUsingWorldViewProjectionMatrix;
-
 	s32							m_numUniforms;
 	CShader::TUniform*			m_uniforms;
+    u32                         m_uniformMask;
 
-	s32							m_numAttrib;
+	u32							m_numAttribs;
 	CShader::TAttrib*			m_attributes;
+    u32                         m_attributeMask;
 
 	CShader*					m_vshader;
 	CShader*					m_pshader;

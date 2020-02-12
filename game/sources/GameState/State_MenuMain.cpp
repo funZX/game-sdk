@@ -21,10 +21,15 @@ CState_MenuMain::~CState_MenuMain()
     SIM_PRINT("\n~CState_MenuMain");
 }
 // ----------------------------------------------------------------------//
+void CState_MenuMain::ShowGui( CCanvas* canvas )
+{
+
+}
+// ----------------------------------------------------------------------//
 void CState_MenuMain::Update( f32 dt, void *userData )
 {
 	O.world->Update( dt, userData );
-	//O.game->GoNext(SIM_NEW CState_Game());
+	O.game->GoNext( SIM_NEW CState_Game() );
 }
 
 // ----------------------------------------------------------------------//
@@ -38,12 +43,8 @@ void CState_MenuMain::OnEnter()
 
 }
 // ----------------------------------------------------------------------//
-void CState_MenuMain::OnGui( CDriver* driver )
-{
-
-}
-// ----------------------------------------------------------------------//
 void CState_MenuMain::OnExit()
 {
+
 }
 // ----------------------------------------------------------------------//

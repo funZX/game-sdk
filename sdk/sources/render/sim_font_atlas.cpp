@@ -60,7 +60,7 @@ CFontAtlas::CFontAtlas( const std::string &name )
 
 CFontAtlas::~CFontAtlas()
 {
-    m_imAtlas->ClearFonts();
+    m_imAtlas->Clear();
     SIM_SAFE_DELETE( m_imAtlas );
 
 	SIM_SAFE_DELETE( m_material );
@@ -79,10 +79,11 @@ CFont* CFontAtlas::AddFont( const std::string name, io::CMemStream* ms, f32 pixe
     fontConfig.FontDataOwnedByAtlas = true;
     fontConfig.SizePixels = pixelSize;
     fontConfig.FontDataSize = ms->GetSize();
-    fontConfig.FontData = (void*) SIM_NEW u8[ fontConfig.FontDataSize ];
-    SIM_MEMCPY( fontConfig.FontData, ms->Read(0), fontConfig.FontDataSize );
 
-    font->m_imFont      = m_imAtlas->AddFontFromMemoryTTF(fontConfig.FontData, fontConfig.FontDataSize, (f32)pixelSize, &fontConfig);
+    void* buffer = (void*) SIM_NEW u8[ fontConfig.FontDataSize ];
+    SIM_MEMCPY( buffer, ms->Read(0), fontConfig.FontDataSize );
+
+    font->m_imFont      = m_imAtlas->AddFontFromMemoryTTF( buffer, fontConfig.FontDataSize, (f32)pixelSize, &fontConfig );
     font->m_pixelSize   = pixelSize;
 
     return font;
@@ -99,6 +100,9 @@ void CFontAtlas::Create()
     m_imAtlas->GetTexDataAsAlpha8( &texBuf, &texWidth, &texHeight );
 
 	m_texture = SIM_NEW CTexture( m_name );
+
+    CDriver* driver = CDriver::GetSingletonPtr();
+    u32 tex = driver->BindTexture( CDriver::TextureTarget::Texture2D, 0 );
 	m_texture->Generate( texBuf
 		, texWidth
 		, texHeight
@@ -107,13 +111,12 @@ void CFontAtlas::Create()
 		, CTexture::Filter::Nearest
 		, CTexture::Format::Alpha
 	);
+    driver->BindTexture(CDriver::TextureTarget::Texture2D, tex);
 
 	InitEffect();
 	InitMaterial();
 
     m_imAtlas->ClearTexData();
-    m_imAtlas->ClearInputData();
-
     m_imAtlas->TexID = m_material;
 }
 
@@ -121,21 +124,21 @@ void CFontAtlas::Create()
 void CFontAtlas::InitEffect()
 {
 	const s8* vsource =
-		"attribute vec4 a_ScreenPosL;"
+		"attribute vec2 a_ScreenPosL;"
 		"attribute vec2 a_TexCoord_0;"
         "attribute vec4 a_Color;"
 
-		"uniform mat4 u_Matrix_WorldViewProjection;"
-        "uniform vec4 u_Material_Diffuse;"
+		"uniform mat4 u_Matrix_Projection;"
+
 		"varying vec2 v_Tex0;"
 		"varying vec4 v_Color;"
 
 		"void main()"
 		"{"
 		"	v_Tex0			= a_TexCoord_0;"
-		"	v_Color			= a_Color * u_Material_Diffuse;"
+		"	v_Color			= a_Color / 256.0;"
 
-		"	gl_Position		= u_Matrix_WorldViewProjection * a_ScreenPosL;"
+		"	gl_Position		= u_Matrix_Projection * vec4(a_ScreenPosL, 0.0, 1.0);"
 		"}";
 
 	// ----------------------------------------------------------------------//
@@ -152,44 +155,43 @@ void CFontAtlas::InitEffect()
 		"{"
 		"	vec4 tex = texture2D( u_Sampler_Tex_0, v_Tex0 );"
 		"	vec4 col = v_Color;"
-		"	col.a	 = tex.a;"
+        "	col.a    = tex.a;"
 
 		"	gl_FragColor = col;"
 		"}";
 
-	static const s8* attributes[] =
-	{
-		"a_ScreenPosL",
-		"a_TexCoord_0"
-	};
-	
-	m_effect = SIM_NEW CEffect( m_name );
+    m_effect = SIM_NEW CEffect(m_name);
 
-	u32 nAttrib = 2;
-	m_effect->InitAttributes(nAttrib);
+	static const s8* attributes[] =
+    {
+        "a_ScreenPosL",
+        "a_TexCoord_0",
+        "a_Color"
+    };
+	
+	u32 nAttrib = 3;
 	for (u32 k = 0; k < nAttrib; k++)
-		m_effect->AddAttribute(attributes[k], k);
+		m_effect->AddAttribute(attributes[k]);
 
 	static const s8* uniforms[] =
 	{
-		"u_Matrix_WorldViewProjection",
-        "u_Sampler_Tex_0",
-        "u_Material_Diffuse"
+		"u_Matrix_Projection",
+        "u_Sampler_Tex_0"
 	};
 
-	u32 nUniform = 3;
+	u32 nUniform = 2;
 	m_effect->InitUniforms(nUniform);
 	for (u32 k = 0; k < nUniform; k++)
 		m_effect->AddUniform(uniforms[k], k);
 
 	m_effect->Load( vsource, psource );
 
-	m_effect->m_technique.depthtest = true;
-	m_effect->m_technique.depthmask = true;
-	m_effect->m_technique.cullface = true;
+	m_effect->m_technique.depthtest = false;
+	m_effect->m_technique.depthmask = false;
+	m_effect->m_technique.cullface  = false;
 	m_effect->m_technique.alphatest = false;
 
-	m_effect->m_technique.blending = true;
+	m_effect->m_technique.blending  = true;
 	m_effect->m_technique.blendfunc.equation = GL_FUNC_ADD;
 	m_effect->m_technique.blendfunc.src = GL_SRC_ALPHA;
 	m_effect->m_technique.blendfunc.dst = GL_ONE_MINUS_SRC_ALPHA;
@@ -202,7 +204,6 @@ void CFontAtlas::InitMaterial()
 // ----------------------------------------------------------------------//
 	m_material = SIM_NEW CMaterial( m_name );
 	m_material->SetTexture( m_texture, 0 );
-	m_material->SetDiffuse( col::Green );
 	m_material->SetEffect( m_effect );
 }
 // ----------------------------------------------------------------------//

@@ -11,11 +11,11 @@ public:
 	CState_Game();
 	~CState_Game();
 // ----------------------------------------------------------------------//	
-	void				Update( f32 dt, void *userData );
+    void				ShowGui( CCanvas* canvas );
+    void				Update( f32 dt, void *userData );
 	void				Render( CDriver *driver );
 
     void				OnEnter();
-    void				OnGui (CDriver* driver );
     void				OnExit();
 
 protected:
@@ -25,7 +25,6 @@ protected:
 protected:
 	CFileSystem*		m_fs;
 
-	CMesh*				m_mesh;
 	CDrawable*	        m_drawable;
 // ----------------------------------------------------------------------//
 };

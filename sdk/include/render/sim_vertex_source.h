@@ -154,20 +154,20 @@ public:
 	// ------------------------------------------------------------------//
 
 	inline f32*					GetVboData() const		{ return m_vboData; }
-	inline u32					GetVboSize() const		{ return m_vboSize; }
-	inline AttributeStride		GetVertexStride() const { return m_vertexStride; }
-	inline AttributeFormat		GetVertexFormat() const	{ return m_vertexFormat; }
+    inline u32					GetVboSize() const { return m_vboSize; }
+    inline u32		            GetVertexStride() const { return Value(m_vertexStride); }
+    inline u32		            GetVertexFormat() const { return Value(m_vertexFormat); }
 	inline Type					GetType() const			{ return m_type; }
 	inline u32					GetID()					{ return m_iD; }
 
-	u32							Generate();
+    void                        BufferData( u32 glUsage = GL_STATIC_DRAW, bool isDataOwned = true );
 
     virtual bool				Load(io::CMemStream* ms);
     virtual bool				Save(io::CMemStream* ms);
 	// ------------------------------------------------------------------//
 
 protected:
-	// ------------------------------------------------------------------//
+    // ------------------------------------------------------------------//
 	u32							m_iD;
 
 public:

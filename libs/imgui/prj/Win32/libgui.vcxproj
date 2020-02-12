@@ -26,6 +26,9 @@
     <ClInclude Include="..\..\include\imstb_textedit.h" />
     <ClInclude Include="..\..\include\imstb_truetype.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="imgui.natvis" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8D7C8554-01D5-4DCE-B6E0-1159702CF91A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

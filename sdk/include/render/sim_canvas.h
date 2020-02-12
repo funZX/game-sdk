@@ -44,6 +44,8 @@ namespace rnr
 
 class CCamera;
 class CFontAtlas;
+class CVertexGroup;
+class CVertexSource;
 
 class CCanvas : public CRect2D
 {
@@ -52,22 +54,27 @@ public:
 	CCanvas( const std::string& name, CFontAtlas* fontAtlas );
 	virtual ~CCanvas();
 	// ------------------------------------------------------------------//
-    void                DrawString(CDriver* driver, s32 x, s32 y, const std::string& text, Vec4 color);
+    void				        Resize( f32 width, f32 height );
 
-    void				Resize( f32 width, f32 height );
+	virtual void		        Update( f32 dt, void *userData );
+	virtual void		        Render( CDriver* driver );
 
-	virtual void		Update( f32 dt, void *userData );
-	virtual void		Render( CDriver* driver );
+	virtual void		        PointerDown( u32 x, u32 y );
+	virtual void		        PointerDrag( u32 x, u32 y );
+	virtual void		        PointerUp( u32 x, u32 y );
 
-	virtual void		PointerDown( u32 x, u32 y );
-	virtual void		PointerDrag( u32 x, u32 y );
-	virtual void		PointerUp( u32 x, u32 y );
+	virtual void		        ClearEvents();
 
-	virtual void		ClearEvents();
+public: // Signals
+    // ------------------------------------------------------------------//
+    sigcxx::Signal<CCanvas*>	OnGui;
+
 	// ------------------------------------------------------------------//
 protected:
-    ImGuiContext*       m_imContext;
-    ImGuiStyle*         m_imStyle;
+    CFontAtlas*                 m_fontAtlas;
+
+    CVertexSource*              m_vertexSource;
+    CVertexGroup*               m_vertexGroup;
 	// ------------------------------------------------------------------//
 };
 

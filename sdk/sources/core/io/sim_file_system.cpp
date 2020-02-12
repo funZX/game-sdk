@@ -172,8 +172,8 @@ void CFileSystem::Close()
 	SIM_SAFE_DELETE_ARRAY( m_steps );
 
 	u32 tex =
-	m_driver->BindTexture(0);
-	m_driver->BindTexture(tex);
+	m_driver->BindTexture( CDriver::TextureTarget::Texture2D, 0 );
+	m_driver->BindTexture( CDriver::TextureTarget::Texture2D, tex );
 }
 
 
@@ -342,9 +342,9 @@ bool CFileSystem::LoadTexture(const json_t* jsonRoot, s32 index)
 	CTexture* texture	= SIM_NEW CTexture( name );
 
 	u32 tex = 
-	m_driver->BindTexture( 0 );
+	m_driver->BindTexture( CDriver::TextureTarget::Texture2D, 0 );
 	texture->Generate( &ms, t, w, f ); 
-	m_driver->BindTexture( tex );
+	m_driver->BindTexture( CDriver::TextureTarget::Texture2D, tex );
 
 	m_lzmaStream->CloseCurrent(&m_buffer);
 	m_buffer = nullptr;
@@ -491,12 +491,11 @@ bool CFileSystem::LoadEffect(const json_t* jsonRoot, s32 index)
 	SIM_ASSERT(json_is_array(jsonAttributes));
 
 	u32 nAttrib = json_array_size(jsonAttributes);
-	effect->InitAttributes( nAttrib );
 	for (s32 k = 0; k < (s32)nAttrib; k++)
 	{
 		std::string attribute = json_string_value( json_array_get(jsonAttributes, k));
 
-		effect->AddAttribute( attribute, k );
+		effect->AddAttribute( attribute );
 	}
 
 	json_t*  jsonUniforms = json_object_get(jsonValue, "uniforms");

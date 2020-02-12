@@ -11,11 +11,12 @@ public:
 	CState_MenuMain();
 	~CState_MenuMain();
 // ----------------------------------------------------------------------//	
-	void				Update( f32 dt, void *userData );
+    void				ShowGui( CCanvas* canvas );
+    void				Update( f32 dt, void *userData );
 	void				Render( CDriver *driver );
 
-	void				OnEnter();
-    void				OnGui(rnr::CDriver* driver);
+    void				OnEnter();
+    void				OnCanvas( CDriver* driver );
 	void				OnExit();
 
 // ----------------------------------------------------------------------//

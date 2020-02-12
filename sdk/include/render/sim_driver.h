@@ -100,6 +100,12 @@ public:
 		TriangleStrips	= GL_TRIANGLE_STRIP,
 	};
 
+    enum class TextureTarget : u32
+    {
+        Texture2D       = GL_TEXTURE_2D,
+        TextureCubeMap  = GL_TEXTURE_CUBE_MAP,
+    };
+
 	// ------------------------------------------------------------------//
 	enum { k_Animation_Bones_Max = 64 };
 	// ------------------------------------------------------------------//
@@ -141,8 +147,8 @@ public:
 
 	typedef struct
 	{
-        void*       m_vertexData;
-        bool        m_isEnabled;
+        CVertexSource*         m_vertexSource;
+        bool                   m_isEnabled;
 	} TVertexAttributeInfo;
 	
 	// ------------------------------------------------------------------//
@@ -164,6 +170,7 @@ public:
 	// ------------------------------------------------------------------//
 	void						Clear( Vec4 color );
 	void						ClearColor( Vec4 color );
+    void                        Flush();
 	// ------------------------------------------------------------------//
 
 	TextureChannel				SetTextureChannel( TextureChannel textureSelect );
@@ -171,7 +178,7 @@ public:
 	CullingMode					SetCullingMode( CullingMode cullingMode );
 	MatrixMode					SetMatrixMode( MatrixMode matrixMode );
 	
-	u32							BindTexture ( u32 tex );
+	u32							BindTexture ( TextureTarget target, u32 tex );
 	CRenderTexture*				BindRenderTexture( CRenderTexture* framebuffer );
 
 	bool						EnableCulling( bool val );
@@ -289,9 +296,9 @@ public:
 	void						SetDepthRange( f32 start, f32 end );
 
 	// ------------------------------------------------------------------//
-	void                        SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData, CVertexSource::AttributeStride vertexStride );
-    void                        EnableVertexAttribute( CShader::TAttrib* attrib );
-    void                        DisableVertexAttribute( CShader::TAttrib* attrib );
+	void                        SetVertexAttribute( CShader::TAttrib* attrib, CVertexSource* vertexSource );
+    void                        EnableVertexAttribute( s32 location );
+    void                        DisableVertexAttribute( s32 location );
 	// ------------------------------------------------------------------//
 	void						UpdateUniforms( CEffect *effect );
 	void						SetUniform( CShader::TUniform* uni );
@@ -330,8 +337,7 @@ protected:
 
 	Mat4Stack*				    m_activeStack;
 
-	Mat4Stack				    m_textureStack[ k_Texture_Channels_Count ];
-	TextureChannel				m_textureChannel;
+	Mat4Stack				    m_textureStack;
 
 	Mat4					    m_worldInverseMatrix;
 	Mat4					    m_worldInverseTMatrix;
@@ -363,6 +369,7 @@ protected:
 	Mat4					    m_boneArrayMatrix[ k_Animation_Bones_Max ];
 
 	u32				            m_textureBind[ k_Texture_Channels_Count ];
+    TextureChannel              m_textureChannel;
 
     TVertexAttributeInfo        m_vertexAttributeInfo[ CVertexSource::k_Vertex_Attributes_Count ];
 	TLightParameters			m_lightParameters[ k_Light_Channels_Count ];
@@ -411,6 +418,7 @@ protected:
 
 	// ------------------------------------------------------------------//
 	CVertexSource*				m_crtVertexSource;
+    CVertexGroup*               m_crtVertexGroup;
 	CRenderTexture*				m_crtRenderTexture;
 	// ------------------------------------------------------------------//
 	u32							m_drawCallCount;
@@ -461,7 +469,7 @@ inline Mat4* CDriver::GetProjectionMatrix()
 
 inline Mat4* CDriver::GetTextureMatrix(TextureChannel texChannel)  
 {
-    return m_textureStack[Value(texChannel)].topmatrix; 
+    return m_textureStack.topmatrix; 
 }
 
 void CDriver::SetColor(Vec4 col) 

@@ -86,10 +86,10 @@ struct IState : public IUpdatable
 public:
 	virtual ~IState() {}
 
+    virtual void				ShowGui( rnr::CCanvas* canvas ) = 0;
 	virtual void				Render( rnr::CDriver *driver ) = 0;
 
 	virtual void				OnEnter()	= 0;
-    virtual void				OnGui( rnr::CDriver* driver ) = 0;
     virtual void				OnExit()	= 0;
 };
 

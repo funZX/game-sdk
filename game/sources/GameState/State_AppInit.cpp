@@ -18,6 +18,11 @@ CState_AppInit::~CState_AppInit()
 	SIM_PRINT("\n~CState_AppInit");
 }
 // ----------------------------------------------------------------------//
+void CState_AppInit::ShowGui( CCanvas* canvas )
+{
+
+}
+// ----------------------------------------------------------------------//
 void CState_AppInit::Update( f32 dt, void *userData )
 {
 	O.game->GoNext(SIM_NEW CState_AppLoad());
@@ -31,11 +36,7 @@ void CState_AppInit::Render( CDriver *driver )
 void CState_AppInit::OnEnter()
 {
 }
-// ----------------------------------------------------------------------//
-void CState_AppInit::OnGui(CDriver* driver)
-{
 
-}
 // ----------------------------------------------------------------------//
 
 void CState_AppInit::OnExit()

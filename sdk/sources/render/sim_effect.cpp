@@ -39,23 +39,16 @@ CEffect::CEffect()
 {
 	m_iD								= glCreateProgram();
 
-	m_uniforms							= nullptr;
-	m_numUniforms						= 0;
+	m_numAttribs						= CVertexSource::k_Vertex_Attributes_Count;
+	m_attributeMask						= 0;
+	InitAttributes();
 
-	m_attributes						= nullptr;
-	m_numAttrib							= 0;
+	m_numUniforms						= 0;
+    m_uniformMask                       = 0;
+    m_uniforms = nullptr;
 
 	m_vshader							= 0;
 	m_pshader							= 0;
-
-	m_isUsingWorldInverseMatrix			= false;
-	m_isUsingWorldInverseTMatrix		= false;
-	m_isUsingViewInverseMatrix			= false;
-	m_isUsingViewInverseTMatrix			= false;
-	m_isUsingNormalMatrix				= false;
-	m_isUsingWorldViewMatrix			= false;
-	m_isUsingViewProjectionMatrix		= false;
-	m_isUsingWorldViewProjectionMatrix	= false;
 
 	SIM_MEMSET( m_textures, 0, sizeof( m_textures ) );
 
@@ -89,19 +82,8 @@ CEffect::~CEffect()
 	SIM_SAFE_DELETE(m_pshader);
 
 	SIM_SAFE_DELETE_ARRAY(m_uniforms);
-	SIM_SAFE_DELETE_ARRAY(m_attributes);
 
 	glDeleteProgram( m_iD );
-}
-
-// ----------------------------------------------------------------------//
-
-void CEffect::InitAttributes(unsigned int numAttrib)
-{
-	m_numAttrib = numAttrib;
-	m_attributes = SIM_NEW CShader::TAttrib[numAttrib];
-
-	SIM_MEMSET(m_attributes, 0, numAttrib * sizeof(CShader::TAttrib));
 }
 
 // ----------------------------------------------------------------------//
@@ -116,28 +98,37 @@ void CEffect::InitUniforms(unsigned int numUniform)
 
 // ----------------------------------------------------------------------//
 
-void CEffect::AddAttribute(const std::string& name, int index)
+void CEffect::InitAttributes()
 {
-	const CShader::TAttrib* attrib = CShader::FindAttrib( name );
+	m_attributes = SIM_NEW CShader::TAttrib[m_numAttribs];
+	SIM_MEMCPY(&m_attributes[0], &CShader::Attributes[0], m_numAttribs * sizeof(CShader::TAttrib));
+}
 
-	SIM_ASSERT( attrib != nullptr );
+// ----------------------------------------------------------------------//
 
-	SIM_MEMCPY( &m_attributes[index], attrib, sizeof(CShader::TAttrib) );
+void CEffect::AddAttribute(const std::string& name)
+{
+    const CShader::TAttrib* attrib = CShader::FindAttrib(name);
+
+    SIM_ASSERT(attrib != nullptr);
+
+	zpl_bit_set(&m_attributeMask, Value(attrib->m_compFormat));
 }
 
 // ----------------------------------------------------------------------//
 
 void CEffect::SetAttributes()
 {
-    for( s32 k = 0; k < m_numAttrib; k++ )
+	for( s32 k = 0; k < m_numAttribs; k++ )
     {
 		CShader::TAttrib *curAttrib = &m_attributes[ k ];
-		
-		glBindAttribLocation( m_iD, k, curAttrib->m_name );
-		curAttrib->m_location = k;
 
-		SIM_CHECK_OPENGL();
-    }
+		if (zpl_bit_get(m_attributeMask, Value(curAttrib->m_compFormat)))
+			glBindAttribLocation(m_iD, k, curAttrib->m_name);
+
+		curAttrib->m_location = k;
+        SIM_CHECK_OPENGL();
+	}
 }
 
 // ----------------------------------------------------------------------//
@@ -161,7 +152,7 @@ void CEffect::ApplyTextures( CDriver* driver )
 		if ( m_textures[ i ] != nullptr )
 		{
 			driver->SetTextureChannel( static_cast<CDriver::TextureChannel>(i) );
-			driver->BindTexture( m_textures[ i ]->GetID() );
+			driver->BindTexture( CDriver::TextureTarget::Texture2D, m_textures[ i ]->GetID() );
 		}
 	}
 }
@@ -194,28 +185,28 @@ void CEffect::SetUniforms()
 			switch( curUni->m_index )
 			{
 			case CShader::UniformIndex::Matrix_World_Inverse:
-				m_isUsingWorldInverseMatrix = true;
+                zpl_bit_set(&m_uniformMask, isUsingWorldInverseMatrix);
 				break;
 			case CShader::UniformIndex::Matrix_World_InverseT:
-				m_isUsingWorldInverseTMatrix = true;
+                zpl_bit_set(&m_uniformMask, isUsingWorldInverseTMatrix);
 				break;
 			case CShader::UniformIndex::Matrix_View_Inverse:
-				m_isUsingViewInverseMatrix = true;
+                zpl_bit_set(&m_uniformMask, isUsingViewInverseMatrix);
 				break;
 			case CShader::UniformIndex::Matrix_View_InverseT:
-				m_isUsingViewInverseTMatrix = true;
+                zpl_bit_set(&m_uniformMask, isUsingViewInverseTMatrix);
 				break;
 			case CShader::UniformIndex::Matrix_Normal:
-				m_isUsingNormalMatrix = true;
+                zpl_bit_set(&m_uniformMask, isUsingNormalMatrix);
 				break;
 			case CShader::UniformIndex::Matrix_WorldView:
-				m_isUsingWorldViewMatrix = true;
+                zpl_bit_set(&m_uniformMask, isUsingWorldViewMatrix);
 				break;
 			case CShader::UniformIndex::Matrix_ViewProjection:
-				m_isUsingViewProjectionMatrix = true;
+                zpl_bit_set(&m_uniformMask, isUsingViewProjectionMatrix);
 				break;
 			case CShader::UniformIndex::Matrix_WorldViewProjection:
-				m_isUsingWorldViewProjectionMatrix = true;
+                zpl_bit_set(&m_uniformMask, isUsingWorldViewProjectionMatrix);
 				break;
 			}
         }
@@ -291,11 +282,11 @@ void CEffect::Bind( CDriver *driver, CVertexSource *vertexSource )
 	// Attributes
 	void *vboData = vertexSource->GetVboData();
 
-	CVertexSource::AttributeFormat vertexFormat   = vertexSource->GetVertexFormat();
-	CVertexSource::AttributeStride vertexStride   = vertexSource->GetVertexStride();
+	CVertexSource::AttributeFormat vertexFormat   = vertexSource->m_vertexFormat;
+	CVertexSource::AttributeStride vertexStride   = vertexSource->m_vertexStride;
 	u32 vboOff         = 0;
 
-	for( s32 k = 0; k < m_numAttrib; k++ )
+	for( s32 k = 0; k < m_numAttribs; k++ )
 	{
 		CShader::TAttrib *crtAttrib	= &m_attributes[ k ];
 
@@ -305,26 +296,25 @@ void CEffect::Bind( CDriver *driver, CVertexSource *vertexSource )
 		CVertexSource::AttributeType attribType		= crtAttrib->m_compType;
 
 #if SIM_DEBUG
-		s32 loc = glGetAttribLocation( m_iD, crtAttrib->m_name );
-		SIM_ASSERT( loc == -1 || loc == crtAttrib->m_location);
+        s32 loc = glGetAttribLocation(m_iD, crtAttrib->m_name);
+        SIM_ASSERT(-1 == loc || loc == k);
 #endif
 
-		if( crtAttrib->m_location != -1 && 
-			CVertexSource::AttributeFormat::None != ( vertexFormat & attribFormat )  )
+		if( CVertexSource::AttributeFormat::None != ( vertexFormat & attribFormat )  )
 		{
-			void *vertexData = (void*) ( ( size_t ) vboData + vboOff );
+            crtAttrib->m_compOffset = vboOff;
 
-			driver->SetVertexAttribute( crtAttrib, vertexData, vertexStride );
-			driver->EnableVertexAttribute( crtAttrib );
+			driver->SetVertexAttribute( crtAttrib, vertexSource );
+			driver->EnableVertexAttribute( crtAttrib->m_location );
 
-			vboOff += Value(attribStride);
+			vboOff += Value( attribStride );
 		}
 		else
 		{
 			if ( CVertexSource::AttributeFormat::None  != (vertexFormat & attribFormat ) )
 				vboOff += Value(attribStride);
 
-			driver->DisableVertexAttribute( crtAttrib );
+			driver->DisableVertexAttribute( crtAttrib->m_location );
 		}
 	}
 

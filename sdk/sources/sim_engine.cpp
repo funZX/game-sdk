@@ -42,6 +42,8 @@
 #include <render/sim_font.h>
 #include <render/sim_font_atlas.h>
 
+#include <imgui.h>
+
 namespace sim
 {
 
@@ -53,15 +55,26 @@ CEngine::CEngine()
 {
 	m_driver			= SIM_NEW CDriver();
 	m_vm				= SIM_NEW CSquirrel();
-	m_sm				= SIM_NEW CStateMachine();	
+
+    InitOpenGL();
+    InitOpenAL();
+
+    m_effect            = SIM_NEW CEffect("engine.Effect");
+    m_material          = SIM_NEW CMaterial("engine.Material");
+    InitEffect();
+    InitMaterial();
 
     m_fontAtlas         = SIM_NEW CFontAtlas( "engine.Atlas" );
     m_font              = SIM_NEW CFont( m_fontAtlas);
 
+    InitFont();
+
 	m_canvas			= SIM_NEW CCanvas( "engine.Canvas", m_fontAtlas );
+    InitCanvas();
+
+    m_sm                = SIM_NEW CStateMachine( m_canvas );
+
 	m_camera			= SIM_NEW rnr::CCamera( "engine.Camera" );
-	m_effect			= SIM_NEW CEffect( "engine.Effect" );
-	m_material			= SIM_NEW CMaterial( "engine.Material" );
 
 	m_activeCamera		= m_camera;
 
@@ -74,8 +87,6 @@ CEngine::CEngine()
 	m_vertexCount		= 0;
 	m_fps				= 0;
 	SIM_MEMSET( &m_dtfilter[ 0 ], 0, sizeof( m_dtfilter ) );
-
-	Initialize();
 }
 
 // ----------------------------------------------------------------------//
@@ -83,28 +94,17 @@ CEngine::CEngine()
 CEngine::~CEngine()
 {
     Shutdown();
-
+    
 	SIM_SAFE_DELETE( m_camera );
-	SIM_SAFE_DELETE( m_canvas );
+    SIM_SAFE_DELETE( m_sm );
+    SIM_SAFE_DELETE( m_canvas );
 	SIM_SAFE_DELETE( m_effect );
 	SIM_SAFE_DELETE( m_material );
     SIM_SAFE_DELETE( m_font );
     SIM_SAFE_DELETE( m_fontAtlas );
 
-	SIM_SAFE_DELETE( m_sm );
-	SIM_SAFE_DELETE( m_vm );
+    SIM_SAFE_DELETE( m_vm );
 	SIM_SAFE_DELETE( m_driver );
-}
-
-// ----------------------------------------------------------------------//
-
-void CEngine::Initialize()
-{
-	InitOpenGL();
-	InitOpenAL();
-	InitFont();
-	InitEffect();
-	InitMaterial();
 }
 
 // ----------------------------------------------------------------------//
@@ -159,9 +159,8 @@ void CEngine::InitEffect()
     };
 
     u32 nAttrib = 2;
-    m_effect->InitAttributes(nAttrib);
     for (u32 k = 0; k < nAttrib; k++)
-        m_effect->AddAttribute(attributes[k], k);
+        m_effect->AddAttribute(attributes[k]);
 
     static const s8* uniforms[] =
     {
@@ -194,8 +193,6 @@ void CEngine::InitEffect()
 void CEngine::InitMaterial()
 {
 	m_material->SetEffect(m_effect);
-
-    m_canvas->SetMaterial(m_material);
 }
 
 // ----------------------------------------------------------------------//
@@ -206,10 +203,18 @@ void CEngine::InitFont()
 
     io::CMemStream ms(buffer, bufferSize);
 
+    m_fontAtlas->AddFont( "engine.Font", &ms, 14.0f );
+    m_fontAtlas->AddFont( "engine.Font", &ms, 12.0f );
     m_fontAtlas->AddFont( "engine.Font", &ms, 10.0f );
     m_fontAtlas->Create();
 }
 
+// ----------------------------------------------------------------------//
+void CEngine::InitCanvas()
+{
+    m_canvas->SetMaterial( m_material );
+    m_canvas->OnGui.Connect( this, &CEngine::OnGui );
+}
 // ----------------------------------------------------------------------//
 
 void CEngine::InitOpenGL( void )
@@ -367,12 +372,11 @@ void CEngine::Render( CDriver *driver )
 	// 2D rendering
 	On2D();
 	{
-#if SIM_DEBUG
-        ShowStats(m_driver);
-#endif
         m_canvas->Render( driver );
-	}
+    }
 	Off2D();
+
+    driver->Flush();
 }
 
 // ----------------------------------------------------------------------//
@@ -479,27 +483,6 @@ void CEngine::Off3D()
 
 // ----------------------------------------------------------------------//
 
-void  CEngine::Print( CDriver* driver, s32 x, s32 y, const std::string &text )
-{
-	m_canvas->DrawString( driver, x, y, text, col::Green );
-}
-
-// ----------------------------------------------------------------------//
-
-void  CEngine::Print( CDriver* driver, s32 x, s32 y, char *format, ... )
-{
-	static char buf[ 1024 ];
-	
-	va_list args;
-	
-	va_start( args, format );
-	vsnprintf( buf, 1024, format, args );
-	va_end( args );
-
-	m_canvas->DrawString( driver, x, y, buf, col::Green );
-}
-// ----------------------------------------------------------------------//
-
 void CEngine::PointerDown( u32 x, u32 y )
 {
 	m_canvas->PointerDown( x, y );
@@ -521,44 +504,48 @@ void CEngine::PointerUp( u32 x, u32 y )
 
 // ----------------------------------------------------------------------//
 
-void CEngine::ShowStats( CDriver* driver )
+void CEngine::OnGui( CCanvas* canvas, sigcxx::SLOT slot )
 {
-	static u64 lastTime = GetTime();
-	static u64 frameSum = 0;
-	static u32 frameCount = 0;
-	static s32 prevDrawCount = 0;
-	static s32 prevVrtxCount = 0;
+    static u64 lastTime = GetTime();
+    static u64 frameSum = 0;
+    static u32 frameCount = 0;
+    static s32 prevDrawCount = 0;
+    static s32 prevVrtxCount = 0;
 
-	// fps
-	u64 currentTime = GetTime();
-	u64 frameTime	= GetFrameTime();
+    // fps
+    u64 currentTime = GetTime();
+    u64 frameTime   = GetFrameTime();
 
-	if( currentTime - lastTime >= 1000000 )
-	{
-		f32 avg = (f32)frameSum / (f32)frameCount;
+    if (currentTime - lastTime >= 1000000)
+    {
+        f32 avg = (f32)frameSum / (f32)frameCount;
 
-		m_fps = 1000000.0f / avg;
-		lastTime = currentTime;
+        m_fps = 1000000.0f / avg;
+        lastTime = currentTime;
 
-		frameCount = 0;
-		frameSum = 0;
-	}
+        frameCount = 0;
+        frameSum = 0;
+    }
 
-	++frameCount;
-	frameSum += frameTime;
+    ++frameCount;
+    frameSum += frameTime;
 
-	// batch2D
-	u32 drawCount		= m_driver->GetDrawCallCount();
-	u32 vrtxCount		= m_driver->GetVertexCount();
+    // batch2D
+    u32 drawCount = m_driver->GetDrawCallCount();
+    u32 vrtxCount = m_driver->GetVertexCount();
 
-	m_drawCount			= drawCount - prevDrawCount;
-	m_vertexCount		= vrtxCount - prevVrtxCount;
+    m_drawCount   = drawCount - prevDrawCount;
+    m_vertexCount = vrtxCount - prevVrtxCount;
 
-	Print( driver, 0,  0, "D: %d    V: %d", m_drawCount, m_vertexCount );
-	Print( driver, 0, (u32)m_font->GetHeight(), "FPS:   %.1f", m_fps );
+    prevDrawCount = drawCount;
+    prevVrtxCount = vrtxCount;
 
-	prevDrawCount = drawCount;
-	prevVrtxCount = vrtxCount;
+    if (ImGui::Begin("engine.Stats"))
+    {
+        ImGui::Text("D: %d V: %d", m_drawCount, m_vertexCount);
+        ImGui::Text("FPS: %.1f", m_fps);
+    }
+    ImGui::End();
 }
 
 // ----------------------------------------------------------------------//

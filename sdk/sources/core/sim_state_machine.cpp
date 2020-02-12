@@ -26,6 +26,7 @@
 
 #include <core/sim_state_machine.h>
 #include <render/sim_driver.h>
+#include <render/sim_canvas.h>
 
 namespace sim
 {
@@ -33,11 +34,13 @@ namespace sm
 {
 // ----------------------------------------------------------------------//
 
-CStateMachine::CStateMachine() : stl::CStack<IState*>()
+CStateMachine::CStateMachine( rnr::CCanvas* canvas ) : stl::CStack<IState*>()
 {
 	m_prevState	= nullptr;
 	m_currState = nullptr;
 	m_nextState = nullptr;
+
+    canvas->OnGui.Connect( this, &CStateMachine::ShowGui );
 }
 
 // ----------------------------------------------------------------------//
@@ -101,10 +104,16 @@ void CStateMachine::Update( f32 dt, void *userData )
 
 void CStateMachine::Render( rnr::CDriver *driver )
 {
-    m_currState->OnGui( driver );
 	m_currState->Render( driver );
 }
 
+// ----------------------------------------------------------------------//
+
+void CStateMachine::ShowGui( rnr::CCanvas* canvas, sigcxx::SLOT slot )
+{
+    if ( m_currState )
+        m_currState->ShowGui( canvas );
+}
 // ----------------------------------------------------------------------//
 }; // namespace sm
 }; // namespace sim

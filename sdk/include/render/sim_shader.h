@@ -161,6 +161,8 @@ public:
 		CVertexSource::AttributeSize				m_compSize;
 		CVertexSource::AttributeStride				m_compStride;
 		CVertexSource::AttributeType				m_compType;
+
+        u32                                         m_compOffset;
 	};
 	// ------------------------------------------------------------------//
 	enum class Type : u32

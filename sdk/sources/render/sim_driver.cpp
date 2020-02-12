@@ -51,8 +51,7 @@ CDriver::CDriver()
 	Mat4StackClear( &m_viewStack );
 	Mat4StackClear( &m_projectionStack );
 
-	for( s32 i = 0; i < k_Texture_Channels_Count; i++ )
-		Mat4StackClear( &m_textureStack[ i ] );
+	Mat4StackClear( &m_textureStack );
 
 	for( s32 i = 0; i < k_Animation_Bones_Max; i++ )
 		zpl_mat4_identity( &m_boneArrayMatrix[ i ] );
@@ -86,8 +85,8 @@ CDriver::CDriver()
     SIM_MEMSET( m_vertexAttributeInfo, 0, sizeof( m_vertexAttributeInfo ) );
 	SIM_MEMSET( m_lightParameters, 0, sizeof( m_lightParameters ) );
 
+    m_textureChannel        = TextureChannel::Texture_0;
 	m_matrixMode			= MatrixMode::World;
-	m_textureChannel        = TextureChannel::Texture_0;
 	m_lightChannel          = LightChannel::Light_0;
 	m_cullingMode           = CullingMode::CW;
 
@@ -132,6 +131,7 @@ CDriver::CDriver()
 	InitUniform();
 
 	m_crtVertexSource		= nullptr;
+    m_crtVertexGroup        = nullptr;
 	m_crtRenderTexture		= nullptr;
 
 	m_screenWidth			= 0;
@@ -262,21 +262,18 @@ void  CDriver::SetDepthRange( f32 start, f32 end )
 
 // ----------------------------------------------------------------------//
 
-u32  CDriver::BindTexture( u32 tex )
+u32  CDriver::BindTexture( TextureTarget target, u32 tex )
 {
-	u32 old = 0;
+	u32 old = m_textureBind[ Value(m_textureChannel) ];
 
-	auto texChannel = Value(m_textureChannel);
-
-	if( m_textureBind[texChannel] != tex )
+	if( m_textureBind[Value(m_textureChannel)] != tex )
 	{
-		glBindTexture( GL_TEXTURE_2D, tex );
-
-		old = m_textureBind[texChannel];
-		m_textureBind[texChannel] = tex;
+		glBindTexture( Value(target), tex );
 
 		SIM_CHECK_OPENGL();
-	}
+
+        m_textureBind[Value(m_textureChannel)] = tex;
+    }
 
 	return old;
 }
@@ -327,20 +324,20 @@ void CDriver::ComputeNormalMatrix()
 
 // ----------------------------------------------------------------------//
 
-CDriver::TextureChannel CDriver::SetTextureChannel(TextureChannel texChannel)
+CDriver::TextureChannel CDriver::SetTextureChannel( TextureChannel texChannel )
 {
-	TextureChannel old = m_textureChannel;
+    TextureChannel old = m_textureChannel;
 
-	if(m_textureChannel == texChannel)
-		return old;
+    if ( old != texChannel )
+    {
+        glActiveTexture(GL_TEXTURE0 + Value(texChannel));
 
-	glActiveTexture( GL_TEXTURE0 + Value(texChannel));
+        SIM_CHECK_OPENGL();
 
-	m_textureChannel = texChannel;
+        m_textureChannel = texChannel;
+    }
 
-	SIM_CHECK_OPENGL();
-
-	return old;
+    return old;
 }
 
 // ----------------------------------------------------------------------//
@@ -522,7 +519,7 @@ CDriver::MatrixMode CDriver::SetMatrixMode(MatrixMode matrixMode)
 
 	case MatrixMode::Texture:
 		{
-			m_activeStack = &m_textureStack[ Value(m_textureChannel) ];
+			m_activeStack = &m_textureStack;
 
 			m_isActiveStackAlteringWorldMatrix = false;
 			m_isActiveStackAlteringViewMatrix = false;
@@ -585,6 +582,7 @@ void CDriver::MatrixScale( Vec3 scale )
 void CDriver::Clear( Vec4 color )
 {
 	m_crtVertexSource	= 0;
+    m_crtVertexGroup    = 0;
 	m_crtRenderTexture	= 0;
 
 	glClearColor( color.x, color.y, color.z, color.w );
@@ -597,6 +595,12 @@ void CDriver::ClearColor( Vec4 color )
 {
 	glClearColor( color.x, color.y, color.z, color.w );
 	glClear( GL_COLOR_BUFFER_BIT );
+}
+// ----------------------------------------------------------------------//
+
+void CDriver::Flush()
+{
+    glFlush();
 }
 // ----------------------------------------------------------------------//
 
@@ -634,23 +638,21 @@ void CDriver::SetScissor(u32 x, u32 y, u32 w, u32 h)
 
 // ----------------------------------------------------------------------//
 
-void CDriver::SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData, 
-	CVertexSource::AttributeStride vertexStride )
+void CDriver::SetVertexAttribute( CShader::TAttrib* attrib, CVertexSource* vertexSource)
 {
-	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[Value(attrib->m_compIndex)];
+	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[ Value( attrib->m_compIndex ) ];
 
-    if( vertexData != attribInfo->m_vertexData )
+    if( vertexSource != attribInfo->m_vertexSource )
     {
 		glVertexAttribPointer( 
 			attrib->m_location,
 			Value(attrib->m_compSize),
 			Value(attrib->m_compType),
 			GL_FALSE,
-			Value(vertexStride),
-			vertexData 
-			);
+			vertexSource->GetVertexStride(),
+            (void*)( attrib->m_compOffset ) );
 
-        attribInfo->m_vertexData = vertexData;
+        attribInfo->m_vertexSource = vertexSource;
     }
 
 	SIM_CHECK_OPENGL();
@@ -658,13 +660,13 @@ void CDriver::SetVertexAttribute( CShader::TAttrib* attrib, void *vertexData,
 
 // ----------------------------------------------------------------------//
 
-void CDriver::EnableVertexAttribute( CShader::TAttrib* attrib )
+void CDriver::EnableVertexAttribute( s32 location )
 {
-	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[ Value(attrib->m_compIndex) ];
+	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[ location ];
 
 	if( !attribInfo->m_isEnabled )
     {
-		glEnableVertexAttribArray( attrib->m_location );
+		glEnableVertexAttribArray( location );
         attribInfo->m_isEnabled = true;
     }
 
@@ -673,13 +675,13 @@ void CDriver::EnableVertexAttribute( CShader::TAttrib* attrib )
 
 // ----------------------------------------------------------------------//
 
-void CDriver::DisableVertexAttribute( CShader::TAttrib* attrib )
+void CDriver::DisableVertexAttribute( s32 location )
 {
-	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[Value(attrib->m_compIndex)];
+	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[ location ];
 
     if( attribInfo->m_isEnabled )
 	{
-		glDisableVertexAttribArray( attrib->m_location );
+		glDisableVertexAttribArray( location );
         attribInfo->m_isEnabled = false;
     }
 
@@ -701,10 +703,10 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isWorldMatrixDirty )
 	{
-		if( effect->m_isUsingWorldInverseMatrix )
+		if( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingWorldInverseMatrix ) )
 			zpl_mat4_inverse( GetWorldMatrix(), &m_worldInverseMatrix );
 
-        if (effect->m_isUsingWorldInverseTMatrix)
+        if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingWorldInverseTMatrix ) )
         {
             zpl_mat4_copy( &m_worldInverseTMatrix, &m_worldInverseMatrix );
             zpl_mat4_transpose( &m_worldInverseTMatrix );
@@ -715,10 +717,10 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isViewMatrixDirty )
 	{
-		if ( effect->m_isUsingViewInverseMatrix )
+		if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingViewInverseMatrix ) )
             zpl_mat4_inverse( GetViewMatrix(), &m_viewInverseMatrix );
 
-        if (effect->m_isUsingViewInverseTMatrix)
+        if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingViewInverseTMatrix ) )
         {
             zpl_mat4_copy(&m_viewInverseTMatrix, &m_viewInverseMatrix);
             zpl_mat4_transpose(&m_viewInverseTMatrix);
@@ -729,7 +731,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isWorldViewMatrixDirty )
 	{
-		if ( effect->m_isUsingWorldViewMatrix )
+		if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingWorldViewMatrix ) )
 			zpl_mat4_mul( &m_worldViewMatrix, GetWorldMatrix(), GetViewMatrix());
 
 		m_isWorldViewMatrixDirty = false;
@@ -737,7 +739,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isViewProjectionMatrixDirty )
 	{
-		if ( effect->m_isUsingViewProjectionMatrix )
+		if (zpl_bit_get( effect->m_uniformMask, CEffect::isUsingViewProjectionMatrix ) )
             zpl_mat4_mul( &m_viewProjectionMatrix, GetViewMatrix(), GetProjectionMatrix());
 
 		m_isViewProjectionMatrixDirty = false;
@@ -745,7 +747,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isWorldViewProjectionMatrixDirty )
 	{
-		if ( effect->m_isUsingWorldViewProjectionMatrix )
+		if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingWorldViewProjectionMatrix ) )
 		{
 			static Mat4 m;
 
@@ -758,7 +760,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isNormalMatrixDirty )
 	{
-		if ( effect->m_isUsingNormalMatrix )
+		if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingNormalMatrix ) )
 			ComputeNormalMatrix();
 
 		m_isNormalMatrixDirty = false;
@@ -857,21 +859,33 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 
 	SIM_ASSERT(vertexSource != nullptr);
 
+    if (vertexSource != m_crtVertexSource)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, vertexSource->GetID());
+        effect->Bind(this, vertexSource);
+
+        m_crtVertexSource = vertexSource;
+    }
+
 	material->Render(this);
 	effect->Render(this);
 
-	if ( vertexSource != m_crtVertexSource )
-	{
-		effect->Bind(this, vertexSource);
-
-		m_crtVertexSource = vertexSource;
-	}
-
 	m_drawCallCount += 1;
-	m_vertexCount += vertexGroup->GetVboSize();
+	m_vertexCount   += vertexGroup->GetVboSize();
 
-	u32 rt = Value(primitives[Value(vertexSource->GetType())]);
-	glDrawElements( rt, vertexGroup->GetVboSize(), GL_UNSIGNED_SHORT, vertexGroup->GetVboData() );
+    if (vertexGroup != m_crtVertexGroup)
+    {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexGroup->GetID());
+        m_crtVertexGroup = vertexGroup;
+    }
+
+	u32 rt = Value( primitives[ Value( vertexSource->GetType() ) ] );
+	glDrawElements( rt, 
+        vertexGroup->GetVboSize() / sizeof(u16),
+        GL_UNSIGNED_SHORT, 
+        (void*)(vertexGroup->GetVboOffset() ) );
+
+    SIM_CHECK_OPENGL();
 }
 
 // ----------------------------------------------------------------------//

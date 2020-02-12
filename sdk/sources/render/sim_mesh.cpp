@@ -109,7 +109,7 @@ bool CMesh::Load( io::CMemStream* ms )
 	
 	u32 vboDim = 0;
 	
-	vboDim = vertexSource->m_vboSize * Value(vertexSource->m_vertexStride);
+	vboDim = vertexSource->m_vboSize * vertexSource->GetVertexStride();
 	vertexSource->m_vboData = SIM_NEW f32[ vboDim / sizeof( f32 ) ];
 	SIM_MEMCPY( vertexSource->m_vboData, ms->Read( vboDim ), vboDim );
 
@@ -145,12 +145,12 @@ bool CMesh::Save( io::CMemStream* ms )
 	{
 		CVertexSource* vertexSource = m_vertexSource;
 
-		ms->WriteU32( Value( vertexSource->GetVertexFormat() ) );
-		ms->WriteU32( Value( vertexSource->GetVertexStride() ) );
+		ms->WriteU32( vertexSource->GetVertexFormat() );
+		ms->WriteU32( vertexSource->GetVertexStride() );
 		ms->WriteU16( vertexSource->GetVboSize() );
 
 		f32* vboData		= vertexSource->GetVboData();
-		ms->Write( vboData, vertexSource->GetVboSize() * Value( vertexSource->GetVertexStride() ) );
+		ms->Write( vboData, vertexSource->GetVboSize() * vertexSource->GetVertexStride() );
 	}
 
 	// vertex group

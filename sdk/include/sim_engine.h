@@ -155,7 +155,7 @@ using namespace sim::vm;
 namespace sim
 {
 // ----------------------------------------------------------------------//
-class CEngine : public sim::IUpdatable, public sim::IRenderable, public CSingleton<CEngine>
+class CEngine : public sim::IUpdatable, public sim::IRenderable, public CSingleton<CEngine>, public sigcxx::Trackable
 {
 public:
 	CEngine();
@@ -176,9 +176,6 @@ public:
 	virtual void					Update( f32 dt, void *userData );
 	virtual void					Render( CDriver *driver );
 
-	void							Print( CDriver* driver, s32 x, s32 y, const std::string& text );
-	void							Print( CDriver* driver, s32 x, s32 y, char *format, ... );
-
 	void							GoNext( IState* state );
 	void							GoBack();
 
@@ -191,12 +188,12 @@ public:
 
 
 protected:
-	void							Initialize();
 	void							InitOpenGL();
 	void							InitOpenAL();
     void							InitFont();
     void							InitEffect();
     void							InitMaterial();
+    void							InitCanvas();
     void							Shutdown();
 	
 	void							On2D();
@@ -204,7 +201,7 @@ protected:
 	void							On3D();
 	void							Off3D();
 
-	void							ShowStats( CDriver* driver );
+	void							OnGui( CCanvas* canvas, sigcxx::SLOT slot = nullptr );
 	f32								Smooth( f32 dt );
 
 protected:
