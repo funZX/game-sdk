@@ -17,6 +17,7 @@
 *.user
 *.opendb
 *.pvrtrace
+imgui.ini
 
 PVRTraceGUI.exe
 
