@@ -83,5 +83,8 @@
     <ClCompile Include="..\..\sources\osmesa_context.c">
       <Filter>sources</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\sources\egl_context.c">
+      <Filter>sources</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

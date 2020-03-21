@@ -23,6 +23,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\sources\context.c" />
+    <ClCompile Include="..\..\sources\egl_context.c" />
     <ClCompile Include="..\..\sources\init.c" />
     <ClCompile Include="..\..\sources\input.c" />
     <ClCompile Include="..\..\sources\monitor.c" />
@@ -38,7 +39,7 @@
     <ClCompile Include="..\..\sources\window.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{F750179A-11DA-424B-AF19-4ACEC75BEF98}</ProjectGuid>
+    <ProjectGuid>{E01517D9-1716-4135-8935-15A9BAFC9ED7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>glfw</RootNamespace>
   </PropertyGroup>
@@ -91,6 +92,9 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -109,6 +113,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
