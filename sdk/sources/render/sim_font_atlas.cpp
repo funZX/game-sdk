@@ -97,7 +97,7 @@ void CFontAtlas::Create()
     s32 texHeight = 0;
     u8* texBuf = nullptr;
 
-    m_imAtlas->GetTexDataAsAlpha8( &texBuf, &texWidth, &texHeight );
+    m_imAtlas->GetTexDataAsRGBA32( &texBuf, &texWidth, &texHeight );
 
 	m_texture = SIM_NEW CTexture( m_name );
 
@@ -109,7 +109,7 @@ void CFontAtlas::Create()
 		, CTexture::Type::TGA
 		, CTexture::Wrap::Clamp
 		, CTexture::Filter::Nearest
-		, CTexture::Format::Alpha
+		, CTexture::Format::RGBA
 	);
     driver->BindTexture(CDriver::TextureTarget::Texture2D, tex);
 
@@ -124,6 +124,7 @@ void CFontAtlas::Create()
 void CFontAtlas::InitEffect()
 {
 	const s8* vsource =
+		"precision highp float; "
 		"attribute vec2 a_ScreenPosL;"
 		"attribute vec2 a_TexCoord_0;"
         "attribute vec4 a_Color;"
@@ -146,18 +147,15 @@ void CFontAtlas::InitEffect()
 	const s8 *psource =
 		"precision mediump float;"
 
-		"uniform sampler2D	u_Sampler_Tex_0;"
+		"uniform lowp sampler2D	u_Sampler_Tex_0;"
 
 		"varying vec2 v_Tex0;"
 		"varying vec4 v_Color;"
 
 		"void main()"
 		"{"
-		"	vec4 tex = texture2D( u_Sampler_Tex_0, v_Tex0 );"
-		"	vec4 col = v_Color;"
-        "	col.a    = tex.a;"
-
-		"	gl_FragColor = col;"
+		"	vec4 tex = texture2D( u_Sampler_Tex_0, v_Tex0.st );"
+		"	gl_FragColor = v_Color * tex;"
 		"}";
 
     m_effect = SIM_NEW CEffect(m_name);
