@@ -119,6 +119,7 @@ CDriver::CDriver()
 
 	m_isCullingEnabled		= true;
 	m_isBlendingEnabled		= false;
+	m_isScissorEnabled		= false;
 	m_isDepthTestEnabled	= true;
 	m_isDepthMaskEnabled	= true;
 
@@ -154,6 +155,7 @@ void CDriver::Initialize()
 	glEnable( GL_CULL_FACE );
 	
 	glDisable( GL_BLEND );
+	glDisable( GL_SCISSOR_TEST );
 	glEnable( GL_DEPTH_TEST );
 
 	glDepthMask( GL_TRUE );
@@ -201,6 +203,24 @@ bool CDriver::EnableBlending( bool val )
 	}
 
 	return isEnabled;
+}
+
+// ----------------------------------------------------------------------//
+
+bool CDriver::EnableScissor(bool val)
+{
+    bool isEnabled = m_isScissorEnabled;
+
+    if (val != m_isScissorEnabled)
+    {
+        val ?
+            glEnable( GL_SCISSOR_TEST ) :
+            glDisable( GL_SCISSOR_TEST );
+
+		m_isScissorEnabled = val;
+    }
+
+    return isEnabled;
 }
 
 // ----------------------------------------------------------------------//

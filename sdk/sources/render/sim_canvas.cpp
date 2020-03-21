@@ -179,6 +179,7 @@ void CCanvas::Render( CDriver* driver )
                 m_vertexGroup->m_vboOffset  = pcmd->IdxOffset * sizeof( u16 );
                 m_vertexGroup->SetMaterial((CMaterial*)pcmd->TextureId);
 
+                driver->EnableScissor(true);
                 driver->SetScissor(x, y, w, h);
                 driver->Render( m_vertexGroup );
             }
