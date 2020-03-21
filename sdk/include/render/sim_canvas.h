@@ -74,7 +74,7 @@ protected:
     CFontAtlas*                 m_fontAtlas;
 
     CVertexSource*              m_vertexSource;
-    CVertexGroup*               m_vertexGroup;
+	CVertexGroup*				m_vertexGroup;
 	// ------------------------------------------------------------------//
 };
 

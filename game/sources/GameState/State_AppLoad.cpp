@@ -32,13 +32,7 @@ CState_AppLoad::~CState_AppLoad()
 void CState_AppLoad::ShowGui( CCanvas* canvas )
 {
     if ( m_fsCrt != NULL )
-    {
-        if (ImGui::Begin("Loading"))
-        {
-            ImGui::Text(m_fsCrt->GetLoadMessage().c_str());
-        }
-        ImGui::End();
-    }
+		SIM_PRINT("\n%s", m_fsCrt->GetLoadMessage().c_str());
 }
 // ----------------------------------------------------------------------//
 void CState_AppLoad::Update( f32 dt, void *userData )

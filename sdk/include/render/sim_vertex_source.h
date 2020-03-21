@@ -160,7 +160,7 @@ public:
 	inline Type					GetType() const			{ return m_type; }
 	inline u32					GetID()					{ return m_iD; }
 
-    void                        BufferData( u32 glUsage = GL_STATIC_DRAW, bool isDataOwned = true );
+    void                        BufferData( u32 glUsage = GL_STATIC_DRAW );
 
     virtual bool				Load(io::CMemStream* ms);
     virtual bool				Save(io::CMemStream* ms);

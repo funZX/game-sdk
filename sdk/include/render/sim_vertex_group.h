@@ -73,7 +73,7 @@ public:
 	void							SetVertexSource( CVertexSource* vertexSource )	{ m_vertexSource = vertexSource; }
 
 	inline u32						GetID()					{ return m_iD; }
-    void                            BufferData( u32 glUsage = GL_STATIC_DRAW, bool isDataOwned = true );
+    void                            BufferData( u32 glUsage = GL_STATIC_DRAW );
 	// ------------------------------------------------------------------//
 
     virtual bool					Load(io::CMemStream* ms);

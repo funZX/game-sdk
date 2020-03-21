@@ -87,7 +87,7 @@ void CState_Game::OnEnter()
 // ----------------------------------------------------------------------//
 void CState_Game::ShowGui( CCanvas* canvas )
 {
-    //ImGui::ShowDemoWindow();
+    ImGui::ShowDemoWindow();
 
     //@TODO: fix flipped drawable
 
@@ -98,7 +98,7 @@ void CState_Game::ShowGui( CCanvas* canvas )
     //fill->m_technique.depthtest = false;
 
     //m_drawable->SetEffect(fill);
-    //m_drawable->Render( driver );
+    //m_drawable->Render(driver);
 
     //fill->SetTechnique(&techique);
 }

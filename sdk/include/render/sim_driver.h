@@ -179,7 +179,7 @@ public:
 	MatrixMode					SetMatrixMode( MatrixMode matrixMode );
 	
 	u32							BindTexture ( TextureTarget target, u32 tex );
-	CRenderTexture*				BindRenderTexture( CRenderTexture* framebuffer );
+	void						BindRenderTexture( CRenderTexture* framebuffer );
 
 	bool						EnableCulling( bool val );
 	bool						EnableBlending( bool val );
@@ -416,10 +416,6 @@ protected:
     struct { u32 x; u32 y; u32 w; u32 h; } m_viewport;
     struct { u32 x; u32 y; u32 w; u32 h; } m_scissor;
 
-	// ------------------------------------------------------------------//
-	CVertexSource*				m_crtVertexSource;
-    CVertexGroup*               m_crtVertexGroup;
-	CRenderTexture*				m_crtRenderTexture;
 	// ------------------------------------------------------------------//
 	u32							m_drawCallCount;
 	u32							m_vertexCount;
