@@ -183,6 +183,7 @@ public:
 
 	bool						EnableCulling( bool val );
 	bool						EnableBlending( bool val );
+	bool						EnableScissor(bool val);
 	bool						EnableDepthTest( bool val );
 	bool						EnableDepthMask( bool val );
 	void						EnableBlendFunc( TBlendFunc blendfunc );
@@ -402,6 +403,7 @@ protected:
 
 	bool						m_isCullingEnabled;
 	bool						m_isBlendingEnabled;
+	bool						m_isScissorEnabled;
 	bool						m_isDepthTestEnabled;
 	bool						m_isDepthMaskEnabled;
 
