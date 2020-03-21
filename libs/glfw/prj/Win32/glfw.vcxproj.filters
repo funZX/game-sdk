@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{bd2f6ea1-882b-4eef-ad66-51b96399676b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources">
+      <UniqueIdentifier>{4a1a17b2-4ad2-4cd7-858d-72308fd81b09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\GLFW">
+      <UniqueIdentifier>{465898e1-1481-45d4-aeef-6b90d8e96f48}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\GLFW\glfw3.h">
+      <Filter>include\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\GLFW\glfw3native.h">
+      <Filter>include\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\egl_context.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\internal.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\mappings.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\wgl_context.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\win32_joystick.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\win32_platform.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\osmesa_context.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\sources\context.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\init.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\input.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\monitor.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\vulkan.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\wgl_context.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\win32_init.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\win32_joystick.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\win32_monitor.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\win32_thread.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\win32_time.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\win32_window.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\window.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\osmesa_context.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
