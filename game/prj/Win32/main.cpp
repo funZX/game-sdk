@@ -61,12 +61,6 @@ int main(int argc, char *argv[])
 
         game->Resize(w, h);
         
-        if (w > 0 && h > 0)
-        {
-            ImGuiIO& io = ImGui::GetIO();
-            io.DisplayFramebufferScale = ImVec2((float)display_w / w, (float)display_h / h);
-        }
-
         ImGui_ImplGlfw_UpdateMousePosAndButtons(window);
         ImGui_ImplGlfw_UpdateMouseCursor(window);
 
