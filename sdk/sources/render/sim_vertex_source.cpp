@@ -71,14 +71,11 @@ CVertexSource::~CVertexSource( void )
 
 // ----------------------------------------------------------------------//
 
-void CVertexSource::BufferData( u32 glUsage, bool isDataOwned )
+void CVertexSource::BufferData( u32 glUsage )
 {
     glBindBuffer( GL_ARRAY_BUFFER, m_iD );
     glBufferData( GL_ARRAY_BUFFER, m_vboSize, m_vboData, glUsage );
     glBindBuffer( GL_ARRAY_BUFFER, 0 );
-
-    if ( isDataOwned )
-        SIM_SAFE_DELETE_ARRAY( m_vboData );
 
     SIM_CHECK_OPENGL();
 }

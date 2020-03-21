@@ -130,10 +130,6 @@ CDriver::CDriver()
 
 	InitUniform();
 
-	m_crtVertexSource		= nullptr;
-    m_crtVertexGroup        = nullptr;
-	m_crtRenderTexture		= nullptr;
-
 	m_screenWidth			= 0;
 	m_screenHeight			= 0;
 
@@ -280,31 +276,20 @@ u32  CDriver::BindTexture( TextureTarget target, u32 tex )
 
 // ----------------------------------------------------------------------//
 
-CRenderTexture* CDriver::BindRenderTexture( CRenderTexture* texture )
+void CDriver::BindRenderTexture( CRenderTexture* texture )
 {
-	if (texture == m_crtRenderTexture)
-		return m_crtRenderTexture;
-
-	if (texture != nullptr)
+	if ( texture != nullptr )
 	{
 		glBindFramebuffer( GL_FRAMEBUFFER, texture->GetBufferID() );
-		SIM_CHECK_OPENGL();
-
 		SetViewport( 0, 0, texture->GetWidth(), texture->GetHeight() );
 	}
 	else
 	{
 		glBindFramebuffer( GL_FRAMEBUFFER, 0 );
-		SIM_CHECK_OPENGL();
-
 		SetViewport( 0, 0, m_screenWidth, m_screenHeight );
 	}
 
-
-	CRenderTexture* old = m_crtRenderTexture;
-	m_crtRenderTexture = texture;
-
-	return old;
+	SIM_CHECK_OPENGL();
 }
 
 // ----------------------------------------------------------------------//
@@ -581,10 +566,6 @@ void CDriver::MatrixScale( Vec3 scale )
 
 void CDriver::Clear( Vec4 color )
 {
-	m_crtVertexSource	= 0;
-    m_crtVertexGroup    = 0;
-	m_crtRenderTexture	= 0;
-
 	glClearColor( color.x, color.y, color.z, color.w );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
@@ -859,13 +840,10 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 
 	SIM_ASSERT(vertexSource != nullptr);
 
-    if (vertexSource != m_crtVertexSource)
-    {
-        glBindBuffer(GL_ARRAY_BUFFER, vertexSource->GetID());
-        effect->Bind(this, vertexSource);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexSource->GetID());
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexGroup->GetID());
 
-        m_crtVertexSource = vertexSource;
-    }
+	effect->Bind(this, vertexSource);
 
 	material->Render(this);
 	effect->Render(this);
@@ -873,17 +851,12 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 	m_drawCallCount += 1;
 	m_vertexCount   += vertexGroup->GetVboSize();
 
-    if (vertexGroup != m_crtVertexGroup)
-    {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexGroup->GetID());
-        m_crtVertexGroup = vertexGroup;
-    }
 
 	u32 rt = Value( primitives[ Value( vertexSource->GetType() ) ] );
 	glDrawElements( rt, 
         vertexGroup->GetVboSize() / sizeof(u16),
         GL_UNSIGNED_SHORT, 
-        (void*)(vertexGroup->GetVboOffset() ) );
+        (void*)( vertexGroup->GetVboOffset() ) );
 
     SIM_CHECK_OPENGL();
 }

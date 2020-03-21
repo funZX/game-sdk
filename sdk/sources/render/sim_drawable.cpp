@@ -95,7 +95,6 @@ void CDrawable::Draw( CDriver *driver )
 	if ( m_rendertexture == nullptr )
 		return;
 
-	CRenderTexture* fb =
 	driver->BindRenderTexture(m_rendertexture);
 	driver->ClearColor( m_color );
 	engine->SetCamera( m_camera );
@@ -103,7 +102,7 @@ void CDrawable::Draw( CDriver *driver )
 	OnDraw.Emit( driver );
 	
 	engine->SetCamera( 0 );
-	driver->BindRenderTexture( 0 );
+	driver->BindRenderTexture(0);
 }
 
 // ----------------------------------------------------------------------//

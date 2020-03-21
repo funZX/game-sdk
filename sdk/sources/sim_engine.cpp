@@ -540,7 +540,15 @@ void CEngine::OnGui( CCanvas* canvas, sigcxx::SLOT slot )
     prevDrawCount = drawCount;
     prevVrtxCount = vrtxCount;
 
-    if (ImGui::Begin("engine.Stats"))
+    ImGui::SetNextWindowPos({ 5, 5 });
+    ImGui::SetNextWindowSize({ 120, 60 });
+    if ( ImGui::Begin("engine.Stats", 0, 
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoScrollbar | 
+		ImGuiWindowFlags_NoBackground |
+		ImGuiWindowFlags_NoDecoration |
+		ImGuiWindowFlags_NoInputs ))
     {
         ImGui::Text("D: %d V: %d", m_drawCount, m_vertexCount);
         ImGui::Text("FPS: %.1f", m_fps);

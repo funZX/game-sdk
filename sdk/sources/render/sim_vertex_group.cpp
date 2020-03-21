@@ -71,14 +71,11 @@ CVertexGroup::~CVertexGroup()
 }
 
 // ----------------------------------------------------------------------//
-void CVertexGroup::BufferData( u32 glUsage, bool isDataOwned )
+void CVertexGroup::BufferData( u32 glUsage )
 {
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_iD );
     glBufferData( GL_ELEMENT_ARRAY_BUFFER, m_vboSize, m_vboData, glUsage );
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
-
-    if ( isDataOwned )
-        SIM_SAFE_DELETE_ARRAY( m_vboData );
 
     SIM_CHECK_OPENGL();
 }

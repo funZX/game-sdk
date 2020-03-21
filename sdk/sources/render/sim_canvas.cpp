@@ -42,12 +42,12 @@ CCanvas::CCanvas( CFontAtlas* fontAtlas )
 {
     m_fontAtlas     = fontAtlas;
     m_vertexSource  = SIM_NEW CVertexSource;
-    m_vertexGroup   = SIM_NEW CVertexGroup;
 
     m_vertexSource->m_type = CVertexSource::Type::Triangle;
     m_vertexSource->m_vertexFormat = CVertexSource::AttributeFormat::ScreenPos | CVertexSource::AttributeFormat::TexCoord_0 | CVertexSource::AttributeFormat::Color;
     m_vertexSource->m_vertexStride = CVertexSource::AttributeStride::ScreenPos + CVertexSource::AttributeStride::TexCoord_0 + CVertexSource::AttributeStride::Color;
 
+    m_vertexGroup = SIM_NEW CVertexGroup;
     m_vertexGroup->SetVertexSource( m_vertexSource );
 
     ImGui::CreateContext( m_fontAtlas->m_imAtlas );
@@ -67,11 +67,10 @@ CCanvas::CCanvas( const std::string& name, CFontAtlas* fontAtlas)
 
 CCanvas::~CCanvas()
 {
-    m_vertexSource->m_vboData   = nullptr;
-    m_vertexGroup->m_vboData    = nullptr;
+    SIM_SAFE_DELETE(m_vertexGroup);
 
+    m_vertexSource->m_vboData   = nullptr;
     SIM_SAFE_DELETE( m_vertexSource );
-    SIM_SAFE_DELETE( m_vertexGroup );
 
     ImGui::DestroyContext();
 }
@@ -147,17 +146,15 @@ void CCanvas::Render( CDriver* driver )
     for ( s32 n = 0; n < imData->CmdListsCount; n++ )
     {
         const ImDrawList* cmdList = imData->CmdLists[n];
-        const ImDrawVert* vtxBuffer = cmdList->VtxBuffer.Data;
-        const ImDrawIdx* idxBuffer = cmdList->IdxBuffer.Data;
 
         m_vertexSource->m_vboData = (f32*)cmdList->VtxBuffer.Data;
         m_vertexSource->m_vboSize = cmdList->VtxBuffer.Size * m_vertexSource->GetVertexStride();
-        m_vertexSource->BufferData( GL_STREAM_DRAW, false );
+        m_vertexSource->BufferData( GL_STREAM_DRAW );
         SIM_CHECK_OPENGL();
 
-        m_vertexGroup->m_vboData = (u16*)cmdList->IdxBuffer.Data;
         m_vertexGroup->m_vboSize = cmdList->IdxBuffer.Size * sizeof(u16);
-        m_vertexGroup->BufferData( GL_STREAM_DRAW, false );
+        m_vertexGroup->m_vboData = (u16*)cmdList->IdxBuffer.Data;
+        m_vertexGroup->BufferData( GL_STREAM_DRAW );
         SIM_CHECK_OPENGL();
 
         for (s32 i = 0; i < cmdList->CmdBuffer.Size; i++)
@@ -178,8 +175,8 @@ void CCanvas::Render( CDriver* driver )
                 u32 w = (u32)zpl_floor(clipRect.z - clipRect.x);
                 u32 h = (u32)zpl_floor(clipRect.w - clipRect.y);
 
-                m_vertexGroup->m_vboSize    = pcmd->ElemCount * sizeof(u16);
-                m_vertexGroup->m_vboOffset  = pcmd->IdxOffset * sizeof(u16);
+                m_vertexGroup->m_vboSize    = pcmd->ElemCount * sizeof( u16 );
+                m_vertexGroup->m_vboOffset  = pcmd->IdxOffset * sizeof( u16 );
                 m_vertexGroup->SetMaterial((CMaterial*)pcmd->TextureId);
 
                 driver->SetScissor(x, y, w, h);
