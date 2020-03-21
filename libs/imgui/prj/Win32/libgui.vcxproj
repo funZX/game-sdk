@@ -11,13 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\sources\imgui.cpp" />
-    <ClCompile Include="..\..\sources\imgui_demo.cpp" />
-    <ClCompile Include="..\..\sources\imgui_draw.cpp" />
-    <ClCompile Include="..\..\sources\imgui_stdlib.cpp" />
-    <ClCompile Include="..\..\sources\imgui_widgets.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\..\include\imconfig.h" />
     <ClInclude Include="..\..\include\imgui.h" />
     <ClInclude Include="..\..\include\imgui_internal.h" />
@@ -27,7 +20,11 @@
     <ClInclude Include="..\..\include\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
-    <Natvis Include="imgui.natvis" />
+    <ClCompile Include="..\..\include\imgui.cpp" />
+    <ClCompile Include="..\..\include\imgui_demo.cpp" />
+    <ClCompile Include="..\..\include\imgui_draw.cpp" />
+    <ClCompile Include="..\..\include\imgui_stdlib.cpp" />
+    <ClCompile Include="..\..\include\imgui_widgets.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8D7C8554-01D5-4DCE-B6E0-1159702CF91A}</ProjectGuid>
@@ -78,7 +75,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../include;../../../librg/include;../../../opengles/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include;../../include/addons</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -94,7 +91,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>../../include;../../../librg/include;../../../freetype/include;../../../opengles/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include;../../include/addons</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -27,6 +27,8 @@ Index of this file:
 
 #pragma once
 
+#include <windows.h>
+
 // Configuration file with compile-time options (edit imconfig.h or #define IMGUI_USER_CONFIG to your own filename)
 #ifdef IMGUI_USER_CONFIG
 #include IMGUI_USER_CONFIG
@@ -2239,3 +2241,7 @@ struct ImFont
 #pragma GCC diagnostic pop
 #endif
 
+// Include imgui_user.h at the end of imgui.h (convenient for user to only explicitly include vanilla imgui.h)
+#ifdef IMGUI_INCLUDE_IMGUI_USER_H
+#include "imgui_user.h"
+#endif
