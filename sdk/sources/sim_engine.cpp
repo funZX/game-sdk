@@ -201,7 +201,7 @@ void CEngine::InitFont()
 
     io::CMemStream ms( (void*)&buffer[ 0 ], sizeof(buffer) );
 
-    m_fontAtlas->AddFont( "engine.Font", &ms, 14.0f );
+    m_fontAtlas->AddFont( "engine.Font", &ms, 15.0f );
     m_fontAtlas->Create();
 }
 
@@ -356,7 +356,7 @@ void CEngine::Update( f32 dt, void *userData )
 
 void CEngine::Render( CDriver *driver )
 {
-	driver->Clear( col::Black );
+	driver->Clear( col::Blueish );
 
 	// 3D rendering
 	On3D();
