@@ -137,10 +137,10 @@ void CCanvas::Render( CDriver* driver )
     ImVec2 clipOff   = imData->DisplayPos;
     ImVec2 clipScale = imData->FramebufferScale;
 
-    s32 fbWidth      = (s32)(imData->DisplaySize.x * imData->FramebufferScale.x);
-    s32 fbHeight     = (s32)(imData->DisplaySize.y * imData->FramebufferScale.y);
+    s32 fbWidth = (s32)(imData->DisplaySize.x * imData->FramebufferScale.x);
+    s32 fbHeight = (s32)(imData->DisplaySize.y * imData->FramebufferScale.y);
 
-    if ( fbWidth == 0 || fbHeight == 0)
+    if (fbWidth == 0 || fbHeight == 0)
         return;
 
     for ( s32 n = 0; n < imData->CmdListsCount; n++ )

@@ -54,22 +54,12 @@ int main(int argc, char *argv[])
     ImGui_ImplGlfw_Init(window);
     while (!glfwWindowShouldClose(window))
     {
-        int w, h;
-        int display_w, display_h;
         glfwGetWindowSize(window, &w, &h);
-        glfwGetFramebufferSize(window, &display_w, &display_h);
-
-        game->Resize(w, h);
-        
-        if (w > 0 && h > 0)
-        {
-            ImGuiIO& io = ImGui::GetIO();
-            io.DisplayFramebufferScale = ImVec2((float)display_w / w, (float)display_h / h);
-        }
 
         ImGui_ImplGlfw_UpdateMousePosAndButtons(window);
         ImGui_ImplGlfw_UpdateMouseCursor(window);
 
+        game->Resize(w, h);
         game->Run();
 
         glfwSwapBuffers(window);
