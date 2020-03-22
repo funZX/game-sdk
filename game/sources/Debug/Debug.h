@@ -34,7 +34,7 @@ public:
 	~CDebug();
 
 	void						Render( CDriver *driver );
-	void						Render2D( CDriver *driver);
+	void						ShowGui(CCanvas* canvas);
 
 	// btIDebugDraw interface
 	void						drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor);

@@ -6,12 +6,16 @@
 #include <render/sim_driver.h>
 
 #include "Debug.h"
+#include "../Game.h"
 // ----------------------------------------------------------------------//
 CDebug::CDebug()
 	: m_debugMode(0)
 {
 	m_debugSphere	= gluNewSphere(32, 1.0f);
+    m_debugSphere->vertexGroup->SetMaterial(O.material);
+
 	m_debugCube		= gluNewCube(1.0f);
+	m_debugCube->vertexGroup->SetMaterial(O.material);
 }
 // ----------------------------------------------------------------------//
 CDebug::~CDebug()
@@ -22,16 +26,20 @@ CDebug::~CDebug()
 // ----------------------------------------------------------------------//
 void CDebug::Render( CDriver *driver )
 {
-    /*
     driver->MatrixPush();
     driver->MatrixLoadIdentity();
-    driver->MatrixTranslate({ 0, 10, 0 });
+    driver->MatrixTranslate({ -1, 10, 0 });
     gluRenderSphere(driver, m_debugSphere);
     driver->MatrixPop();
-    */
+
+    driver->MatrixPush();
+    driver->MatrixLoadIdentity();
+    driver->MatrixTranslate({ 1, 10, 0 });
+    gluRenderCube(driver, m_debugCube);
+    driver->MatrixPop();
 }
 // ----------------------------------------------------------------------//
-void CDebug::Render2D( CDriver *driver )
+void CDebug::ShowGui( CCanvas* canvas )
 {
 
 }
@@ -49,7 +57,8 @@ void CDebug::drawLine(const btVector3& from, const btVector3& to, const btVector
 // ----------------------------------------------------------------------//
 void CDebug::drawSphere( const btVector3& p, btScalar radius, const btVector3& color )
 {
-	CDriver* driver = CDriver::GetSingletonPtr();
+	CDriver* driver = O.driver;
+
 	driver->MatrixPush();
 	driver->MatrixLoadIdentity();
     driver->MatrixTranslate({ p.getX(), p.getY(), p.getZ() });

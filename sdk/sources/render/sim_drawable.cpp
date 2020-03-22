@@ -26,6 +26,7 @@
 
 #include <sim_engine.h>
 #include <render/sim_material.h>
+#include <render/sim_effect.h>
 #include <render/sim_render_texture.h>
 #include <render/scene/sim_camera.h>
 #include <render/sim_driver.h>
@@ -47,7 +48,6 @@ CDrawable::CDrawable()
 	m_camera		= new CCamera();
 
     m_material      = SIM_NEW CMaterial( m_name );
-    m_effect        = nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -70,14 +70,12 @@ CDrawable::~CDrawable()
 
 void CDrawable::OnResize()
 {
-	if (m_rendertexture)
-		return;
-
-	m_rendertexture = SIM_NEW CRenderTexture();
+	SIM_ASSERT( m_rendertexture == nullptr );
 
     CDriver* driver = CDriver::GetSingletonPtr();
 
     u32 tex = driver->BindTexture( CDriver::TextureTarget::Texture2D, 0 );
+    m_rendertexture = SIM_NEW CRenderTexture();
 	m_rendertexture->Generate( (u32)m_size.x, (u32)m_size.y );
     driver->BindTexture( CDriver::TextureTarget::Texture2D, tex );
 
@@ -90,10 +88,9 @@ void CDrawable::OnResize()
 
 void CDrawable::Draw( CDriver *driver )
 {
-	static CEngine *engine = CEngine::GetSingletonPtr();
+	SIM_ASSERT( m_rendertexture != nullptr );
 
-	if ( m_rendertexture == nullptr )
-		return;
+	static CEngine *engine = CEngine::GetSingletonPtr();
 
 	driver->BindRenderTexture(m_rendertexture);
 	driver->ClearColor( m_color );
@@ -108,8 +105,10 @@ void CDrawable::Draw( CDriver *driver )
 // ----------------------------------------------------------------------//
 void CDrawable::Render( CDriver *driver )
 {
+	SIM_ASSERT( m_material->GetEffect() != nullptr );
+	SIM_ASSERT( m_material->GetEffect()->GetTexture(0) == nullptr );
+
     m_material->SetTexture( m_rendertexture, 0 );
-    m_material->SetEffect( m_effect );
 
 	CRect2D::Render( driver );
 }

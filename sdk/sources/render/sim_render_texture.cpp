@@ -65,6 +65,8 @@ CRenderTexture::~CRenderTexture()
 
 void CRenderTexture::Generate( u32 width, u32 height )
 {
+	SIM_ASSERT( m_bufferiD == 0 );
+
 	m_width		= zpl_next_pow2( width );
 	m_height	= zpl_next_pow2( height );
 

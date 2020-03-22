@@ -192,6 +192,7 @@ protected:
 	void							InitOpenAL();
     void							InitFont();
     void							InitEffect();
+	void							InitTexture();
     void							InitMaterial();
     void							InitCanvas();
     void							Shutdown();
@@ -216,6 +217,7 @@ protected:
 
 	rnr::CCamera*					m_activeCamera;
 	rnr::CCamera*					m_camera;
+	rnr::CTexture*					m_texture;
 	rnr::CMaterial*					m_material;
 	rnr::CEffect*					m_effect;
 	rnr::CCanvas*					m_canvas;
