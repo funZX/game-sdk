@@ -112,26 +112,26 @@ void CState_Game::OnExit()
 // ----------------------------------------------------------------------//
 void CState_Game::MouseDown(CCanvas* canvas, int button, sigcxx::SLOT slot)
 {
-	SIM_PRINT("\nMouseDown: %d", button);
+	//SIM_PRINT("\nMouseDown: %d", button);
 }
 // ----------------------------------------------------------------------//
 void CState_Game::MouseUp(CCanvas* canvas, int button, sigcxx::SLOT slot)
 {
-	SIM_PRINT("\nMouseUp: %d", button);
+	//SIM_PRINT("\nMouseUp: %d", button);
 }
 // ----------------------------------------------------------------------//
 void CState_Game::MouseMove(CCanvas* canvas, f32 x, f32 y, sigcxx::SLOT slot)
 {
-	SIM_PRINT("\nMouseMove: (%.2f, %.2f)", x, y);
+	//SIM_PRINT("\nMouseMove: (%.2f, %.2f)", x, y);
 }
 // ----------------------------------------------------------------------//
 void CState_Game::KeyDown(CCanvas* canvas, int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt, sigcxx::SLOT slot)
 {
-	SIM_PRINT("\nKeyDown: (%d, %d, %d, %d)", Key, KeyShift, KeyCtrl, KeyAlt);
+	//SIM_PRINT("\nKeyDown: (%d, %d, %d, %d)", Key, KeyShift, KeyCtrl, KeyAlt);
 }
 // ----------------------------------------------------------------------//
 void CState_Game::KeyUp(CCanvas* canvas, int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt, sigcxx::SLOT slot)
 {
-	SIM_PRINT("\nKeyUp: (%d, %d, %d, %d)", Key, KeyShift, KeyCtrl, KeyAlt);
+	//SIM_PRINT("\nKeyUp: (%d, %d, %d, %d)", Key, KeyShift, KeyCtrl, KeyAlt);
 }
 // ----------------------------------------------------------------------//

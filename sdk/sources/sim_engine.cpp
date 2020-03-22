@@ -115,6 +115,8 @@ void CEngine::Shutdown()
 void CEngine::InitEffect()
 {
     static const s8* vsource =
+        "precision highp float;"
+
         "attribute vec4 a_WorldPosL;"
         "attribute vec2 a_TexCoord_0;"
 
@@ -137,7 +139,7 @@ void CEngine::InitEffect()
     static const s8* psource =
         "precision mediump float;"
 
-        "uniform sampler2D	u_Sampler_Tex_0;"
+        "uniform lowp sampler2D	u_Sampler_Tex_0;"
 
         "varying vec2 v_Tex0;"
         "varying vec4 v_Color;"
@@ -167,7 +169,7 @@ void CEngine::InitEffect()
         "u_Sampler_Tex_0"
     };
 
-    u32 nUniform = 2;
+    u32 nUniform = 3;
     m_effect->InitUniforms(nUniform);
     for (u32 k = 0; k < nUniform; k++)
         m_effect->AddUniform(uniforms[k], k);
