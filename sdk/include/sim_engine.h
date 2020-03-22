@@ -179,7 +179,7 @@ public:
 	void							GoNext( IState* state );
 	void							GoBack();
 
-	void							SetCamera( CCamera *camera );
+	void							SetCamera( CCamera* camera );
     CCamera*                        GetCamera();
 
 	void							PointerDown( u32 x, u32 y );
@@ -215,7 +215,8 @@ protected:
 	vm::CSquirrel*					m_vm;
 	sm::CStateMachine*				m_sm;
 
-	rnr::CCamera*					m_activeCamera;
+	rnr::CCamera*					m_crtCamera;
+
 	rnr::CCamera*					m_camera;
 	rnr::CTexture*					m_texture;
 	rnr::CMaterial*					m_material;

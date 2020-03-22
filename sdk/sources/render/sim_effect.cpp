@@ -44,7 +44,7 @@ CEffect::CEffect()
 	InitAttributes();
 
 	m_numUniforms						= 0;
-    m_uniformMask                       = 0;
+    m_uniformMatrixMask                 = 0;
     m_uniforms = nullptr;
 
 	m_vshader							= 0;
@@ -93,7 +93,7 @@ void CEffect::InitUniforms(unsigned int numUniform)
 	m_numUniforms = numUniform;
 	m_uniforms = SIM_NEW CShader::TUniform[numUniform];
 
-	SIM_MEMSET(m_uniforms, 0, numUniform * sizeof(CShader::TUniform));
+	SIM_MEMSET( m_uniforms, 0, numUniform * sizeof( CShader::TUniform ) );
 }
 
 // ----------------------------------------------------------------------//
@@ -184,30 +184,49 @@ void CEffect::SetUniforms()
 
 			switch( curUni->m_index )
 			{
-			case CShader::UniformIndex::Matrix_World_Inverse:
-                zpl_bit_set(&m_uniformMask, isUsingWorldInverseMatrix);
-				break;
-			case CShader::UniformIndex::Matrix_World_InverseT:
-                zpl_bit_set(&m_uniformMask, isUsingWorldInverseTMatrix);
-				break;
-			case CShader::UniformIndex::Matrix_View_Inverse:
-                zpl_bit_set(&m_uniformMask, isUsingViewInverseMatrix);
-				break;
-			case CShader::UniformIndex::Matrix_View_InverseT:
-                zpl_bit_set(&m_uniformMask, isUsingViewInverseTMatrix);
-				break;
-			case CShader::UniformIndex::Matrix_Normal:
-                zpl_bit_set(&m_uniformMask, isUsingNormalMatrix);
-				break;
-			case CShader::UniformIndex::Matrix_WorldView:
-                zpl_bit_set(&m_uniformMask, isUsingWorldViewMatrix);
-				break;
-			case CShader::UniformIndex::Matrix_ViewProjection:
-                zpl_bit_set(&m_uniformMask, isUsingViewProjectionMatrix);
-				break;
-			case CShader::UniformIndex::Matrix_WorldViewProjection:
-                zpl_bit_set(&m_uniformMask, isUsingWorldViewProjectionMatrix);
-				break;
+            case CShader::UniformIndex::Matrix_Projection:
+                zpl_bit_set( &m_uniformMatrixMask, isUsingProjectionMatrix );
+                break;
+
+            case CShader::UniformIndex::Matrix_View:
+                zpl_bit_set( &m_uniformMatrixMask, isUsingViewMatrix );
+                break;
+
+            case CShader::UniformIndex::Matrix_World:
+                zpl_bit_set( &m_uniformMatrixMask, isUsingWorldMatrix );
+                break;
+
+            case CShader::UniformIndex::Matrix_Normal:
+                zpl_bit_set( &m_uniformMatrixMask, isUsingNormalMatrix );
+                break;
+
+            case CShader::UniformIndex::Matrix_WorldView:
+                zpl_bit_set( &m_uniformMatrixMask, isUsingWorldViewMatrix );
+                break;
+
+            case CShader::UniformIndex::Matrix_ViewProjection:
+                zpl_bit_set(&m_uniformMatrixMask, isUsingViewProjectionMatrix);
+                break;
+
+            case CShader::UniformIndex::Matrix_WorldViewProjection:
+                zpl_bit_set(&m_uniformMatrixMask, isUsingWorldViewProjectionMatrix);
+                break;
+
+            case CShader::UniformIndex::Matrix_World_Inverse:
+                zpl_bit_set( &m_uniformMatrixMask, isUsingWorldInverseMatrix );
+                break;
+
+            case CShader::UniformIndex::Matrix_World_InverseT:
+                zpl_bit_set( &m_uniformMatrixMask, isUsingWorldInverseTMatrix );
+                break;
+
+            case CShader::UniformIndex::Matrix_View_Inverse:
+                zpl_bit_set(&m_uniformMatrixMask, isUsingViewInverseMatrix);
+                break;
+
+            case CShader::UniformIndex::Matrix_View_InverseT:
+                zpl_bit_set(&m_uniformMatrixMask, isUsingViewInverseTMatrix);
+                break;
 			}
         }
 
@@ -268,7 +287,7 @@ void CEffect::Render(CDriver *driver)
 		CShader::TUniform *crtUniform = &m_uniforms[k];
 
 		if ( crtUniform->m_location != -1 )
-			driver->SetUniform(crtUniform);
+			driver->SetUniform( crtUniform );
 	}
 
 	ApplyTextures(driver);
@@ -300,7 +319,8 @@ void CEffect::Bind( CDriver *driver, CVertexSource *vertexSource )
         SIM_ASSERT(-1 == loc || loc == k);
 #endif
 
-		if( CVertexSource::AttributeFormat::None != ( vertexFormat & attribFormat )  )
+		if( zpl_bit_get( m_attributeMask, Value( crtAttrib->m_compFormat ) ) &&
+			CVertexSource::AttributeFormat::None != ( vertexFormat & attribFormat ) )
 		{
             crtAttrib->m_compOffset = vboOff;
 

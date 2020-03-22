@@ -75,7 +75,6 @@ void CVertexSource::BufferData( u32 glUsage )
 {
     glBindBuffer( GL_ARRAY_BUFFER, m_iD );
     glBufferData( GL_ARRAY_BUFFER, m_vboSize, m_vboData, glUsage );
-    glBindBuffer( GL_ARRAY_BUFFER, 0 );
 
     SIM_CHECK_OPENGL();
 }

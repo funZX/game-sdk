@@ -98,29 +98,17 @@ protected:
 	// ------------------------------------------------------------------//
 protected:
     enum UniformMask{
-        isUsingWorldInverseMatrix           = (1 << 0),
-        isUsingWorldInverseTMatrix          = (1 << 1),
-        isUsingViewInverseMatrix            = (1 << 2),
-        isUsingViewInverseTMatrix           = (1 << 3),
-        isUsingNormalMatrix                 = (1 << 4),
-        isUsingWorldViewMatrix              = (1 << 5),
-        isUsingViewProjectionMatrix         = (1 << 6),
-        isUsingWorldViewProjectionMatrix    = (1 << 7),
-    };
-
-    enum AttributeMask {
-        isUsingScreenPos                    = (1 <<  0), //CVertexSource::ScreenPos
-        isUsingWorldPos                     = (1 <<  1), //CVertexSource::WorldPos
-        isUsingTexCoord_0                   = (1 <<  2), //CVertexSource::TexCoord_0
-        isUsingTexCoord_1                   = (1 <<  3), //CVertexSource::TexCoord_1
-        isUsingTexCoord_2                   = (1 <<  4), //CVertexSource::TexCoord_2
-        isUsingTexCoord_3                   = (1 <<  5), //CVertexSource::TexCoord_3
-        isUsingColor                        = (1 <<  6), //CVertexSource::Color
-        isUsingNormal                       = (1 <<  7), //CVertexSource::Normal
-        isUsingTangent                      = (1 <<  8), //CVertexSource::Tangent
-        isUsingBinormal                     = (1 <<  9), //CVertexSource::Binormal
-        isUsingWeightArraySize              = (1 << 10), //CVertexSource::WeightArraySize
-        isUsingWeightArray                  = (1 << 11), //CVertexSource::WeightArray
+        isUsingProjectionMatrix				= ( 0),
+        isUsingViewMatrix					= ( 1),
+		isUsingWorldMatrix					= ( 2),
+        isUsingNormalMatrix					= ( 3),
+        isUsingWorldViewMatrix				= ( 4),
+        isUsingViewProjectionMatrix			= ( 5),
+        isUsingWorldViewProjectionMatrix	= ( 6),
+		isUsingWorldInverseMatrix			= ( 7),
+        isUsingWorldInverseTMatrix          = ( 8),
+        isUsingViewInverseMatrix            = ( 9),
+        isUsingViewInverseTMatrix           = (10),
     };
 
 	// ------------------------------------------------------------------//
@@ -130,7 +118,7 @@ protected:
 
 	s32							m_numUniforms;
 	CShader::TUniform*			m_uniforms;
-    u32                         m_uniformMask;
+    u32                         m_uniformMatrixMask;
 
 	u32							m_numAttribs;
 	CShader::TAttrib*			m_attributes;

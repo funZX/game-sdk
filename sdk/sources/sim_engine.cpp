@@ -73,10 +73,8 @@ CEngine::CEngine()
     InitCanvas();
 
     m_sm                = SIM_NEW CStateMachine( m_canvas );
-
 	m_camera			= SIM_NEW rnr::CCamera( "engine.Camera" );
-
-	m_activeCamera		= m_camera;
+    m_crtCamera         = m_camera;
 
 	m_currentTime		=  0;
 	m_updateTime		= -1;
@@ -264,14 +262,10 @@ void CEngine::InitOpenAL()
 void CEngine::Resize( u32 width, u32 height )
 {
     m_driver->SetScreenSize( width, height );
-
     m_canvas->Resize( (f32)width, (f32)height );
 
-    m_camera->SetFieldOfView(60.0f);
-    m_camera->SetNearPlane(1.0f);
-    m_camera->SetFarPlane(100.0f);
-    m_camera->SetOrthographic(m_canvas);
-    m_camera->SetPerspective(m_canvas);
+    m_crtCamera->SetOrthographic( m_canvas );
+    m_crtCamera->SetPerspective( m_canvas );
 }
 
 // ----------------------------------------------------------------------//
@@ -374,6 +368,7 @@ void CEngine::Quit()
 
 void CEngine::Update( f32 dt, void *userData )
 {
+    m_camera->Update( dt, userData );
 	m_driver->Tick( dt );
 
 	m_canvas->Update( dt, userData );
@@ -399,8 +394,6 @@ void CEngine::Render( CDriver *driver )
         m_canvas->Render( driver );
     }
 	Off2D();
-
-    driver->Flush();
 }
 
 // ----------------------------------------------------------------------//
@@ -425,42 +418,14 @@ void CEngine::GoBack()
 
 CCamera* CEngine::GetCamera()
 {
-    return m_activeCamera;
+    return m_crtCamera;
 }
 
 // ----------------------------------------------------------------------//
 
-void CEngine::SetCamera( CCamera *camera )
+void CEngine::SetCamera( CCamera* camera )
 {
-	if ( camera != nullptr )
-	{
-		m_driver->SetMatrixMode(CDriver::MatrixMode::Projection);
-		m_driver->MatrixPush();
-		m_driver->MatrixLoad( camera->GetPerspectiveMatrix() );
-
-		m_driver->SetMatrixMode(CDriver::MatrixMode::View);
-		m_driver->MatrixPush();
-		m_driver->MatrixLoad( camera->GetMatrix() );
-
-		m_driver->SetMatrixMode(CDriver::MatrixMode::World);
-		m_driver->MatrixPush();
-		m_driver->MatrixLoadIdentity();
-
-		m_activeCamera = camera;
-	}
-	else
-	{
-		m_driver->SetMatrixMode(CDriver::MatrixMode::Projection);
-		m_driver->MatrixPop();
-
-		m_driver->SetMatrixMode(CDriver::MatrixMode::View);
-		m_driver->MatrixPop();
-
-		m_driver->SetMatrixMode(CDriver::MatrixMode::World);
-		m_driver->MatrixPop();
-
-		m_activeCamera = m_camera;
-	}
+    m_crtCamera = camera;
 }
 
 // ----------------------------------------------------------------------//
@@ -468,7 +433,7 @@ void CEngine::SetCamera( CCamera *camera )
 void CEngine::On2D()
 {
 	m_driver->SetMatrixMode( CDriver::MatrixMode::Projection );
-	m_driver->MatrixLoad( m_activeCamera->GetOrthographicMatrix() );
+	m_driver->MatrixLoad( m_crtCamera->GetOrthographicMatrix() );
 
 	m_driver->SetMatrixMode( CDriver::MatrixMode::View );
 	m_driver->MatrixLoadIdentity();
@@ -488,15 +453,15 @@ void CEngine::Off2D()
 void CEngine::On3D()
 {
 	m_driver->SetMatrixMode( CDriver::MatrixMode::Projection );
-	m_driver->MatrixLoad( m_activeCamera->GetPerspectiveMatrix() );
+	m_driver->MatrixLoad( m_crtCamera->GetPerspectiveMatrix() );
 
 	m_driver->SetMatrixMode( CDriver::MatrixMode::View );
-	m_driver->MatrixLoad( m_activeCamera->GetMatrix() );
+	m_driver->MatrixLoad( m_crtCamera->GetMatrix() );
 
 	m_driver->SetMatrixMode( CDriver::MatrixMode::World );
 	m_driver->MatrixLoadIdentity();
 
-	m_camera->Render( m_driver );
+    m_crtCamera->Render( m_driver );
 }
 
 // ----------------------------------------------------------------------//

@@ -27,13 +27,11 @@ CDebug::~CDebug()
 void CDebug::Render( CDriver *driver )
 {
     driver->MatrixPush();
-    driver->MatrixLoadIdentity();
     driver->MatrixTranslate({ -1, 10, 0 });
     gluRenderSphere(driver, m_debugSphere);
     driver->MatrixPop();
 
     driver->MatrixPush();
-    driver->MatrixLoadIdentity();
     driver->MatrixTranslate({ 1, 10, 0 });
     gluRenderCube(driver, m_debugCube);
     driver->MatrixPop();
