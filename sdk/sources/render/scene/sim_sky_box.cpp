@@ -143,7 +143,6 @@ void CSkyBox::Generate( f32 size,
 
 void CSkyBox::Render( CDriver *driver )
 {
-    return;
 	driver->SetDepthRange( 0.99f, 1.0f );
 
 	driver->SetMaterialAmbient( m_material->GetAmbient() );

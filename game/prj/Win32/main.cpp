@@ -129,7 +129,6 @@ bool ImGui_ImplGlfw_Init(GLFWwindow* window)
     ImGuiIO& io = ImGui::GetIO();
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;         // We can honor GetMouseCursor() values (optional)
     io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;          // We can honor io.WantSetMousePos requests (optional, rarely used)
-    io.BackendPlatformName = "imgui_impl_glfw";
 
     // Keyboard mapping. ImGui will use those indices to peek into the io.KeysDown[] array.
     io.KeyMap[ImGuiKey_Tab] = GLFW_KEY_TAB;
@@ -198,11 +197,9 @@ void ImGui_ImplGlfw_UpdateMousePosAndButtons(GLFWwindow* window)
     // Update mouse position
     const ImVec2 mouse_pos_backup = io.MousePos;
     io.MousePos = ImVec2(-FLT_MAX, -FLT_MAX);
-#ifdef __EMSCRIPTEN__
-    const bool focused = true; // Emscripten
-#else
+
     const bool focused = glfwGetWindowAttrib(window, GLFW_FOCUSED) != 0;
-#endif
+
     if (focused)
     {
         if (io.WantSetMousePos)

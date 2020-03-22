@@ -50,6 +50,7 @@ CCanvas::CCanvas( CFontAtlas* fontAtlas )
     m_vertexGroup = SIM_NEW CVertexGroup;
     m_vertexGroup->SetVertexSource( m_vertexSource );
 
+    ImGui::SetAllocatorFunctions(&CCanvas::ImGuiAlloc, &CCanvas::ImGuiDelloc, this);
     ImGui::CreateContext( m_fontAtlas->m_imAtlas );
 
     ImGuiStyle& style = ImGui::GetStyle();
@@ -129,6 +130,21 @@ CCanvas::~CCanvas()
     SIM_SAFE_DELETE( m_vertexSource );
 
     ImGui::DestroyContext();
+}
+
+// ----------------------------------------------------------------------//
+
+void* CCanvas::ImGuiAlloc(size_t sz, void* userData)
+{    
+    void* ptr = (void*) SIM_NEW u8[sz];
+    return ptr;
+}
+
+// ----------------------------------------------------------------------//
+
+void CCanvas::ImGuiDelloc(void* ptr, void* userData)
+{
+    SIM_SAFE_DELETE_ARRAY(ptr)
 }
 
 // ----------------------------------------------------------------------//

@@ -71,6 +71,9 @@ public: // Signals
 
 	// ------------------------------------------------------------------//
 protected:
+	static void*				ImGuiAlloc(size_t sz, void* userData);
+	static void					ImGuiDelloc(void* ptr, void* userData);
+
     CFontAtlas*                 m_fontAtlas;
 
     CVertexSource*              m_vertexSource;
