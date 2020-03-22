@@ -72,6 +72,9 @@ public:
 	bool						PointIn( Vec3 *pos );
 	bool						BoxIn( Vec3 *pos, Vec3 *bounds );
 
+	void						Move( zpl_vec3& v );
+	void						Rotate( zpl_quat& q );
+
 	virtual void				Update( f32 dt, void *userData );
 	virtual void				Render( CDriver *driver );
 

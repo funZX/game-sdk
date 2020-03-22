@@ -157,27 +157,6 @@ void CCanvas::Resize( f32 w, f32 h )
 
 // ----------------------------------------------------------------------//
 
-void CCanvas::PointerDown( u32 x, u32 y )
-{
-	std::cout << "PointerDown: " << x << ", " << y << std::endl;
-}
-
-// ----------------------------------------------------------------------//
-
-void CCanvas::PointerDrag( u32 x, u32 y )
-{
-	std::cout << "PointerDrag: " << x << ", " << y << std::endl;
-}
-
-// ----------------------------------------------------------------------//
-
-void CCanvas::PointerUp( u32 x, u32 y )
-{
-	std::cout << "PointerUp: " << x << ", " << y << std::endl;
-}
-
-// ----------------------------------------------------------------------//
-
 void CCanvas::ClearEvents() 
 {
 
@@ -260,6 +239,31 @@ void CCanvas::Render( CDriver* driver )
     driver->EnableScissor(false);
 }
 
+// ----------------------------------------------------------------------//
+void CCanvas::MouseDown(int button)
+{
+    OnMouseDown.Emit( this, button );
+}
+// ----------------------------------------------------------------------//
+void CCanvas::MouseUp(int button)
+{
+    OnMouseUp.Emit( this, button );
+}
+// ----------------------------------------------------------------------//
+void CCanvas::MouseMove(f32 x, f32 y)
+{
+    OnMouseMove.Emit( this, x, y );
+}
+// ----------------------------------------------------------------------//
+void CCanvas::KeyDown(int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt)
+{
+    OnKeyDown.Emit( this, Key, KeyShift, KeyCtrl, KeyAlt );
+}
+// ----------------------------------------------------------------------//
+void CCanvas::KeyUp(int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt)
+{
+    OnKeyUp.Emit( this, Key, KeyShift, KeyCtrl, KeyAlt );
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

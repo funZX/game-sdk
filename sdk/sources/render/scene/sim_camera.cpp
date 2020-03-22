@@ -89,6 +89,19 @@ void CCamera::SetOrthographic( CRect2D *rect)
 
 // ----------------------------------------------------------------------//
 
+void CCamera::Move(zpl_vec3& v)
+{
+	zpl_vec3_add( &m_transform.translation, m_transform.translation, v );
+}
+
+// ----------------------------------------------------------------------//
+void CCamera::Rotate( zpl_quat& q )
+{
+	zpl_quat_mul( &m_transform.quaternion, m_transform.quaternion, q );
+}
+
+// ----------------------------------------------------------------------//
+
 void CCamera::Update( f32 dt, void *userData )
 {
 	Vec3 minusPos;

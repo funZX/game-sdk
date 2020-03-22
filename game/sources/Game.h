@@ -16,12 +16,7 @@ public:
 	const std::string			GetFsPath( const std::string& fs);
 	inline CWorld*				GetWorld()			{ return m_world; }
 
-	void						KeyPress( u8 key, bool isDown );
-	bool						IsKeyDown( u8 key ) { return m_downKeys[ key ]; }
-
 protected:
-	bool						m_downKeys[ 256 ];
-
 	std::string					m_fsDir;
 	CWorld*						m_world;
 };
@@ -33,7 +28,7 @@ typedef struct
 
 	CDriver*					driver;	
 	CWorld*						world;
-	CCamera*					camera;
+	CCamera**					camera;
 	CCanvas*					canvas;
 
 	CMaterial*					material;

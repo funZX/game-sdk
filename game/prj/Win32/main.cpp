@@ -1,6 +1,8 @@
+#include <imgui.h>
 #include <Game.h>
 #include <GLFW/glfw3.h>
-#include <imgui.h>
+
+CGame* game = nullptr;
 
 bool ImGui_ImplGlfw_Init(GLFWwindow* window);
 void ImGui_ImplGlfw_UpdateMousePosAndButtons(GLFWwindow* window);
@@ -47,8 +49,7 @@ int main(int argc, char *argv[])
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
-    CGame* game = SIM_NEW CGame("../../blob/");
-
+    game = SIM_NEW CGame("../../blob/");
     game->Start();
 
     ImGui_ImplGlfw_Init(window);
@@ -92,7 +93,10 @@ static void ImGui_ImplGlfw_SetClipboardText(void* user_data, const char* text)
 void ImGui_ImplGlfw_MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
     if (action == GLFW_PRESS && button >= 0 && button < IM_ARRAYSIZE(g_MouseJustPressed))
+    {
         g_MouseJustPressed[button] = true;
+        game->MouseDown(button);
+    }
 }
 
 void ImGui_ImplGlfw_ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
@@ -105,16 +109,25 @@ void ImGui_ImplGlfw_ScrollCallback(GLFWwindow* window, double xoffset, double yo
 void ImGui_ImplGlfw_KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     ImGuiIO& io = ImGui::GetIO();
-    if (action == GLFW_PRESS)
-        io.KeysDown[key] = true;
-    if (action == GLFW_RELEASE)
-        io.KeysDown[key] = false;
 
     // Modifiers are not reliable across systems
     io.KeyCtrl = io.KeysDown[GLFW_KEY_LEFT_CONTROL] || io.KeysDown[GLFW_KEY_RIGHT_CONTROL];
     io.KeyShift = io.KeysDown[GLFW_KEY_LEFT_SHIFT] || io.KeysDown[GLFW_KEY_RIGHT_SHIFT];
     io.KeyAlt = io.KeysDown[GLFW_KEY_LEFT_ALT] || io.KeysDown[GLFW_KEY_RIGHT_ALT];
     io.KeySuper = io.KeysDown[GLFW_KEY_LEFT_SUPER] || io.KeysDown[GLFW_KEY_RIGHT_SUPER];
+
+    switch (action)
+    {
+    case GLFW_PRESS:
+        io.KeysDown[key] = true;
+        game->KeyDown(key, io.KeyShift, io.KeyCtrl, io.KeyAlt);
+        break;
+
+    case GLFW_RELEASE:
+        io.KeysDown[key] = false;
+        game->KeyUp(key, io.KeyShift, io.KeyCtrl, io.KeyAlt);
+        break;
+    }
 }
 
 void ImGui_ImplGlfw_CharCallback(GLFWwindow* window, unsigned int c)
@@ -190,8 +203,13 @@ void ImGui_ImplGlfw_UpdateMousePosAndButtons(GLFWwindow* window)
     for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++)
     {
         // If a mouse press event came, always pass it as "mouse held this frame", so we don't miss click-release events that are shorter than 1 frame.
+        
+        bool was_down = io.MouseDown[i];
         io.MouseDown[i] = g_MouseJustPressed[i] || glfwGetMouseButton(window, i) != 0;
         g_MouseJustPressed[i] = false;
+
+        if (was_down && !io.MouseDown[i])
+            game->MouseUp(i);
     }
 
     // Update mouse position
@@ -211,6 +229,8 @@ void ImGui_ImplGlfw_UpdateMousePosAndButtons(GLFWwindow* window)
             double mouse_x, mouse_y;
             glfwGetCursorPos(window, &mouse_x, &mouse_y);
             io.MousePos = ImVec2((float)mouse_x, (float)mouse_y);
+
+            game->MouseMove(io.MousePos.x, io.MousePos.y);
         }
     }
 }

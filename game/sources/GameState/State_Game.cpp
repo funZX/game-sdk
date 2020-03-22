@@ -45,6 +45,13 @@ CState_Game::CState_Game()
 	m_drawable->SetColor(col::Orange);
 	m_drawable->OnDraw.Connect(this, &CState_Game::DrawToWidget);
 
+	CCanvas* canvas = O.canvas;
+	canvas->OnMouseDown.Connect(this, &CState_Game::MouseDown);
+	canvas->OnMouseUp.Connect(this, &CState_Game::MouseUp);
+	canvas->OnMouseMove.Connect(this, &CState_Game::MouseMove);
+	canvas->OnKeyDown.Connect(this, &CState_Game::KeyDown);
+	canvas->OnKeyUp.Connect(this, &CState_Game::KeyUp);
+
 	/*
 	CBinaryTree<u32, CScript> bt;
 	bt.Insert(0, *script);
@@ -60,7 +67,7 @@ CState_Game::~CState_Game()
 }
 // ----------------------------------------------------------------------//
 void CState_Game::Update( f32 dt, void *userData )
-{
+{	
 	m_drawable->Update(dt, userData);
     O.world->Update( dt, userData );
 }
@@ -101,5 +108,30 @@ void CState_Game::ShowGui( CCanvas* canvas )
 void CState_Game::OnExit()
 {
 
+}
+// ----------------------------------------------------------------------//
+void CState_Game::MouseDown(CCanvas* canvas, int button, sigcxx::SLOT slot)
+{
+	SIM_PRINT("\nMouseDown: %d", button);
+}
+// ----------------------------------------------------------------------//
+void CState_Game::MouseUp(CCanvas* canvas, int button, sigcxx::SLOT slot)
+{
+	SIM_PRINT("\nMouseUp: %d", button);
+}
+// ----------------------------------------------------------------------//
+void CState_Game::MouseMove(CCanvas* canvas, f32 x, f32 y, sigcxx::SLOT slot)
+{
+	SIM_PRINT("\nMouseMove: (%.2f, %.2f)", x, y);
+}
+// ----------------------------------------------------------------------//
+void CState_Game::KeyDown(CCanvas* canvas, int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt, sigcxx::SLOT slot)
+{
+	SIM_PRINT("\nKeyDown: (%d, %d, %d, %d)", Key, KeyShift, KeyCtrl, KeyAlt);
+}
+// ----------------------------------------------------------------------//
+void CState_Game::KeyUp(CCanvas* canvas, int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt, sigcxx::SLOT slot)
+{
+	SIM_PRINT("\nKeyUp: (%d, %d, %d, %d)", Key, KeyShift, KeyCtrl, KeyAlt);
 }
 // ----------------------------------------------------------------------//
