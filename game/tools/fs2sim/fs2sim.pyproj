@@ -9,13 +9,13 @@
     <SearchPath>..\fs2sim</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
-    <Name>blend2sim</Name>
-    <RootNamespace>blend2sim</RootNamespace>
+    <Name>fs2sim</Name>
+    <RootNamespace>fs2sim</RootNamespace>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <Environment>PYTHONPATH</Environment>
-    <InterpreterId>Global|VisualStudio|cygwin64</InterpreterId>
     <IsWindowsApplication>True</IsWindowsApplication>
+    <InterpreterId>Global|VisualStudio|cygwin64</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
