@@ -10,6 +10,6 @@ Requirements:
 		4.2. pip install Cython
 		4.3. pip install PyCygwin
 		4.4. pip install simplejson
-	6. Execute 'make.py' from 'tools/fs2sim' python project
+	5. Execute 'make.py' from 'tools/fs2sim' python project from cygwin shell or VS
 	
 Ready to compile and run

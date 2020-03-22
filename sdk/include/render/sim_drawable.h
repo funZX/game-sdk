@@ -54,8 +54,6 @@ public:
 
     inline Vec4				        GetColor();
     inline void						SetColor( Vec4 ambient );
-
-    inline void                     SetEffect( CEffect* effect );
 	// ------------------------------------------------------------------//
 public: // Signals
 	// ------------------------------------------------------------------//
@@ -70,7 +68,6 @@ protected:
 	CCamera*						m_camera;
 
     Vec4                            m_color;
-    CEffect*                        m_effect;
 	// ------------------------------------------------------------------//
 };
 
@@ -84,10 +81,6 @@ inline void CDrawable::SetColor( Vec4 color )
     m_color = color;
 }
 
-inline void CDrawable::SetEffect( CEffect* effect )
-{
-    m_effect = effect;
-}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

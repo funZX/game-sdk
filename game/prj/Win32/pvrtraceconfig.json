@@ -2,7 +2,7 @@
 	"*": {
 		"Enabled": true,
 		"Tracing": {
-			"OutputFilename": "D:/Work/game-sdk/%pname.pvrtrace",
+			"OutputFilename": "D:/sandbox/game-sdk/%pname.pvrtrace",
 			"RecordData": true,
 			"StartFrame": 0,
 			"AppendTraceVersion": true,
@@ -40,8 +40,8 @@
 		},
 
 		"Host": {
-			"EglLibraryPath": "D:/Work/game-sdk/libs/opengles/bin/libEGL.dll",
-			"Es2LibraryPath": "D:/Work/game-sdk/libs/opengles/bin/libGLESv2.dll"
+			"EglLibraryPath": "D:/sandbox/game-sdk/libs/opengles/bin/libEGL.dll",
+			"Es2LibraryPath": "D:/sandbox/game-sdk/libs/opengles/bin/libGLESv2.dll"
 		}
 	}
 }

@@ -42,7 +42,7 @@ CState_Game::CState_Game()
 	m_drawable = SIM_NEW CDrawable();
 	m_drawable->MoveTo(300.0f, 100.0f);
 	m_drawable->Resize(200, 200);
-	m_drawable->SetColor(col::Blueish);
+	m_drawable->SetColor(col::Orange);
 	m_drawable->OnDraw.Connect(this, &CState_Game::DrawToWidget);
 
 	/*
@@ -68,16 +68,19 @@ void CState_Game::Update( f32 dt, void *userData )
 void CState_Game::Render( CDriver *driver )
 {
     m_drawable->Draw(driver);
-    O.world->Render( driver );
+    O.world->Render(driver);
+
+    CDebug d;
+    d.Render(driver);
 }
 
 // ----------------------------------------------------------------------//
 void CState_Game::DrawToWidget(CDriver* driver, sigcxx::SLOT slot)
 {
-    CDebug d;
-
-    d.Render( driver );
     O.world->Render(driver);
+
+    CDebug d;
+    d.Render(driver);
 }
 // ----------------------------------------------------------------------//
 void CState_Game::OnEnter()
@@ -89,18 +92,19 @@ void CState_Game::ShowGui( CCanvas* canvas )
 {
     ImGui::ShowDemoWindow();
 
-    //@TODO: fix flipped drawable
+    CEffect* fill = O.effect.color;
+    static CMaterial m;
 
-    //CEffect* fill = O.effect.color;
+    m.SetEffect(fill);
 
-    //CEffect::TTechnique techique;
-    //fill->CopyTechnique(&techique);
-    //fill->m_technique.depthtest = false;
+    CEffect::TTechnique techique;
+    fill->CopyTechnique(&techique);
+    fill->m_technique.depthtest = false;
 
-    //m_drawable->SetEffect(fill);
-    //m_drawable->Render(driver);
+    m_drawable->SetMaterial(&m);
+    m_drawable->Render(O.driver);
 
-    //fill->SetTechnique(&techique);
+    fill->SetTechnique(&techique);
 }
 // ----------------------------------------------------------------------//
 

@@ -59,7 +59,9 @@ CEngine::CEngine()
 
     m_effect            = SIM_NEW CEffect("engine.Effect");
     m_material          = SIM_NEW CMaterial("engine.Material");
+	m_texture			= SIM_NEW CTexture("engine.Texture");
     InitEffect();
+	InitTexture();
     InitMaterial();
 
     m_fontAtlas         = SIM_NEW CFontAtlas( "engine.Atlas" );
@@ -176,7 +178,7 @@ void CEngine::InitEffect()
 
 	m_effect->m_technique.depthtest = true;
 	m_effect->m_technique.depthmask = true;
-	m_effect->m_technique.cullface = true;
+	m_effect->m_technique.cullface  = true;
 	m_effect->m_technique.alphatest = false;
 
 	m_effect->m_technique.blending = false;
@@ -186,10 +188,36 @@ void CEngine::InitEffect()
 
 	m_effect->m_technique.depthfunc.equation = GL_LESS;
 }
+
+// ----------------------------------------------------------------------//
+
+void CEngine::InitTexture()
+{
+    s32 texWidth	= 16;
+    s32 texHeight	= 16;
+    u8* texBuf		= SIM_NEW u8[ texWidth* texHeight ];
+
+	SIM_MEMSET( texBuf, 255, texWidth * texHeight );
+
+    u32 tex = m_driver->BindTexture(CDriver::TextureTarget::Texture2D, 0);
+    m_texture->Generate(texBuf
+        , texWidth
+        , texHeight
+        , CTexture::Type::TGA
+        , CTexture::Wrap::Clamp
+        , CTexture::Filter::Quadlinear
+        , CTexture::Format::Alpha
+    );
+	m_driver->BindTexture(CDriver::TextureTarget::Texture2D, tex);
+
+	SIM_SAFE_DELETE_ARRAY( texBuf );
+}
+
 // ----------------------------------------------------------------------//
 
 void CEngine::InitMaterial()
 {
+	m_material->SetTexture(m_texture, 0);
 	m_material->SetEffect(m_effect);
 }
 
@@ -536,13 +564,15 @@ void CEngine::OnGui( CCanvas* canvas, sigcxx::SLOT slot )
     prevDrawCount = drawCount;
     prevVrtxCount = vrtxCount;
 
-    ImGui::SetNextWindowSize({ 90, 65 });
-    if (ImGui::Begin("engine", 0,
+    ImGui::SetNextWindowSize({ 120, 110 });
+    if (ImGui::Begin("engine.Stats", 0,
         ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoScrollbar))
     {
-        ImGui::Text("D: %d V: %d", m_drawCount, m_vertexCount);
-        ImGui::Text("FPS: %.1f", m_fps);
+		ImGui::TextWrapped("Draw calls: %d", m_drawCount);
+        ImGui::TextWrapped("Vertices: %d", m_vertexCount);
+		ImGui::TextWrapped("Triangles: %d", m_vertexCount / 3);
+        ImGui::TextWrapped("FPS: %.1f", m_fps);
     }
     ImGui::End();
 }

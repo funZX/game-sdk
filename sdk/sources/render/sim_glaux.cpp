@@ -55,12 +55,12 @@ Sphere*	gluNewSphere( s32 numSlices, f32 radius )
 	s32 numVertices = ( numParallels + 1 ) * ( numSlices + 1 );
 
 	sphere->vertexGroup->m_vboData = SIM_NEW u16[ numIndices ];
-	sphere->vertexGroup->m_vboSize = numIndices;
+	sphere->vertexGroup->m_vboSize = numIndices * sizeof(u16);
 
 	sphere->vertexGroup->m_vertexSource->m_type			= CVertexSource::Type::Triangle;
 	sphere->vertexGroup->m_vertexSource->m_vertexFormat	= CVertexSource::AttributeFormat::WorldPos | CVertexSource::AttributeFormat::TexCoord_0 | CVertexSource::AttributeFormat::Normal;
 	sphere->vertexGroup->m_vertexSource->m_vertexStride	= CVertexSource::AttributeStride::WorldPos + CVertexSource::AttributeStride::TexCoord_0 + CVertexSource::AttributeStride::Normal;
-	sphere->vertexGroup->m_vertexSource->m_vboSize		= numVertices;
+	sphere->vertexGroup->m_vertexSource->m_vboSize		= numVertices * Value(sphere->vertexGroup->m_vertexSource->m_vertexStride);
 
 	s32 vtxSize							= Value(sphere->vertexGroup->m_vertexSource->m_vertexStride) / sizeof( f32 );
 	s32 newFloats 						= numVertices * vtxSize;
@@ -116,6 +116,8 @@ Sphere*	gluNewSphere( s32 numSlices, f32 radius )
 		}
 	}
 
+	sphere->vertexGroup->m_vertexSource->BufferData(GL_STREAM_DRAW);
+	sphere->vertexGroup->BufferData(GL_STREAM_DRAW);
 	return sphere;
 }
 
@@ -128,7 +130,7 @@ Sphere* gluDelSphere( Sphere *sphere )
 	SIM_SAFE_DELETE_ARRAY( sphere->vertexGroup->m_vertexSource->m_vboData );
 	SIM_SAFE_DELETE( sphere->vertexGroup->m_vertexSource );
 
-	SIM_SAFE_DELETE_ARRAY( sphere->vertexGroup->m_vboData );
+    SIM_SAFE_DELETE_ARRAY(sphere->vertexGroup->m_vboData);
 	SIM_SAFE_DELETE( sphere->vertexGroup );
 	
 	SIM_SAFE_DELETE( sphere );
@@ -326,12 +328,12 @@ Cube* gluNewCube( f32 sideSize )
 	s32 numIndices			= 36;
 
 	cube->vertexGroup->m_vboData		= SIM_NEW u16[ numIndices ];
-	cube->vertexGroup->m_vboSize	= numIndices;
+	cube->vertexGroup->m_vboSize		= numIndices * sizeof(u16);
 
 	cube->vertexGroup->m_vertexSource->m_type			= CVertexSource::Type::Triangle;
 	cube->vertexGroup->m_vertexSource->m_vertexFormat	= CVertexSource::AttributeFormat::WorldPos | CVertexSource::AttributeFormat::TexCoord_0 | CVertexSource::AttributeFormat::Normal;
 	cube->vertexGroup->m_vertexSource->m_vertexStride	= CVertexSource::AttributeStride::WorldPos + CVertexSource::AttributeStride::TexCoord_0 + CVertexSource::AttributeStride::Normal;
-	cube->vertexGroup->m_vertexSource->m_vboSize	= numVertices;
+	cube->vertexGroup->m_vertexSource->m_vboSize		= numVertices * Value(cube->vertexGroup->m_vertexSource->m_vertexStride);
 
 	s32 vtxSize							= Value(cube->vertexGroup->m_vertexSource->m_vertexStride) / sizeof( f32 );
 	s32 newFloats 						= numVertices * vtxSize;
@@ -369,6 +371,9 @@ Cube* gluNewCube( f32 sideSize )
 	}
 
 	SIM_MEMCPY( cube->vertexGroup->m_vboData, cubeIndices, numIndices * sizeof( u16 ) );
+
+	cube->vertexGroup->m_vertexSource->BufferData(GL_STREAM_DRAW);
+	cube->vertexGroup->BufferData(GL_STREAM_DRAW);
 
 	return cube;
 }

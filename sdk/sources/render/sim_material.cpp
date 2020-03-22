@@ -45,6 +45,7 @@ CMaterial::CMaterial()
 	m_shininess	 = 0.0f;
 	m_refraction = 0.0f;
 
+	m_effect	= nullptr;
 	SIM_MEMSET( m_textures, 0, sizeof( m_textures ) );
 }
 // ----------------------------------------------------------------------//

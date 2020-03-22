@@ -870,13 +870,14 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 	material->Render(this);
 	effect->Render(this);
 
-	m_drawCallCount += 1;
-	m_vertexCount   += vertexGroup->GetVboSize();
+	u16 numIndices = vertexGroup->GetVboSize() / sizeof(u16);
 
+	m_drawCallCount += 1;
+	m_vertexCount   += numIndices;
 
 	u32 rt = Value( primitives[ Value( vertexSource->GetType() ) ] );
 	glDrawElements( rt, 
-        vertexGroup->GetVboSize() / sizeof(u16),
+		numIndices,
         GL_UNSIGNED_SHORT, 
         (void*)( vertexGroup->GetVboOffset() ) );
 
