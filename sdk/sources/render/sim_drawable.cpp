@@ -47,7 +47,7 @@ CDrawable::CDrawable()
 	m_rendertexture = nullptr;
 	m_camera		= new CCamera();
 
-    m_material      = SIM_NEW CMaterial( m_name );
+    m_material      = nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -63,7 +63,6 @@ CDrawable::~CDrawable()
 {
 	SIM_SAFE_DELETE( m_camera );
 	SIM_SAFE_DELETE( m_rendertexture );
-    SIM_SAFE_DELETE( m_material );
 }
 
 // ----------------------------------------------------------------------//
@@ -92,25 +91,51 @@ void CDrawable::Draw( CDriver *driver )
 
 	static CEngine *engine = CEngine::GetSingletonPtr();
 
-	driver->BindRenderTexture(m_rendertexture);
-	driver->ClearColor( m_color );
-	engine->SetCamera( m_camera );
+	driver->BindRenderTexture( m_rendertexture );
+	driver->Clear( m_color );
 
+	driver->SetMatrixMode( CDriver::MatrixMode::Projection );
+	driver->MatrixPush( false );
+	driver->MatrixLoad( m_camera->GetPerspectiveMatrix() );
+
+	driver->SetMatrixMode( CDriver::MatrixMode::View );
+	driver->MatrixPush( false );
+	driver->MatrixLoad( m_camera->GetMatrix() );
+
+	driver->SetMatrixMode( CDriver::MatrixMode::World );
+	driver->MatrixPush( false );
+	driver->MatrixLoadIdentity();
+
+	m_camera->Render( driver );
 	OnDraw.Emit( driver );
 	
-	engine->SetCamera( 0 );
+    driver->SetMatrixMode(CDriver::MatrixMode::Projection);
+    driver->MatrixPop();
+
+    driver->SetMatrixMode(CDriver::MatrixMode::View);
+    driver->MatrixPop();
+
+    driver->SetMatrixMode(CDriver::MatrixMode::World);
+    driver->MatrixPop();
+
 	driver->BindRenderTexture(0);
 }
-
+// ----------------------------------------------------------------------//
+void CDrawable::Update(f32 dt, void* userData)
+{
+	m_camera->Update( dt, userData );
+}
 // ----------------------------------------------------------------------//
 void CDrawable::Render( CDriver *driver )
 {
+	SIM_ASSERT( m_material != nullptr );
 	SIM_ASSERT( m_material->GetEffect() != nullptr );
-	SIM_ASSERT( m_material->GetEffect()->GetTexture(0) == nullptr );
 
+	CTexture* tex = m_material->GetTexture(0);
     m_material->SetTexture( m_rendertexture, 0 );
 
 	CRect2D::Render( driver );
+	m_material->SetTexture(tex, 0);
 }
 // ----------------------------------------------------------------------//
 }; // namespace rnr

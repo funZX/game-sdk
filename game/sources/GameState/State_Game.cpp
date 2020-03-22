@@ -61,6 +61,7 @@ CState_Game::~CState_Game()
 // ----------------------------------------------------------------------//
 void CState_Game::Update( f32 dt, void *userData )
 {
+	m_drawable->Update(dt, userData);
     O.world->Update( dt, userData );
 }
 
@@ -90,21 +91,10 @@ void CState_Game::OnEnter()
 // ----------------------------------------------------------------------//
 void CState_Game::ShowGui( CCanvas* canvas )
 {
-    ImGui::ShowDemoWindow();
-
-    CEffect* fill = O.effect.color;
-    static CMaterial m;
-
-    m.SetEffect(fill);
-
-    CEffect::TTechnique techique;
-    fill->CopyTechnique(&techique);
-    fill->m_technique.depthtest = false;
-
-    m_drawable->SetMaterial(&m);
+    m_drawable->SetMaterial(O.material);
     m_drawable->Render(O.driver);
 
-    fill->SetTechnique(&techique);
+	ImGui::ShowDemoWindow();
 }
 // ----------------------------------------------------------------------//
 

@@ -51,6 +51,7 @@ public:
 	// ------------------------------------------------------------------//
 	void							Draw( CDriver *driver );
 	virtual void					Render( CDriver *driver );
+	virtual void					Update(f32 dt, void* userData);
 
     inline Vec4				        GetColor();
     inline void						SetColor( Vec4 ambient );

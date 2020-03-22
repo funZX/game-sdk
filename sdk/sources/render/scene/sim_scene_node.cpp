@@ -27,6 +27,7 @@
 #include <render/scene/sim_scene.h>
 #include <render/scene/sim_camera.h>
 #include <render/scene/sim_scene_node.h>
+#include <sim_engine.h>
 
 namespace sim
 {
@@ -119,8 +120,10 @@ void CSceneNode::Update( f32 dt, void *userData )
 {
     if ( IsVisible() )
     {
+        static CEngine* engine = CEngine::GetSingletonPtr();
+
         CScene* scene   = (CScene*)userData;
-        CCamera* camera = scene->GetCamera();
+        CCamera* camera = engine->GetCamera();
 
         SIM_ASSERT(camera);
 

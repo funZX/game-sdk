@@ -544,9 +544,9 @@ CDriver::MatrixMode CDriver::SetMatrixMode(MatrixMode matrixMode)
 
 // ----------------------------------------------------------------------//
 
-void CDriver::MatrixPush()
+void CDriver::MatrixPush( bool load )
 {
-	Mat4StackPush( m_activeStack );
+	Mat4StackPush( m_activeStack, load );
 	MatrixDirty();
 }
 
@@ -586,8 +586,6 @@ void CDriver::MatrixScale( Vec3 scale )
 
 void CDriver::Clear( Vec4 color )
 {
-    EnableScissor(false);
-
 	glClearColor( color.x, color.y, color.z, color.w );
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 }
@@ -598,12 +596,6 @@ void CDriver::ClearColor( Vec4 color )
 {
 	glClearColor( color.x, color.y, color.z, color.w );
 	glClear( GL_COLOR_BUFFER_BIT );
-}
-// ----------------------------------------------------------------------//
-
-void CDriver::Flush()
-{
-    glFlush();
 }
 // ----------------------------------------------------------------------//
 
@@ -706,10 +698,10 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isWorldMatrixDirty )
 	{
-		if( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingWorldInverseMatrix ) )
-			zpl_mat4_inverse( GetWorldMatrix(), &m_worldInverseMatrix );
+		if( zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingWorldInverseMatrix ) )
+			zpl_mat4_inverse( &m_worldInverseMatrix, GetWorldMatrix() );
 
-        if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingWorldInverseTMatrix ) )
+        if ( zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingWorldInverseTMatrix ) )
         {
             zpl_mat4_copy( &m_worldInverseTMatrix, &m_worldInverseMatrix );
             zpl_mat4_transpose( &m_worldInverseTMatrix );
@@ -720,10 +712,10 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isViewMatrixDirty )
 	{
-		if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingViewInverseMatrix ) )
-            zpl_mat4_inverse( GetViewMatrix(), &m_viewInverseMatrix );
+		if ( zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingViewInverseMatrix ) )
+            zpl_mat4_inverse( &m_viewInverseMatrix, GetViewMatrix());
 
-        if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingViewInverseTMatrix ) )
+        if ( zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingViewInverseTMatrix ) )
         {
             zpl_mat4_copy(&m_viewInverseTMatrix, &m_viewInverseMatrix);
             zpl_mat4_transpose(&m_viewInverseTMatrix);
@@ -734,7 +726,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isWorldViewMatrixDirty )
 	{
-		if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingWorldViewMatrix ) )
+		if ( zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingWorldViewMatrix ) )
 			zpl_mat4_mul( &m_worldViewMatrix, GetWorldMatrix(), GetViewMatrix());
 
 		m_isWorldViewMatrixDirty = false;
@@ -742,7 +734,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isViewProjectionMatrixDirty )
 	{
-		if (zpl_bit_get( effect->m_uniformMask, CEffect::isUsingViewProjectionMatrix ) )
+		if (zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingViewProjectionMatrix ) )
             zpl_mat4_mul( &m_viewProjectionMatrix, GetViewMatrix(), GetProjectionMatrix());
 
 		m_isViewProjectionMatrixDirty = false;
@@ -750,7 +742,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isWorldViewProjectionMatrixDirty )
 	{
-		if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingWorldViewProjectionMatrix ) )
+		if ( zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingWorldViewProjectionMatrix ) )
 		{
 			static Mat4 m;
 
@@ -763,7 +755,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isNormalMatrixDirty )
 	{
-		if ( zpl_bit_get( effect->m_uniformMask, CEffect::isUsingNormalMatrix ) )
+		if ( zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingNormalMatrix ) )
 			ComputeNormalMatrix();
 
 		m_isNormalMatrixDirty = false;
@@ -870,14 +862,12 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 	material->Render(this);
 	effect->Render(this);
 
-	u16 numIndices = vertexGroup->GetVboSize() / sizeof(u16);
-
 	m_drawCallCount += 1;
-	m_vertexCount   += numIndices;
+	m_vertexCount   += vertexGroup->GetVboSize() / sizeof(u16);
 
 	u32 rt = Value( primitives[ Value( vertexSource->GetType() ) ] );
 	glDrawElements( rt, 
-		numIndices,
+		vertexGroup->GetVboSize() / sizeof(u16),
         GL_UNSIGNED_SHORT, 
         (void*)( vertexGroup->GetVboOffset() ) );
 

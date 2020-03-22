@@ -75,7 +75,6 @@ void CVertexGroup::BufferData( u32 glUsage )
 {
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_iD );
     glBufferData( GL_ELEMENT_ARRAY_BUFFER, m_vboSize, m_vboData, glUsage );
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
     SIM_CHECK_OPENGL();
 }
@@ -89,13 +88,10 @@ void CVertexGroup::SetMaterial( CMaterial *material )
 // ----------------------------------------------------------------------//
 bool CVertexGroup::Load( io::CMemStream* ms )
 {
-	m_vboSize		= ms->ReadU16();
+	m_vboSize		= ms->ReadU32();
+	m_vboData		= SIM_NEW u16[ m_vboSize / sizeof(u16) ];
 
-	u32 vboDim		= m_vboSize * sizeof( u16 );
-
-	m_vboData		= SIM_NEW u16[ vboDim / sizeof( u16 ) ];
-
-	SIM_MEMCPY( m_vboData, ms->Read( vboDim ), vboDim );
+	SIM_MEMCPY( m_vboData, ms->Read(0), m_vboSize);
 
 	if ( ms->ReadU8() )
 	{
@@ -108,10 +104,10 @@ bool CVertexGroup::Load( io::CMemStream* ms )
 // ----------------------------------------------------------------------//
 bool CVertexGroup::Save( io::CMemStream* ms )
 {
-	ms->WriteU16( m_vboSize );
-	ms->Write( ( void* ) m_vboData, m_vboSize * sizeof( u16 ) );
+	ms->WriteU32( m_vboSize );
+	ms->Write( ( void* ) m_vboData, m_vboSize );
 
-	if (m_boneHierarchy != nullptr )
+	if ( m_boneHierarchy != nullptr )
 	{
 		ms->WriteU8( 1 );
 		m_boneHierarchy->Save( ms );

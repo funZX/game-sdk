@@ -215,6 +215,7 @@ void CCanvas::Render( CDriver* driver )
     if (fbWidth == 0 || fbHeight == 0)
         return;
 
+    driver->EnableScissor(true);
     for ( s32 n = 0; n < imData->CmdListsCount; n++ )
     {
         const ImDrawList* cmdList = imData->CmdLists[n];
@@ -251,12 +252,12 @@ void CCanvas::Render( CDriver* driver )
                 m_vertexGroup->m_vboOffset  = pcmd->IdxOffset * sizeof( u16 );
                 m_vertexGroup->SetMaterial((CMaterial*)pcmd->TextureId);
 
-                driver->EnableScissor(true);
                 driver->SetScissor(x, y, w, h);
                 driver->Render( m_vertexGroup );
             }
         }
     }
+    driver->EnableScissor(false);
 }
 
 // ----------------------------------------------------------------------//

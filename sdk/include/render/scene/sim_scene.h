@@ -64,8 +64,6 @@ public:
 	void							Add( CSceneNode* node );
 	void							Del( CSceneNode* node );
 
-    inline CCamera*                 GetCamera();
-
     virtual bool    				Load(io::CMemStream* ms);
     virtual bool    				Save(io::CMemStream* ms);
 	// ------------------------------------------------------------------//
@@ -76,15 +74,8 @@ protected:
 	stl::COctree					m_octree;
 
     THierarchy                      m_hierarchy;
-
-    CCamera*                        m_camera;
 	// ------------------------------------------------------------------//
 };
-
-inline CCamera* CScene::GetCamera()
-{
-    return m_camera;
-}
 
 // ----------------------------------------------------------------------//
 }; // namespace rnr

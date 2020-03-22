@@ -54,9 +54,8 @@ namespace sim
         };
     } Transform;
 
- // ----------------------------------------------------------------------//
 // ----------------------------------------------------------------------//
-    static const u32 Matrix4StackMaxSize = 32;
+    static const u32 Matrix4StackMaxSize = 64;
 // ----------------------------------------------------------------------//
 
     struct Mat4Stack
@@ -107,28 +106,34 @@ namespace sim
         m4s->top = 0;
 
         Mat4StackIdentity(m4s);
+
+#if SIM_DEBUG
+        for ( u32 k = 0; k < Matrix4StackMaxSize; k++ )
+            SIM_MEMSET( &m4s->topmatrix[k], 0, sizeof( zpl_mat4 ) );
+#endif
     }
 
-    static inline void Mat4StackPush( Mat4Stack* m4s )
+    static inline void Mat4StackPush( Mat4Stack* m4s, bool load )
     {
-        if (m4s->top < Matrix4StackMaxSize)
-        {
-            ++m4s->top;
+        SIM_ASSERT(m4s->top < Matrix4StackMaxSize);
 
-            m4s->topmatrix = &m4s->matrices[m4s->top];
+        ++m4s->top;
+        m4s->topmatrix = &m4s->matrices[m4s->top];
 
-            Mat4StackLoad(m4s, &m4s->matrices[m4s->top - 1] );
-        }
+        if (load)
+            Mat4StackLoad(m4s, &m4s->matrices[m4s->top - 1]);
     }
 
     static inline void Mat4StackPop( Mat4Stack* m4s )
     {
-        if (m4s->top > 0)
-        {
-            --m4s->top;
+        SIM_ASSERT(m4s->top > 0);
 
-            m4s->topmatrix = &m4s->matrices[m4s->top];
-        }
+#if SIM_DEBUG
+        SIM_MEMSET( m4s->topmatrix, 0, sizeof( zpl_mat4 ) );
+#endif
+
+        --m4s->top;
+        m4s->topmatrix = &m4s->matrices[m4s->top];
     }
 
     typedef union Rgb {

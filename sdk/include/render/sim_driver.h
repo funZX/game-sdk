@@ -170,7 +170,6 @@ public:
 	// ------------------------------------------------------------------//
 	void						Clear( Vec4 color );
 	void						ClearColor( Vec4 color );
-    void                        Flush();
 	// ------------------------------------------------------------------//
 
 	TextureChannel				SetTextureChannel( TextureChannel textureSelect );
@@ -194,7 +193,7 @@ public:
     void						Tick(f32 dt);
     inline f32				    GetTimer() { return m_timer; }
 
-	void						MatrixPush();
+	void						MatrixPush( bool load = true );
 	void						MatrixPop();
 	void						MatrixDirty();
 

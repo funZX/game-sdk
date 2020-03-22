@@ -39,7 +39,7 @@ void CWorld::Update( f32 dt, void *userData )
 		return;
 
 	m_physic->Update( dt, userData );
-	m_scene->Update( dt, O.game->GetCamera());
+	m_scene->Update( dt, userData );
 }
 
 void CWorld::Render( CDriver *driver )

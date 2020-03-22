@@ -50,7 +50,6 @@ CScene::CScene( const std::string &name )
 	: CScene()
 {
 	m_name      = name;
-    m_camera    = nullptr;
 }
 
 // ----------------------------------------------------------------------//
@@ -63,9 +62,6 @@ CScene::~CScene()
 
 void CScene::Update( f32 dt, void *userData )
 {
-    m_camera = (CCamera*)userData;
-    m_camera->Update(dt, userData);
-
     m_hierarchy.Traverse([&, this](CSceneNode* node) {
         node->Update(dt, this);
     });
