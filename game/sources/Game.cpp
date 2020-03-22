@@ -28,13 +28,11 @@ CGame::CGame( const std::string& fsDir )
 {
 	m_fsDir = fsDir;
 
-	SIM_MEMSET( &m_downKeys, 0, sizeof( m_downKeys ) );
-
 	O.game				= this;
 
 	O.driver			= m_driver;
 	O.canvas			= m_canvas;
-	O.camera			= m_camera;
+	O.camera			= &m_crtCamera;
 	O.material			= m_material;
 
 	O.font.engine		= m_font;
@@ -71,21 +69,6 @@ const std::string CGame::GetFsPath( const std::string& fs)
 void CGame::Update( f32 dt, void *userData )
 {
 	CEngine::Update( dt, userData );
-}
-
-// ----------------------------------------------------------------------//
-
-void CGame::KeyPress( u8 key, bool isDown )
-{
-	m_downKeys[ key ] = isDown;
-
-	switch (key)
-	{
-	case '0':
-		break;
-	}
-
-	std::cout << "KeyPress: " << key << ", " << isDown << std::endl;
 }
 
 // ----------------------------------------------------------------------//

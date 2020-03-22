@@ -472,27 +472,6 @@ void CEngine::Off3D()
 
 // ----------------------------------------------------------------------//
 
-void CEngine::PointerDown( u32 x, u32 y )
-{
-	m_canvas->PointerDown( x, y );
-}
-
-// ----------------------------------------------------------------------//
-
-void CEngine::PointerDrag( u32 x, u32 y )
-{
-	m_canvas->PointerDrag( x, y );
-}
-
-// ----------------------------------------------------------------------//
-
-void CEngine::PointerUp( u32 x, u32 y )
-{
-	m_canvas->PointerUp( x, y );
-}
-
-// ----------------------------------------------------------------------//
-
 void CEngine::OnGui( CCanvas* canvas, sigcxx::SLOT slot )
 {
     static u64 lastTime = GetTime();
@@ -541,6 +520,30 @@ void CEngine::OnGui( CCanvas* canvas, sigcxx::SLOT slot )
     }
     ImGui::End();
 }
-
+// ----------------------------------------------------------------------//
+void CEngine::MouseDown(int button)
+{
+    m_canvas->MouseDown( button );
+}
+// ----------------------------------------------------------------------//
+void CEngine::MouseUp(int button)
+{
+    m_canvas->MouseUp( button );
+}
+// ----------------------------------------------------------------------//
+void CEngine::MouseMove(f32 x, f32 y)
+{
+    m_canvas->MouseMove( x, y );
+}
+// ----------------------------------------------------------------------//
+void CEngine::KeyDown(int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt)
+{
+    m_canvas->KeyDown( Key, KeyShift, KeyCtrl, KeyAlt );
+}
+// ----------------------------------------------------------------------//
+void CEngine::KeyUp(int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt)
+{
+    m_canvas->KeyUp(Key, KeyShift, KeyCtrl, KeyAlt);
+}
 // ----------------------------------------------------------------------//
 }; // namespace sim

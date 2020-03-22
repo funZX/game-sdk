@@ -38,6 +38,9 @@
 
 namespace sim
 {
+// ----------------------------------------------------------------------//
+class CEngine;
+// ----------------------------------------------------------------------//
 namespace rnr
 {
 // ----------------------------------------------------------------------//
@@ -49,6 +52,8 @@ class CVertexSource;
 
 class CCanvas : public CRect2D
 {
+	friend class sim::CEngine;
+
 public:
 	CCanvas( CFontAtlas *fontAtlas );
 	CCanvas( const std::string& name, CFontAtlas* fontAtlas );
@@ -59,20 +64,27 @@ public:
 	virtual void		        Update( f32 dt, void *userData );
 	virtual void		        Render( CDriver* driver );
 
-	virtual void		        PointerDown( u32 x, u32 y );
-	virtual void		        PointerDrag( u32 x, u32 y );
-	virtual void		        PointerUp( u32 x, u32 y );
-
 	virtual void		        ClearEvents();
 
 public: // Signals
     // ------------------------------------------------------------------//
-    sigcxx::Signal<CCanvas*>	OnGui;
+    sigcxx::Signal<CCanvas*>						OnGui;
+    sigcxx::Signal<CCanvas*, int>					OnMouseDown;
+    sigcxx::Signal<CCanvas*, int>					OnMouseUp;
+	sigcxx::Signal<CCanvas*, f32, f32>				OnMouseMove;
+	sigcxx::Signal<CCanvas*, int, bool, bool, bool>	OnKeyDown;
+	sigcxx::Signal<CCanvas*, int, bool, bool, bool>	OnKeyUp;
 
 	// ------------------------------------------------------------------//
 protected:
 	static void*				ImGuiAlloc(size_t sz, void* userData);
 	static void					ImGuiDelloc(void* ptr, void* userData);
+
+    void						MouseDown( int button );
+    void						MouseUp( int button );
+    void						MouseMove( f32 x, f32 y );
+    void						KeyDown( int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt );
+	void						KeyUp( int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt );
 
     CFontAtlas*                 m_fontAtlas;
 

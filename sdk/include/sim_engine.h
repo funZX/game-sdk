@@ -163,6 +163,7 @@ public:
 	
 	inline CDriver*					GetDriver()		{ return m_driver; }
 	inline CSquirrel*				GetVM()			{ return m_vm; }
+	inline CCanvas*					GetCanvas()		{ return m_canvas; }
 
     virtual void					Resize( u32 width, u32 height );
 	virtual void					Start();
@@ -182,10 +183,11 @@ public:
 	void							SetCamera( CCamera* camera );
     CCamera*                        GetCamera();
 
-	void							PointerDown( u32 x, u32 y );
-	void							PointerDrag( u32 x, u32 y );
-	void							PointerUp( u32 x, u32 y );
-
+    void							MouseDown(int button);
+    void							MouseUp(int button);
+    void							MouseMove(f32 x, f32 y);
+    void							KeyDown(int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt);
+    void							KeyUp(int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt);
 
 protected:
 	void							InitOpenGL();
