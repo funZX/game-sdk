@@ -15,6 +15,7 @@
 #include "stb_image.h"
 #endif //STBI_INCLUDE_STB_IMAGE_H
 #endif //IMGUI_USE_AUTO_BINDING
+#endif //NO_IMGUIVARIOUSCONTROLS_ANIMATEDIMAGE
 
 
 namespace ImGui {
