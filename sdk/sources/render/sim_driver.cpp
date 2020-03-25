@@ -733,7 +733,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 	if( m_isWorldViewMatrixDirty )
 	{
 		if ( zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingWorldViewMatrix ) )
-			zpl_mat4_mul( &m_worldViewMatrix, GetWorldMatrix(), GetViewMatrix());
+			zpl_mat4_mul( &m_worldViewMatrix, GetViewMatrix(), GetWorldMatrix());
 
 		m_isWorldViewMatrixDirty = false;
 	}
@@ -741,7 +741,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 	if( m_isViewProjectionMatrixDirty )
 	{
 		if (zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingViewProjectionMatrix ) )
-            zpl_mat4_mul( &m_viewProjectionMatrix, GetViewMatrix(), GetProjectionMatrix());
+            zpl_mat4_mul( &m_viewProjectionMatrix, GetProjectionMatrix(), GetViewMatrix());
 
 		m_isViewProjectionMatrixDirty = false;
 	}
@@ -752,8 +752,8 @@ void CDriver::UpdateUniforms( CEffect *effect )
 		{
 			static Mat4 m;
 
-            zpl_mat4_mul( &m, GetViewMatrix(), GetProjectionMatrix() );
-            zpl_mat4_mul( &m_worldViewProjectionMatrix,  GetWorldMatrix(), &m );
+            zpl_mat4_mul( &m, GetProjectionMatrix(), GetViewMatrix());
+            zpl_mat4_mul( &m_worldViewProjectionMatrix, &m, GetWorldMatrix());
 		}
 
 		m_isWorldViewProjectionMatrixDirty = false;

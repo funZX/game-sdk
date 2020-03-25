@@ -29,16 +29,16 @@ void CDebug::Render( CDriver *driver )
 {
 	CCamera* cam = O.game->GetCamera();
 
-	Vec3 p = { -100, 0, 0 };
-    //SIM_ASSERT(cam->SphereIn(&p, 1));
+	Vec3 p1 = { -1, 0, -10 };
+	Vec3 p2 = {  1, 0, -10 };
 
-	driver->MatrixPush();
-    driver->MatrixTranslate(p);
+    driver->MatrixPush();
+    driver->MatrixTranslate(p1);
     gluRenderSphere(driver, m_debugSphere);
     driver->MatrixPop();
 
     driver->MatrixPush();
-    driver->MatrixTranslate(p);
+    driver->MatrixTranslate(p2);
     gluRenderCube(driver, m_debugCube);
     driver->MatrixPop();
 }

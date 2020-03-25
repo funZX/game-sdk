@@ -102,15 +102,15 @@ void CCamera::Rotate( zpl_quat& q )
 
 // ----------------------------------------------------------------------//
 
-void CCamera::Update( f32 dt, void *userData )
+void CCamera::Update(f32 dt, void* userData)
 {
-	Vec3 minusPos;
+	zpl_mat4_from_quat(&m_matrix, m_transform.quaternion);
 
-	minusPos = m_transform.translation;
-    zpl_vec3_mul( &minusPos, minusPos, -1.0f );
-    zpl_mat4_from_quat( &m_matrix, m_transform.quaternion );
-    
-    m_matrix.w.xyz = minusPos;
+	f32 x = -zpl_vec3_dot(m_matrix.x.xyz, m_transform.translation);
+	f32 y = -zpl_vec3_dot(m_matrix.y.xyz, m_transform.translation);
+	f32 z = -zpl_vec3_dot(m_matrix.z.xyz, m_transform.translation);
+
+	m_matrix.w.xyz = {x, y, z};
 
 	ExtractClipPlanes();
 }
@@ -120,27 +120,26 @@ void CCamera::Update( f32 dt, void *userData )
 void CCamera::Render( CDriver *driver )
 {
 	driver->SetEyePosition( m_transform.translation );
-	driver->SetEyeDirection( m_matrix.y.xyz );
+	driver->SetEyeDirection( m_matrix.z.xyz );
 }
 
 // ----------------------------------------------------------------------//
 
 void CCamera::ExtractClipPlanes( void )
 {
-	static Mat4 projViewMatrix;
+	static Mat4 pv;
 
-    zpl_mat4_mul( &projViewMatrix, &m_matrix , &m_perspectiveMatrix );
+    zpl_mat4_mul( &pv, &m_matrix, &m_perspectiveMatrix );
 
 	register Plane *fp;
-	register f32 *pv = (f32*) &projViewMatrix;
     register f32 rmag;
 
 	fp = &m_leftClipPlane;
 
-    fp->a = pv[ 12 ] + pv[  0 ];
-    fp->b = pv[ 13 ] + pv[  1 ];
-    fp->c = pv[ 14 ] + pv[  2 ];
-    fp->d = pv[ 15 ] + pv[  3 ];
+    fp->a = pv.x.w + pv.x.x;
+    fp->b = pv.y.w + pv.x.y;
+    fp->c = pv.z.w + pv.x.z;
+    fp->d = pv.w.w + pv.x.w;
 
     rmag = zpl_rsqrt( zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
 
@@ -151,10 +150,10 @@ void CCamera::ExtractClipPlanes( void )
 
 	fp = &m_rightClipPlane;
 
-    fp->a = pv[ 12 ] - pv[  0 ];
-    fp->b = pv[ 13 ] - pv[  1 ];
-    fp->c = pv[ 14 ] - pv[  2 ];
-    fp->d = pv[ 15 ] - pv[  3 ];
+    fp->a = pv.x.w - pv.x.x;
+    fp->b = pv.y.w - pv.x.y;
+    fp->c = pv.z.w - pv.x.z;
+    fp->d = pv.w.w - pv.x.w;
 
     rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
 
@@ -162,41 +161,13 @@ void CCamera::ExtractClipPlanes( void )
 	fp->b *= rmag;
 	fp->c *= rmag;
 	fp->d *= rmag;
-
-	fp = &m_topClipPlane;
-
-    fp->a = pv[ 12 ] - pv[  4 ];
-    fp->b = pv[ 13 ] - pv[  5 ];
-    fp->c = pv[ 14 ] - pv[  6 ];
-    fp->d = pv[ 15 ] - pv[  7 ];
-
-    rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
-
-	fp->a *= rmag;
-	fp->b *= rmag;
-	fp->c *= rmag;
-	fp->d *= rmag;
-
-	fp = &m_bottomClipPlane;
-
-    fp->a = pv[ 12 ] + pv[  4 ];
-    fp->b = pv[ 13 ] + pv[  5 ];
-    fp->c = pv[ 14 ] + pv[  6 ];
-    fp->d = pv[ 15 ] + pv[  7 ];
-
-    rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
-
-	fp->a *= rmag;
-	fp->b *= rmag;
-	fp->c *= rmag;
-	fp->d *= rmag;;
 
 	fp = &m_nearClipPlane;
 
-    fp->a = pv[ 12 ] + pv[  8 ];
-    fp->b = pv[ 13 ] + pv[  9 ];
-    fp->c = pv[ 14 ] + pv[ 10 ];
-    fp->d = pv[ 15 ] + pv[ 11 ];
+    fp->a = pv.x.w - pv.y.x;
+    fp->b = pv.y.w - pv.y.y;
+    fp->c = pv.z.w - pv.y.w;
+    fp->d = pv.w.w - pv.y.z;
 
     rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
 
@@ -207,10 +178,38 @@ void CCamera::ExtractClipPlanes( void )
 
 	fp = &m_farClipPlane;
 
-    fp->a = pv[ 12 ] - pv[  8 ];
-    fp->b = pv[ 13 ] - pv[  9 ];
-    fp->c = pv[ 14 ] - pv[ 10 ];
-    fp->d = pv[ 15 ] - pv[ 11 ];
+    fp->a = pv.x.w + pv.y.x;
+    fp->b = pv.y.w + pv.y.y;
+    fp->c = pv.z.w + pv.y.z;
+    fp->d = pv.w.w + pv.y.w;
+
+    rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
+
+	fp->a *= rmag;
+	fp->b *= rmag;
+	fp->c *= rmag;
+	fp->d *= rmag;;
+
+	fp = &m_topClipPlane;
+
+    fp->a = pv.x.w + pv.z.x;
+    fp->b = pv.y.w + pv.z.y;
+    fp->c = pv.z.w + pv.z.z;
+    fp->d = pv.w.w + pv.z.w;
+
+    rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
+
+	fp->a *= rmag;
+	fp->b *= rmag;
+	fp->c *= rmag;
+	fp->d *= rmag;
+
+	fp = &m_bottomClipPlane;
+
+    fp->a = pv.x.w - pv.z.x;
+    fp->b = pv.y.w - pv.z.y;
+    fp->c = pv.z.w - pv.z.z;
+    fp->d = pv.w.w - pv.z.w;
 
     rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
 
