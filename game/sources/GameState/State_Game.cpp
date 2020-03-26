@@ -68,27 +68,24 @@ CState_Game::~CState_Game()
 // ----------------------------------------------------------------------//
 void CState_Game::Update( f32 dt, void *userData )
 {	
-	m_drawable->Update(dt, userData);
+	//m_drawable->Update(dt, userData);
     O.world->Update( dt, userData );
 }
 
 // ----------------------------------------------------------------------//
 void CState_Game::Render( CDriver *driver )
 {
-    m_drawable->Draw(driver);
+    //m_drawable->Draw(driver);
     O.world->Render(driver);
 
-    CDebug d;
-    d.Render(driver);
+	m_debug.Render(driver);
 }
 
 // ----------------------------------------------------------------------//
 void CState_Game::DrawToWidget(CDriver* driver, sigcxx::SLOT slot)
 {
     O.world->Render(driver);
-
-    CDebug d;
-    d.Render(driver);
+	m_debug.Render(driver);
 }
 // ----------------------------------------------------------------------//
 void CState_Game::OnEnter()
@@ -98,8 +95,8 @@ void CState_Game::OnEnter()
 // ----------------------------------------------------------------------//
 void CState_Game::ShowGui( CCanvas* canvas )
 {
-    m_drawable->SetMaterial(O.material);
-    m_drawable->Render(O.driver);
+    //m_drawable->SetMaterial(O.material);
+    //m_drawable->Render(O.driver);
 
 	ImGui::ShowDemoWindow();
 }

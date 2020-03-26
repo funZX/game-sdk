@@ -116,8 +116,12 @@ Sphere*	gluNewSphere( s32 numSlices, f32 radius )
 		}
 	}
 
-	sphere->vertexGroup->m_vertexSource->BufferData(GL_STREAM_DRAW);
-	sphere->vertexGroup->BufferData(GL_STREAM_DRAW);
+	sphere->vertexGroup->m_vertexSource->BufferData(GL_STATIC_DRAW);
+	sphere->vertexGroup->BufferData(GL_STATIC_DRAW);
+
+    SIM_SAFE_DELETE_ARRAY(sphere->vertexGroup->m_vertexSource->m_vboData);
+	SIM_SAFE_DELETE_ARRAY(sphere->vertexGroup->m_vboData);
+
 	return sphere;
 }
 
@@ -127,10 +131,7 @@ Sphere* gluDelSphere( Sphere *sphere )
 {
 	SIM_ASSERT( sphere != nullptr );
 
-	SIM_SAFE_DELETE_ARRAY( sphere->vertexGroup->m_vertexSource->m_vboData );
 	SIM_SAFE_DELETE( sphere->vertexGroup->m_vertexSource );
-
-    SIM_SAFE_DELETE_ARRAY(sphere->vertexGroup->m_vboData);
 	SIM_SAFE_DELETE( sphere->vertexGroup );
 	
 	SIM_SAFE_DELETE( sphere );
@@ -372,8 +373,11 @@ Cube* gluNewCube( f32 sideSize )
 
 	SIM_MEMCPY( cube->vertexGroup->m_vboData, cubeIndices, numIndices * sizeof( u16 ) );
 
-	cube->vertexGroup->m_vertexSource->BufferData(GL_STREAM_DRAW);
-	cube->vertexGroup->BufferData(GL_STREAM_DRAW);
+	cube->vertexGroup->m_vertexSource->BufferData(GL_STATIC_DRAW);
+	cube->vertexGroup->BufferData(GL_STATIC_DRAW);
+
+    SIM_SAFE_DELETE_ARRAY(cube->vertexGroup->m_vertexSource->m_vboData);
+    SIM_SAFE_DELETE_ARRAY(cube->vertexGroup->m_vboData);
 
 	return cube;
 }
@@ -384,10 +388,7 @@ Cube* gluDelCube( Cube *cube )
 {
 	SIM_ASSERT( cube != nullptr );
 
-	SIM_SAFE_DELETE_ARRAY( cube->vertexGroup->m_vertexSource->m_vboData );
 	SIM_SAFE_DELETE( cube->vertexGroup->m_vertexSource );
-
-	SIM_SAFE_DELETE_ARRAY( cube->vertexGroup->m_vboData );
 	SIM_SAFE_DELETE( cube->vertexGroup );
 	
 	SIM_SAFE_DELETE( cube );

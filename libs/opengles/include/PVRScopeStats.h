@@ -34,6 +34,12 @@ For more information on PVRScope, see the <em>PVRScope User Manual</em>.
 #ifndef _PVRSCOPESTATS_H_
 #define _PVRSCOPESTATS_H_
 
+#ifdef WIN32
+#define PVRSCOPE_EXPORT
+#else
+#define PVRSCOPE_EXPORT __attribute__((visibility("default")))
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -53,6 +59,9 @@ extern "C" {
  @{
 */
 
+/****************************************************************************
+** Includes
+****************************************************************************/
 
 /****************************************************************************
 ** Enums
@@ -87,6 +96,26 @@ enum EPVRScopeStandardCounter
 	ePVRScopeStandardCounter_Load_Shader_Pixel,		///< Shader core load due to pixels
 	ePVRScopeStandardCounter_Load_Shader_Vertex,	///< Shader core load due to vertices
 	ePVRScopeStandardCounter_Load_Shader_Compute,	///< Shader core load due to compute
+};
+
+/*!**************************************************************************
+ @enum			EPVRScopeEvent
+ @brief			Set of PVRScope event types.
+****************************************************************************/
+enum EPVRScopeEvent
+{
+	ePVRScopeEventComputeBegin,					///< Compute begin
+	ePVRScopeEventComputeEnd,					///< Compute end
+	ePVRScopeEventTABegin,						///< TA begin
+	ePVRScopeEventTAEnd,						///< TA end
+	ePVRScopeEvent3DBegin,						///< 3D begin
+	ePVRScopeEvent3DEnd,						///< 3D end
+	ePVRScopeEvent2DBegin,						///< 2D begin
+	ePVRScopeEvent2DEnd,						///< 2D end
+	ePVRScopeEventRTUBegin,						///< RTU begin
+	ePVRScopeEventRTUEnd,						///< RTU end
+	ePVRScopeEventSHGBegin,						///< SHG begin
+	ePVRScopeEventSHGEnd,						///< SHG end
 };
 
 /****************************************************************************
@@ -127,10 +156,22 @@ struct SPVRScopeGetInfo
     unsigned int    nGroupMax;                  ///< Highest group number of any counter
 };
 
+/*!**************************************************************************
+@struct        SPVRScopeTimingPacket
+@brief         A start or end time.
+****************************************************************************/
+struct SPVRScopeTimingPacket
+{
+	enum EPVRScopeEvent eEventType;  ///< Event type
+	double              dTime;       ///< Event time (seconds)
+	unsigned int        nPID;        ///< Event PID
+};
+
 /****************************************************************************
 ** Declarations
 ****************************************************************************/
 
+PVRSCOPE_EXPORT
 const char *PVRScopeGetDescription();           ///< Query the PVRScope library description
 
 
@@ -138,6 +179,7 @@ const char *PVRScopeGetDescription();           ///< Query the PVRScope library 
  @brief         Initialise @ref ScopeStats, to access the HW performance counters in PowerVR.
  @return        EPVRScopeInitCodeOk on success.
 ****************************************************************************/
+PVRSCOPE_EXPORT
 enum EPVRScopeInitCode PVRScopeInitialise(
     struct SPVRScopeImplData **ppsData                 ///< Context data
 );
@@ -145,6 +187,7 @@ enum EPVRScopeInitCode PVRScopeInitialise(
 /*!**************************************************************************	
  @brief         Shutdown or de-initalise @ref ScopeStats and free the allocated memory.
 ***************************************************************************/
+PVRSCOPE_EXPORT
 void PVRScopeDeInitialise(
     struct SPVRScopeImplData		**ppsData,          ///< Context data
 	struct SPVRScopeCounterDef		**ppsCounters,      ///< Array of counters
@@ -154,6 +197,7 @@ void PVRScopeDeInitialise(
 /*!**************************************************************************
  @brief         Query for @ref ScopeStats information. This function should only be called during initialisation.
 ****************************************************************************/
+PVRSCOPE_EXPORT
 void PVRScopeGetInfo(
     struct SPVRScopeImplData	* const psData,         ///< Context data
 	struct SPVRScopeGetInfo		* const psInfo          ///< Returned information
@@ -164,6 +208,7 @@ void PVRScopeGetInfo(
                 allocate memory in which the counter values will be received. This function
                 should only be called during initialisation.
 ****************************************************************************/
+PVRSCOPE_EXPORT
 int PVRScopeGetCounters(
 	struct SPVRScopeImplData		* const psData,		///< Context data
 	unsigned int					* const pnCount,	///< Returned number of counters
@@ -177,6 +222,7 @@ int PVRScopeGetCounters(
 				(from PVRScopeReadCounters) not into the counter array (from
 				PVRScopeGetCounters)
 ****************************************************************************/
+PVRSCOPE_EXPORT
 unsigned int PVRScopeFindStandardCounter(
 	const unsigned int					nCount,				///< Returned number of counters, from PVRScopeGetCounters
 	const struct SPVRScopeCounterDef	* const psCounters,	///< Returned counter array, from PVRScopeGetCounters
@@ -206,6 +252,7 @@ unsigned int PVRScopeFindStandardCounter(
 				are required at a lower rate, set psReading to NULL on all
 				calls except when new counter values are desired.
 ****************************************************************************/
+PVRSCOPE_EXPORT
 int PVRScopeReadCounters(
 	struct SPVRScopeImplData		* const psData,		///< Context data
 	struct SPVRScopeCounterReading	* const psReading	///< Returned data will be filled into the pointed-to structure
@@ -216,9 +263,25 @@ int PVRScopeReadCounters(
  @details       Changing the Active HW Group: the API is designed to allow the
 				HW group to be changed immediately after gathering a reading.
 ****************************************************************************/
+PVRSCOPE_EXPORT
 void PVRScopeSetGroup(
 	struct SPVRScopeImplData		* const psData,		///< Context data
 	const unsigned int				nGroup	    		///< New group
+);
+
+/*!**************************************************************************
+ @brief			Retrieve the timing data packets.
+ @details       This function can be called periodically if you wish to access
+				the start and end times of tasks running on the GPU.
+				The first time this function is called will enable the feature;
+				from then on data will be stored. If you wish to call this
+				function once only at the end of a test run, call it once also
+				prior to the test run.
+****************************************************************************/
+PVRSCOPE_EXPORT
+const struct SPVRScopeTimingPacket *PVRScopeReadTimingData(
+	struct SPVRScopeImplData	* const psData,	///< Context data
+	unsigned int				* const pnCount	///< Returned number of packets
 );
 
 /*! @} */
@@ -227,6 +290,7 @@ void PVRScopeSetGroup(
 }
 #endif
 
+#undef PVRSCOPE_EXPORT
 #endif /* _PVRSCOPESTATS_H_ */
 
 /*****************************************************************************

@@ -28,14 +28,13 @@ void CState_MenuMain::ShowGui( CCanvas* canvas )
 // ----------------------------------------------------------------------//
 void CState_MenuMain::Update( f32 dt, void *userData )
 {
-	O.world->Update( dt, userData );
 	O.game->GoNext( SIM_NEW CState_Game() );
 }
 
 // ----------------------------------------------------------------------//
 void CState_MenuMain::Render( CDriver *driver )
 {
-	O.world->Render(driver);
+
 }
 // ----------------------------------------------------------------------//
 void CState_MenuMain::OnEnter()

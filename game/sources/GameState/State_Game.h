@@ -2,6 +2,7 @@
 #define __STATE_GAME_H
 
 #include <sim_engine.h>
+#include "../Debug/Debug.h"
 
 class CState_Game : public IState, public sigcxx::Trackable
 {
@@ -32,6 +33,7 @@ protected:
 	CFileSystem*		m_fs;
 
 	CDrawable*	        m_drawable;
+    CDebug              m_debug;
 // ----------------------------------------------------------------------//
 };
 
