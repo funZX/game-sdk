@@ -190,6 +190,8 @@ bool CFileSystem::LoadNext( void )
 {
 	bool stepDone = true;
 
+	m_loadMessage.clear();
+
 	if ( m_crtStep->json )
 	{
 		json_t* jsonRoot = m_crtStep->json->GetRoot();
@@ -253,7 +255,6 @@ bool CFileSystem::LoadInit(const json_t* jsonRoot, s32 index)
 
 				UnloadFile( memfile );
 
-				m_loadMessage.clear();
 				m_loadMessage = "Loading init ";
 				m_loadMessage.append( "\"" );
 				m_loadMessage.append( file );
@@ -286,7 +287,6 @@ bool CFileSystem::LoadFont(const json_t* jsonRoot, s32 index)
 	m_lzmaStream->CloseCurrent( &m_buffer );
 	m_buffer = nullptr;
 
-	m_loadMessage.clear();
 	m_loadMessage = "Loading font ";
 	m_loadMessage.append( "\"" );
 	m_loadMessage.append( file );
@@ -352,7 +352,6 @@ bool CFileSystem::LoadTexture(const json_t* jsonRoot, s32 index)
 
 	m_textureList.Insert( hash::Get( name ), texture);
 
-	m_loadMessage.clear();
 	m_loadMessage = "Loading texture ";
 	m_loadMessage.append( "\"" );
 	m_loadMessage.append( file );
@@ -427,7 +426,6 @@ bool CFileSystem::LoadSkybox(const json_t* jsonRoot, s32 index)
 
 	m_skyboxList.Insert( hash::Get( name ), skybox );
 
-	m_loadMessage.clear();
 	m_loadMessage = "Loading skybox ";
 	m_loadMessage.append( "\"" );
 	m_loadMessage.append( name );
@@ -616,7 +614,6 @@ bool CFileSystem::LoadEffect(const json_t* jsonRoot, s32 index)
 
 	m_effectList.Insert( hash::Get( name ), effect );
 
-	m_loadMessage.clear();
 	m_loadMessage = "Loading effect ";
 	m_loadMessage.append( "\"" );
 	m_loadMessage.append( name );
@@ -647,7 +644,7 @@ bool CFileSystem::LoadMaterial(const json_t* jsonRoot, s32 index)
 	CJsonStream jm( data );
 	json_t* jmr = jm.GetRoot();
 
-	SIM_SAFE_DELETE_ARRAY( data );
+    SIM_SAFE_DELETE_ARRAY(data);
 
 	CMaterial* material = SIM_NEW CMaterial(name);
 
@@ -724,7 +721,6 @@ bool CFileSystem::LoadMaterial(const json_t* jsonRoot, s32 index)
 
 	m_materialList.Insert( hash::Get( name ), material );
 
-	m_loadMessage.clear();
 	m_loadMessage = "Loading material ";
 	m_loadMessage.append( "\"" );
 	m_loadMessage.append( name );
@@ -756,7 +752,6 @@ bool CFileSystem::LoadMesh(const json_t* jsonRoot, s32 index)
 
 	m_meshList.Insert( hash::Get( name ), mesh );
 
-	m_loadMessage.clear();
 	m_loadMessage = "Loading mesh ";
 	m_loadMessage.append( "\"" );
 	m_loadMessage.append( name );
@@ -826,7 +821,6 @@ bool CFileSystem::LoadScript(const json_t* jsonRoot, s32 index)
 
 	m_scriptList.Insert( hash::Get( name ), script );
 
-	m_loadMessage.clear();
 	m_loadMessage = "Loading script ";
 	m_loadMessage.append( "\"" );
 	m_loadMessage.append( name );
@@ -851,7 +845,6 @@ bool CFileSystem::LoadScene(const json_t* jsonRoot, s32 index)
 
     m_sceneList.Insert(hash::Get(name), scene);
 
-    m_loadMessage.clear();
     m_loadMessage = "Loading scene ";
     m_loadMessage.append("\"");
     m_loadMessage.append(name);
