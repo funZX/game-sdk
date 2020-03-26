@@ -66,8 +66,6 @@ CVertexGroup::~CVertexGroup()
 
 		SIM_CHECK_OPENGL();
 	}
-
-	SIM_SAFE_DELETE_ARRAY( m_vboData );
 }
 
 // ----------------------------------------------------------------------//
@@ -76,7 +74,9 @@ void CVertexGroup::BufferData( u32 glUsage )
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, m_iD );
     glBufferData( GL_ELEMENT_ARRAY_BUFFER, m_vboSize, m_vboData, glUsage );
 
-    SIM_CHECK_OPENGL();
+    m_vboData = nullptr;
+
+	SIM_CHECK_OPENGL();
 }
 
 // ----------------------------------------------------------------------//
@@ -89,9 +89,7 @@ void CVertexGroup::SetMaterial( CMaterial *material )
 bool CVertexGroup::Load( io::CMemStream* ms )
 {
 	m_vboSize		= ms->ReadU32();
-	m_vboData		= SIM_NEW u16[ m_vboSize / sizeof(u16) ];
-
-	SIM_MEMCPY( m_vboData, ms->Read(0), m_vboSize);
+	m_vboData		= (u16*)ms->Read(0);
 
 	if ( ms->ReadU8() )
 	{
@@ -99,6 +97,8 @@ bool CVertexGroup::Load( io::CMemStream* ms )
 		m_boneHierarchy->Load( ms );
 	}
 
+
+    BufferData(GL_STREAM_DRAW);
     return true;
 }
 // ----------------------------------------------------------------------//

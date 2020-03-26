@@ -108,9 +108,6 @@ CCanvas::CCanvas( CFontAtlas* fontAtlas )
     style.GrabRounding      = 4.0f;
     style.AntiAliasedLines  = true;
     style.AntiAliasedFill   = true;
-
-
-    ImGui::GetIO().BackendPlatformName = m_name.c_str();
 }
 
 // ----------------------------------------------------------------------//

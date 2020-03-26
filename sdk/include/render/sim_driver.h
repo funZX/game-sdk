@@ -185,8 +185,7 @@ public:
 	bool						EnableScissor(bool val);
 	bool						EnableDepthTest( bool val );
 	bool						EnableDepthMask( bool val );
-	void						EnableBlendFunc( TBlendFunc blendfunc );
-	void						EnableBlendFunc( u32 equation, u32 src, u32 dst );
+	void						EnableBlendFunc( TBlendFunc blendfunc, Vec4 color );
 	void						EnableDepthFunc( TDepthFunc blendfunc);
 	void						EnableDepthFunc(u32 equation);
 

@@ -194,6 +194,7 @@ void CFontAtlas::InitEffect()
 	m_effect->m_technique.blendfunc.equation = GL_FUNC_ADD;
 	m_effect->m_technique.blendfunc.src = GL_SRC_ALPHA;
 	m_effect->m_technique.blendfunc.dst = GL_ONE_MINUS_SRC_ALPHA;
+	m_effect->m_technique.blendColor = col::White;
 
 	m_effect->m_technique.depthfunc.equation = GL_LESS;
 }

@@ -65,8 +65,6 @@ CVertexSource::~CVertexSource( void )
 
 		SIM_CHECK_OPENGL();
 	}
-
-	SIM_SAFE_DELETE_ARRAY( m_vboData );
 }
 
 // ----------------------------------------------------------------------//
@@ -75,6 +73,8 @@ void CVertexSource::BufferData( u32 glUsage )
 {
     glBindBuffer( GL_ARRAY_BUFFER, m_iD );
     glBufferData( GL_ARRAY_BUFFER, m_vboSize, m_vboData, glUsage );
+
+    m_vboData = nullptr;
 
     SIM_CHECK_OPENGL();
 }

@@ -243,12 +243,13 @@ void CSkyBox::InitEffect()
 	technique.depthtest = false;
 	technique.depthmask = false;
 	technique.cullface	= true;
-	technique.blending	= false;
 	technique.alphatest = false;
 
+    technique.blending = false;
 	technique.blendfunc.equation = GL_FUNC_ADD;
 	technique.blendfunc.src = GL_SRC_ALPHA;
 	technique.blendfunc.dst = GL_ONE_MINUS_SRC_ALPHA;
+	technique.blendColor = col::White;
 
 	technique.depthfunc.equation = GL_ALWAYS;
 

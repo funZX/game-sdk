@@ -161,6 +161,7 @@ void CDriver::Initialize()
 	glDepthMask( GL_TRUE );
 
 	glActiveTexture( GL_TEXTURE0 );
+    glBlendColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 // ----------------------------------------------------------------------//
@@ -347,7 +348,7 @@ CDriver::TextureChannel CDriver::SetTextureChannel( TextureChannel texChannel )
 
 // ----------------------------------------------------------------------//
 
-void CDriver::EnableBlendFunc( TBlendFunc blendfunc )
+void CDriver::EnableBlendFunc( TBlendFunc blendfunc, Vec4 color)
 {
 	if ( blendfunc.equation != m_blendFunc.equation )
 	{
@@ -364,19 +365,8 @@ void CDriver::EnableBlendFunc( TBlendFunc blendfunc )
 
 		glBlendFunc( blendfunc.src, blendfunc.dst );
 	}
-}
 
-// ----------------------------------------------------------------------//
-
-void CDriver::EnableBlendFunc( u32 equation, u32 src, u32 dst )
-{
-	TBlendFunc blendfunc;
-
-	blendfunc.equation	= equation;
-	blendfunc.src		= src;
-	blendfunc.dst		= dst;
-
-	EnableBlendFunc( blendfunc );
+	glBlendColor( color.r, color.g, color.b, color.a );
 }
 
 // ----------------------------------------------------------------------//
