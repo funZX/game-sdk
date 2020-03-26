@@ -1,28 +1,15 @@
-# Compiled Object files
 *.o
 *.obj
-
-# Precompiled Headers
 *.gch
 *.pch
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
 *.pyc
-
 *.sdf
 *.db
 *.user
 *.opendb
 *.pvrtrace
 imgui.ini
-
-PVRTraceGUI.exe
-
-bin/
-build/
+x64/
 .vs/
 blob/
 env/
