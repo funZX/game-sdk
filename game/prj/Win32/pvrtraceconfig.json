@@ -6,7 +6,7 @@
 			"RecordData": true,
 			"StartFrame": 0,
 			"AppendTraceVersion": true,
-			"EndFrame": 1000,
+			"EndFrame": 200,
 			"ExitOnLastFrame": false,
 			"ClientBufferRecordFrequency": 1,
 			"SaveFrameBuffer": true,

@@ -2,6 +2,7 @@
 
 #include <core/sim_core.h>
 
+#include <render/scene/sim_camera.h>
 #include <render/sim_glaux.h>
 #include <render/sim_driver.h>
 
@@ -26,13 +27,18 @@ CDebug::~CDebug()
 // ----------------------------------------------------------------------//
 void CDebug::Render( CDriver *driver )
 {
+	CCamera* cam = O.game->GetCamera();
+
+	Vec3 p1 = { -1, 0, -10 };
+	Vec3 p2 = {  1, 0, -10 };
+
     driver->MatrixPush();
-    driver->MatrixTranslate({ -1, 10, 0 });
+    driver->MatrixTranslate(p1);
     gluRenderSphere(driver, m_debugSphere);
     driver->MatrixPop();
 
     driver->MatrixPush();
-    driver->MatrixTranslate({ 1, 10, 0 });
+    driver->MatrixTranslate(p2);
     gluRenderCube(driver, m_debugCube);
     driver->MatrixPop();
 }

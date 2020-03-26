@@ -57,6 +57,7 @@ public:
 
 		bool					blending;
 		CDriver::TBlendFunc		blendfunc;
+		Vec4					blendColor;
 
 		CDriver::TDepthFunc		depthfunc;
 	} TTechnique;

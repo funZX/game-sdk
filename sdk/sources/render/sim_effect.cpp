@@ -58,10 +58,10 @@ CEffect::CEffect()
 	m_technique.alphatest				= false;
 
 	m_technique.blending				= false;
-
 	m_technique.blendfunc.equation		= GL_FUNC_ADD;
 	m_technique.blendfunc.src			= GL_SRC_ALPHA;
 	m_technique.blendfunc.dst			= GL_ONE_MINUS_SRC_ALPHA;
+	m_technique.blendColor				= col::White;
 
 	m_technique.depthfunc.equation		= GL_LESS;
 }
@@ -139,7 +139,7 @@ void CEffect::ApplyTechnique( CDriver* driver )
 	driver->EnableDepthMask( m_technique.depthmask );
 	driver->EnableCulling( m_technique.cullface );
 	driver->EnableBlending( m_technique.blending );
-	driver->EnableBlendFunc( m_technique.blendfunc );
+	driver->EnableBlendFunc( m_technique.blendfunc, m_technique.blendColor );
 	driver->EnableDepthFunc( m_technique.depthfunc );
 }
 
@@ -324,8 +324,8 @@ void CEffect::Bind( CDriver *driver, CVertexSource *vertexSource )
 		{
             crtAttrib->m_compOffset = vboOff;
 
+            driver->EnableVertexAttribute(crtAttrib->m_location);
 			driver->SetVertexAttribute( crtAttrib, vertexSource );
-			driver->EnableVertexAttribute( crtAttrib->m_location );
 
 			vboOff += Value( attribStride );
 		}

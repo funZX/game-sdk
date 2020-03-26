@@ -92,7 +92,7 @@ void CDrawable::Draw( CDriver *driver )
 	static CEngine *engine = CEngine::GetSingletonPtr();
 
 	driver->BindRenderTexture( m_rendertexture );
-	driver->Clear( m_color );
+	driver->ClearColor( m_color );
 
 	driver->SetMatrixMode( CDriver::MatrixMode::Projection );
 	driver->MatrixPush( false );

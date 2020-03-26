@@ -134,7 +134,7 @@ void CSkyBox::Generate( f32 size,
     m_vertexGroup->m_vertexSource->BufferData( GL_STATIC_DRAW );
 
 	SIM_MEMCPY( m_vertexGroup->m_vboData, cubeIndices, numIndices * sizeof( u16 ) );
-    m_vertexGroup->BufferData(GL_STATIC_DRAW);
+    m_vertexGroup->BufferData( GL_STATIC_DRAW );
 
 	m_texture->Generate( front, back, left, right, top, bottom );
 }
@@ -167,6 +167,8 @@ void CSkyBox::Render( CDriver *driver )
 void CSkyBox::InitEffect()
 {
 	const char* vsource =
+		"precision highp float;"
+
 		"attribute vec4 a_WorldPosL;"
 
 		"uniform mat4 u_Matrix_WorldViewProjection;"
@@ -196,7 +198,7 @@ void CSkyBox::InitEffect()
 	const char* psource =
 		"precision mediump float;"
 
-		"uniform samplerCube u_Sampler_Cube;"
+		"uniform lowp samplerCube u_Sampler_Cube;"
 
 		"varying vec4 v_Color;"
 		"varying vec3 v_EyeDirL;"
@@ -241,12 +243,13 @@ void CSkyBox::InitEffect()
 	technique.depthtest = false;
 	technique.depthmask = false;
 	technique.cullface	= true;
-	technique.blending	= false;
 	technique.alphatest = false;
 
+    technique.blending = false;
 	technique.blendfunc.equation = GL_FUNC_ADD;
 	technique.blendfunc.src = GL_SRC_ALPHA;
 	technique.blendfunc.dst = GL_ONE_MINUS_SRC_ALPHA;
+	technique.blendColor = col::White;
 
 	technique.depthfunc.equation = GL_ALWAYS;
 

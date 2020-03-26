@@ -124,7 +124,8 @@ void CFontAtlas::Create()
 void CFontAtlas::InitEffect()
 {
 	const s8* vsource =
-		"precision highp float; "
+		"precision highp float;"
+
 		"attribute vec2 a_ScreenPosL;"
 		"attribute vec2 a_TexCoord_0;"
         "attribute vec4 a_Color;"
@@ -173,7 +174,7 @@ void CFontAtlas::InitEffect()
 
 	static const s8* uniforms[] =
 	{
-		"u_Matrix_Projection",
+        "u_Matrix_Projection",
         "u_Sampler_Tex_0"
 	};
 
@@ -193,6 +194,7 @@ void CFontAtlas::InitEffect()
 	m_effect->m_technique.blendfunc.equation = GL_FUNC_ADD;
 	m_effect->m_technique.blendfunc.src = GL_SRC_ALPHA;
 	m_effect->m_technique.blendfunc.dst = GL_ONE_MINUS_SRC_ALPHA;
+	m_effect->m_technique.blendColor = col::White;
 
 	m_effect->m_technique.depthfunc.equation = GL_LESS;
 }

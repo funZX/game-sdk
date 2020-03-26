@@ -82,7 +82,7 @@ namespace sim
 
     static inline void Mat4StackTranslate( Mat4Stack* m4s, Vec3 translation )
     {
-        m4s->topmatrix->w.xyz = translation;
+        zpl_vec3_add( &m4s->topmatrix->w.xyz, m4s->topmatrix->w.xyz, translation );
     }
 
     static inline void Mat4StackRotate( Mat4Stack* m4s, Vec3 axis, f32 angle )

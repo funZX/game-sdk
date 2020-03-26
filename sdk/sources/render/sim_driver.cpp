@@ -161,6 +161,7 @@ void CDriver::Initialize()
 	glDepthMask( GL_TRUE );
 
 	glActiveTexture( GL_TEXTURE0 );
+    glBlendColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 // ----------------------------------------------------------------------//
@@ -347,7 +348,7 @@ CDriver::TextureChannel CDriver::SetTextureChannel( TextureChannel texChannel )
 
 // ----------------------------------------------------------------------//
 
-void CDriver::EnableBlendFunc( TBlendFunc blendfunc )
+void CDriver::EnableBlendFunc( TBlendFunc blendfunc, Vec4 color)
 {
 	if ( blendfunc.equation != m_blendFunc.equation )
 	{
@@ -364,19 +365,8 @@ void CDriver::EnableBlendFunc( TBlendFunc blendfunc )
 
 		glBlendFunc( blendfunc.src, blendfunc.dst );
 	}
-}
 
-// ----------------------------------------------------------------------//
-
-void CDriver::EnableBlendFunc( u32 equation, u32 src, u32 dst )
-{
-	TBlendFunc blendfunc;
-
-	blendfunc.equation	= equation;
-	blendfunc.src		= src;
-	blendfunc.dst		= dst;
-
-	EnableBlendFunc( blendfunc );
+	glBlendColor( color.r, color.g, color.b, color.a );
 }
 
 // ----------------------------------------------------------------------//
@@ -698,28 +688,34 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 	if( m_isWorldMatrixDirty )
 	{
-		if( zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingWorldInverseMatrix ) )
-			zpl_mat4_inverse( &m_worldInverseMatrix, GetWorldMatrix() );
+		if (zpl_bit_get(effect->m_uniformMatrixMask, CEffect::isUsingWorldInverseMatrix) ||
+			zpl_bit_get(effect->m_uniformMatrixMask, CEffect::isUsingWorldInverseTMatrix))
+		{
+			zpl_mat4_inverse(&m_worldInverseMatrix, GetWorldMatrix());
 
-        if ( zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingWorldInverseTMatrix ) )
-        {
-            zpl_mat4_copy( &m_worldInverseTMatrix, &m_worldInverseMatrix );
-            zpl_mat4_transpose( &m_worldInverseTMatrix );
-        }
+			if (zpl_bit_get(effect->m_uniformMatrixMask, CEffect::isUsingWorldInverseTMatrix ) )
+			{
+				zpl_mat4_copy(&m_worldInverseTMatrix, &m_worldInverseMatrix);
+				zpl_mat4_transpose(&m_worldInverseTMatrix);
+			}
+		}
 
 		m_isWorldMatrixDirty = false;
 	}
 
-	if( m_isViewMatrixDirty )
+	if (m_isViewMatrixDirty)
 	{
-		if ( zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingViewInverseMatrix ) )
-            zpl_mat4_inverse( &m_viewInverseMatrix, GetViewMatrix());
+		if (zpl_bit_get(effect->m_uniformMatrixMask, CEffect::isUsingViewInverseMatrix) ||
+			zpl_bit_get(effect->m_uniformMatrixMask, CEffect::isUsingViewInverseTMatrix))
+		{
+			zpl_mat4_inverse(&m_viewInverseMatrix, GetViewMatrix());
 
-        if ( zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingViewInverseTMatrix ) )
-        {
-            zpl_mat4_copy(&m_viewInverseTMatrix, &m_viewInverseMatrix);
-            zpl_mat4_transpose(&m_viewInverseTMatrix);
-        }	
+			if (zpl_bit_get(effect->m_uniformMatrixMask, CEffect::isUsingViewInverseTMatrix))
+			{
+				zpl_mat4_copy(&m_viewInverseTMatrix, &m_viewInverseMatrix);
+				zpl_mat4_transpose(&m_viewInverseTMatrix);
+			}
+		}
 		
 		m_isViewMatrixDirty = false;
 	}
@@ -727,7 +723,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 	if( m_isWorldViewMatrixDirty )
 	{
 		if ( zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingWorldViewMatrix ) )
-			zpl_mat4_mul( &m_worldViewMatrix, GetWorldMatrix(), GetViewMatrix());
+			zpl_mat4_mul( &m_worldViewMatrix, GetViewMatrix(), GetWorldMatrix());
 
 		m_isWorldViewMatrixDirty = false;
 	}
@@ -735,7 +731,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 	if( m_isViewProjectionMatrixDirty )
 	{
 		if (zpl_bit_get( effect->m_uniformMatrixMask, CEffect::isUsingViewProjectionMatrix ) )
-            zpl_mat4_mul( &m_viewProjectionMatrix, GetViewMatrix(), GetProjectionMatrix());
+            zpl_mat4_mul( &m_viewProjectionMatrix, GetProjectionMatrix(), GetViewMatrix());
 
 		m_isViewProjectionMatrixDirty = false;
 	}
@@ -746,8 +742,8 @@ void CDriver::UpdateUniforms( CEffect *effect )
 		{
 			static Mat4 m;
 
-            zpl_mat4_mul( &m, GetViewMatrix(), GetProjectionMatrix());
-            zpl_mat4_mul( &m_worldViewProjectionMatrix,  GetWorldMatrix(), &m);
+            zpl_mat4_mul( &m, GetProjectionMatrix(), GetViewMatrix());
+            zpl_mat4_mul( &m_worldViewProjectionMatrix, &m, GetWorldMatrix());
 		}
 
 		m_isWorldViewProjectionMatrixDirty = false;
