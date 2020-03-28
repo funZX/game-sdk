@@ -39,13 +39,11 @@ CEffect::CEffect()
 {
 	m_iD								= glCreateProgram();
 
-	m_numAttribs						= CVertexSource::k_Vertex_Attributes_Count;
-	m_attributeMask						= 0;
-	InitAttributes();
-
 	m_numUniforms						= 0;
     m_uniformMatrixMask                 = 0;
     m_uniforms = nullptr;
+
+    m_attributeMask						= 0;
 
 	m_vshader							= 0;
 	m_pshader							= 0;
@@ -88,7 +86,7 @@ CEffect::~CEffect()
 
 // ----------------------------------------------------------------------//
 
-void CEffect::InitUniforms(unsigned int numUniform)
+void CEffect::InitUniforms(u32 numUniform)
 {
 	m_numUniforms = numUniform;
 	m_uniforms = SIM_NEW CShader::TUniform[numUniform];
@@ -98,37 +96,24 @@ void CEffect::InitUniforms(unsigned int numUniform)
 
 // ----------------------------------------------------------------------//
 
-void CEffect::InitAttributes()
+void CEffect::AddAttribute( const std::string& name )
 {
-	m_attributes = SIM_NEW CShader::TAttrib[m_numAttribs];
-	SIM_MEMCPY(&m_attributes[0], &CShader::Attributes[0], m_numAttribs * sizeof(CShader::TAttrib));
-}
+    const CShader::TAttrib* attrib = CShader::FindAttrib( name );
 
-// ----------------------------------------------------------------------//
+    SIM_ASSERT( attrib != nullptr );
 
-void CEffect::AddAttribute(const std::string& name)
-{
-    const CShader::TAttrib* attrib = CShader::FindAttrib(name);
-
-    SIM_ASSERT(attrib != nullptr);
-
-	zpl_bit_set(&m_attributeMask, Value(attrib->m_compFormat));
+	zpl_bit_set( &m_attributeMask, Value( attrib->m_compFormat ) );
 }
 
 // ----------------------------------------------------------------------//
 
 void CEffect::SetAttributes()
 {
-	for( s32 k = 0; k < m_numAttribs; k++ )
-    {
-		CShader::TAttrib *curAttrib = &m_attributes[ k ];
+	for( s32 k = 0; k < CVertexSource::k_Vertex_Attributes_Count; k++ )
+		if ( zpl_bit_get( m_attributeMask, Value(CShader::Attributes[k].m_compFormat ) ) )
+			glBindAttribLocation( m_iD, k, CShader::Attributes[k].m_name );
 
-		if (zpl_bit_get(m_attributeMask, Value(curAttrib->m_compFormat)))
-			glBindAttribLocation(m_iD, k, curAttrib->m_name);
-
-		curAttrib->m_location = k;
-        SIM_CHECK_OPENGL();
-	}
+	SIM_CHECK_OPENGL();
 }
 
 // ----------------------------------------------------------------------//
@@ -278,20 +263,19 @@ void CEffect::Load( const s8* vsource, const s8* psource )
 
 void CEffect::Render(CDriver *driver)
 {
-	glUseProgram(m_iD);
+	ApplyTextures( driver );
+    ApplyTechnique( driver );
 
-	driver->UpdateUniforms(this);
-
-	for (s32 k = 0; k < m_numUniforms; k++)
+    glUseProgram(m_iD);
+    driver->ApplyUniforms(this);
+	
+	for ( s32 k = 0; k < m_numUniforms; k++ )
 	{
-		CShader::TUniform *crtUniform = &m_uniforms[k];
+		CShader::TUniform *crtUniform = &m_uniforms[ k ];
 
 		if ( crtUniform->m_location != -1 )
-			driver->SetUniform( crtUniform );
+			driver->ApplyUniform( crtUniform );
 	}
-
-	ApplyTextures(driver);
-	ApplyTechnique(driver);
 }
 
 // ----------------------------------------------------------------------//
@@ -299,43 +283,44 @@ void CEffect::Render(CDriver *driver)
 void CEffect::Bind( CDriver *driver, CVertexSource *vertexSource )
 {
 	// Attributes
-	void *vboData = vertexSource->GetVboData();
-
 	CVertexSource::AttributeFormat vertexFormat   = vertexSource->m_vertexFormat;
 	CVertexSource::AttributeStride vertexStride   = vertexSource->m_vertexStride;
 	u32 vboOff         = 0;
 
-	for( s32 k = 0; k < m_numAttribs; k++ )
+	for( s32 k = 0; k < CVertexSource::k_Vertex_Attributes_Count; k++ )
 	{
-		CShader::TAttrib *crtAttrib	= &m_attributes[ k ];
+		CShader::TAttrib* crtAttrib = &CShader::Attributes[k];
 
-		CVertexSource::AttributeStride attribStride	= crtAttrib->m_compStride;
+		CVertexSource::AttributeFormat hasAttribute = (vertexFormat & crtAttrib->m_compFormat);
+		
+		if ( CVertexSource::AttributeFormat::None == hasAttribute )
+			continue;
+
+        CVertexSource::AttributeStride attribStride = crtAttrib->m_compStride;
+
+        if ( !zpl_bit_get( m_attributeMask, Value( crtAttrib->m_compFormat) ) )
+        {
+            driver->DisableVertexAttribute( k );
+
+            vboOff += Value(attribStride);
+			continue;
+        }
+
 		CVertexSource::AttributeFormat attribFormat	= crtAttrib->m_compFormat;
 		CVertexSource::AttributeSize attribSize		= crtAttrib->m_compSize;
 		CVertexSource::AttributeType attribType		= crtAttrib->m_compType;
 
 #if SIM_DEBUG
-        s32 loc = glGetAttribLocation(m_iD, crtAttrib->m_name);
-        SIM_ASSERT(-1 == loc || loc == k);
+        s32 loc = glGetAttribLocation( m_iD, crtAttrib->m_name );
+        SIM_ASSERT( loc == k );
 #endif
 
-		if( zpl_bit_get( m_attributeMask, Value( crtAttrib->m_compFormat ) ) &&
-			CVertexSource::AttributeFormat::None != ( vertexFormat & attribFormat ) )
-		{
-            crtAttrib->m_compOffset = vboOff;
+		crtAttrib->m_compOffset = vboOff;
 
-            driver->EnableVertexAttribute(crtAttrib->m_location);
-			driver->SetVertexAttribute( crtAttrib, vertexSource );
+        driver->EnableVertexAttribute( k );
+        driver->SetVertexAttribute( k, crtAttrib, vertexSource );
 
-			vboOff += Value( attribStride );
-		}
-		else
-		{
-			if ( CVertexSource::AttributeFormat::None  != (vertexFormat & attribFormat ) )
-				vboOff += Value(attribStride);
-
-			driver->DisableVertexAttribute( crtAttrib->m_location );
-		}
+        vboOff += Value(attribStride);
 	}
 
 	SIM_CHECK_OPENGL();

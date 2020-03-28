@@ -160,7 +160,7 @@ void CEngine::InitEffect()
 
     u32 nAttrib = 2;
     for (u32 k = 0; k < nAttrib; k++)
-        m_effect->AddAttribute(attributes[k]);
+        m_effect->AddAttribute( attributes[k] );
 
     static const s8* uniforms[] =
     {
@@ -170,7 +170,7 @@ void CEngine::InitEffect()
     };
 
     u32 nUniform = 3;
-    m_effect->InitUniforms(nUniform);
+    m_effect->InitUniforms( nUniform );
     for (u32 k = 0; k < nUniform; k++)
         m_effect->AddUniform(uniforms[k], k);
 

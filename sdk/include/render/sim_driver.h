@@ -295,12 +295,12 @@ public:
 	void						SetDepthRange( f32 start, f32 end );
 
 	// ------------------------------------------------------------------//
-	void                        SetVertexAttribute( CShader::TAttrib* attrib, CVertexSource* vertexSource );
+	void                        SetVertexAttribute( s32 location, CShader::TAttrib* attrib, CVertexSource* vertexSource );
     void                        EnableVertexAttribute( s32 location );
     void                        DisableVertexAttribute( s32 location );
 	// ------------------------------------------------------------------//
-	void						UpdateUniforms( CEffect *effect );
-	void						SetUniform( CShader::TUniform* uni );
+	void						ApplyUniforms( CEffect *effect );
+	void						ApplyUniform( CShader::TUniform* uni );
 	// ------------------------------------------------------------------//
     void						Render( CVertexGroup* vertexGroup );
 	// ------------------------------------------------------------------//
@@ -370,7 +370,6 @@ protected:
 	u32				            m_textureBind[ k_Texture_Channels_Count ];
     TextureChannel              m_textureChannel;
 
-    TVertexAttributeInfo        m_vertexAttributeInfo[ CVertexSource::k_Vertex_Attributes_Count ];
 	TLightParameters			m_lightParameters[ k_Light_Channels_Count ];
 	LightChannel				m_lightChannel;
 

@@ -36,18 +36,18 @@ namespace rnr
 
 CShader::TAttrib CShader::Attributes[CVertexSource::k_Vertex_Attributes_Count] =
 {
-    { "a_ScreenPosL",	-1,		CVertexSource::AttributeIndex::ScreenPos,	CVertexSource::AttributeFormat::ScreenPos,	CVertexSource::AttributeSize::ScreenPos,		CVertexSource::AttributeStride::ScreenPos,	CVertexSource::AttributeType::ScreenPos, },
-	{ "a_WorldPosL",	-1,		CVertexSource::AttributeIndex::WorldPos,	CVertexSource::AttributeFormat::WorldPos,	CVertexSource::AttributeSize::WorldPos,		CVertexSource::AttributeStride::WorldPos,		CVertexSource::AttributeType::WorldPos, },
-	{ "a_TexCoord_0",	-1,		CVertexSource::AttributeIndex::TexCoord_0,	CVertexSource::AttributeFormat::TexCoord_0,	CVertexSource::AttributeSize::TexCoord_0,	CVertexSource::AttributeStride::TexCoord_0,		CVertexSource::AttributeType::TexCoord_0, },
-	{ "a_TexCoord_1",	-1,		CVertexSource::AttributeIndex::TexCoord_1,	CVertexSource::AttributeFormat::TexCoord_1,	CVertexSource::AttributeSize::TexCoord_1,	CVertexSource::AttributeStride::TexCoord_1,		CVertexSource::AttributeType::TexCoord_1, },
-	{ "a_TexCoord_2",	-1,		CVertexSource::AttributeIndex::TexCoord_2,	CVertexSource::AttributeFormat::TexCoord_2,	CVertexSource::AttributeSize::TexCoord_2,	CVertexSource::AttributeStride::TexCoord_2,		CVertexSource::AttributeType::TexCoord_2, },
-	{ "a_TexCoord_3",	-1,		CVertexSource::AttributeIndex::TexCoord_3,	CVertexSource::AttributeFormat::TexCoord_3,	CVertexSource::AttributeSize::TexCoord_3,	CVertexSource::AttributeStride::TexCoord_3,		CVertexSource::AttributeType::TexCoord_3, },
-	{ "a_Color",		-1,		CVertexSource::AttributeIndex::Color,		CVertexSource::AttributeFormat::Color,		CVertexSource::AttributeSize::Color,		CVertexSource::AttributeStride::Color,			CVertexSource::AttributeType::Color, },
-	{ "a_NormalL",		-1,		CVertexSource::AttributeIndex::Normal,		CVertexSource::AttributeFormat::Normal,		CVertexSource::AttributeSize::Normal,		CVertexSource::AttributeStride::Normal,			CVertexSource::AttributeType::Normal, },
-	{ "a_TangentL",		-1,		CVertexSource::AttributeIndex::Tangent,		CVertexSource::AttributeFormat::Tangent,	CVertexSource::AttributeSize::Tangent,		CVertexSource::AttributeStride::Tangent,		CVertexSource::AttributeType::Tangent, },
-	{ "a_BinormalL",	-1,		CVertexSource::AttributeIndex::Binormal,	CVertexSource::AttributeFormat::Binormal,	CVertexSource::AttributeSize::Binormal,		CVertexSource::AttributeStride::Binormal,		CVertexSource::AttributeType::Binormal, },
-	{ "a_WeightArraySize",-1,	CVertexSource::AttributeIndex::WeightArraySize,	CVertexSource::AttributeFormat::WeightArraySize, CVertexSource::AttributeSize::WeightArraySize, CVertexSource::AttributeStride::WeightArraySize, CVertexSource::AttributeType::WeightArraySize, },
-	{ "a_WeightArray",	-1,		CVertexSource::AttributeIndex::WeightArray,	CVertexSource::AttributeFormat::WeightArray,CVertexSource::AttributeSize::WeightArray,		CVertexSource::AttributeStride::WeightArray,CVertexSource::AttributeType::WeightArray, },
+    { "a_ScreenPosL",			CVertexSource::AttributeIndex::ScreenPos,	CVertexSource::AttributeFormat::ScreenPos,	CVertexSource::AttributeSize::ScreenPos,		CVertexSource::AttributeStride::ScreenPos,	CVertexSource::AttributeType::ScreenPos, },
+	{ "a_WorldPosL",			CVertexSource::AttributeIndex::WorldPos,	CVertexSource::AttributeFormat::WorldPos,	CVertexSource::AttributeSize::WorldPos,		CVertexSource::AttributeStride::WorldPos,		CVertexSource::AttributeType::WorldPos, },
+	{ "a_TexCoord_0",			CVertexSource::AttributeIndex::TexCoord_0,	CVertexSource::AttributeFormat::TexCoord_0,	CVertexSource::AttributeSize::TexCoord_0,	CVertexSource::AttributeStride::TexCoord_0,		CVertexSource::AttributeType::TexCoord_0, },
+	{ "a_TexCoord_1",			CVertexSource::AttributeIndex::TexCoord_1,	CVertexSource::AttributeFormat::TexCoord_1,	CVertexSource::AttributeSize::TexCoord_1,	CVertexSource::AttributeStride::TexCoord_1,		CVertexSource::AttributeType::TexCoord_1, },
+	{ "a_TexCoord_2",			CVertexSource::AttributeIndex::TexCoord_2,	CVertexSource::AttributeFormat::TexCoord_2,	CVertexSource::AttributeSize::TexCoord_2,	CVertexSource::AttributeStride::TexCoord_2,		CVertexSource::AttributeType::TexCoord_2, },
+	{ "a_TexCoord_3",			CVertexSource::AttributeIndex::TexCoord_3,	CVertexSource::AttributeFormat::TexCoord_3,	CVertexSource::AttributeSize::TexCoord_3,	CVertexSource::AttributeStride::TexCoord_3,		CVertexSource::AttributeType::TexCoord_3, },
+	{ "a_Color",				CVertexSource::AttributeIndex::Color,		CVertexSource::AttributeFormat::Color,		CVertexSource::AttributeSize::Color,		CVertexSource::AttributeStride::Color,			CVertexSource::AttributeType::Color, },
+	{ "a_NormalL",				CVertexSource::AttributeIndex::Normal,		CVertexSource::AttributeFormat::Normal,		CVertexSource::AttributeSize::Normal,		CVertexSource::AttributeStride::Normal,			CVertexSource::AttributeType::Normal, },
+	{ "a_TangentL",				CVertexSource::AttributeIndex::Tangent,		CVertexSource::AttributeFormat::Tangent,	CVertexSource::AttributeSize::Tangent,		CVertexSource::AttributeStride::Tangent,		CVertexSource::AttributeType::Tangent, },
+	{ "a_BinormalL",			CVertexSource::AttributeIndex::Binormal,	CVertexSource::AttributeFormat::Binormal,	CVertexSource::AttributeSize::Binormal,		CVertexSource::AttributeStride::Binormal,		CVertexSource::AttributeType::Binormal, },
+	{ "a_WeightArraySize",		CVertexSource::AttributeIndex::WeightArraySize,	CVertexSource::AttributeFormat::WeightArraySize, CVertexSource::AttributeSize::WeightArraySize, CVertexSource::AttributeStride::WeightArraySize, CVertexSource::AttributeType::WeightArraySize, },
+	{ "a_WeightArray",			CVertexSource::AttributeIndex::WeightArray,	CVertexSource::AttributeFormat::WeightArray,CVertexSource::AttributeSize::WeightArray,		CVertexSource::AttributeStride::WeightArray,CVertexSource::AttributeType::WeightArray, },
 };
 
 // ----------------------------------------------------------------------//
