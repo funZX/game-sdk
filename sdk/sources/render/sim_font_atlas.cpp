@@ -169,8 +169,8 @@ void CFontAtlas::InitEffect()
     };
 	
 	u32 nAttrib = 3;
-	for (u32 k = 0; k < nAttrib; k++)
-		m_effect->AddAttribute(attributes[k]);
+	for ( u32 k = 0; k < nAttrib; k++ )
+		m_effect->AddAttribute( attributes[k] );
 
 	static const s8* uniforms[] =
 	{
@@ -179,9 +179,9 @@ void CFontAtlas::InitEffect()
 	};
 
 	u32 nUniform = 2;
-	m_effect->InitUniforms(nUniform);
-	for (u32 k = 0; k < nUniform; k++)
-		m_effect->AddUniform(uniforms[k], k);
+	m_effect->InitUniforms( nUniform );
+	for ( u32 k = 0; k < nUniform; k++ )
+		m_effect->AddUniform( uniforms[k], k );
 
 	m_effect->Load( vsource, psource );
 

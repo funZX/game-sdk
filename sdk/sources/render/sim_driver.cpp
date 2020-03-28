@@ -82,7 +82,6 @@ CDriver::CDriver()
 	m_isNormalMatrixDirty	= true;
 	m_isActiveStackAlteringNormalMatrix = true;
 
-    SIM_MEMSET( m_vertexAttributeInfo, 0, sizeof( m_vertexAttributeInfo ) );
 	SIM_MEMSET( m_lightParameters, 0, sizeof( m_lightParameters ) );
 
     m_textureChannel        = TextureChannel::Texture_0;
@@ -623,22 +622,15 @@ void CDriver::SetScissor(u32 x, u32 y, u32 w, u32 h)
 
 // ----------------------------------------------------------------------//
 
-void CDriver::SetVertexAttribute( CShader::TAttrib* attrib, CVertexSource* vertexSource)
+void CDriver::SetVertexAttribute( s32 location, CShader::TAttrib* attrib, CVertexSource* vertexSource)
 {
-	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[ Value( attrib->m_compIndex ) ];
-
-    if( vertexSource != attribInfo->m_vertexSource )
-    {
-		glVertexAttribPointer( 
-			attrib->m_location,
-			Value(attrib->m_compSize),
-			Value(attrib->m_compType),
-			GL_FALSE,
-			vertexSource->GetVertexStride(),
-            (void*)( attrib->m_compOffset ) );
-
-        attribInfo->m_vertexSource = vertexSource;
-    }
+    glVertexAttribPointer(
+        location,
+        Value(attrib->m_compSize),
+        Value(attrib->m_compType),
+        GL_FALSE,
+        vertexSource->GetVertexStride(),
+        (void*)(attrib->m_compOffset));
 
 	SIM_CHECK_OPENGL();
 }
@@ -647,14 +639,7 @@ void CDriver::SetVertexAttribute( CShader::TAttrib* attrib, CVertexSource* verte
 
 void CDriver::EnableVertexAttribute( s32 location )
 {
-	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[ location ];
-
-	if( !attribInfo->m_isEnabled )
-    {
-		glEnableVertexAttribArray( location );
-        attribInfo->m_isEnabled = true;
-    }
-
+    glEnableVertexAttribArray(location);
 	SIM_CHECK_OPENGL();
 }
 
@@ -662,20 +647,13 @@ void CDriver::EnableVertexAttribute( s32 location )
 
 void CDriver::DisableVertexAttribute( s32 location )
 {
-	TVertexAttributeInfo *attribInfo = &m_vertexAttributeInfo[ location ];
-
-    if( attribInfo->m_isEnabled )
-	{
-		glDisableVertexAttribArray( location );
-        attribInfo->m_isEnabled = false;
-    }
-
+    glDisableVertexAttribArray(location);
 	SIM_CHECK_OPENGL();
 }
 
 // ----------------------------------------------------------------------//
 
-void CDriver::UpdateUniforms( CEffect *effect )
+void CDriver::ApplyUniforms( CEffect *effect )
 {
 	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_World) ].m_value		= (void*) GetWorldMatrix();
 	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_View) ].m_value		= (void*) GetViewMatrix();
@@ -760,7 +738,7 @@ void CDriver::UpdateUniforms( CEffect *effect )
 
 // ----------------------------------------------------------------------//
 
-void CDriver::SetUniform( CShader::TUniform* uni )
+void CDriver::ApplyUniform( CShader::TUniform* uni )
 {
 	TUniformInfo *uniInfo		= &m_uniformInfo[ Value(uni->m_index) ];
 	SetUniformCallback callback = uniInfo->m_callback;
@@ -848,15 +826,15 @@ void CDriver::Render( CVertexGroup* vertexGroup )
 		Primitive::TriangleStrips
 	};
 
-	SIM_ASSERT(vertexSource != nullptr);
+	SIM_ASSERT( vertexSource != nullptr );
 
-    glBindBuffer(GL_ARRAY_BUFFER, vertexSource->GetID());
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexGroup->GetID());
+    glBindBuffer( GL_ARRAY_BUFFER, vertexSource->GetID() );
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, vertexGroup->GetID() );
 
-	effect->Bind(this, vertexSource);
+	effect->Bind( this, vertexSource );
 
-	material->Render(this);
-	effect->Render(this);
+	material->Render( this );
+	effect->Render( this );
 
 	m_drawCallCount += 1;
 	m_vertexCount   += vertexGroup->GetVboSize() / sizeof(u16);

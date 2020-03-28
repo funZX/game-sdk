@@ -154,13 +154,12 @@ public:
 	struct TAttrib
 	{
 		const char*									m_name;
-		s32											m_location;
 
 		CVertexSource::AttributeIndex				m_compIndex;
 		CVertexSource::AttributeFormat				m_compFormat;
 		CVertexSource::AttributeSize				m_compSize;
 		CVertexSource::AttributeStride				m_compStride;
-		CVertexSource::AttributeType				m_compType;
+        CVertexSource::AttributeType				m_compType;
 
         u32                                         m_compOffset;
 	};
