@@ -29,14 +29,14 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
 CLight::CLight()
 	: CSceneNode()
 {
-	m_channel	    = CDriver::LightChannel::Light_0;
+	m_channel	    = LightChannel::Light_0;
 
 	m_ambient       = col::White;
 	m_diffuse       = col::White;
@@ -100,5 +100,5 @@ bool CLight::Save(io::CMemStream* ms)
     return true;
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

@@ -45,13 +45,13 @@ protected:
 	IState*				m_nextState;
 
 public:
-	CStateMachine( rnr::CCanvas* canvas );
+	CStateMachine( ren::CCanvas* canvas );
 	virtual ~CStateMachine();
 
 	IState*				GetCurrentState()			{ m_crtState; }
 
 	void				Update( f32 dt, void *userData );
-	void				Render( rnr::CDriver *driver );
+	void				Render( ren::CDriver *driver );
 
 	void				GoNext( IState* state );
 	void				GoBack();
@@ -59,7 +59,7 @@ public:
 	void				PopAll();
 
 protected:
-    void				ShowGui( rnr::CCanvas* canvas, sigcxx::SLOT slot = nullptr );
+    void				ShowGui( ren::CCanvas* canvas, sigcxx::SLOT slot = nullptr );
 };
 
 // ----------------------------------------------------------------------//

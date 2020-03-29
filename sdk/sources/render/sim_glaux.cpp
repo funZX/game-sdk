@@ -35,7 +35,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -516,5 +516,5 @@ void gluPickMatrix(Mat4* m,  f32 x, f32 y, f32 deltax, f32 deltay, CRect2D* view
     m->z.z *= scale.z;
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

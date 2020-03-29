@@ -36,7 +36,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 CRect2D				ScreenRectStatic(0.0f, 0.0f, 0.0f, 0.0f);
@@ -84,9 +84,9 @@ CDriver::CDriver()
 
 	SIM_MEMSET( m_lightParameters, 0, sizeof( m_lightParameters ) );
 
-    m_textureChannel        = TextureChannel::Texture_0;
+    m_textureChannel        = CMaterial::TextureChannel::Texture_0;
 	m_matrixMode			= MatrixMode::World;
-	m_lightChannel          = LightChannel::Light_0;
+	m_lightChannel          = CLight::LightChannel::Light_0;
 	m_cullingMode           = CullingMode::CW;
 
 	m_activeStack           = &m_projectionStack;
@@ -329,9 +329,9 @@ void CDriver::ComputeNormalMatrix()
 
 // ----------------------------------------------------------------------//
 
-CDriver::TextureChannel CDriver::SetTextureChannel( TextureChannel texChannel )
+CMaterial::TextureChannel CDriver::SetTextureChannel( CMaterial::TextureChannel texChannel )
 {
-    TextureChannel old = m_textureChannel;
+	CMaterial::TextureChannel old = m_textureChannel;
 
     if ( old != texChannel )
     {
@@ -391,9 +391,9 @@ void CDriver::EnableDepthFunc(u32 equation)
 
 // ----------------------------------------------------------------------//
 
-CDriver::LightChannel CDriver::SetLightChannel(LightChannel lightChannel )
+CLight::LightChannel CDriver::SetLightChannel( CLight::LightChannel lightChannel )
 {
-	LightChannel old = m_lightChannel;
+	CLight::LightChannel old = m_lightChannel;
 
 	if(m_lightChannel == lightChannel)
 		return old;
@@ -662,11 +662,11 @@ void CDriver::ApplyUniforms( CEffect *effect )
 	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_World) ].m_value		= (void*) GetWorldMatrix();
 	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_View) ].m_value		= (void*) GetViewMatrix();
 	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Projection) ].m_value= (void*) GetProjectionMatrix();
-	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Tex_0) ].m_value		= (void*) GetTextureMatrix( TextureChannel::Texture_0 );
-	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Tex_1) ].m_value		= (void*) GetTextureMatrix( TextureChannel::Texture_1 );
-	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Tex_2) ].m_value		= (void*) GetTextureMatrix( TextureChannel::Texture_2 );
-	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Tex_3) ].m_value		= (void*) GetTextureMatrix( TextureChannel::Texture_3 );
-	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Tex_4) ].m_value		= (void*) GetTextureMatrix( TextureChannel::Texture_4 );
+	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Tex_0) ].m_value		= (void*) GetTextureMatrix( CMaterial::TextureChannel::Texture_0 );
+	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Tex_1) ].m_value		= (void*) GetTextureMatrix( CMaterial::TextureChannel::Texture_1 );
+	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Tex_2) ].m_value		= (void*) GetTextureMatrix( CMaterial::TextureChannel::Texture_2 );
+	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Tex_3) ].m_value		= (void*) GetTextureMatrix( CMaterial::TextureChannel::Texture_3 );
+	m_uniformInfo[ Value(CShader::UniformIndex::Matrix_Tex_4) ].m_value		= (void*) GetTextureMatrix( CMaterial::TextureChannel::Texture_4 );
 
 	if( m_isWorldMatrixDirty )
 	{
@@ -963,13 +963,13 @@ void CDriver::InitUniform()
 	m_uniformInfo[ Value(CShader::UniformIndex::Eye_Direction) ].m_callback = &CDriver::SetUniform3fv;
 
 	// -----------------------------------------
-	static u32 texSelect[ k_Texture_Channels_Count ] = 
+	static u32 texSelect[ CMaterial::k_Texture_Channels_Count ] = 
 	{
-		Value(TextureChannel::Texture_0), 
-		Value(TextureChannel::Texture_1),
-		Value(TextureChannel::Texture_2),
-		Value(TextureChannel::Texture_3),
-		Value(TextureChannel::Texture_4),
+		Value(CMaterial::TextureChannel::Texture_0), 
+		Value(CMaterial::TextureChannel::Texture_1),
+		Value(CMaterial::TextureChannel::Texture_2),
+		Value(CMaterial::TextureChannel::Texture_3),
+		Value(CMaterial::TextureChannel::Texture_4),
 	};
 
 	m_uniformInfo[ Value(CShader::UniformIndex::Sampler_Tex_0) ].m_value = &texSelect[ 0 ];
@@ -1048,147 +1048,147 @@ void CDriver::InitUniform()
 
 	// -----------------------------------------
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Enable_0) ].m_value = &m_lightParameters[Value(LightChannel::Light_0)].m_isEnabled;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Enable_0) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_0)].m_isEnabled;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Enable_0) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Enable_0) ].m_callback = &CDriver::SetUniform1i;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_0) ].m_value = &m_lightParameters[Value(LightChannel::Light_0)].m_position;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_0) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_0)].m_position;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_0) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_0) ].m_callback = &CDriver::SetUniform3fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_0) ].m_value = &m_lightParameters[Value(LightChannel::Light_0)].m_direction;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_0) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_0)].m_direction;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_0) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_0) ].m_callback = &CDriver::SetUniform3fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_0) ].m_value = &m_lightParameters[Value(LightChannel::Light_0)].m_ambient;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_0) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_0)].m_ambient;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_0) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_0) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_0) ].m_value = &m_lightParameters[Value(LightChannel::Light_0)].m_diffuse;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_0) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_0)].m_diffuse;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_0) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_0) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_0) ].m_value = &m_lightParameters[Value(LightChannel::Light_0)].m_specular;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_0) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_0)].m_specular;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_0) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_0) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_0) ].m_value = &m_lightParameters[Value(LightChannel::Light_0)].m_attenuation;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_0) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_0)].m_attenuation;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_0) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_0) ].m_callback = &CDriver::SetUniform1f;
 
-    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_0)].m_value = &m_lightParameters[Value(LightChannel::Light_0)].m_fallOffAngle;
+    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_0)].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_0)].m_fallOffAngle;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_0)].m_count = 1;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_0)].m_callback = &CDriver::SetUniform1f;
 
-    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_0)].m_value = &m_lightParameters[Value(LightChannel::Light_0)].m_fallOffExponent;
+    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_0)].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_0)].m_fallOffExponent;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_0)].m_count = 1;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_0)].m_callback = &CDriver::SetUniform1f;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Enable_1) ].m_value = &m_lightParameters[Value(LightChannel::Light_1)].m_isEnabled;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Enable_1) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_1)].m_isEnabled;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Enable_1) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Enable_1) ].m_callback = &CDriver::SetUniform1i;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_1) ].m_value = &m_lightParameters[Value(LightChannel::Light_1)].m_position;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_1) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_1)].m_position;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_1) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_1) ].m_callback = &CDriver::SetUniform3fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_1) ].m_value = &m_lightParameters[Value(LightChannel::Light_1)].m_direction;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_1) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_1)].m_direction;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_1) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_1) ].m_callback = &CDriver::SetUniform3fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_1) ].m_value = &m_lightParameters[Value(LightChannel::Light_1)].m_ambient;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_1) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_1)].m_ambient;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_1) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_1) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_1) ].m_value = &m_lightParameters[Value(LightChannel::Light_1)].m_diffuse;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_1) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_1)].m_diffuse;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_1) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_1) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_1) ].m_value = &m_lightParameters[Value(LightChannel::Light_1)].m_specular;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_1) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_1)].m_specular;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_1) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_1) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_1) ].m_value = &m_lightParameters[Value(LightChannel::Light_1)].m_attenuation;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_1) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_1)].m_attenuation;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_1) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_1) ].m_callback = &CDriver::SetUniform1f;
 
-    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_1)].m_value = &m_lightParameters[Value(LightChannel::Light_1)].m_fallOffAngle;
+    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_1)].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_1)].m_fallOffAngle;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_1)].m_count = 1;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_1)].m_callback = &CDriver::SetUniform1f;
 
-    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_1)].m_value = &m_lightParameters[Value(LightChannel::Light_1)].m_fallOffExponent;
+    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_1)].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_1)].m_fallOffExponent;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_1)].m_count = 1;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_1)].m_callback = &CDriver::SetUniform1f;
 
-    m_uniformInfo[ Value(CShader::UniformIndex::Light_Enable_2) ].m_value = &m_lightParameters[Value(LightChannel::Light_2)].m_isEnabled;
+    m_uniformInfo[ Value(CShader::UniformIndex::Light_Enable_2) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_2)].m_isEnabled;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Enable_2) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Enable_2) ].m_callback = &CDriver::SetUniform1i;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_2) ].m_value = &m_lightParameters[Value(LightChannel::Light_2)].m_position;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_2) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_2)].m_position;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_2) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_2) ].m_callback = &CDriver::SetUniform3fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_2) ].m_value = &m_lightParameters[Value(LightChannel::Light_2)].m_direction;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_2) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_2)].m_direction;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_2) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_2) ].m_callback = &CDriver::SetUniform3fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_2) ].m_value = &m_lightParameters[Value(LightChannel::Light_2)].m_ambient;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_2) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_2)].m_ambient;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_2) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_2) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_2) ].m_value = &m_lightParameters[Value(LightChannel::Light_2)].m_diffuse;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_2) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_2)].m_diffuse;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_2) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_2) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_2) ].m_value = &m_lightParameters[Value(LightChannel::Light_2)].m_specular;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_2) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_2)].m_specular;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_2) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_2) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_2) ].m_value = &m_lightParameters[Value(LightChannel::Light_2)].m_attenuation;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_2) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_2)].m_attenuation;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_2) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_2) ].m_callback = &CDriver::SetUniform1f;
 
-    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_2)].m_value = &m_lightParameters[Value(LightChannel::Light_2)].m_fallOffAngle;
+    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_2)].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_2)].m_fallOffAngle;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_2)].m_count = 1;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_2)].m_callback = &CDriver::SetUniform1f;
 
-    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_2)].m_value = &m_lightParameters[Value(LightChannel::Light_2)].m_fallOffExponent;
+    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_2)].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_2)].m_fallOffExponent;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_2)].m_count = 1;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_2)].m_callback = &CDriver::SetUniform1f;
 
-    m_uniformInfo[Value(CShader::UniformIndex::Light_Enable_3)].m_value = &m_lightParameters[Value(LightChannel::Light_3)].m_isEnabled;
+    m_uniformInfo[Value(CShader::UniformIndex::Light_Enable_3)].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_3)].m_isEnabled;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Enable_3) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Enable_3) ].m_callback = &CDriver::SetUniform1i;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_3) ].m_value = &m_lightParameters[Value(LightChannel::Light_3)].m_position;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_3) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_3)].m_position;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_3) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Position_3) ].m_callback = &CDriver::SetUniform3fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_3) ].m_value = &m_lightParameters[Value(LightChannel::Light_3)].m_direction;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_3) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_3)].m_direction;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_3) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Direction_3) ].m_callback = &CDriver::SetUniform3fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_3) ].m_value = &m_lightParameters[Value(LightChannel::Light_3)].m_ambient;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_3) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_3)].m_ambient;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_3) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Ambient_3) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_3) ].m_value = &m_lightParameters[Value(LightChannel::Light_3)].m_diffuse;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_3) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_3)].m_diffuse;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_3) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Diffuse_3) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_3) ].m_value = &m_lightParameters[Value(LightChannel::Light_3)].m_specular;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_3) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_3)].m_specular;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_3) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Specular_3) ].m_callback = &CDriver::SetUniform4fv;
 
-	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_3) ].m_value = &m_lightParameters[Value(LightChannel::Light_3)].m_attenuation;
+	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_3) ].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_3)].m_attenuation;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_3) ].m_count = 1;
 	m_uniformInfo[ Value(CShader::UniformIndex::Light_Attenuation_3) ].m_callback = &CDriver::SetUniform1f;
 
-    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_3)].m_value = &m_lightParameters[Value(LightChannel::Light_3)].m_fallOffAngle;
+    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_3)].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_3)].m_fallOffAngle;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_3)].m_count = 1;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffAngle_3)].m_callback = &CDriver::SetUniform1f;
 
-    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_3)].m_value = &m_lightParameters[Value(LightChannel::Light_3)].m_fallOffExponent;
+    m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_3)].m_value = &m_lightParameters[Value(CLight::LightChannel::Light_3)].m_fallOffExponent;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_3)].m_count = 1;
     m_uniformInfo[Value(CShader::UniformIndex::Light_FallOffExp_3)].m_callback = &CDriver::SetUniform1f;
 
@@ -1209,5 +1209,5 @@ void CDriver::Log( char *fmt, ... )
 }
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

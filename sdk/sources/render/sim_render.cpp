@@ -28,7 +28,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 void OpenGLCheck( const char *file, const char *func,  unsigned int line )
@@ -38,6 +38,6 @@ void OpenGLCheck( const char *file, const char *func,  unsigned int line )
 	SIM_ASSERT( error == GL_NO_ERROR );
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 

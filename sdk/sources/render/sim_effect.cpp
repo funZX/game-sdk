@@ -31,7 +31,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -132,11 +132,11 @@ void CEffect::ApplyTechnique( CDriver* driver )
 
 void CEffect::ApplyTextures( CDriver* driver )
 {
-	for( u32 i = 0; i < CDriver::k_Texture_Channels_Count; i++ )
+	for( u32 i = 0; i < CMaterial::k_Texture_Channels_Count; i++ )
 	{
 		if ( m_textures[ i ] != nullptr )
 		{
-			driver->SetTextureChannel( static_cast<CDriver::TextureChannel>(i) );
+			driver->SetTextureChannel( static_cast<CMaterial::TextureChannel>(i) );
 			driver->BindTexture( CDriver::TextureTarget::Texture2D, m_textures[ i ]->GetID() );
 		}
 	}
@@ -336,5 +336,5 @@ bool CEffect::Save(io::CMemStream* ms)
     return false;
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

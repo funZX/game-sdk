@@ -73,7 +73,7 @@ CEngine::CEngine()
     InitCanvas();
 
     m_sm                = SIM_NEW CStateMachine( m_canvas );
-	m_camera			= SIM_NEW rnr::CCamera( "engine.Camera" );
+	m_camera			= SIM_NEW ren::CCamera( "engine.Camera" );
     m_crtCamera         = m_camera;
 
 	m_currentTime		=  0;

@@ -33,7 +33,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -41,7 +41,7 @@ CCanvas::CCanvas( CFontAtlas* fontAtlas )
 	: CRect2D()
 {
     m_fontAtlas     = fontAtlas;
-    m_material      = fontAtlas->GetMaterial();
+    m_material      = *fontAtlas->GetMaterial();
 
     m_vertexSource  = SIM_NEW CVertexSource;
 
@@ -264,6 +264,6 @@ void CCanvas::KeyUp(int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt)
     OnKeyUp.Emit( this, Key, KeyShift, KeyCtrl, KeyAlt );
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 

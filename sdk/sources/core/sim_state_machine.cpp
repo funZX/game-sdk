@@ -34,7 +34,7 @@ namespace sm
 {
 // ----------------------------------------------------------------------//
 
-CStateMachine::CStateMachine( rnr::CCanvas* canvas ) : stl::CStack<IState*>()
+CStateMachine::CStateMachine( ren::CCanvas* canvas ) : stl::CStack<IState*>()
 {
 	m_prevState	= nullptr;
 	m_crtState	= nullptr;
@@ -113,14 +113,14 @@ void CStateMachine::Update( f32 dt, void *userData )
 
 // ----------------------------------------------------------------------//
 
-void CStateMachine::Render( rnr::CDriver *driver )
+void CStateMachine::Render( ren::CDriver *driver )
 {
 	m_crtState->Render( driver );
 }
 
 // ----------------------------------------------------------------------//
 
-void CStateMachine::ShowGui( rnr::CCanvas* canvas, sigcxx::SLOT slot )
+void CStateMachine::ShowGui( ren::CCanvas* canvas, sigcxx::SLOT slot )
 {
     if ( m_crtState )
         m_crtState->ShowGui( canvas );

@@ -67,18 +67,18 @@ void CPhysic::Update( f32 dt, void *userData )
 
 // ----------------------------------------------------------------------//
 
-void CPhysic::Add(rnr::CActor* actor)
+void CPhysic::Add(ren::CActor* actor)
 {
 	m_dynamicsWorld->addRigidBody(actor->GetRigidBody());
 }
 
 // ----------------------------------------------------------------------//
 
-void CPhysic::Del(rnr::CActor* actor)
+void CPhysic::Del(ren::CActor* actor)
 {
 	m_dynamicsWorld->removeRigidBody(actor->GetRigidBody());
 }
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

@@ -35,7 +35,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -69,6 +69,6 @@ inline f32 CFont::GetHeight()
     return m_pixelSize;
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 #endif // __SIM_FONT_H_

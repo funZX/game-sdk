@@ -24,11 +24,13 @@
 *    SOFTWARE.
 */
 
-#ifndef __SIM_RENDERER_H
-#define __SIM_RENDERER_H
+#ifndef __SIM_DRIVER_H
+#define __SIM_DRIVER_H
 
 #include <core/sim_core.h>
 
+#include <render/scene/sim_light.h>
+#include <render/sim_material.h>
 #include <render/sim_vertex_source.h>
 #include <render/sim_vertex_group.h>
 #include <render/sim_render_texture.h>
@@ -37,7 +39,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -58,30 +60,11 @@ public:
 		Texture,
 	};
 	// ------------------------------------------------------------------//
-	enum class TextureChannel : u32
-	{
-		Texture_0,
-		Texture_1,
-		Texture_2,
-		Texture_3,
-		Texture_4,
-	};
-	enum { k_Texture_Channels_Count = 5 };
-	// ------------------------------------------------------------------//
 	enum class CullingMode : u32
 	{
 		CW,
 		CCW,
 	};
-	// ------------------------------------------------------------------//
-	enum class LightChannel : u32
-	{
-		Light_0,
-		Light_1,
-		Light_2,
-		Light_3,
-	};
-	enum { k_Light_Channels_Count = 4 };
 	// ------------------------------------------------------------------//
 	enum class FogMode : u32
 	{
@@ -164,8 +147,8 @@ public:
 	void						ClearColor( Vec4 color );
 	// ------------------------------------------------------------------//
 
-	TextureChannel				SetTextureChannel( TextureChannel textureSelect );
-	LightChannel				SetLightChannel( LightChannel lightSelect );
+	CMaterial::TextureChannel	SetTextureChannel( CMaterial::TextureChannel textureSelect );
+	CLight::LightChannel		SetLightChannel( CLight::LightChannel lightSelect );
 	CullingMode					SetCullingMode( CullingMode cullingMode );
 	MatrixMode					SetMatrixMode( MatrixMode matrixMode );
 	
@@ -207,7 +190,7 @@ public:
     inline Mat4*                GetViewMatrixInverseT() ;
                                 
     inline Mat4*                GetProjectionMatrix() ;
-    inline Mat4*                GetTextureMatrix(TextureChannel texChannel) ;
+    inline Mat4*                GetTextureMatrix( CMaterial::TextureChannel texChannel );
 
 	void						SetScreenSize( u32 width, u32 height );
 	void						SetViewport( u32 x, u32 y, u32 w, u32 h );
@@ -359,11 +342,11 @@ protected:
 
 	Mat4					    m_boneArrayMatrix[ k_Animation_Bones_Max ];
 
-	u32				            m_textureBind[ k_Texture_Channels_Count ];
-    TextureChannel              m_textureChannel;
+	u32				            m_textureBind[ CMaterial::k_Texture_Channels_Count ];
+	CMaterial::TextureChannel   m_textureChannel;
 
-	TLightParameters			m_lightParameters[ k_Light_Channels_Count ];
-	LightChannel				m_lightChannel;
+	TLightParameters			m_lightParameters[ CLight::k_Light_Channels_Count ];
+	CLight::LightChannel		m_lightChannel;
 
 	CullingMode					m_cullingMode;
 
@@ -454,7 +437,7 @@ inline Mat4* CDriver::GetProjectionMatrix()
     return m_projectionStack.topmatrix; 
 }
 
-inline Mat4* CDriver::GetTextureMatrix(TextureChannel texChannel)  
+inline Mat4* CDriver::GetTextureMatrix( CMaterial::TextureChannel texChannel )  
 {
     return m_textureStack.topmatrix; 
 }
@@ -693,6 +676,6 @@ inline Vec3 CDriver::GetEyeDirection()
     return m_eyeDirection; 
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
-#endif // __SIM_RENDERER_H
+#endif // __SIM_DRIVER_H

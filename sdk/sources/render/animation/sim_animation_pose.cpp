@@ -29,7 +29,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -97,5 +97,5 @@ void CAnimationPose::Slerp( const CAnimationPose *from, const CAnimationPose *to
 }
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

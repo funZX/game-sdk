@@ -28,14 +28,11 @@
 #define __SIM_LIGHT_H
 
 #include <core/sim_core.h>
-
 #include <render/scene/sim_scene_node.h>
-#include <render/sim_render.h>
-#include <render/sim_driver.h>
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -44,6 +41,16 @@ class CDriver;
 class CLight : public CSceneNode
 {
 public:
+    // ------------------------------------------------------------------//
+    enum class LightChannel : u32
+    {
+        Light_0,
+        Light_1,
+        Light_2,
+        Light_3,
+    };
+    enum { k_Light_Channels_Count = 4 };
+
 	CLight();
 	CLight( const std::string &name );
 	virtual ~CLight();
@@ -81,8 +88,8 @@ public:
     inline f32							GetFallOffExponent();
     inline void							SetFallOffExponent(f32 fallOffExp);
 
-    inline void							SetChannel(CDriver::LightChannel channel);
-	inline CDriver::LightChannel		GetChanel();
+    inline void							SetChannel( LightChannel channel );
+	inline LightChannel		            GetChanel();
 
 	virtual void						Update( f32 dt, void *userData );
 	virtual void						Render( CDriver *driver );
@@ -100,7 +107,7 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	CDriver::LightChannel				m_channel;
+	LightChannel				        m_channel;
 
 	Vec4								m_ambient;
 	Vec4								m_diffuse;
@@ -175,12 +182,12 @@ inline void CLight::SetFallOffExponent(f32 fallOffExp)
     m_fallOffExponent = fallOffExp;
 }
 
-inline void CLight::SetChannel(CDriver::LightChannel channel)
+inline void CLight::SetChannel(LightChannel channel)
 { 
     m_channel = channel;
 }
 
-inline CDriver::LightChannel CLight::GetChanel()
+inline CLight::LightChannel CLight::GetChanel()
 { 
     return m_channel;
 }
@@ -206,7 +213,7 @@ inline void CLight::SetKind(CLight::Kind kind)
     m_kind = kind;
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 
 #endif // __SIM_LIGHT_H

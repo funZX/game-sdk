@@ -38,7 +38,7 @@ class btDefaultCollisionConfiguration;
 namespace sim
 {
 // ----------------------------------------------------------------------//
-namespace rnr { class CActor; };
+namespace ren { class CActor; };
 // ----------------------------------------------------------------------//
 namespace phy
 {
@@ -52,8 +52,8 @@ public:
 	// ------------------------------------------------------------------//
 	void 								Update( f32 dt, void *userData );
 
-	void								Add(rnr::CActor* actor);
-	void								Del(rnr::CActor* actor);
+	void								Add(ren::CActor* actor);
+	void								Del(ren::CActor* actor);
 	// ------------------------------------------------------------------//
 protected:
 	btDynamicsWorld*					m_dynamicsWorld;

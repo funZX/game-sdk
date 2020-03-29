@@ -38,6 +38,6 @@ void OpenALCheck( const char *file, const char *func,  unsigned int line )
 	SIM_ASSERT( error == AL_NO_ERROR );
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 

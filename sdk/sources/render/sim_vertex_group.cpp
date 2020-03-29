@@ -32,7 +32,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -45,8 +45,6 @@ CVertexGroup::CVertexGroup()
 	m_vboSize		= 0;
 	m_vboData       = nullptr;
     m_vboOffset     = 0;
-
-	m_material      = nullptr;
 
 	m_boneHierarchy = nullptr;
 
@@ -83,7 +81,7 @@ void CVertexGroup::BufferData( u32 glUsage )
 
 void CVertexGroup::SetMaterial( CMaterial *material )
 {
-	m_material = material;
+	m_material = *material;
 }
 // ----------------------------------------------------------------------//
 bool CVertexGroup::Load( io::CMemStream* ms )
@@ -96,7 +94,6 @@ bool CVertexGroup::Load( io::CMemStream* ms )
 		m_boneHierarchy = SIM_NEW CBoneHierarchy();
 		m_boneHierarchy->Load( ms );
 	}
-
 
     BufferData(GL_STREAM_DRAW);
     return true;
@@ -119,5 +116,5 @@ bool CVertexGroup::Save( io::CMemStream* ms )
 }
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

@@ -32,7 +32,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -95,5 +95,5 @@ void CAnimationPlayer::Blend( CAnimationPose *pose, CBoneMask *mask )
 }
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

@@ -33,7 +33,7 @@
 namespace sim
 {
 
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -59,6 +59,6 @@ protected:
 };
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 #endif // __SIM_TEXTURE_H

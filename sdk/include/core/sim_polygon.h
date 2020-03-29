@@ -34,7 +34,7 @@
 namespace sim
 {
 // ----------------------------------------------------------------------//
-	namespace rnr { class CDriver; class CEffect; class CMaterial; };
+	namespace ren { class CDriver; class CEffect; class CMaterial; };
 // ----------------------------------------------------------------------//
 
 namespace core
@@ -67,7 +67,7 @@ public:
 	const f32		GetMaxX();
 	const f32		GetMaxY();
 
-	void			Render( rnr::CDriver *driver, rnr::CMaterial *mtl );
+	void			Render( ren::CDriver *driver, ren::CMaterial *mtl );
 };
 
 // ----------------------------------------------------------------------//
