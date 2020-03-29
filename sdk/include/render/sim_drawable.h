@@ -71,6 +71,7 @@ protected:
 	CCamera*						m_camera;
 
     Vec4                            m_color;
+	bool							m_isVisible;
 	// ------------------------------------------------------------------//
 };
 
