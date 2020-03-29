@@ -63,7 +63,6 @@ public:
 	virtual ~CVertexGroup();
 	// ------------------------------------------------------------------//
 	inline u16						GetVboSize() const		{ return m_vboSize; }
-	inline u16*						GetVboData() const		{ return m_vboData; }
     inline u32                      GetVboOffset() const    { return m_vboOffset; }
 
 	CMaterial*						GetMaterial()			{ return m_material; }

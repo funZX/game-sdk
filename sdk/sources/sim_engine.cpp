@@ -117,7 +117,7 @@ void CEngine::InitEffect()
     static const s8* vsource =
         "precision highp float;"
 
-        "attribute vec4 a_WorldPosL;"
+        "attribute vec3 a_WorldPosL;"
         "attribute vec2 a_TexCoord_0;"
 
         "uniform mat4 u_Matrix_WorldViewProjection;"
@@ -131,7 +131,7 @@ void CEngine::InitEffect()
         "	v_Tex0			= a_TexCoord_0;"
         "	v_Color			= u_Color;"
 
-        "	gl_Position		= u_Matrix_WorldViewProjection * a_WorldPosL;"
+        "	gl_Position		= u_Matrix_WorldViewProjection * vec4(a_WorldPosL, 1.0);"
         "}";
 
 	// ----------------------------------------------------------------------//
@@ -194,20 +194,21 @@ void CEngine::InitEffect()
 
 void CEngine::InitTexture()
 {
-    s32 texWidth	= 16;
-    s32 texHeight	= 16;
-    u8* texBuf		= SIM_NEW u8[ texWidth* texHeight ];
+    s32 texWidth	= 32;
+    s32 texHeight	= 32;
+    s32 texMemSize  = texWidth * texHeight * 3;
+    u8* texBuf		= SIM_NEW u8[texMemSize];
 
-	SIM_MEMSET( texBuf, 255, texWidth * texHeight );
+	SIM_MEMSET( texBuf, 255, texMemSize);
 
     u32 tex = m_driver->BindTexture(CDriver::TextureTarget::Texture2D, 0);
     m_texture->Generate(texBuf
         , texWidth
         , texHeight
-        , CTexture::Type::TGA
+        , CTexture::Type::MIP
         , CTexture::Wrap::Clamp
         , CTexture::Filter::Nearest
-        , CTexture::Format::Alpha
+        , CTexture::Format::RGBA4
     );
 	m_driver->BindTexture(CDriver::TextureTarget::Texture2D, tex);
 
@@ -449,6 +450,7 @@ void CEngine::On2D()
 
 void CEngine::Off2D()
 {
+
 }
 
 // ----------------------------------------------------------------------//
@@ -471,6 +473,7 @@ void CEngine::On3D()
 
 void CEngine::Off3D()
 {
+
 }
 
 // ----------------------------------------------------------------------//
