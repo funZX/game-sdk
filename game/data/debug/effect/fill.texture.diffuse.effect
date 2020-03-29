@@ -1,0 +1,36 @@
+{
+	"vsource": "effect/basic/v.fill.source",
+	"psource": "effect/basic/p.fill.source",		
+	"defines": ["USE_CLEAR_COLOR", "USE_TEXTURE_COLOR", "USE_MATERIAL_DIFFUSE"],
+	
+	"technique":
+	{
+		"depthtest" 		: true,
+		"depthmask" 		: true,
+		"cullface"  		: true,
+		"alphatest"			: false,
+		
+		"blending"			: false,
+		"blendfunc"			: 
+		{
+			"equation"		: "FUNC_ADD",
+			"src"			: "SRC_ALPHA", 
+			"dst"			: "ONE_MINUS_SRC_ALPHA"
+		},
+		"depthfunc"			: "GL_LESS"			
+	},
+	
+	"uniforms":[
+		"u_Matrix_WorldViewProjection",
+		"u_Material_Diffuse",
+		"u_Color",
+		"u_Sampler_Tex_0"
+	],
+	
+	"attributes":[
+		"a_WorldPosL",
+		"a_TexCoord_0"
+	],
+	
+	"textures": []
+}

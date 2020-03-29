@@ -9,14 +9,15 @@
 #include "Debug.h"
 #include "../Game.h"
 // ----------------------------------------------------------------------//
-CDebug::CDebug()
+CDebug::CDebug( io::CFileSystem* fs )
 	: m_debugMode(0)
+	, m_fs( fs )
 {
 	m_debugSphere	= gluNewSphere(32, 1.0f);
-    m_debugSphere->vertexGroup->SetMaterial(O.material);
+    m_debugSphere->vertexGroup->SetMaterial(g.material);
 
 	m_debugCube		= gluNewCube(1.0f);
-	m_debugCube->vertexGroup->SetMaterial(O.material);
+	m_debugCube->vertexGroup->SetMaterial(g.material);
 }
 // ----------------------------------------------------------------------//
 CDebug::~CDebug()
@@ -27,7 +28,7 @@ CDebug::~CDebug()
 // ----------------------------------------------------------------------//
 void CDebug::Render( CDriver *driver )
 {
-	CCamera* cam = O.game->GetCamera();
+	CCamera* cam = g.game->GetCamera();
 
 	Vec3 p1 = { -1, 0, -10 };
 	Vec3 p2 = {  1, 0, -10 };
@@ -61,7 +62,7 @@ void CDebug::drawLine(const btVector3& from, const btVector3& to, const btVector
 // ----------------------------------------------------------------------//
 void CDebug::drawSphere( const btVector3& p, btScalar radius, const btVector3& color )
 {
-	CDriver* driver = O.driver;
+	CDriver* driver = g.driver;
 
 	driver->MatrixPush();
 	driver->MatrixLoadIdentity();

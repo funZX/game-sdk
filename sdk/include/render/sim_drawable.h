@@ -55,7 +55,7 @@ public:
 
     inline Vec4				        GetColor();
     inline void						SetColor( Vec4 ambient );
-	void							SetMaterial( CMaterial* material );
+	void							SetEffect( CEffect* effect );
 	inline CCamera*				    GetCamera();
 	// ------------------------------------------------------------------//
 public: // Signals

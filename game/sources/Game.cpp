@@ -20,7 +20,7 @@
 #include <sim_engine.h>
 
 // ----------------------------------------------------------------------//
-TGlobal		O = {0};
+TGlobal		g = {0};
 // ----------------------------------------------------------------------//
 
 CGame::CGame( const std::string& fsDir )
@@ -28,28 +28,22 @@ CGame::CGame( const std::string& fsDir )
 {
 	m_fsDir = fsDir;
 
-	O.game				= this;
+	g.game				= this;
 
-	O.driver			= m_driver;
-	O.canvas			= m_canvas;
-	O.camera			= &m_crtCamera;
-	O.material			= m_material;
+	g.driver			= m_driver;
+	g.canvas			= m_canvas;
+	g.camera			= &m_crtCamera;
+	g.material			= m_material;
 
-	O.font.engine		= m_font;
-	O.effect.engine		= m_effect;
-
-	m_world				= SIM_NEW CWorld();
-	m_world->SetVisible( false );
-	m_world->SetEnabled( false );
-
-	O.world				= m_world;
+	g.font				= m_font;
+	g.effect			= m_effect;
 
 	GoNext( SIM_NEW CState_AppInit() );
 }
 
 CGame::~CGame()
 {
-	SIM_SAFE_DELETE( m_world );
+
 }
 
 // ----------------------------------------------------------------------//

@@ -16,11 +16,12 @@
 #include "../Game.h"
 #include "World.h"
 
-CWorld::CWorld()
+CWorld::CWorld( io::CFileSystem* fs )
 {
-	m_fs				= SIM_NEW CFileSystem( O.game->GetFsPath("world.7z") );
 	m_physic			= SIM_NEW CPhysic();
-	m_scene				= SIM_NEW CScene( "main scene" );
+    m_scene				= SIM_NEW CScene(fs);
+
+    m_skybox = fs->GetSkybox("sunny");
 
 	m_isEnabled			= true;
 	m_isVisible			= true;
@@ -30,7 +31,6 @@ CWorld::~CWorld()
 {
 	SIM_SAFE_DELETE( m_scene );
 	SIM_SAFE_DELETE( m_physic );
-	SIM_SAFE_DELETE( m_fs );
 }
 
 void CWorld::Update( f32 dt, void *userData )
@@ -50,8 +50,8 @@ void CWorld::Render( CDriver *driver )
 	if( !m_isVisible )
 		return;
 
-    static CSkyBox* skybox = m_fs->GetSkybox("sunny");
-    skybox->Render(driver);
+	if ( m_skybox )
+		m_skybox->Render( driver );
 
 	m_scene->Render( driver );
 }

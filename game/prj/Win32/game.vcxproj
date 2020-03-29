@@ -24,6 +24,7 @@
     <ClCompile Include="..\..\sources\GameState\State_AppInit.cpp" />
     <ClCompile Include="..\..\sources\GameState\State_AppLoad.cpp" />
     <ClCompile Include="..\..\sources\GameState\State_Game.cpp" />
+    <ClCompile Include="..\..\sources\GameState\State_Loading.cpp" />
     <ClCompile Include="..\..\sources\GameState\State_MenuMain.cpp" />
     <ClCompile Include="..\..\sources\World\World.cpp" />
   </ItemGroup>
@@ -33,6 +34,7 @@
     <ClInclude Include="..\..\sources\GameState\State_AppInit.h" />
     <ClInclude Include="..\..\sources\GameState\State_AppLoad.h" />
     <ClInclude Include="..\..\sources\GameState\State_Game.h" />
+    <ClInclude Include="..\..\sources\GameState\State_Loading.h" />
     <ClInclude Include="..\..\sources\GameState\State_MenuMain.h" />
     <ClInclude Include="..\..\sources\World\World.h" />
   </ItemGroup>

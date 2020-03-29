@@ -14,11 +14,9 @@ public:
 
 	void						Update( f32 dt, void *userData );
 	const std::string			GetFsPath( const std::string& fs);
-	inline CWorld*				GetWorld()			{ return m_world; }
 
 protected:
 	std::string					m_fsDir;
-	CWorld*						m_world;
 };
 
 
@@ -32,69 +30,12 @@ typedef struct
 	CCanvas*					canvas;
 
 	CMaterial*					material;
-
-	struct 
-	{
-		CFont*					engine;
-	} font;
-	
-	struct 
-	{
-		CEffect*				engine;
-
-		CEffect*				color;
-		CEffect*				vertex;
-		CEffect*				texture;
-
-		struct
-		{
-			CEffect*			normals;
-		} debug;
-
-		struct 
-		{
-			CEffect*			texture;
-
-			struct 
-			{
-				CEffect*		color;
-				CEffect*		texture;
-			} vertex;
-
-		} fill;
-
-		struct 
-		{
-			CEffect*			color;
-			CEffect*			texture;
-
-			struct
-			{
-				CEffect*		color;
-				CEffect*		texture;
-			} vertex;
-
-		} diffuse;
-
-		struct
-		{
-			CEffect*			bumpmap;
-			CEffect*			parallax;
-			CEffect*			phong;
-			CEffect*			reflection;
-		} lighting;
-
-		struct
-		{
-			CEffect*			sprite;
-		} particle;
-
-	} effect;
-	
+	CFont*						font;
+	CEffect*					effect;
 
 } TGlobal;
 
-extern TGlobal		O;
+extern TGlobal		g;
 
 #endif // __GAME_H
 

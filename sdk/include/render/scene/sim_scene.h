@@ -36,6 +36,7 @@
 namespace sim
 {
 // ----------------------------------------------------------------------//
+namespace io { class CFileSystem; }
 namespace rnr
 {
 // ----------------------------------------------------------------------//
@@ -52,8 +53,8 @@ public:
     typedef stl::CBalanceTree<u32, CSceneNode*>	THierarchy;
     // ------------------------------------------------------------------//
 	// ------------------------------------------------------------------//
-	CScene();
-	CScene( const std::string &name );
+	CScene( io::CFileSystem* fs );
+	CScene( const std::string &name, io::CFileSystem* fs );
 	virtual ~CScene();
 
 	// ------------------------------------------------------------------//
@@ -64,12 +65,13 @@ public:
 	void							Add( CSceneNode* node );
 	void							Del( CSceneNode* node );
 
-    virtual bool    				Load(io::CMemStream* ms);
-    virtual bool    				Save(io::CMemStream* ms);
+    virtual bool    				Load( io::CMemStream* ms );
+    virtual bool    				Save( io::CMemStream* ms );
 	// ------------------------------------------------------------------//
 
 protected:
-
+	// ------------------------------------------------------------------//
+	void							Init( io::CFileSystem* fs );
 	// ------------------------------------------------------------------//
 	stl::COctree					m_octree;
 

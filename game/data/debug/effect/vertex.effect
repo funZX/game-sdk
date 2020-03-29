@@ -1,0 +1,33 @@
+{
+	"vsource": "effect/basic/v.fill.source",
+	"psource": "effect/basic/p.fill.source",
+	"defines": ["USE_VERTEX_COLOR"],		
+	
+	"technique":
+	{
+		"depthtest" 		: true,
+		"depthmask" 		: true,
+		"cullface"  		: true,
+		"alphatest"			: false,
+		
+		"blending"			: false,
+		"blendfunc"			: 
+		{
+			"equation"		: "FUNC_ADD",
+			"src"			: "SRC_ALPHA", 
+			"dst"			: "ONE_MINUS_SRC_ALPHA"
+		},
+		"depthfunc"			: "GL_LESS"		
+	},
+	
+	"uniforms":[
+		"u_Matrix_WorldViewProjection"
+	],
+	
+	"attributes":[
+		"a_WorldPosL",
+		"a_Color"
+	],
+	
+	"textures": []
+}

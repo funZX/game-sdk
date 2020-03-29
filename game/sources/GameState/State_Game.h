@@ -16,8 +16,8 @@ public:
     void				Update( f32 dt, void *userData );
 	void				Render( CDriver *driver );
 
-    void				OnEnter();
-    void				OnExit();
+    void				OnEnter( bool isPushed );
+    void				OnExit( bool isPoped );
 
 protected:
     // ----------------------------------------------------------------------//	
@@ -30,10 +30,10 @@ protected:
 	void				DrawToWidget(CDriver* driver, sigcxx::SLOT slot = nullptr);
 	// ----------------------------------------------------------------------//	
 protected:
-	CFileSystem*		m_fs;
+    CWorld*             m_world;
 
 	CDrawable*	        m_drawable;
-    CDebug              m_debug;
+    CDebug*             m_debug;
 // ----------------------------------------------------------------------//
 };
 

@@ -30,7 +30,7 @@ public:
 	};
 
 public:
-	CDebug();
+	CDebug( io::CFileSystem* fs );
 	~CDebug();
 
 	void						Render( CDriver *driver );
@@ -48,6 +48,8 @@ public:
 	void						reportErrorWarning(const char* warningString);
 
 public:
+	CFileSystem*				m_fs;
+
 	Sphere*					    m_debugSphere;
 	Cube*						m_debugCube;
 

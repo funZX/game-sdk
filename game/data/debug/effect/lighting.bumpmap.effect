@@ -1,0 +1,39 @@
+{
+	"vsource": "effect/lighting/v.bumpmap.source",
+	"psource": "effect/lighting/p.bumpmap.source",
+	"defines": [],		
+	
+	"technique":
+	{
+		"depthtest" 		: true,
+		"depthmask" 		: true,
+		"cullface"  		: true,
+		"alphatest"			: false,
+		
+		"blending"			: false,
+		"blendfunc"			: 
+		{
+			"equation"		: "FUNC_ADD",
+			"src"			: "SRC_ALPHA", 
+			"dst"			: "ONE_MINUS_SRC_ALPHA"
+		},
+		"depthfunc"			: "GL_LESS"			
+	},
+	
+	"uniforms":[
+		"u_Matrix_WorldViewProjection",
+		"u_Sampler_Tex_0",
+		"u_Sampler_Tex_1",
+		"u_Light_Position_0"
+	],
+	
+	"attributes":[
+		"a_WorldPosL",
+		"a_TexCoord_0",
+		"a_NormalL",
+		"a_TangentL",
+		"a_BinormalL"
+	],
+	
+	"textures": []
+}

@@ -8,7 +8,7 @@ class CDebug;
 class CWorld : public sim::IUpdatable
 {
 public:
-	CWorld();
+	CWorld( io::CFileSystem* fs );
 	~CWorld();
 	
 	void						Update( f32 dt, void *userData );
@@ -20,17 +20,15 @@ public:
 	void						SetVisible(bool visible) {m_isVisible = visible;}
 	bool						IsVisible() {return m_isVisible;}
 
-	CFileSystem*				GetFs()		{ return m_fs; }
-
 	void						AddActor( CActor* actor );
 
 protected:
-	CFileSystem*				m_fs;
 	CPhysic*					m_physic;
 
 	bool						m_isEnabled;
 	bool						m_isVisible;
 
+	CSkyBox*					m_skybox;
 	CScene*						m_scene;
 };
 
