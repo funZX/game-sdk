@@ -317,8 +317,8 @@ void CEffect::Bind( CDriver *driver, CVertexSource *vertexSource )
 
 		crtAttrib->m_compOffset = vboOff;
 
-        driver->EnableVertexAttribute( k );
         driver->SetVertexAttribute( k, crtAttrib, vertexSource );
+        driver->EnableVertexAttribute(k);
 
         vboOff += Value(attribStride);
 	}
