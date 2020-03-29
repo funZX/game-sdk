@@ -82,6 +82,7 @@ CDriver::CDriver()
 	m_isNormalMatrixDirty	= true;
 	m_isActiveStackAlteringNormalMatrix = true;
 
+	SIM_MEMSET( m_effectAttribs, 0, sizeof( m_effectAttribs ) );
 	SIM_MEMSET( m_lightParameters, 0, sizeof( m_lightParameters ) );
 
     m_textureChannel        = TextureChannel::Texture_0;
@@ -624,31 +625,58 @@ void CDriver::SetScissor(u32 x, u32 y, u32 w, u32 h)
 
 void CDriver::SetVertexAttribute( s32 location, CShader::TAttrib* attrib, CVertexSource* vertexSource)
 {
-    glVertexAttribPointer(
-        location,
-        Value(attrib->m_compSize),
-        Value(attrib->m_compType),
-        GL_FALSE,
-        vertexSource->GetVertexStride(),
-        (void*)(attrib->m_compOffset));
+	SIM_ASSERT(location >= 0);
 
-	SIM_CHECK_OPENGL();
+	TVertexAttributeInfo* attribInfo = &m_effectAttribs[ location ];
+
+	if ( vertexSource != attribInfo->m_vertexSource )
+	{
+		glVertexAttribPointer(
+			location,
+			Value(attrib->m_compSize),
+			Value(attrib->m_compType),
+			GL_FALSE,
+			vertexSource->GetVertexStride(),
+			(void*)(attrib->m_compOffset ) );
+
+		attribInfo->m_vertexSource = vertexSource;
+
+		SIM_CHECK_OPENGL();
+	}
 }
 
 // ----------------------------------------------------------------------//
 
 void CDriver::EnableVertexAttribute( s32 location )
 {
-    glEnableVertexAttribArray(location);
-	SIM_CHECK_OPENGL();
+	SIM_ASSERT( location >= 0 );
+
+    TVertexAttributeInfo* attribInfo = &m_effectAttribs[ location ];
+
+    if ( !attribInfo->m_isEnabled )
+    {
+        glEnableVertexAttribArray( location );
+        attribInfo->m_isEnabled = true;
+
+		SIM_CHECK_OPENGL();
+	}
 }
 
 // ----------------------------------------------------------------------//
 
 void CDriver::DisableVertexAttribute( s32 location )
 {
-    glDisableVertexAttribArray(location);
-	SIM_CHECK_OPENGL();
+	SIM_ASSERT( location >= 0 );
+
+    TVertexAttributeInfo* attribInfo = &m_effectAttribs[location];
+
+    if ( attribInfo->m_isEnabled )
+    {
+        glDisableVertexAttribArray( location );
+        attribInfo->m_isEnabled = false;
+
+		SIM_CHECK_OPENGL();
+	}
 }
 
 // ----------------------------------------------------------------------//
