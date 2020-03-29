@@ -47,13 +47,6 @@ CState_Game::CState_Game()
 	m_drawable->SetColor(col::Orange);
 	m_drawable->OnDraw.Connect(this, &CState_Game::DrawToWidget);
 
-	CCanvas* canvas = g.canvas;
-	canvas->OnMouseDown.Connect(this, &CState_Game::MouseDown);
-	canvas->OnMouseUp.Connect(this, &CState_Game::MouseUp);
-	canvas->OnMouseMove.Connect(this, &CState_Game::MouseMove);
-	canvas->OnKeyDown.Connect(this, &CState_Game::KeyDown);
-	canvas->OnKeyUp.Connect(this, &CState_Game::KeyUp);
-
 	/*
 	CBinaryTree<u32, CScript> bt;
 	bt.Insert(0, *script);
@@ -109,6 +102,13 @@ void CState_Game::OnEnter( bool isPushed )
 
     m_world->SetEnabled(true);
     m_world->SetVisible(true);
+
+    CCanvas* canvas = g.canvas;
+    canvas->OnMouseDown.Connect(this, &CState_Game::MouseDown);
+    canvas->OnMouseUp.Connect(this, &CState_Game::MouseUp);
+    canvas->OnMouseMove.Connect(this, &CState_Game::MouseMove);
+    canvas->OnKeyDown.Connect(this, &CState_Game::KeyDown);
+    canvas->OnKeyUp.Connect(this, &CState_Game::KeyUp);
 }
 // ----------------------------------------------------------------------//
 
@@ -119,6 +119,13 @@ void CState_Game::OnExit( bool isPoped )
 
     SIM_SAFE_DELETE( m_debug );
     SIM_SAFE_DELETE( m_world );
+
+    CCanvas* canvas = g.canvas;
+    canvas->OnMouseDown.Disconnect(this, &CState_Game::MouseDown);
+    canvas->OnMouseUp.Disconnect(this, &CState_Game::MouseUp);
+    canvas->OnMouseMove.Disconnect(this, &CState_Game::MouseMove);
+    canvas->OnKeyDown.Disconnect(this, &CState_Game::KeyDown);
+    canvas->OnKeyUp.Disconnect(this, &CState_Game::KeyUp);
 }
 // ----------------------------------------------------------------------//
 void CState_Game::MouseDown(CCanvas* canvas, int button, sigcxx::SLOT slot)

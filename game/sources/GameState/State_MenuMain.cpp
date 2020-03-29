@@ -14,12 +14,6 @@
 // ----------------------------------------------------------------------//
 CState_MenuMain::CState_MenuMain()
 {
-    CCanvas* canvas = g.canvas;
-    canvas->OnMouseDown.Connect(this, &CState_MenuMain::MouseDown);
-    canvas->OnMouseUp.Connect(this, &CState_MenuMain::MouseUp);
-    canvas->OnMouseMove.Connect(this, &CState_MenuMain::MouseMove);
-    canvas->OnKeyDown.Connect(this, &CState_MenuMain::KeyDown);
-    canvas->OnKeyUp.Connect(this, &CState_MenuMain::KeyUp);
 }
 // ----------------------------------------------------------------------//
 CState_MenuMain::~CState_MenuMain()
@@ -45,12 +39,23 @@ void CState_MenuMain::Render( CDriver *driver )
 // ----------------------------------------------------------------------//
 void CState_MenuMain::OnEnter( bool isPushed )
 {
+    CCanvas* canvas = g.canvas;
+    canvas->OnMouseDown.Connect(this, &CState_MenuMain::MouseDown);
+    canvas->OnMouseUp.Connect(this, &CState_MenuMain::MouseUp);
+    canvas->OnMouseMove.Connect(this, &CState_MenuMain::MouseMove);
+    canvas->OnKeyDown.Connect(this, &CState_MenuMain::KeyDown);
+    canvas->OnKeyUp.Connect(this, &CState_MenuMain::KeyUp);
 
 }
 // ----------------------------------------------------------------------//
 void CState_MenuMain::OnExit( bool isPoped )
 {
-
+    CCanvas* canvas = g.canvas;
+    canvas->OnMouseDown.Disconnect(this, &CState_MenuMain::MouseDown);
+    canvas->OnMouseUp.Disconnect(this, &CState_MenuMain::MouseUp);
+    canvas->OnMouseMove.Disconnect(this, &CState_MenuMain::MouseMove);
+    canvas->OnKeyDown.Disconnect(this, &CState_MenuMain::KeyDown);
+    canvas->OnKeyUp.Disconnect(this, &CState_MenuMain::KeyUp);
 }
 // ----------------------------------------------------------------------//
 void CState_MenuMain::MouseDown(CCanvas* canvas, int button, sigcxx::SLOT slot)
