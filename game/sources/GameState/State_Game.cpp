@@ -41,7 +41,7 @@ CState_Game::CState_Game()
 
 	m_drawable = SIM_NEW CDrawable();
 	m_drawable->MoveTo(300.0f, 100.0f);
-	m_drawable->Resize(200, 200);
+	m_drawable->Resize(512, 512);
 	m_drawable->SetColor(col::Orange);
 	m_drawable->OnDraw.Connect(this, &CState_Game::DrawToWidget);
 

@@ -50,6 +50,8 @@ CDrawable::CDrawable()
 	m_camera		= new CCamera();
 
     m_material      = SIM_NEW CMaterial();
+
+	m_isVisible		= true;
 }
 
 // ----------------------------------------------------------------------//
@@ -98,6 +100,9 @@ void CDrawable::Draw( CDriver *driver )
 {
 	SIM_ASSERT( m_rendertexture != nullptr );
 
+	if ( !m_isVisible )
+		return;
+
 	static CEngine *engine = CEngine::GetSingletonPtr();
 
 	driver->BindRenderTexture( m_rendertexture );
@@ -143,6 +148,8 @@ void CDrawable::Render( CDriver *driver )
 {
 	SIM_ASSERT( m_material != nullptr );
 	SIM_ASSERT( m_material->GetEffect() != nullptr );
+
+	m_isVisible = !ImGui::IsWindowCollapsed() || ImGui::IsWindowAppearing();
 
     ImVec2 vMin = ImGui::GetWindowContentRegionMin();
     ImVec2 vMax = ImGui::GetWindowContentRegionMax();
