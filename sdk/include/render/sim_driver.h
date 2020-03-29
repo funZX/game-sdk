@@ -142,15 +142,7 @@ public:
 		u32 equation;
 
 	} TDepthFunc;
-
-	// ------------------------------------------------------------------//
-
-	typedef struct
-	{
-        CVertexSource*         m_vertexSource;
-        bool                   m_isEnabled;
-	} TVertexAttributeInfo;
-	
+		
 	// ------------------------------------------------------------------//
 	typedef void (CDriver::*SetUniformCallback)( s32 loc, void *value, u32 count );
 	
@@ -370,7 +362,6 @@ protected:
 	u32				            m_textureBind[ k_Texture_Channels_Count ];
     TextureChannel              m_textureChannel;
 
-	TVertexAttributeInfo        m_effectAttribs[ CVertexSource::k_Vertex_Attributes_Count ];
 	TLightParameters			m_lightParameters[ k_Light_Channels_Count ];
 	LightChannel				m_lightChannel;
 
