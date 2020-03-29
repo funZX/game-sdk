@@ -55,6 +55,8 @@ public:
 
     inline Vec4				        GetColor();
     inline void						SetColor( Vec4 ambient );
+	void							SetMaterial( CMaterial* material );
+	inline CCamera*				    GetCamera();
 	// ------------------------------------------------------------------//
 public: // Signals
 	// ------------------------------------------------------------------//
@@ -82,6 +84,10 @@ inline void CDrawable::SetColor( Vec4 color )
     m_color = color;
 }
 
+inline CCamera* CDrawable::GetCamera()
+{
+	return m_camera;
+}
 // ----------------------------------------------------------------------//
 }; // namespace rnr
 }; // namespace sim

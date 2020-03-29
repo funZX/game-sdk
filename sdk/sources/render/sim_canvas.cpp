@@ -41,6 +41,8 @@ CCanvas::CCanvas( CFontAtlas* fontAtlas )
 	: CRect2D()
 {
     m_fontAtlas     = fontAtlas;
+    m_material      = fontAtlas->GetMaterial();
+
     m_vertexSource  = SIM_NEW CVertexSource;
 
     m_vertexSource->m_type = CVertexSource::Type::Triangle;
