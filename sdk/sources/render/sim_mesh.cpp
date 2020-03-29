@@ -146,8 +146,7 @@ bool CMesh::Save( io::CMemStream* ms )
 		ms->WriteU32( vertexSource->GetVertexStride() );
 		ms->WriteU32( vertexSource->GetVboSize() );
 
-		f32* vboData		= vertexSource->GetVboData();
-		ms->Write( vboData, vertexSource->GetVboSize() * vertexSource->GetVertexStride() );
+		ms->Write( vertexSource->m_vboData, vertexSource->GetVboSize() * vertexSource->GetVertexStride() );
 	}
 
 	// vertex group

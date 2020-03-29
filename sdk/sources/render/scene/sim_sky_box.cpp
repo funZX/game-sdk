@@ -240,12 +240,12 @@ void CSkyBox::InitEffect()
 
 	CEffect::TTechnique technique;
 
-	technique.depthtest = false;
-	technique.depthmask = false;
+	technique.depthtest = true;
+	technique.depthmask = true;
 	technique.cullface	= true;
 	technique.alphatest = false;
 
-    technique.blending = false;
+    technique.blending	= false;
 	technique.blendfunc.equation = GL_FUNC_ADD;
 	technique.blendfunc.src = GL_SRC_ALPHA;
 	technique.blendfunc.dst = GL_ONE_MINUS_SRC_ALPHA;

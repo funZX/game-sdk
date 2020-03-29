@@ -298,12 +298,12 @@ void CEffect::Bind( CDriver *driver, CVertexSource *vertexSource )
 
         CVertexSource::AttributeStride attribStride = crtAttrib->m_compStride;
 
-        if ( !zpl_bit_get( m_attributeMask, Value( crtAttrib->m_compFormat) ) )
+        if (!zpl_bit_get(m_attributeMask, Value(crtAttrib->m_compFormat)))
         {
-            driver->DisableVertexAttribute( k );
+            driver->DisableVertexAttribute(k);
 
             vboOff += Value(attribStride);
-			continue;
+            continue;
         }
 
 		CVertexSource::AttributeFormat attribFormat	= crtAttrib->m_compFormat;
