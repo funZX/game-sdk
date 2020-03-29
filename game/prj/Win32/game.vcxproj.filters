@@ -31,6 +31,9 @@
     <ClCompile Include="..\..\sources\GameState\State_Game.cpp">
       <Filter>GameState</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\sources\GameState\State_Loading.cpp">
+      <Filter>GameState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\sources\Game.h" />
@@ -50,6 +53,9 @@
       <Filter>GameState</Filter>
     </ClInclude>
     <ClInclude Include="..\..\sources\GameState\State_Game.h">
+      <Filter>GameState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\GameState\State_Loading.h">
       <Filter>GameState</Filter>
     </ClInclude>
   </ItemGroup>

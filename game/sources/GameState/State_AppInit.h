@@ -17,8 +17,8 @@ public:
     void				Update( f32 dt, void *userData );
 	void				Render( CDriver *driver );
 
-	void				OnEnter();
-	void				OnExit();
+    void				OnEnter( bool isPushed );
+    void				OnExit( bool isPoped );
 
 // ----------------------------------------------------------------------//
 };

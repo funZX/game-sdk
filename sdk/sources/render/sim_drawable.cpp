@@ -61,6 +61,7 @@ CDrawable::CDrawable( const std::string& name )
 {
 	m_name = name;
 }
+
 // ----------------------------------------------------------------------//
 
 CDrawable::~CDrawable()
@@ -85,12 +86,11 @@ void CDrawable::OnResize()
 }
 // ----------------------------------------------------------------------//
 
-void CDrawable::SetMaterial( CMaterial* material )
+void CDrawable::SetEffect( CEffect* effect )
 {
-    SIM_ASSERT( material != nullptr );
-    SIM_ASSERT( material->GetEffect() != nullptr );
+    SIM_ASSERT( effect != nullptr );
 
-	SIM_MEMCPY( m_material, material, sizeof( CMaterial ) );
+	m_material->SetEffect( effect );
 	m_material->SetTexture( m_rendertexture, 0 );
 }
 

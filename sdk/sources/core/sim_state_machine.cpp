@@ -37,7 +37,7 @@ namespace sm
 CStateMachine::CStateMachine( rnr::CCanvas* canvas ) : stl::CStack<IState*>()
 {
 	m_prevState	= nullptr;
-	m_currState = nullptr;
+	m_crtState	= nullptr;
 	m_nextState = nullptr;
 
     canvas->OnGui.Connect( this, &CStateMachine::ShowGui );
@@ -47,72 +47,83 @@ CStateMachine::CStateMachine( rnr::CCanvas* canvas ) : stl::CStack<IState*>()
 
 CStateMachine::~CStateMachine()
 {
-	while( Count() > 0 )
-	{
-		IState* top = *Top();
-
-		SIM_SAFE_DELETE(top);
-		Pop();
-	}
+	PopAll();
 }
 
 // ----------------------------------------------------------------------//
 
 void CStateMachine::GoNext( IState* state )
 {
-	m_prevState = m_currState;
+    Push( state );
+    m_nextState = state;
+
+    if ( m_nextState )
+        m_nextState->OnEnter(true);
+
+	m_prevState = m_crtState;
 	if ( m_prevState )
-		m_prevState->OnExit();
+		m_prevState->OnExit( false );
 
-	m_nextState = state;
-	if ( m_nextState )
-		m_nextState->OnEnter();
-
-	Push( state );
+	m_crtState = m_nextState;
 }
 
 // ----------------------------------------------------------------------//
 
 void CStateMachine::GoBack()
 {
-	m_prevState = m_currState;
 	Pop();
-	m_nextState = *Top();
+    m_nextState = *Top();
+
+    m_prevState = m_crtState;
+    if ( m_prevState )
+        m_prevState->OnExit(true);
+
+    if ( m_nextState )
+        m_nextState->OnEnter(false);
+	 
+	SIM_SAFE_DELETE( m_crtState );
+	m_crtState  = m_nextState;
+    m_prevState = nullptr;
 }
 
 void CStateMachine::PopAll()
 {
-	while( Count() )
+	SIM_SAFE_DELETE( m_crtState );
+
+	while (Count())
+	{
 		Pop();
+		SIM_SAFE_DELETE( *Top() );
+	}
 }
 
 // ----------------------------------------------------------------------//
 
 void CStateMachine::Update( f32 dt, void *userData )
 {
-	if (m_nextState != nullptr)
+	if ( m_nextState != nullptr )
 	{
-		m_prevState = m_currState;
-		m_currState = m_nextState;
+		m_prevState = m_crtState;
+		m_crtState  = m_nextState;
 		m_nextState = nullptr;
 	}
 
-	m_currState->Update( dt, userData );
+	m_crtState->Update( dt, userData );
 }
 
 // ----------------------------------------------------------------------//
 
 void CStateMachine::Render( rnr::CDriver *driver )
 {
-	m_currState->Render( driver );
+	m_crtState->Render( driver );
 }
 
 // ----------------------------------------------------------------------//
 
 void CStateMachine::ShowGui( rnr::CCanvas* canvas, sigcxx::SLOT slot )
 {
-    if ( m_currState )
-        m_currState->ShowGui( canvas );
+    if ( m_crtState )
+        m_crtState->ShowGui( canvas );
 }
 // ----------------------------------------------------------------------//
 }; // namespace sm

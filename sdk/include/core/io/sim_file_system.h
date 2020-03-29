@@ -195,6 +195,7 @@ protected:
 	TLoadStep*					m_crtStep;
 	TLoadStep*					m_lastStep;
 
+	bool						m_isLoaded;
 	std::string					m_loadMessage;
 	// ------------------------------------------------------------------//
 };

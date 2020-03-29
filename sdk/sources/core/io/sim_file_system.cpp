@@ -77,6 +77,7 @@ CFileSystem::CFileSystem( const std::string &filename )
 
 	m_steps			= nullptr;
 	m_crtStep		= nullptr;
+	m_isLoaded		= false;
 }
 
 // ----------------------------------------------------------------------//
@@ -190,7 +191,8 @@ bool CFileSystem::LoadNext( void )
 {
 	bool stepDone = true;
 
-	m_loadMessage.clear();
+	if ( m_isLoaded )
+		return false;
 
 	if ( m_crtStep->json )
 	{
@@ -198,8 +200,11 @@ bool CFileSystem::LoadNext( void )
 
 		SIM_ASSERT( json_is_array( jsonRoot ) );
 
+        m_loadMessage.clear();
 		if ( json_array_size( jsonRoot ) > 0 )
 			stepDone = (this->*m_crtStep->LoadFn)( jsonRoot, m_crtStep->index );
+
+		SIM_PRINT("\n%s", m_loadMessage.c_str());
 	}
 
 	if ( stepDone )
@@ -220,7 +225,8 @@ bool CFileSystem::LoadNext( void )
         m_fontAtlas->Create();
 	}
 
-	return ( m_crtStep != m_lastStep );
+	m_isLoaded = m_crtStep == m_lastStep;
+	return !m_isLoaded;
 }
 
 // ----------------------------------------------------------------------//
@@ -839,9 +845,7 @@ bool CFileSystem::LoadScene(const json_t* jsonRoot, s32 index)
     std::string name = json_string_value(json_object_get(jsonValue, "name"));
     std::string file = json_string_value(json_object_get(jsonValue, "file"));
 
-    CScene* scene = SIM_NEW CScene(name);
-
-
+    CScene* scene = SIM_NEW CScene( name, this );
 
     m_sceneList.Insert(hash::Get(name), scene);
 

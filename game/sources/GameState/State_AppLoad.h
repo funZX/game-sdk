@@ -15,16 +15,10 @@ public:
     void				Update( f32 dt, void *userData );
 	void				Render( CDriver *driver );
 
-    void				OnEnter();
-    void				OnExit();
+    void				OnEnter( bool isPushed );
+    void				OnExit( bool isPoped );
 
 protected:
-	void				InitO();
-	CFileSystem*		m_fsui;
-	CFileSystem*		m_fsworld;
-	CFileSystem*		m_fsstrawberry;
-	CFileSystem*		m_fsCrt;
-
 // ----------------------------------------------------------------------//
 };
 

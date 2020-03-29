@@ -41,14 +41,14 @@ class CStateMachine : public stl::CStack < IState* >, public sigcxx::Trackable
 {
 protected:
 	IState*				m_prevState;
-	IState*				m_currState;
+	IState*				m_crtState;
 	IState*				m_nextState;
 
 public:
 	CStateMachine( rnr::CCanvas* canvas );
 	virtual ~CStateMachine();
 
-	IState*				GetCurrentState()			{ m_currState; }
+	IState*				GetCurrentState()			{ m_crtState; }
 
 	void				Update( f32 dt, void *userData );
 	void				Render( rnr::CDriver *driver );

@@ -41,13 +41,14 @@ namespace rnr
 {
 // ----------------------------------------------------------------------//
 
-CScene::CScene()
+CScene::CScene( io::CFileSystem* fs )
 {
+    Init( fs );
 }
 // ----------------------------------------------------------------------//
 
-CScene::CScene( const std::string &name )
-	: CScene()
+CScene::CScene( const std::string &name, io::CFileSystem* fs )
+	: CScene( fs )
 {
 	m_name      = name;
 }
@@ -89,12 +90,17 @@ void CScene::Del( CSceneNode* node )
 	m_octree.Delete( node );
 }
 // ----------------------------------------------------------------------//
-bool CScene::Load(io::CMemStream* ms)
+void CScene::Init( io::CFileSystem* fs )
+{
+
+}
+// ----------------------------------------------------------------------//
+bool CScene::Load( io::CMemStream* ms )
 {
     return false;
 }
 // ----------------------------------------------------------------------//
-bool CScene::Save(io::CMemStream* ms)
+bool CScene::Save( io::CMemStream* ms )
 {
     return false;
 }

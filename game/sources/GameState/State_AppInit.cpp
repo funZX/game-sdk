@@ -25,7 +25,7 @@ void CState_AppInit::ShowGui( CCanvas* canvas )
 // ----------------------------------------------------------------------//
 void CState_AppInit::Update( f32 dt, void *userData )
 {
-	O.game->GoNext(SIM_NEW CState_AppLoad());
+	g.game->GoNext(SIM_NEW CState_AppLoad());
 }
 // ----------------------------------------------------------------------//
 void CState_AppInit::Render( CDriver *driver )
@@ -33,13 +33,11 @@ void CState_AppInit::Render( CDriver *driver )
 
 }
 // ----------------------------------------------------------------------//
-void CState_AppInit::OnEnter()
+void CState_AppInit::OnEnter( bool isPushed )
 {
 }
-
 // ----------------------------------------------------------------------//
-
-void CState_AppInit::OnExit()
+void CState_AppInit::OnExit( bool isPoped )
 {
 
 }

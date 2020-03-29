@@ -89,8 +89,8 @@ public:
     virtual void				ShowGui( rnr::CCanvas* canvas ) = 0;
 	virtual void				Render( rnr::CDriver *driver ) = 0;
 
-	virtual void				OnEnter()	= 0;
-    virtual void				OnExit()	= 0;
+	virtual void				OnEnter( bool isPushed )	= 0;
+    virtual void				OnExit( bool isPoped )		= 0;
 };
 
 // ----------------------------------------------------------------------//
@@ -98,7 +98,7 @@ public:
 class IEngineItem
 {
 public:
-	IEngineItem() {}
+	IEngineItem() { m_name = "none";  }
 	IEngineItem( const std::string& name ) { m_name = name; }
 	virtual ~IEngineItem() {}
 
