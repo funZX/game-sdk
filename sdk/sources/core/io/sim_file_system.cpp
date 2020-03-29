@@ -39,6 +39,7 @@
 #include <render/scene/sim_scene.h>
 
 #include <render/sim_driver.h>
+#include <render/sim_material.h>
 #include <render/sim_shader.h>
 #include <render/sim_effect.h>
 #include <render/sim_mesh.h>
@@ -46,7 +47,6 @@
 #include <render/sim_font_atlas.h>
 #include <render/sim_texture.h>
 #include <render/sim_cube_texture.h>
-#include <render/sim_material.h>
 #include <render/sim_sprite_texture.h>
 
 #include <sound/sim_sound_data.h>
@@ -69,7 +69,7 @@ CFileSystem::CFileSystem( const std::string &filename )
 	m_driver		= engine->GetDriver();
 	m_vm		    = engine->GetVM();
 
-    m_fontAtlas     = SIM_NEW rnr::CFontAtlas(filename);
+    m_fontAtlas     = SIM_NEW ren::CFontAtlas(filename);
 	m_lzmaStream	= SIM_NEW io::CLzmaStream(filename);
 
 	m_buffer		= nullptr;
@@ -287,7 +287,7 @@ bool CFileSystem::LoadFont(const json_t* jsonRoot, s32 index)
 	m_lzmaStream->OpenFile( file, &m_buffer, &offset, &m_bufferSize );
 
     CMemStream ms(&m_buffer[offset], m_bufferSize);
-    rnr::CFont* font = m_fontAtlas->AddFont( name, &ms, size );
+    ren::CFont* font = m_fontAtlas->AddFont( name, &ms, size );
     m_fontList.Insert(hash::Get(name), font);
 
 	m_lzmaStream->CloseCurrent( &m_buffer );
@@ -710,7 +710,7 @@ bool CFileSystem::LoadMaterial(const json_t* jsonRoot, s32 index)
 	material->SetShininess( h );
 
 	json_t*  texture = json_object_get( jmr, "texture" );
-	SIM_ASSERT( json_is_array(texture) && CDriver::k_Texture_Channels_Count > json_array_size(texture) );
+	SIM_ASSERT( json_is_array(texture) && CMaterial::k_Texture_Channels_Count > json_array_size(texture) );
 
 	for (s32 k = 0; k < (s32)json_array_size(texture); k++ )
 	{
@@ -868,7 +868,7 @@ void CFileSystem::UnloadFonts()
 
 // ----------------------------------------------------------------------//
 
-rnr::CFont* CFileSystem::GetFont(const std::string& name)
+ren::CFont* CFileSystem::GetFont(const std::string& name)
 {
     auto item = m_fontList.Search(hash::Get(name));
 
@@ -886,7 +886,7 @@ void CFileSystem::UnloadTextures()
 
 // ----------------------------------------------------------------------//
 
-rnr::CTexture* CFileSystem::GetTexture( const std::string &name )
+ren::CTexture* CFileSystem::GetTexture( const std::string &name )
 {
 	auto item = m_textureList.Search(hash::Get(name));
 
@@ -903,7 +903,7 @@ void CFileSystem::UnloadSkyboxes()
 
 // ----------------------------------------------------------------------//
 
-rnr::CSkyBox* CFileSystem::GetSkybox( const std::string &name )
+ren::CSkyBox* CFileSystem::GetSkybox( const std::string &name )
 {
 	auto item = m_skyboxList.Search(hash::Get(name));
 
@@ -920,7 +920,7 @@ void CFileSystem::UnloadEffects()
 
 // ----------------------------------------------------------------------//
 
-rnr::CEffect* CFileSystem::GetEffect( const std::string &name )
+ren::CEffect* CFileSystem::GetEffect( const std::string &name )
 {
 	auto item = m_effectList.Search(hash::Get(name));
 
@@ -937,7 +937,7 @@ void CFileSystem::UnloadMaterials()
 
 // ----------------------------------------------------------------------//
 
-rnr::CMaterial* CFileSystem::GetMaterial( const std::string &name )
+ren::CMaterial* CFileSystem::GetMaterial( const std::string &name )
 {
 	auto item = m_materialList.Search(hash::Get(name));
 
@@ -954,7 +954,7 @@ void CFileSystem::UnloadMeshes()
 
 // ----------------------------------------------------------------------//
 
-rnr::CMesh* CFileSystem::GetMesh( const std::string &name )
+ren::CMesh* CFileSystem::GetMesh( const std::string &name )
 {
 	auto item = m_meshList.Search(hash::Get(name));
 
@@ -971,7 +971,7 @@ void CFileSystem::UnloadActors()
 
 // ----------------------------------------------------------------------//
 
-rnr::CActor* CFileSystem::GetActor( const std::string &name )
+ren::CActor* CFileSystem::GetActor( const std::string &name )
 {
 	auto item = m_actorList.Search(hash::Get(name));
 
@@ -988,7 +988,7 @@ void CFileSystem::UnloadLights()
 
 // ----------------------------------------------------------------------//
 
-rnr::CLight* CFileSystem::GetLight( const std::string &name )
+ren::CLight* CFileSystem::GetLight( const std::string &name )
 {
 	auto item = m_lightList.Search(hash::Get(name));
 
@@ -1005,7 +1005,7 @@ void CFileSystem::UnloadCameras()
 
 // ----------------------------------------------------------------------//
 
-rnr::CCamera* CFileSystem::GetCamera( const std::string &name )
+ren::CCamera* CFileSystem::GetCamera( const std::string &name )
 {
 	auto item = m_cameraList.Search(hash::Get(name));
 
@@ -1022,7 +1022,7 @@ void CFileSystem::UnloadSprites()
 
 // ----------------------------------------------------------------------//
 
-rnr::CSpriteTexture* CFileSystem::GetSprite( const std::string &name )
+ren::CSpriteTexture* CFileSystem::GetSprite( const std::string &name )
 {
 	auto item = m_spriteList.Search(hash::Get(name));
 
@@ -1073,7 +1073,7 @@ void CFileSystem::UnloadScenes()
 
 // ----------------------------------------------------------------------//
 
-rnr::CScene* CFileSystem::GetScene( const std::string &name )
+ren::CScene* CFileSystem::GetScene( const std::string &name )
 {
 	auto item = m_sceneList.Search(hash::Get(name));
 

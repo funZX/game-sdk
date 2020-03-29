@@ -34,7 +34,7 @@
 namespace sim
 {
 // ----------------------------------------------------------------------//
-namespace rnr 
+namespace ren 
 {
 	class CDriver;
 	class CFont;
@@ -62,20 +62,20 @@ class CJsonStream;
 
 class CFileSystem
 {
-	friend class rnr::CScene;
+	friend class ren::CScene;
 
-	typedef stl::CBalanceTree<u32, rnr::CFont*>						TFontList;
-	typedef stl::CBalanceTree<u32, rnr::CTexture*>					TTextureList;
-	typedef stl::CBalanceTree<u32, rnr::CSkyBox*>					TSkyboxList;
-	typedef stl::CBalanceTree<u32, rnr::CEffect*>					TEffectList;
-	typedef stl::CBalanceTree<u32, rnr::CMaterial*>					TMaterialList;
-	typedef stl::CBalanceTree<u32, rnr::CMesh*>						TMeshList;
-	typedef stl::CBalanceTree<u32, rnr::CActor*>					TActorList;
-	typedef stl::CBalanceTree<u32, rnr::CLight*>					TLightList;
-	typedef stl::CBalanceTree<u32, rnr::CCamera*>					TCameraList;
-	typedef stl::CBalanceTree<u32, rnr::CSpriteTexture*>			TSpriteList;
+	typedef stl::CBalanceTree<u32, ren::CFont*>						TFontList;
+	typedef stl::CBalanceTree<u32, ren::CTexture*>					TTextureList;
+	typedef stl::CBalanceTree<u32, ren::CSkyBox*>					TSkyboxList;
+	typedef stl::CBalanceTree<u32, ren::CEffect*>					TEffectList;
+	typedef stl::CBalanceTree<u32, ren::CMaterial*>					TMaterialList;
+	typedef stl::CBalanceTree<u32, ren::CMesh*>						TMeshList;
+	typedef stl::CBalanceTree<u32, ren::CActor*>					TActorList;
+	typedef stl::CBalanceTree<u32, ren::CLight*>					TLightList;
+	typedef stl::CBalanceTree<u32, ren::CCamera*>					TCameraList;
+	typedef stl::CBalanceTree<u32, ren::CSpriteTexture*>			TSpriteList;
 	typedef stl::CBalanceTree<u32, snd::CSoundData*>				TSoundList;
-	typedef stl::CBalanceTree<u32, rnr::CScene*>					TSceneList;
+	typedef stl::CBalanceTree<u32, ren::CScene*>					TSceneList;
 	typedef stl::CBalanceTree<u32, vm::CScript*>					TScriptList;
 
 public:
@@ -88,19 +88,19 @@ public:
 	bool						LoadNext();
 	void						Close();
 
-	rnr::CFont*					GetFont( const std::string &name );
-	rnr::CTexture*				GetTexture( const std::string &name );
-	rnr::CSkyBox*				GetSkybox( const std::string &name );
-	rnr::CEffect*				GetEffect( const std::string &name );
-	rnr::CMaterial*				GetMaterial( const std::string &name );
-	rnr::CMesh*					GetMesh( const std::string &name );
-	rnr::CActor*				GetActor( const std::string &name );
-	rnr::CLight*				GetLight( const std::string &name );
-	rnr::CCamera*				GetCamera( const std::string &name );
-	rnr::CSpriteTexture*		GetSprite( const std::string &name );
+	ren::CFont*					GetFont( const std::string &name );
+	ren::CTexture*				GetTexture( const std::string &name );
+	ren::CSkyBox*				GetSkybox( const std::string &name );
+	ren::CEffect*				GetEffect( const std::string &name );
+	ren::CMaterial*				GetMaterial( const std::string &name );
+	ren::CMesh*					GetMesh( const std::string &name );
+	ren::CActor*				GetActor( const std::string &name );
+	ren::CLight*				GetLight( const std::string &name );
+	ren::CCamera*				GetCamera( const std::string &name );
+	ren::CSpriteTexture*		GetSprite( const std::string &name );
 	snd::CSoundData*			GetSound( const std::string &name );
 	vm::CScript*				GetScript( const std::string &name );
-	rnr::CScene*				GetScene( const std::string &name );
+	ren::CScene*				GetScene( const std::string &name );
 
 	inline const std::string&	GetLoadMessage() { return m_loadMessage; }
 
@@ -173,9 +173,9 @@ protected:
 	u8*							m_buffer;
 	s32							m_bufferSize;
 
-	rnr::CDriver*				m_driver;
+	ren::CDriver*				m_driver;
 	vm::CSquirrel*				m_vm;
-    rnr::CFontAtlas*            m_fontAtlas;
+    ren::CFontAtlas*            m_fontAtlas;
 
 	TFontList					m_fontList;
 	TTextureList				m_textureList;

@@ -33,7 +33,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 class CCamera;
@@ -90,6 +90,6 @@ inline CCamera* CDrawable::GetCamera()
 	return m_camera;
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 #endif // __SIM_DRAWABLE_H

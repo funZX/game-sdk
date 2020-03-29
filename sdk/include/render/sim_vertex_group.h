@@ -30,6 +30,7 @@
 #include <core/sim_core.h>
 
 #include <render/sim_render.h>
+#include <render/sim_material.h>
 
 namespace sim
 {
@@ -39,7 +40,7 @@ namespace io
 	class CMemStream;
 }
 // ----------------------------------------------------------------------//
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -47,7 +48,6 @@ struct Sphere;
 struct Cube;
 
 class CDriver;
-class CMaterial;
 class CRect2D;
 class CFontChar;
 class CVertexSource;
@@ -65,7 +65,7 @@ public:
 	inline u16						GetVboSize() const		{ return m_vboSize; }
     inline u32                      GetVboOffset() const    { return m_vboOffset; }
 
-	CMaterial*						GetMaterial()			{ return m_material; }
+	CMaterial*						GetMaterial()			{ return &m_material; }
 	void							SetMaterial( CMaterial *mtl );
 
 	CVertexSource*					GetVertexSource()		{ return m_vertexSource; }
@@ -82,7 +82,7 @@ protected:
 
 	// ------------------------------------------------------------------//
 	u32								m_iD;
-	CMaterial*						m_material;
+	CMaterial						m_material;
 
 public:
 	CVertexSource*					m_vertexSource;
@@ -95,6 +95,6 @@ public:
 };
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 #endif // __SIM_VERTEX_GROUP_H

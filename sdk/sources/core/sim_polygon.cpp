@@ -34,7 +34,7 @@
 
 namespace sim
 {
-using namespace rnr;
+using namespace ren;
 
 namespace core
 {
@@ -193,7 +193,7 @@ CPolygon* CPolygon::Intersects( TPolygonList* polygonList )
 	return nullptr;
 }
 // ----------------------------------------------------------------------//
-void CPolygon::Render( rnr::CDriver *driver, rnr::CMaterial *material )
+void CPolygon::Render( ren::CDriver *driver, ren::CMaterial *material )
 {
 	CVertexGroup vg;
 	CVertexSource vs;

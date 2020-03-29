@@ -63,7 +63,7 @@ namespace sim
 		union Plane;
 	};
 //------------------------------------------------
-	namespace rnr
+	namespace ren
 	{
 		class CDriver;
 
@@ -147,7 +147,7 @@ using namespace sim::stl;
 using namespace sim::io;
 using namespace sim::sys;
 using namespace sim::sm;
-using namespace sim::rnr;
+using namespace sim::ren;
 using namespace sim::phy;
 using namespace sim::snd;
 using namespace sim::vm;
@@ -213,19 +213,19 @@ protected:
 	static const u32				MinDt	= 1000 / MaxFps;
 
 	// ------------------------------------------------------------------//
-	rnr::CDriver*					m_driver;
+	ren::CDriver*					m_driver;
 	vm::CSquirrel*					m_vm;
 	sm::CStateMachine*				m_sm;
 
-	rnr::CCamera*					m_crtCamera;
+	ren::CCamera*					m_crtCamera;
 
-	rnr::CCamera*					m_camera;
-	rnr::CTexture*					m_texture;
-	rnr::CMaterial*					m_material;
-	rnr::CEffect*					m_effect;
-	rnr::CCanvas*					m_canvas;
-    rnr::CFont*                     m_font;
-    rnr::CFontAtlas*                m_fontAtlas;
+	ren::CCamera*					m_camera;
+	ren::CTexture*					m_texture;
+	ren::CMaterial*					m_material;
+	ren::CEffect*					m_effect;
+	ren::CCanvas*					m_canvas;
+    ren::CFont*                     m_font;
+    ren::CFontAtlas*                m_fontAtlas;
 
 	ALCdevice*						m_ALDevice;
 	ALCcontext*						m_ALContext;

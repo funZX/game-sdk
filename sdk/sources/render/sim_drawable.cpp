@@ -37,7 +37,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -48,8 +48,6 @@ CDrawable::CDrawable()
 
 	m_rendertexture = nullptr;
 	m_camera		= new CCamera();
-
-    m_material      = SIM_NEW CMaterial();
 
 	m_isVisible		= true;
 }
@@ -68,7 +66,6 @@ CDrawable::~CDrawable()
 {
 	SIM_SAFE_DELETE( m_camera );
 	SIM_SAFE_DELETE( m_rendertexture );
-	SIM_SAFE_DELETE( m_material );
 }
 
 // ----------------------------------------------------------------------//
@@ -90,8 +87,8 @@ void CDrawable::SetEffect( CEffect* effect )
 {
     SIM_ASSERT( effect != nullptr );
 
-	m_material->SetEffect( effect );
-	m_material->SetTexture( m_rendertexture, 0 );
+	m_material.SetEffect( effect );
+	m_material.SetTexture( m_rendertexture, 0 );
 }
 
 // ----------------------------------------------------------------------//
@@ -146,8 +143,7 @@ void CDrawable::Update(f32 dt, void* userData)
 // ----------------------------------------------------------------------//
 void CDrawable::Render( CDriver *driver )
 {
-	SIM_ASSERT( m_material != nullptr );
-	SIM_ASSERT( m_material->GetEffect() != nullptr );
+	SIM_ASSERT( m_material.GetEffect() != nullptr );
 
 	m_isVisible = !ImGui::IsWindowCollapsed() || ImGui::IsWindowAppearing();
 
@@ -159,8 +155,8 @@ void CDrawable::Render( CDriver *driver )
     vMax.x += ImGui::GetWindowPos().x;
     vMax.y += ImGui::GetWindowPos().y;
 
-	ImGui::Image((void*)m_material, ImVec2(vMax.x - vMin.x, vMax.y - vMin.y), ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::Image((void*)&m_material, ImVec2(vMax.x - vMin.x, vMax.y - vMin.y), ImVec2(0, 1), ImVec2(1, 0));
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

@@ -34,7 +34,7 @@
 namespace sim
 {
 // ----------------------------------------------------------------------//
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -186,6 +186,6 @@ inline bool CSceneNode::IsStatic()
     return m_state.isStatic;
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 #endif // __SIM_SCENE_H

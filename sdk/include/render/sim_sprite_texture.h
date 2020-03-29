@@ -37,7 +37,7 @@
 namespace sim
 {
 namespace io { class CMemoryStream;  }
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -65,6 +65,6 @@ protected:
 };
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 #endif // __SIM_SPRITE_H

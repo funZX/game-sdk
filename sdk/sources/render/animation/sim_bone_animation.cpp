@@ -33,7 +33,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -122,5 +122,5 @@ bool CBoneAnimation::Save(io::CMemStream* ms)
     return false;
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

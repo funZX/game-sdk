@@ -33,7 +33,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 class CDriver;
 class CVertexSource;
@@ -74,7 +74,7 @@ void		gluTBN(	Vec3* TAN,
 
 void		gluProject( Vec3 *obj, Mat4 *modelViewMatrix, Mat4 *projectionMatrix, CRect2D *viewPort, Vec3 screen );
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 
 #endif // __SIM_GLAUX_H

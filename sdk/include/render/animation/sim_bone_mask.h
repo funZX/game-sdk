@@ -31,7 +31,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 class CBoneHierarchy;
@@ -54,7 +54,7 @@ protected:
 };
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 
 #endif // __SIM_BONE_MASK_H

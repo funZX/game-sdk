@@ -30,7 +30,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -111,5 +111,5 @@ bool CCurve::Save(io::CMemStream* ms)
     return true;
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

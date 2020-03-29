@@ -29,7 +29,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -515,5 +515,5 @@ bool CTexture::Save(io::CMemStream* ms)
     return false;
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

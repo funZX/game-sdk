@@ -31,15 +31,14 @@
 #include <core/sim_interfaces.h>
 
 #include <render/sim_render.h>
+#include <render/sim_material.h>
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
-class CEffect;
-class CMaterial;
 class CDriver;
 
 class CRect2D : public IRenderable, public IUpdatable, public IEngineItem
@@ -102,8 +101,8 @@ public:
 	static void					Union( CRect2D *, CRect2D *, CRect2D * );
 	static void					Intersect( CRect2D *, CRect2D *, CRect2D* );
 
-	virtual void				SetMaterial( CMaterial *material ) { m_material = material; }
-	CMaterial*					GetMaterial() { return m_material; }
+	virtual void				SetMaterial( CMaterial *material ) { m_material = *material; }
+	CMaterial*					GetMaterial() { return &m_material; }
 
 	virtual void				Render( CDriver *driver );
 
@@ -126,11 +125,11 @@ protected:
 	Vec2						m_size;
     Rgba                        m_vertexColor;
 
-	CMaterial*					m_material;
+	CMaterial					m_material;
 	// ------------------------------------------------------------------//
 };
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 #endif // __SIM_RECT_2D_H

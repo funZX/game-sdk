@@ -31,22 +31,34 @@
 #include <core/sim_interfaces.h>
 
 #include <render/sim_render.h>
-#include <render/sim_driver.h>
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
 class CTexture;
 class CEffect;
+class CDriver;
 
 class CMaterial : public IUpdatable, public IRenderable, public IEngineItem
 {
 public:
+    // ------------------------------------------------------------------//
+    enum class TextureChannel : u32
+    {
+        Texture_0,
+        Texture_1,
+        Texture_2,
+        Texture_3,
+        Texture_4,
+    };
+    enum { k_Texture_Channels_Count = 5 };
+
 	CMaterial();
 	CMaterial( const std::string &name );
+    CMaterial( const CMaterial& m );
 	virtual ~CMaterial();
 
     inline CTexture*                GetTexture(u32 channel);
@@ -95,12 +107,11 @@ protected:
 	f32							    m_shininess;
 	f32							    m_refraction;
 
-	CTexture*						m_textures[CDriver::k_Texture_Channels_Count];
-	CEffect*						m_effect;
+    CEffect*                        m_effect;
+    CTexture*						m_textures[ k_Texture_Channels_Count ];
 };
 
-
-inline CTexture* CMaterial::GetTexture(u32 channel) 
+inline CTexture* CMaterial::GetTexture( u32 channel ) 
 {
     return m_textures[channel]; 
 }
@@ -190,7 +201,7 @@ inline void CMaterial::SetEffect(CEffect* effect)
     m_effect = effect;
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 
 #endif // __SIM_MATERIAL_H

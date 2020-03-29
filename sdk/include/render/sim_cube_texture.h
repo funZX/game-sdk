@@ -33,7 +33,7 @@
 namespace sim
 {
 namespace io { class CMemStream; }
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -57,6 +57,6 @@ protected:
 };
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 #endif // __SIM_CUBE_TEXTURE_H

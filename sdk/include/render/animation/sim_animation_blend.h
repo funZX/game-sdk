@@ -32,7 +32,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -63,7 +63,7 @@ protected:
 };
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 
 #endif // __SIM_ANIMATION_BLEND_H

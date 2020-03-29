@@ -33,7 +33,7 @@ namespace sim
 {
 // ----------------------------------------------------------------------//
 namespace io { class CMemStream; };
-namespace rnr { class CDriver; class CCanvas; class CAnimationPose; class CBoneMask; };
+namespace ren { class CDriver; class CCanvas; class CAnimationPose; class CBoneMask; };
 namespace vm  { class CVirtualMachine; };
 
 // ----------------------------------------------------------------------//
@@ -47,7 +47,7 @@ struct IScriptable
 
 struct IRenderable
 {
-	virtual void 				Render( rnr::CDriver *driver ) = 0;
+	virtual void 				Render( ren::CDriver *driver ) = 0;
 };
 
 // ----------------------------------------------------------------------//
@@ -61,7 +61,7 @@ struct IUpdatable
 
 struct IAnimationBlend
 {
-	virtual void				Blend( rnr::CAnimationPose *pose, rnr::CBoneMask *mask ) = 0;
+	virtual void				Blend( ren::CAnimationPose *pose, ren::CBoneMask *mask ) = 0;
 };
 
 // ----------------------------------------------------------------------//
@@ -86,8 +86,8 @@ struct IState : public IUpdatable
 public:
 	virtual ~IState() {}
 
-    virtual void				ShowGui( rnr::CCanvas* canvas ) = 0;
-	virtual void				Render( rnr::CDriver *driver ) = 0;
+    virtual void				ShowGui( ren::CCanvas* canvas ) = 0;
+	virtual void				Render( ren::CDriver *driver ) = 0;
 
 	virtual void				OnEnter( bool isPushed )	= 0;
     virtual void				OnExit( bool isPoped )		= 0;

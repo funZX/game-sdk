@@ -38,7 +38,7 @@ namespace io
 	class CMemStream;
 }
 // ----------------------------------------------------------------------//
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 class CBone;
@@ -69,7 +69,7 @@ protected:
 };
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 
 #endif // __SIM_BONE_HIERARCHY_H

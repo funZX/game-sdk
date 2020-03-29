@@ -30,7 +30,7 @@
 
 namespace sim
 {
-	namespace rnr
+	namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -54,6 +54,22 @@ CMaterial::CMaterial( const std::string &name )
 	: CMaterial()
 {
 	m_name = name;
+}
+// ----------------------------------------------------------------------//
+CMaterial::CMaterial( const CMaterial& m )
+{
+    m_ambient		= m.m_ambient;
+    m_diffuse		= m.m_diffuse;
+    m_specular		= m.m_specular;
+    m_emissive		= m.m_emissive;
+    m_reflective	= m.m_reflective;
+
+    m_shininess		= m.m_shininess;
+    m_refraction	= m.m_refraction;
+
+    m_effect		= m.m_effect;
+
+	SIM_MEMCPY( m_textures, m.m_textures, sizeof( m_textures ) );
 }
 // ----------------------------------------------------------------------//
 
@@ -82,11 +98,11 @@ void CMaterial::Render( CDriver *driver )
 	driver->SetMaterialShininess( m_shininess );
 	driver->SetMaterialRefraction( m_refraction );
 
-	for( u32 i = 0; i < CDriver::k_Texture_Channels_Count; i++ )
+	for( u32 i = 0; i < CMaterial::k_Texture_Channels_Count; i++ )
 	{
 		if ( m_textures[ i ] != nullptr )
 		{
-			driver->SetTextureChannel( static_cast<CDriver::TextureChannel>(i) );
+			driver->SetTextureChannel( static_cast<CMaterial::TextureChannel>(i) );
 			driver->BindTexture( CDriver::TextureTarget::Texture2D, m_textures[ i ]->GetID() );
 		}
 	}
@@ -104,5 +120,5 @@ bool CMaterial::Save(io::CMemStream* ms)
     return false;
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

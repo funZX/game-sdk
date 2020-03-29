@@ -32,11 +32,12 @@
 #include <core/sim_core.h>
 
 #include <render/sim_render.h>
+#include <render/sim_material.h>
 #include <render/sim_driver.h>
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 class CTexture;
@@ -114,7 +115,7 @@ protected:
 	// ------------------------------------------------------------------//
 	u32							m_iD;
 
-	CTexture*					m_textures[ CDriver::k_Texture_Channels_Count ];
+	CTexture*					m_textures[ CMaterial::k_Texture_Channels_Count ];
 
 	s32							m_numUniforms;
 	CShader::TUniform*			m_uniforms;
@@ -131,6 +132,6 @@ public:
 };
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 #endif // __SIM_EFFECT_H

@@ -37,7 +37,7 @@ namespace sim
 {
 // ----------------------------------------------------------------------//
 namespace io { class CFileSystem; }
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 class CActor;
@@ -80,6 +80,6 @@ protected:
 };
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 #endif // __SIM_SCENE_H

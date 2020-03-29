@@ -34,7 +34,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 CRect2D				OneSizeRectStatic( 0.0f, 0.0f, 1.0f, 1.0f );
@@ -47,7 +47,6 @@ CRect2D::CRect2D()
 	m_position          = axis::Origin.xyz.xy;
 	m_size              = axis::Unit.xyz.xy;
     m_vertexColor.rgba  = IM_COL32_WHITE;
-	m_material	        = nullptr;
 }
 // ----------------------------------------------------------------------//
 
@@ -374,7 +373,7 @@ void CRect2D::Update(f32 dt, void* userData)
 
 void CRect2D::Render( CDriver* driver )
 {
-    ImGui::GetWindowDrawList()->PushTextureID( m_material );
+    ImGui::GetWindowDrawList()->PushTextureID( &m_material );
     ImGui::GetWindowDrawList()->AddRect( ImVec2( m_position.x, m_position.y ), ImVec2( m_size.x, m_size.y ), m_vertexColor.rgba );
     ImGui::GetWindowDrawList()->PopTextureID();
 }
@@ -389,5 +388,5 @@ bool CRect2D::Save(io::CMemStream* ms)
     return false;
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

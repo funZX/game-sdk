@@ -36,7 +36,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -174,5 +174,5 @@ CMaterial* CMesh::BindMaterial( CMaterial* material )
 }
 
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

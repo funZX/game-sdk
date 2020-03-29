@@ -34,7 +34,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 struct Sphere;
@@ -215,6 +215,6 @@ inline CVertexSource::AttributeStride operator + (CVertexSource::AttributeStride
 		);
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 #endif // __SIM_VERTEX_SOURCE_H

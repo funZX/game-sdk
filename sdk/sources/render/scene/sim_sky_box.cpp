@@ -36,7 +36,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 
@@ -154,7 +154,7 @@ void CSkyBox::Render( CDriver *driver )
 	driver->SetMaterialShininess( m_material->GetShininess() );
 	driver->SetMaterialRefraction( m_material->GetRefraction() );
 
-	driver->SetTextureChannel( CDriver::TextureChannel::Texture_4 );
+	driver->SetTextureChannel( CMaterial::TextureChannel::Texture_4 );
 	driver->BindTexture( CDriver::TextureTarget::TextureCubeMap, m_texture->GetID() );
 	driver->Render( m_vertexGroup );
 	
@@ -268,5 +268,5 @@ bool CSkyBox::Save(io::CMemStream* ms)
     return false;
 }
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim

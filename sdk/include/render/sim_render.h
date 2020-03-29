@@ -31,7 +31,7 @@
 
 namespace sim
 {
-namespace rnr
+namespace ren
 {
 // ----------------------------------------------------------------------//
 #if SIM_DEBUG
@@ -41,7 +41,7 @@ namespace rnr
 #	define SIM_CHECK_OPENGL()
 #endif
 // ----------------------------------------------------------------------//
-}; // namespace rnr
+}; // namespace ren
 }; // namespace sim
 
 #endif // __SIM_RENDER_H
