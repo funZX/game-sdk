@@ -88,12 +88,12 @@ void CStateMachine::GoBack()
 
 void CStateMachine::PopAll()
 {
-	SIM_SAFE_DELETE( m_crtState );
-
 	while (Count())
 	{
+        IState* p = *Top();
+        SIM_SAFE_DELETE(p);
+
 		Pop();
-		SIM_SAFE_DELETE( *Top() );
 	}
 }
 
