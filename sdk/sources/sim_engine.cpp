@@ -238,7 +238,6 @@ void CEngine::InitFont()
 // ----------------------------------------------------------------------//
 void CEngine::InitCanvas()
 {
-    m_canvas->SetMaterial( m_material );
     m_canvas->OnGui.Connect( this, &CEngine::OnGui );
 }
 // ----------------------------------------------------------------------//

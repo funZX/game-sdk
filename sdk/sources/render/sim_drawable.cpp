@@ -33,6 +33,8 @@
 
 #include <render/sim_drawable.h>
 
+#include <imgui.h>
+
 namespace sim
 {
 namespace rnr
@@ -47,7 +49,7 @@ CDrawable::CDrawable()
 	m_rendertexture = nullptr;
 	m_camera		= new CCamera();
 
-    m_material      = nullptr;
+    m_material      = SIM_NEW CMaterial();
 }
 
 // ----------------------------------------------------------------------//
@@ -63,6 +65,7 @@ CDrawable::~CDrawable()
 {
 	SIM_SAFE_DELETE( m_camera );
 	SIM_SAFE_DELETE( m_rendertexture );
+	SIM_SAFE_DELETE( m_material );
 }
 
 // ----------------------------------------------------------------------//
@@ -77,10 +80,16 @@ void CDrawable::OnResize()
     m_rendertexture = SIM_NEW CRenderTexture();
 	m_rendertexture->Generate( (u32)m_size.x, (u32)m_size.y );
     driver->BindTexture( CDriver::TextureTarget::Texture2D, tex );
+}
+// ----------------------------------------------------------------------//
 
-	CRect2D r;
-	r.Resize( (f32)m_rendertexture->GetWidth(), (f32)m_rendertexture->GetHeight() );
-	m_camera->SetPerspective( &r );
+void CDrawable::SetMaterial( CMaterial* material )
+{
+    SIM_ASSERT( material != nullptr );
+    SIM_ASSERT( material->GetEffect() != nullptr );
+
+	SIM_MEMCPY( m_material, material, sizeof( CMaterial ) );
+	m_material->SetTexture( m_rendertexture, 0 );
 }
 
 // ----------------------------------------------------------------------//
@@ -124,6 +133,10 @@ void CDrawable::Draw( CDriver *driver )
 void CDrawable::Update(f32 dt, void* userData)
 {
 	m_camera->Update( dt, userData );
+
+    CRect2D r;
+    r.Resize((f32)m_rendertexture->GetWidth(), (f32)m_rendertexture->GetHeight());
+    m_camera->SetPerspective( &r );
 }
 // ----------------------------------------------------------------------//
 void CDrawable::Render( CDriver *driver )
@@ -131,11 +144,8 @@ void CDrawable::Render( CDriver *driver )
 	SIM_ASSERT( m_material != nullptr );
 	SIM_ASSERT( m_material->GetEffect() != nullptr );
 
-	CTexture* tex = m_material->GetTexture(0);
-    m_material->SetTexture( m_rendertexture, 0 );
-
-	CRect2D::Render( driver );
-	m_material->SetTexture(tex, 0);
+	ImVec2 size = ImGui::GetWindowSize();
+	ImGui::Image((void*)m_material, ImVec2(size.x, size.y), ImVec2(0, 1), ImVec2(1, 0));
 }
 // ----------------------------------------------------------------------//
 }; // namespace rnr
