@@ -1,10 +1,14 @@
 #include <GLES2/gl2.h>
 
 #include <core/sim_core.h>
+#include <core/io/sim_file_system.h>
 
 #include <render/scene/sim_camera.h>
+#include <render/scene/sim_light.h>
 #include <render/sim_glaux.h>
 #include <render/sim_driver.h>
+
+#include <imgui.h>
 
 #include "Debug.h"
 #include "../Game.h"
@@ -13,11 +17,16 @@ CDebug::CDebug( io::CFileSystem* fs )
 	: m_debugMode(0)
 	, m_fs( fs )
 {
+	m_debugLight = SIM_NEW CLight();
+	m_debugLight->GetState()->isStatic = false;
+
 	m_debugSphere	= gluNewSphere(32, 1.0f);
     m_debugSphere->vertexGroup->SetMaterial(g.material);
+	m_debugSphere->vertexGroup->GetMaterial()->SetEffect(fs->GetEffect("lighting.phong"));
 
 	m_debugCube		= gluNewCube(1.0f);
 	m_debugCube->vertexGroup->SetMaterial(g.material);
+	m_debugCube->vertexGroup->GetMaterial()->SetEffect(fs->GetEffect("lighting.phong"));
 }
 // ----------------------------------------------------------------------//
 CDebug::~CDebug()
@@ -26,12 +35,24 @@ CDebug::~CDebug()
 	m_debugCube		= gluDelCube( m_debugCube );
 }
 // ----------------------------------------------------------------------//
+void CDebug::Update(f32 dt, void* userData)
+{
+	Transform* tr = m_debugLight->GetTransform();
+
+	tr->translation = { 0, 2, -10 };
+	tr->quaternion = zpl_quat_axis_angle({ 0, -1, 0 }, 1);
+
+	m_debugLight->Update( dt, userData );
+}
+// ----------------------------------------------------------------------//
 void CDebug::Render( CDriver *driver )
 {
 	CCamera* cam = g.game->GetCamera();
 
 	Vec3 p1 = { -1, 0, -10 };
 	Vec3 p2 = {  1, 0, -10 };
+
+	m_debugLight->Render( driver );
 
     driver->MatrixPush();
     driver->MatrixTranslate(p1);
@@ -44,9 +65,9 @@ void CDebug::Render( CDriver *driver )
     driver->MatrixPop();
 }
 // ----------------------------------------------------------------------//
-void CDebug::ShowGui( CCanvas* canvas )
+void CDebug::ShowGui( CCanvas* canvas, sigcxx::SLOT slot )
 {
-
+	ImGui::ShowDemoWindow();
 }
 
 // ----------------------------------------------------------------------//

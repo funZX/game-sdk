@@ -49,7 +49,7 @@ class CEffect: public IRenderable, public IEngineItem
 
 public:
 	// ------------------------------------------------------------------//
-	typedef struct
+	typedef struct _TTechnique
 	{
 		bool					depthtest;
 		bool					depthmask;
@@ -61,6 +61,23 @@ public:
 		Vec4					blendColor;
 
 		CDriver::TDepthFunc		depthfunc;
+
+		_TTechnique()
+		{
+            depthtest = true;
+            depthmask = true;
+            cullface = true;
+            alphatest = false;
+
+            blending = false;
+            blendfunc.equation = GL_FUNC_ADD;
+            blendfunc.src = GL_SRC_ALPHA;
+            blendfunc.dst = GL_ONE_MINUS_SRC_ALPHA;
+            blendColor = col::White;
+
+            depthfunc.equation = GL_LESS;
+		}
+
 	} TTechnique;
 
 	// ------------------------------------------------------------------//

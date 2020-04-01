@@ -19,7 +19,8 @@ public:
     static CFileSystem* GetFs(const std::string& fsName);
 
 protected:
-    IState*             m_nextState;
+    IState*             m_childState;
+    bool                m_dealloc;
 
     static std::map<std::string, CFileSystem*> m_fsList;
 

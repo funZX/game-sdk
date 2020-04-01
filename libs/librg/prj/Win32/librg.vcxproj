@@ -21,7 +21,146 @@
   <ItemGroup>
     <ClCompile Include="..\..\include\enet.h" />
     <ClCompile Include="..\..\include\librg.h" />
+    <ClCompile Include="..\..\include\source\core\array.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\debug.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\file.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\filesystem.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\memory.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\memory_custom.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\memory_virtual.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\misc.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\print.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\random.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\sort.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\string.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\stringlib.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\time.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\coroutines.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\dll.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\event.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\hashing.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\jobs.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\json.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\math.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\opts.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\process.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\regex.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\threading\affinity.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\threading\atomic.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\threading\fence.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\threading\mutex.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\threading\sem.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\threading\sync.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\threading\thread.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\timer.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\include\zpl-c.c" />
     <ClCompile Include="..\..\include\zpl.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\header\core\collections\array.h" />
+    <ClInclude Include="..\..\include\header\core\collections\buffer.h" />
+    <ClInclude Include="..\..\include\header\core\collections\hashtable.h" />
+    <ClInclude Include="..\..\include\header\core\collections\list.h" />
+    <ClInclude Include="..\..\include\header\core\collections\ring.h" />
+    <ClInclude Include="..\..\include\header\core\debug.h" />
+    <ClInclude Include="..\..\include\header\core\file.h" />
+    <ClInclude Include="..\..\include\header\core\filesystem.h" />
+    <ClInclude Include="..\..\include\header\core\helpers.h" />
+    <ClInclude Include="..\..\include\header\core\memory.h" />
+    <ClInclude Include="..\..\include\header\core\memory_custom.h" />
+    <ClInclude Include="..\..\include\header\core\memory_virtual.h" />
+    <ClInclude Include="..\..\include\header\core\misc.h" />
+    <ClInclude Include="..\..\include\header\core\print.h" />
+    <ClInclude Include="..\..\include\header\core\random.h" />
+    <ClInclude Include="..\..\include\header\core\sort.h" />
+    <ClInclude Include="..\..\include\header\core\string.h" />
+    <ClInclude Include="..\..\include\header\core\stringlib.h" />
+    <ClInclude Include="..\..\include\header\core\system.h" />
+    <ClInclude Include="..\..\include\header\core\time.h" />
+    <ClInclude Include="..\..\include\header\core\types.h" />
+    <ClInclude Include="..\..\include\header\coroutines.h" />
+    <ClInclude Include="..\..\include\header\dll.h" />
+    <ClInclude Include="..\..\include\header\event.h" />
+    <ClInclude Include="..\..\include\header\hashing.h" />
+    <ClInclude Include="..\..\include\header\jobs.h" />
+    <ClInclude Include="..\..\include\header\json.h" />
+    <ClInclude Include="..\..\include\header\math.h" />
+    <ClInclude Include="..\..\include\header\opts.h" />
+    <ClInclude Include="..\..\include\header\process.h" />
+    <ClInclude Include="..\..\include\header\regex.h" />
+    <ClInclude Include="..\..\include\header\threading\affinity.h" />
+    <ClInclude Include="..\..\include\header\threading\atomic.h" />
+    <ClInclude Include="..\..\include\header\threading\fence.h" />
+    <ClInclude Include="..\..\include\header\threading\mutex.h" />
+    <ClInclude Include="..\..\include\header\threading\sem.h" />
+    <ClInclude Include="..\..\include\header\threading\sync.h" />
+    <ClInclude Include="..\..\include\header\threading\thread.h" />
+    <ClInclude Include="..\..\include\header\timer.h" />
+    <ClInclude Include="..\..\include\zpl_hedley.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{680BA01E-9667-4D85-A82F-AC20A1DF1182}</ProjectGuid>

@@ -29,12 +29,16 @@
 
 #include <core/sim_core.h>
 
+#include <GLES2/gl2.h>
+#include <GLES2/gl2ext.h>
+#include <EGL/egl.h>
+
 namespace sim
 {
 namespace ren
 {
 // ----------------------------------------------------------------------//
-#if SIM_DEBUG
+#if !SIM_DEBUG
 	void OpenGLCheck( const char *file, const char *func,  unsigned int line );
 #define SIM_CHECK_OPENGL() OpenGLCheck( __FILE__, __FUNCTION__, __LINE__ )
 #else

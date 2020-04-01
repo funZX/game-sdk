@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 #include <vector>
+
 #include <librg.h>
 
 typedef std::basic_string<SQChar> SQDBGString;

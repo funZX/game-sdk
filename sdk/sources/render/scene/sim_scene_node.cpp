@@ -127,10 +127,10 @@ void CSceneNode::Update( f32 dt, void *userData )
 
         SIM_ASSERT(camera);
 
-        m_state.isCulled = !camera->SphereIn(&m_transform.translation, m_radius);
+        m_state.isCulled = !camera->SphereIn(m_transform.translation, m_radius);
 
         if (!m_state.isCulled)
-            m_state.isCulled = !camera->BoxIn(&m_transform.translation, &m_box);
+            m_state.isCulled = !camera->BoxIn(m_transform.translation, m_box);
     }
 
     if ( !IsStatic() )

@@ -25,6 +25,8 @@ protected:
     void				MouseMove(CCanvas* canvas, f32 x, f32 y, sigcxx::SLOT slot = nullptr);
     void				KeyDown(CCanvas* canvas, int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt, sigcxx::SLOT slot = nullptr);
     void				KeyUp(CCanvas* canvas, int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt, sigcxx::SLOT slot = nullptr);
+
+    IState*             m_childState;
     // ----------------------------------------------------------------------//	
 
 // ----------------------------------------------------------------------//

@@ -40,7 +40,8 @@ CState_Loading::CState_Loading( const std::vector<std::string>& fsLoad, IState* 
         it->second = SIM_NEW CFileSystem( g.game->GetFsPath( fsName ) );
     }
 
-    m_nextState = nextState;
+    m_childState    = nextState;
+    m_dealloc       = false;
 }
 // ----------------------------------------------------------------------//
 CState_Loading::~CState_Loading()
@@ -58,8 +59,14 @@ void CState_Loading::ShowGui( CCanvas* canvas )
 // ----------------------------------------------------------------------//
 void CState_Loading::Update( f32 dt, void *userData )
 {
-    if ( !m_nextState )
+    SIM_PRINT("\nCState_Loading::Update");
+
+    if ( m_childState && m_dealloc )
+    {
+        SIM_SAFE_DELETE( m_childState ); // dealloc 
+        g.game->GoBack(); // pop to CState_MenuMain
         return;
+    }
 
     for ( auto& fs : m_fsList )
     {
@@ -68,17 +75,22 @@ void CState_Loading::Update( f32 dt, void *userData )
                 return;
     }
 
-    g.game->GoNext( m_nextState );
+    m_dealloc = true;
+    g.game->GoNext( m_childState );
 }
 // ----------------------------------------------------------------------//
 void CState_Loading::Render( CDriver *driver )
 {
-    if ( !m_nextState )
+    SIM_PRINT("\nCState_Loading::Render");
+
+    if ( !m_childState )
         return;
 }
 // ----------------------------------------------------------------------//
 void CState_Loading::OnEnter( bool isPushed )
 {
+    SIM_PRINT("\nCState_Loading::OnEnter");
+
     if ( !isPushed )
         return;
 
@@ -89,10 +101,10 @@ void CState_Loading::OnEnter( bool isPushed )
 // ----------------------------------------------------------------------//
 void CState_Loading::OnExit( bool isPoped )
 {
+    SIM_PRINT("\nCState_Loading::OnExit");
+
     if ( isPoped )
         return;
-
-    m_nextState = nullptr;
 
     for ( auto& fs : m_fsList )
         if ( fs.second )
