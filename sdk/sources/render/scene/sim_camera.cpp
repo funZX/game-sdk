@@ -112,7 +112,7 @@ void CCamera::Update(f32 dt, void* userData)
 
 	m_matrix.w.xyz = {x, y, z};
 
-	ExtractClipPlanes();
+	zpl_frustum_create(&m_frustum, &m_matrix, &m_perspectiveMatrix);
 }
 
 // ----------------------------------------------------------------------//
@@ -125,126 +125,16 @@ void CCamera::Render( CDriver *driver )
 
 // ----------------------------------------------------------------------//
 
-void CCamera::ExtractClipPlanes( void )
-{
-	static Mat4 pv;
-
-    zpl_mat4_mul( &pv, &m_matrix, &m_perspectiveMatrix );
-
-	register Plane *fp;
-    register f32 rmag;
-
-	fp = &m_leftClipPlane;
-
-    fp->a = pv.x.w + pv.x.x;
-    fp->b = pv.y.w + pv.x.y;
-    fp->c = pv.z.w + pv.x.z;
-    fp->d = pv.w.w + pv.x.w;
-
-    rmag = zpl_rsqrt( zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
-
-	fp->a *= rmag;
-	fp->b *= rmag;
-	fp->c *= rmag;
-	fp->d *= rmag;
-
-	fp = &m_rightClipPlane;
-
-    fp->a = pv.x.w - pv.x.x;
-    fp->b = pv.y.w - pv.x.y;
-    fp->c = pv.z.w - pv.x.z;
-    fp->d = pv.w.w - pv.x.w;
-
-    rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
-
-	fp->a *= rmag;
-	fp->b *= rmag;
-	fp->c *= rmag;
-	fp->d *= rmag;
-
-	fp = &m_nearClipPlane;
-
-    fp->a = pv.x.w - pv.y.x;
-    fp->b = pv.y.w - pv.y.y;
-    fp->c = pv.z.w - pv.y.w;
-    fp->d = pv.w.w - pv.y.z;
-
-    rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
-
-	fp->a *= rmag;
-	fp->b *= rmag;
-	fp->c *= rmag;
-	fp->d *= rmag;
-
-	fp = &m_farClipPlane;
-
-    fp->a = pv.x.w + pv.y.x;
-    fp->b = pv.y.w + pv.y.y;
-    fp->c = pv.z.w + pv.y.z;
-    fp->d = pv.w.w + pv.y.w;
-
-    rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
-
-	fp->a *= rmag;
-	fp->b *= rmag;
-	fp->c *= rmag;
-	fp->d *= rmag;;
-
-	fp = &m_topClipPlane;
-
-    fp->a = pv.x.w + pv.z.x;
-    fp->b = pv.y.w + pv.z.y;
-    fp->c = pv.z.w + pv.z.z;
-    fp->d = pv.w.w + pv.z.w;
-
-    rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
-
-	fp->a *= rmag;
-	fp->b *= rmag;
-	fp->c *= rmag;
-	fp->d *= rmag;
-
-	fp = &m_bottomClipPlane;
-
-    fp->a = pv.x.w - pv.z.x;
-    fp->b = pv.y.w - pv.z.y;
-    fp->c = pv.z.w - pv.z.z;
-    fp->d = pv.w.w - pv.z.w;
-
-    rmag = zpl_rsqrt(zpl_square( fp->a ) + zpl_square( fp->b ) + zpl_square( fp->c ) );
-
-	fp->a *= rmag;
-	fp->b *= rmag;
-	fp->c *= rmag;
-	fp->d *= rmag;
-}
-
-// ----------------------------------------------------------------------//
-
 bool CCamera::SphereIn( Vec3 pos, const f32 rad )
 {
-	if(zpl_plane_distance( &m_leftClipPlane, pos )	<= -rad ) return false;
-	if(zpl_plane_distance( &m_rightClipPlane, pos)	<= -rad ) return false;
-	if(zpl_plane_distance( &m_nearClipPlane, pos)	<= -rad ) return false;
-	if(zpl_plane_distance( &m_farClipPlane, pos)	<= -rad ) return false;
-	if(zpl_plane_distance( &m_topClipPlane, pos)	<= -rad ) return false;
-	if(zpl_plane_distance( &m_bottomClipPlane, pos)	<= -rad ) return false;
-
-	return true;
+	return zpl_frustum_sphere_inside(&m_frustum, pos, rad);
 }
 
 // ----------------------------------------------------------------------//
 
 bool CCamera::PointIn( Vec3 pos )
 {
-	if(zpl_plane_distance( &m_leftClipPlane, pos)	<= 0.0f ) return false;
-	if(zpl_plane_distance( &m_rightClipPlane, pos)	<= 0.0f ) return false;
-	if(zpl_plane_distance( &m_nearClipPlane, pos)	<= 0.0f ) return false;
-	if(zpl_plane_distance( &m_farClipPlane, pos)	<= 0.0f ) return false;
-	if(zpl_plane_distance( &m_topClipPlane, pos)	<= 0.0f ) return false;
-	if(zpl_plane_distance( &m_bottomClipPlane, pos)	<= 0.0f ) return false;
-
-	return true;
+	return zpl_frustum_point_inside(&m_frustum, pos);
 }
 
 // ----------------------------------------------------------------------//
@@ -254,56 +144,56 @@ bool CCamera::BoxIn( Vec3 pos, Vec3 bounds )
 	static Vec3 v, b;
 
     b = zpl_vec3f( -bounds.x, -bounds.y, -bounds.z );
-    zpl_vec3_add( &v, v, pos );
+    zpl_vec3_add( &v, b, pos );
 
 	if( PointIn( v ) ) {
 		return true;
 	}
 
     b = zpl_vec3f( +bounds.x, -bounds.y, -bounds.z );
-    zpl_vec3_add(&v, v, pos);
+    zpl_vec3_add(&v, b, pos);
 
 	if( PointIn( v ) ) {
 		return true;
 	}
 
     b = zpl_vec3f( -bounds.x, +bounds.y, -bounds.z );
-    zpl_vec3_add(&v, v, pos);
+    zpl_vec3_add(&v, b, pos);
 
 	if( PointIn( v ) ) {
 		return true;
 	}
 
     b = zpl_vec3f( +bounds.x, +bounds.y, -bounds.z );
-    zpl_vec3_add(&v, v, pos);
+    zpl_vec3_add(&v, b, pos);
 
 	if( PointIn( v ) ) {
 		return true;
 	}
 
     b = zpl_vec3f( +bounds.x, +bounds.y, +bounds.z );
-    zpl_vec3_add(&v, v, pos);
+    zpl_vec3_add(&v, b, pos);
 
 	if( PointIn( v ) ) {
 		return true;
 	}
 
     b = zpl_vec3f( -bounds.x, +bounds.y, +bounds.z );
-    zpl_vec3_add(&v, v, pos);
+    zpl_vec3_add(&v, b, pos);
 
 	if( PointIn( v ) ) {
 		return true;
 	}
 
     b = zpl_vec3f( -bounds.x, -bounds.y, +bounds.z );
-    zpl_vec3_add(&v, v, pos);
+    zpl_vec3_add(&v, b, pos);
 
 	if( PointIn( v ) ) {
 		return true;
 	}
 
     b = zpl_vec3f( +bounds.x, -bounds.y, +bounds.z );
-    zpl_vec3_add(&v, v, pos);
+    zpl_vec3_add(&v, b, pos);
 
 	if( PointIn( v ) ) {
 		return true;

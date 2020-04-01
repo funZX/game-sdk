@@ -66,8 +66,6 @@ public:
     inline void					SetFarPlane(f32 farPlane);
     inline f32					GetFarPlane();
 
-	void						ExtractClipPlanes();
-
 	bool						SphereIn( Vec3 pos, const f32 rad );
 	bool						PointIn( Vec3 pos );
 	bool						BoxIn( Vec3 pos, Vec3 bounds );
@@ -85,12 +83,7 @@ public:
 protected:
 
 	// ------------------------------------------------------------------//
-	Plane						m_leftClipPlane;
-	Plane						m_rightClipPlane;
-	Plane						m_topClipPlane;
-	Plane						m_bottomClipPlane;
-	Plane						m_nearClipPlane;
-	Plane						m_farClipPlane;
+	zpl_frustum					m_frustum;
 
 	Mat4					    m_perspectiveMatrix;
 	Mat4					    m_orthographicMatrix;
