@@ -63,6 +63,8 @@ int main(int argc, char *argv[])
         game->Resize(w, h);
         game->Run();
 
+        eglGetError();
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

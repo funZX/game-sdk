@@ -318,7 +318,7 @@ void CDriver::ComputeNormalMatrix()
 {
 	Mat4 m;
 
-    zpl_mat4_mul( GetViewMatrix(), &m, GetWorldMatrix());
+    zpl_mat4_mul( &m, GetViewMatrix(), GetWorldMatrix());
     zpl_mat4_inverse( &m, &m );
     zpl_mat4_transpose( &m );
 

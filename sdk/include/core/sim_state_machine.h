@@ -40,15 +40,12 @@ namespace sm
 class CStateMachine : public stl::CStack < IState* >, public sigcxx::Trackable
 {
 protected:
-	IState*				m_prevState;
-	IState*				m_crtState;
-	IState*				m_nextState;
+	IState*				m_updateState;
+	IState*				m_renderState;
 
 public:
 	CStateMachine( ren::CCanvas* canvas );
 	virtual ~CStateMachine();
-
-	IState*				GetCurrentState()			{ m_crtState; }
 
 	void				Update( f32 dt, void *userData );
 	void				Render( ren::CDriver *driver );
@@ -60,6 +57,8 @@ public:
 
 protected:
     void				ShowGui( ren::CCanvas* canvas, sigcxx::SLOT slot = nullptr );
+
+	bool				m_isPoped;
 };
 
 // ----------------------------------------------------------------------//

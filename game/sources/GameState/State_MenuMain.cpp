@@ -14,6 +14,7 @@
 // ----------------------------------------------------------------------//
 CState_MenuMain::CState_MenuMain()
 {
+    m_childState = nullptr;
 }
 // ----------------------------------------------------------------------//
 CState_MenuMain::~CState_MenuMain()
@@ -28,17 +29,22 @@ void CState_MenuMain::ShowGui( CCanvas* canvas )
 // ----------------------------------------------------------------------//
 void CState_MenuMain::Update( f32 dt, void *userData )
 {
-
+    SIM_PRINT("\nCState_MenuMain::Update");
 }
 
 // ----------------------------------------------------------------------//
 void CState_MenuMain::Render( CDriver *driver )
 {
-
+    SIM_PRINT("\nCState_MenuMain::Render");
 }
 // ----------------------------------------------------------------------//
 void CState_MenuMain::OnEnter( bool isPushed )
 {
+    SIM_PRINT("\nCState_MenuMain::OnEnter");
+
+    if ( !isPushed )
+        SIM_SAFE_DELETE( m_childState );
+
     CCanvas* canvas = g.canvas;
     canvas->OnMouseDown.Connect(this, &CState_MenuMain::MouseDown);
     canvas->OnMouseUp.Connect(this, &CState_MenuMain::MouseUp);
@@ -50,6 +56,8 @@ void CState_MenuMain::OnEnter( bool isPushed )
 // ----------------------------------------------------------------------//
 void CState_MenuMain::OnExit( bool isPoped )
 {
+    SIM_PRINT("\nCState_MenuMain::OnExit");
+
     CCanvas* canvas = g.canvas;
     canvas->OnMouseDown.Disconnect(this, &CState_MenuMain::MouseDown);
     canvas->OnMouseUp.Disconnect(this, &CState_MenuMain::MouseUp);
@@ -92,7 +100,7 @@ void CState_MenuMain::KeyUp(CCanvas* canvas, int Key, bool KeyShift, bool KeyCtr
             "strawberry.7z"
         };
 
-        g.game->GoNext(SIM_NEW CState_Loading( fsList, SIM_NEW CState_Game() ));
+        g.game->GoNext( m_childState = SIM_NEW CState_Loading(fsList, SIM_NEW CState_Game()) );
     }
     break;
     }

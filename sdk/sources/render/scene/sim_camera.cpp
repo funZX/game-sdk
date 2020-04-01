@@ -221,7 +221,7 @@ void CCamera::ExtractClipPlanes( void )
 
 // ----------------------------------------------------------------------//
 
-bool CCamera::SphereIn( Vec3 *pos, const f32 rad )
+bool CCamera::SphereIn( Vec3 pos, const f32 rad )
 {
 	if(zpl_plane_distance( &m_leftClipPlane, pos )	<= -rad ) return false;
 	if(zpl_plane_distance( &m_rightClipPlane, pos)	<= -rad ) return false;
@@ -235,7 +235,7 @@ bool CCamera::SphereIn( Vec3 *pos, const f32 rad )
 
 // ----------------------------------------------------------------------//
 
-bool CCamera::PointIn( Vec3 *pos )
+bool CCamera::PointIn( Vec3 pos )
 {
 	if(zpl_plane_distance( &m_leftClipPlane, pos)	<= 0.0f ) return false;
 	if(zpl_plane_distance( &m_rightClipPlane, pos)	<= 0.0f ) return false;
@@ -249,63 +249,63 @@ bool CCamera::PointIn( Vec3 *pos )
 
 // ----------------------------------------------------------------------//
 
-bool CCamera::BoxIn( Vec3 *pos, Vec3 *bounds )
+bool CCamera::BoxIn( Vec3 pos, Vec3 bounds )
 {
 	static Vec3 v, b;
 
-    b = zpl_vec3f( -bounds->x, -bounds->y, -bounds->z );
-    zpl_vec3_add( &v, v, *pos );
+    b = zpl_vec3f( -bounds.x, -bounds.y, -bounds.z );
+    zpl_vec3_add( &v, v, pos );
 
-	if( PointIn( &v ) ) {
+	if( PointIn( v ) ) {
 		return true;
 	}
 
-    b = zpl_vec3f( +bounds->x, -bounds->y, -bounds->z );
-    zpl_vec3_add(&v, v, *pos);
+    b = zpl_vec3f( +bounds.x, -bounds.y, -bounds.z );
+    zpl_vec3_add(&v, v, pos);
 
-	if( PointIn( &v ) ) {
+	if( PointIn( v ) ) {
 		return true;
 	}
 
-    b = zpl_vec3f( -bounds->x, +bounds->y, -bounds->z );
-    zpl_vec3_add(&v, v, *pos);
+    b = zpl_vec3f( -bounds.x, +bounds.y, -bounds.z );
+    zpl_vec3_add(&v, v, pos);
 
-	if( PointIn( &v ) ) {
+	if( PointIn( v ) ) {
 		return true;
 	}
 
-    b = zpl_vec3f( +bounds->x, +bounds->y, -bounds->z );
-    zpl_vec3_add(&v, v, *pos);
+    b = zpl_vec3f( +bounds.x, +bounds.y, -bounds.z );
+    zpl_vec3_add(&v, v, pos);
 
-	if( PointIn( &v ) ) {
+	if( PointIn( v ) ) {
 		return true;
 	}
 
-    b = zpl_vec3f( +bounds->x, +bounds->y, +bounds->z );
-    zpl_vec3_add(&v, v, *pos);
+    b = zpl_vec3f( +bounds.x, +bounds.y, +bounds.z );
+    zpl_vec3_add(&v, v, pos);
 
-	if( PointIn( &v ) ) {
+	if( PointIn( v ) ) {
 		return true;
 	}
 
-    b = zpl_vec3f( -bounds->x, +bounds->y, +bounds->z );
-    zpl_vec3_add(&v, v, *pos);
+    b = zpl_vec3f( -bounds.x, +bounds.y, +bounds.z );
+    zpl_vec3_add(&v, v, pos);
 
-	if( PointIn( &v ) ) {
+	if( PointIn( v ) ) {
 		return true;
 	}
 
-    b = zpl_vec3f( -bounds->x, -bounds->y, +bounds->z );
-    zpl_vec3_add(&v, v, *pos);
+    b = zpl_vec3f( -bounds.x, -bounds.y, +bounds.z );
+    zpl_vec3_add(&v, v, pos);
 
-	if( PointIn( &v ) ) {
+	if( PointIn( v ) ) {
 		return true;
 	}
 
-    b = zpl_vec3f( +bounds->x, -bounds->y, +bounds->z );
-    zpl_vec3_add(&v, v, *pos);
+    b = zpl_vec3f( +bounds.x, -bounds.y, +bounds.z );
+    zpl_vec3_add(&v, v, pos);
 
-	if( PointIn( &v ) ) {
+	if( PointIn( v ) ) {
 		return true;
 	}
 

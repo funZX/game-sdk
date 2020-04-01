@@ -99,6 +99,7 @@ public:
 
     inline Transform*               GetTransform();
     inline Mat4*                    GetMatrix();
+    inline TState*                  GetState();
 
     inline void					    SetShape(Shape shape);
     inline Shape				    GetShape();
@@ -150,6 +151,10 @@ inline Mat4* CSceneNode::GetMatrix()
     return &m_matrix;
 }
 
+inline CSceneNode::TState* CSceneNode::GetState()
+{
+    return &m_state;
+}
 
 inline void CSceneNode::SetShape(Shape shape) 
 {

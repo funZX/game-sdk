@@ -374,8 +374,8 @@ void CEngine::Update( f32 dt, void *userData )
     m_camera->Update( dt, userData );
 	m_driver->Tick( dt );
 
-	m_canvas->Update( dt, userData );
-	m_sm->Update( dt, userData );
+    m_sm->Update(dt, userData);
+    m_canvas->Update( dt, userData );
 }
 
 // ----------------------------------------------------------------------//

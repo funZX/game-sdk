@@ -68,9 +68,9 @@ public:
 
 	void						ExtractClipPlanes();
 
-	bool						SphereIn( Vec3 *pos, const f32 rad );
-	bool						PointIn( Vec3 *pos );
-	bool						BoxIn( Vec3 *pos, Vec3 *bounds );
+	bool						SphereIn( Vec3 pos, const f32 rad );
+	bool						PointIn( Vec3 pos );
+	bool						BoxIn( Vec3 pos, Vec3 bounds );
 
 	void						Move( zpl_vec3& v );
 	void						Rotate( zpl_quat& q );

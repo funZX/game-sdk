@@ -1,6 +1,4 @@
-#include <squirrel.h>
 #include <librg.h>
-#include <squirrel.h>
 #include <squirrel.h>
 #include "sqrdbg.h"
 #include "sqdbgserver.h"

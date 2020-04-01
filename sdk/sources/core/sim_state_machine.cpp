@@ -36,9 +36,10 @@ namespace sm
 
 CStateMachine::CStateMachine( ren::CCanvas* canvas ) : stl::CStack<IState*>()
 {
-	m_prevState	= nullptr;
-	m_crtState	= nullptr;
-	m_nextState = nullptr;
+    m_updateState   = nullptr;
+    m_renderState   = nullptr;
+
+    m_isPoped       = false;    
 
     canvas->OnGui.Connect( this, &CStateMachine::ShowGui );
 }
@@ -54,17 +55,13 @@ CStateMachine::~CStateMachine()
 
 void CStateMachine::GoNext( IState* state )
 {
+    m_isPoped = false;
+
+    m_updateState   = state;
+    if (m_renderState)
+        m_renderState->OnExit( false );
+    m_updateState->OnEnter( true );
     Push( state );
-    m_nextState = state;
-
-    if ( m_nextState )
-        m_nextState->OnEnter(true);
-
-	m_prevState = m_crtState;
-	if ( m_prevState )
-		m_prevState->OnExit( false );
-
-	m_crtState = m_nextState;
 }
 
 // ----------------------------------------------------------------------//
@@ -72,23 +69,17 @@ void CStateMachine::GoNext( IState* state )
 void CStateMachine::GoBack()
 {
 	Pop();
-    m_nextState = *Top();
+    m_updateState   = *Top();
+    if (m_renderState)
+        m_renderState->OnExit( true );
+    m_updateState->OnEnter( false );
 
-    m_prevState = m_crtState;
-    if ( m_prevState )
-        m_prevState->OnExit(true);
-
-    if ( m_nextState )
-        m_nextState->OnEnter(false);
-	 
-	SIM_SAFE_DELETE( m_crtState );
-	m_crtState  = m_nextState;
-    m_prevState = nullptr;
+    m_isPoped = true;
 }
 
 void CStateMachine::PopAll()
 {
-	while (Count())
+	while ( Count() )
 	{
         IState* p = *Top();
         SIM_SAFE_DELETE(p);
@@ -101,29 +92,27 @@ void CStateMachine::PopAll()
 
 void CStateMachine::Update( f32 dt, void *userData )
 {
-	if ( m_nextState != nullptr )
-	{
-		m_prevState = m_crtState;
-		m_crtState  = m_nextState;
-		m_nextState = nullptr;
-	}
+    SIM_ASSERT( m_updateState );
 
-	m_crtState->Update( dt, userData );
+    IState* crtState = m_updateState;	
+    crtState->Update( dt, userData );
+    m_renderState = crtState;
 }
 
 // ----------------------------------------------------------------------//
 
 void CStateMachine::Render( ren::CDriver *driver )
 {
-	m_crtState->Render( driver );
+    SIM_ASSERT( m_renderState );
+    m_renderState->Render( driver );
 }
 
 // ----------------------------------------------------------------------//
 
 void CStateMachine::ShowGui( ren::CCanvas* canvas, sigcxx::SLOT slot )
 {
-    if ( m_crtState )
-        m_crtState->ShowGui( canvas );
+    if ( m_updateState )
+        m_updateState->ShowGui( canvas );
 }
 // ----------------------------------------------------------------------//
 }; // namespace sm

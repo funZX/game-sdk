@@ -42,8 +42,8 @@ CMaterial::CMaterial()
 	m_emissive   = col::White;
 	m_reflective = col::Black;
 
-	m_shininess	 = 0.0f;
-	m_refraction = 0.0f;
+	m_shininess	 = 0.01f;
+	m_refraction = 0.01f;
 
 	m_effect	= nullptr;
 	SIM_MEMSET( m_textures, 0, sizeof( m_textures ) );

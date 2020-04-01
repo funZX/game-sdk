@@ -64,23 +64,30 @@ CState_Game::~CState_Game()
 // ----------------------------------------------------------------------//
 void CState_Game::Update( f32 dt, void *userData )
 {	
-	m_drawable->Update(dt, userData);
+    SIM_PRINT("\nCState_Game::Update");
+
+    m_debug->Update(dt, userData);
+
+    m_drawable->Update(dt, userData);
     m_world->Update( dt, userData );
 }
 
 // ----------------------------------------------------------------------//
 void CState_Game::Render( CDriver *driver )
 {
+    SIM_PRINT("\nCState_Game::Render");
+
+    m_debug->Render(driver);
+
     m_drawable->Draw(driver);
 	m_world->Render(driver);
-
-	m_debug->Render(driver);
 }
 
 // ----------------------------------------------------------------------//
 void CState_Game::DrawToWidget(CDriver* driver, sigcxx::SLOT slot)
 {
 	m_world->Render(driver);
+
 	m_debug->Render(driver);
 }
 // ----------------------------------------------------------------------//
@@ -88,12 +95,12 @@ void CState_Game::ShowGui(CCanvas* canvas)
 {
     m_drawable->SetEffect( canvas->GetMaterial()->GetEffect() );
     m_drawable->Render( g.driver );
-
-    ImGui::ShowDemoWindow();
 }
 // ----------------------------------------------------------------------//
 void CState_Game::OnEnter( bool isPushed )
 {
+    SIM_PRINT("\nCState_Game::OnEnter");
+
     if ( !isPushed )
         return;
 
@@ -109,11 +116,15 @@ void CState_Game::OnEnter( bool isPushed )
     canvas->OnMouseMove.Connect(this, &CState_Game::MouseMove);
     canvas->OnKeyDown.Connect(this, &CState_Game::KeyDown);
     canvas->OnKeyUp.Connect(this, &CState_Game::KeyUp);
+
+    canvas->OnGui.Connect(m_debug, &CDebug::ShowGui);
 }
 // ----------------------------------------------------------------------//
 
 void CState_Game::OnExit( bool isPoped )
 {
+    SIM_PRINT("\nCState_Game::OnExit");
+
 	if ( !isPoped )
 		return;
 
@@ -126,6 +137,8 @@ void CState_Game::OnExit( bool isPoped )
     canvas->OnMouseMove.Disconnect(this, &CState_Game::MouseMove);
     canvas->OnKeyDown.Disconnect(this, &CState_Game::KeyDown);
     canvas->OnKeyUp.Disconnect(this, &CState_Game::KeyUp);
+
+    canvas->OnGui.Disconnect(m_debug, &CDebug::ShowGui);
 }
 // ----------------------------------------------------------------------//
 void CState_Game::MouseDown(CCanvas* canvas, int button, sigcxx::SLOT slot)
@@ -155,7 +168,6 @@ void CState_Game::KeyUp(CCanvas* canvas, int Key, bool KeyShift, bool KeyCtrl, b
 	case 66: // 'b'
     {
 		g.game->GoBack(); // pop to CState_Loading
-		g.game->GoBack(); // pop to CState_MenuMain
     }
     break;
     }

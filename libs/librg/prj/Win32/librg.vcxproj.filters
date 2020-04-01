@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\include\enet.h" />
+    <ClCompile Include="..\..\include\librg.h" />
+    <ClCompile Include="..\..\include\zpl.h" />
+    <ClCompile Include="..\..\include\source\core\array.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\debug.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\file.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\filesystem.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\memory.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\memory_custom.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\memory_virtual.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\misc.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\print.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\random.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\sort.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\string.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\stringlib.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\core\time.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\coroutines.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\dll.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\event.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\hashing.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\jobs.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\json.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\math.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\opts.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\process.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\regex.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\threading\affinity.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\threading\atomic.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\threading\fence.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\threading\mutex.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\threading\sem.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\threading\sync.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\threading\thread.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\source\timer.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\include\zpl-c.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="sources">
+      <UniqueIdentifier>{9753645f-3a73-4455-b556-a50479cf2cdb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="header">
+      <UniqueIdentifier>{d71d05be-1ced-47c1-ad05-707a0ec3fafb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\header\core\collections\array.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\collections\buffer.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\collections\hashtable.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\collections\list.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\collections\ring.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\debug.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\file.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\filesystem.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\helpers.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\memory.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\memory_custom.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\memory_virtual.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\misc.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\print.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\random.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\sort.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\string.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\stringlib.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\system.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\time.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\core\types.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\coroutines.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\dll.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\event.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\hashing.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\jobs.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\json.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\math.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\opts.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\process.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\regex.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\threading\affinity.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\threading\atomic.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\threading\fence.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\threading\mutex.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\threading\sem.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\threading\sync.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\threading\thread.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\header\timer.h">
+      <Filter>header</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
