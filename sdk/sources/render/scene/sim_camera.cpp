@@ -141,65 +141,12 @@ bool CCamera::PointIn( Vec3 pos )
 
 bool CCamera::BoxIn( Vec3 pos, Vec3 bounds )
 {
-	static Vec3 v, b;
+	zpl_aabb3 box;
 
-    b = zpl_vec3f( -bounds.x, -bounds.y, -bounds.z );
-    zpl_vec3_add( &v, b, pos );
+	box.centre = pos;
+	box.half_size = bounds;
 
-	if( PointIn( v ) ) {
-		return true;
-	}
-
-    b = zpl_vec3f( +bounds.x, -bounds.y, -bounds.z );
-    zpl_vec3_add(&v, b, pos);
-
-	if( PointIn( v ) ) {
-		return true;
-	}
-
-    b = zpl_vec3f( -bounds.x, +bounds.y, -bounds.z );
-    zpl_vec3_add(&v, b, pos);
-
-	if( PointIn( v ) ) {
-		return true;
-	}
-
-    b = zpl_vec3f( +bounds.x, +bounds.y, -bounds.z );
-    zpl_vec3_add(&v, b, pos);
-
-	if( PointIn( v ) ) {
-		return true;
-	}
-
-    b = zpl_vec3f( +bounds.x, +bounds.y, +bounds.z );
-    zpl_vec3_add(&v, b, pos);
-
-	if( PointIn( v ) ) {
-		return true;
-	}
-
-    b = zpl_vec3f( -bounds.x, +bounds.y, +bounds.z );
-    zpl_vec3_add(&v, b, pos);
-
-	if( PointIn( v ) ) {
-		return true;
-	}
-
-    b = zpl_vec3f( -bounds.x, -bounds.y, +bounds.z );
-    zpl_vec3_add(&v, b, pos);
-
-	if( PointIn( v ) ) {
-		return true;
-	}
-
-    b = zpl_vec3f( +bounds.x, -bounds.y, +bounds.z );
-    zpl_vec3_add(&v, b, pos);
-
-	if( PointIn( v ) ) {
-		return true;
-	}
-
-	return false;
+	return zpl_frustum_box_inside(&m_frustum, box);
 }
 // ----------------------------------------------------------------------//
 bool CCamera::Load(io::CMemStream* ms)
