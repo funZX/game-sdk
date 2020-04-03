@@ -32,7 +32,8 @@ void CState_AppInit::Update( f32 dt, void *userData )
         "ui.7z",
     };
 
-    g.game->GoPop(SIM_NEW CState_Loading(fsList, SIM_NEW CState_MenuMain()));
+    auto fnDtor = UNLOAD_FNDTOR(fsList);
+    g.game->GoPop(SIM_NEW CState_Loading(fsList, SIM_NEW CState_MenuMain(fnDtor)));
 }
 // ----------------------------------------------------------------------//
 void CState_AppInit::Render( CDriver *driver )

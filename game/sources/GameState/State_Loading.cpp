@@ -12,7 +12,7 @@
 #include "State_Loading.h"
 
 // ----------------------------------------------------------------------//
-CState_Loading::CState_Loading( const std::vector<std::string>& fsLoad, IState* nextState )
+CState_Loading::CState_Loading( const IState::TFsList& fsLoad, IState* nextState )
 {
     for (auto& fsName : fsLoad)
     {

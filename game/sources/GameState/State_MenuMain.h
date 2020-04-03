@@ -8,7 +8,7 @@ class CState_MenuMain : public IState, public sigcxx::Trackable
 protected:
 
 public:
-	CState_MenuMain();
+	CState_MenuMain( IState::TFnDtor fnDtor );
 	~CState_MenuMain();
 // ----------------------------------------------------------------------//	
 protected:
