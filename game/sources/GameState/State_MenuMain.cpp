@@ -12,7 +12,7 @@
 #include "State_Loading.h"
 #include "State_Game.h"
 // ----------------------------------------------------------------------//
-CState_MenuMain::CState_MenuMain()
+CState_MenuMain::CState_MenuMain( IState::TFnDtor fnDtor ) : IState(fnDtor)
 {
 
 }
@@ -60,13 +60,14 @@ void CState_MenuMain::OnEvent(CCanvas* canvas, CCanvas::TEvent* ev, sigcxx::SLOT
     {
         if (ev->evKey.code == 78) // Key_N
         {
-            std::vector<std::string> fsList = {
+            IState::TFsList fsList = {
                 "debug.7z",
                 "world.7z",
                 "strawberry.7z"
             };
 
-            g.game->GoPop(SIM_NEW CState_Loading(fsList, SIM_NEW CState_Game()));
+            auto fnDtor = UNLOAD_FNDTOR(fsList);
+            g.game->GoPop(SIM_NEW CState_Loading(fsList, SIM_NEW CState_Game(fnDtor)));
         }
     }
 }

@@ -53,5 +53,18 @@ typedef struct
 
 extern TGlobal		g;
 
+#define UNLOAD_FNDTOR(x) [x]() \
+{ \
+    for (auto& fsName : fsList) \
+    { \
+        TFsListIterator it = g.fsList.find(fsName); \
+        if (it == g.fsList.end()) \
+            continue; \
+        if (it->second == nullptr) \
+            continue; \
+        SIM_SAFE_DELETE(it->second); \
+    } \
+}; \
+
 #endif // __GAME_H
 

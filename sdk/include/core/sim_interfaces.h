@@ -84,13 +84,20 @@ struct IDummySlot
 struct IState : public IUpdatable
 {
 public:
-	virtual ~IState() {}
+	typedef std::vector<std::string> TFsList;
+	typedef std::function<void(void)> TFnDtor;
+
+	IState(TFnDtor fn = std::function<void(void)>()): m_fnDtor(fn) {}
+	virtual ~IState() { if (m_fnDtor) m_fnDtor(); }
 
     virtual void				ShowGui( ren::CCanvas* canvas ) = 0;
 	virtual void				Render( ren::CDriver *driver ) = 0;
 
 	virtual void				OnEnter()	= 0;
-    virtual void				OnExit()		= 0;
+    virtual void				OnExit()	= 0;
+
+protected:
+	TFnDtor						m_fnDtor;
 };
 
 // ----------------------------------------------------------------------//

@@ -9,7 +9,7 @@ class CState_Game : public IState, public sigcxx::Trackable
 protected:
 
 public:
-	CState_Game();
+	CState_Game( IState::TFnDtor fnDtor );
 	~CState_Game();
 // ----------------------------------------------------------------------//	
 protected:

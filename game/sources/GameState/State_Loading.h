@@ -6,7 +6,7 @@
 class CState_Loading : public IState
 {
 public:
-    CState_Loading( const std::vector<std::string>& fsLoad, IState* nextState );
+    CState_Loading( const IState::TFsList& fsLoad, IState* nextState );
 	~CState_Loading();
 // ----------------------------------------------------------------------//	
 protected:

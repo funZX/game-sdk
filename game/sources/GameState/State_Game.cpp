@@ -37,7 +37,7 @@
 #include "State_Loading.h"
 #include "State_MenuMain.h"
 // ----------------------------------------------------------------------//
-CState_Game::CState_Game()
+CState_Game::CState_Game( IState::TFnDtor fnDtor ) : IState(fnDtor)
 {
 	m_world = nullptr;
 	m_debug = nullptr;
@@ -133,11 +133,11 @@ void CState_Game::OnEvent(CCanvas* canvas, CCanvas::TEvent* ev, sigcxx::SLOT slo
     {
         if (ev->evKey.code == 66) // Key_B
         {
-            std::vector<std::string> fsList = {
+            IState::TFsList fsList = {
                 "ui.7z",
             };
-
-            g.game->GoPop(SIM_NEW CState_Loading(fsList, SIM_NEW CState_MenuMain()));
+            auto fnDtor = UNLOAD_FNDTOR(fsList);
+            g.game->GoPop(SIM_NEW CState_Loading(fsList, SIM_NEW CState_MenuMain(fnDtor)));
         }
     }
 }
