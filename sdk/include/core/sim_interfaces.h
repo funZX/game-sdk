@@ -89,8 +89,8 @@ public:
     virtual void				ShowGui( ren::CCanvas* canvas ) = 0;
 	virtual void				Render( ren::CDriver *driver ) = 0;
 
-	virtual void				OnEnter( bool isPushed )	= 0;
-    virtual void				OnExit( bool isPoped )		= 0;
+	virtual void				OnEnter()	= 0;
+    virtual void				OnExit()		= 0;
 };
 
 // ----------------------------------------------------------------------//

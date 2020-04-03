@@ -33,8 +33,9 @@
 
 #include "../World/World.h"
 
-#include "State_Loading.h"
 #include "State_Game.h"
+#include "State_Loading.h"
+#include "State_MenuMain.h"
 // ----------------------------------------------------------------------//
 CState_Game::CState_Game()
 {
@@ -45,7 +46,7 @@ CState_Game::CState_Game()
 	m_drawable->MoveTo(300.0f, 100.0f);
 	m_drawable->Resize(512, 512);
 	m_drawable->SetColor(col::Orange);
-	m_drawable->OnDraw.Connect(this, &CState_Game::DrawToWidget);
+	m_drawable->OnDraw.Connect(this, &CState_Game::OnDrawableDraw);
 
 	/*
 	CBinaryTree<u32, CScript> bt;
@@ -64,7 +65,7 @@ CState_Game::~CState_Game()
 // ----------------------------------------------------------------------//
 void CState_Game::Update( f32 dt, void *userData )
 {	
-    SIM_PRINT("\nCState_Game::Update");
+    //SIM_PRINT("\nCState_Game::Update");
 
     m_debug->Update(dt, userData);
 
@@ -75,7 +76,7 @@ void CState_Game::Update( f32 dt, void *userData )
 // ----------------------------------------------------------------------//
 void CState_Game::Render( CDriver *driver )
 {
-    SIM_PRINT("\nCState_Game::Render");
+    //SIM_PRINT("\nCState_Game::Render");
 
     m_debug->Render(driver);
 
@@ -84,7 +85,7 @@ void CState_Game::Render( CDriver *driver )
 }
 
 // ----------------------------------------------------------------------//
-void CState_Game::DrawToWidget(CDriver* driver, sigcxx::SLOT slot)
+void CState_Game::OnDrawableDraw(CDriver* driver, sigcxx::SLOT slot)
 {
 	m_world->Render(driver);
 
@@ -97,81 +98,47 @@ void CState_Game::ShowGui(CCanvas* canvas)
     m_drawable->Render( g.driver );
 }
 // ----------------------------------------------------------------------//
-void CState_Game::OnEnter( bool isPushed )
+void CState_Game::OnEnter()
 {
     SIM_PRINT("\nCState_Game::OnEnter");
 
-    if ( !isPushed )
-        return;
-
-    m_world = SIM_NEW CWorld(CState_Loading::GetFs("world.7z"));
-    m_debug = SIM_NEW CDebug(CState_Loading::GetFs("debug.7z"));
+    m_world = SIM_NEW CWorld(g.GetFs("world.7z"));
+    m_debug = SIM_NEW CDebug(g.GetFs("debug.7z"));
 
     m_world->SetEnabled(true);
     m_world->SetVisible(true);
 
     CCanvas* canvas = g.canvas;
-    canvas->OnMouseDown.Connect(this, &CState_Game::MouseDown);
-    canvas->OnMouseUp.Connect(this, &CState_Game::MouseUp);
-    canvas->OnMouseMove.Connect(this, &CState_Game::MouseMove);
-    canvas->OnKeyDown.Connect(this, &CState_Game::KeyDown);
-    canvas->OnKeyUp.Connect(this, &CState_Game::KeyUp);
-
+    canvas->OnEvent.Connect(this, &CState_Game::OnEvent);
     canvas->OnGui.Connect(m_debug, &CDebug::ShowGui);
 }
 // ----------------------------------------------------------------------//
 
-void CState_Game::OnExit( bool isPoped )
+void CState_Game::OnExit()
 {
     SIM_PRINT("\nCState_Game::OnExit");
-
-	if ( !isPoped )
-		return;
 
     SIM_SAFE_DELETE( m_debug );
     SIM_SAFE_DELETE( m_world );
 
     CCanvas* canvas = g.canvas;
-    canvas->OnMouseDown.Disconnect(this, &CState_Game::MouseDown);
-    canvas->OnMouseUp.Disconnect(this, &CState_Game::MouseUp);
-    canvas->OnMouseMove.Disconnect(this, &CState_Game::MouseMove);
-    canvas->OnKeyDown.Disconnect(this, &CState_Game::KeyDown);
-    canvas->OnKeyUp.Disconnect(this, &CState_Game::KeyUp);
+    canvas->OnEvent.Disconnect(this, &CState_Game::OnEvent);
 
     canvas->OnGui.Disconnect(m_debug, &CDebug::ShowGui);
 }
 // ----------------------------------------------------------------------//
-void CState_Game::MouseDown(CCanvas* canvas, int button, sigcxx::SLOT slot)
+void CState_Game::OnEvent(CCanvas* canvas, CCanvas::TEvent* ev, sigcxx::SLOT slot)
 {
-	//SIM_PRINT("\nMouseDown: %d", button);
-}
-// ----------------------------------------------------------------------//
-void CState_Game::MouseUp(CCanvas* canvas, int button, sigcxx::SLOT slot)
-{
-	//SIM_PRINT("\nMouseUp: %d", button);
-}
-// ----------------------------------------------------------------------//
-void CState_Game::MouseMove(CCanvas* canvas, f32 x, f32 y, sigcxx::SLOT slot)
-{
-	//SIM_PRINT("\nMouseMove: (%.2f, %.2f)", x, y);
-}
-// ----------------------------------------------------------------------//
-void CState_Game::KeyDown(CCanvas* canvas, int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt, sigcxx::SLOT slot)
-{
-	//SIM_PRINT("\nKeyDown: (%d, %d, %d, %d)", Key, KeyShift, KeyCtrl, KeyAlt);
-}
-// ----------------------------------------------------------------------//
-void CState_Game::KeyUp(CCanvas* canvas, int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt, sigcxx::SLOT slot)
-{
-    switch (Key)
+    if (ev->evType == CCanvas::EvType::Key && !ev->evKey.down)
     {
-	case 66: // 'b'
-    {
-		g.game->GoBack(); // pop to CState_Loading
-    }
-    break;
-    }
+        if (ev->evKey.code == 66) // Key_B
+        {
+            std::vector<std::string> fsList = {
+                "ui.7z",
+            };
 
-	//SIM_PRINT("\nKeyUp: (%d, %d, %d, %d)", Key, KeyShift, KeyCtrl, KeyAlt);
+            g.game->GoPop(SIM_NEW CState_Loading(fsList, SIM_NEW CState_MenuMain()));
+        }
+    }
 }
 // ----------------------------------------------------------------------//

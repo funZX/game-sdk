@@ -1,6 +1,8 @@
 #include <imgui.h>
-#include <Game.h>
 #include <GLFW/glfw3.h>
+
+#include <Game.h>
+#include <GameState/State_AppInit.h>
 
 CGame* game = nullptr;
 
@@ -49,7 +51,7 @@ int main(int argc, char *argv[])
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
-    game = SIM_NEW CGame("../../blob/");
+    game = SIM_NEW CGame("../../blob/", SIM_NEW CState_AppInit());
     game->Start();
 
     ImGui_ImplGlfw_Init(window);
@@ -62,8 +64,6 @@ int main(int argc, char *argv[])
 
         game->Resize(w, h);
         game->Run();
-
-        eglGetError();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -22,7 +22,6 @@
     <ClCompile Include="..\..\sources\Debug\Debug.cpp" />
     <ClCompile Include="..\..\sources\Game.cpp" />
     <ClCompile Include="..\..\sources\GameState\State_AppInit.cpp" />
-    <ClCompile Include="..\..\sources\GameState\State_AppLoad.cpp" />
     <ClCompile Include="..\..\sources\GameState\State_Game.cpp" />
     <ClCompile Include="..\..\sources\GameState\State_Loading.cpp" />
     <ClCompile Include="..\..\sources\GameState\State_MenuMain.cpp" />
@@ -32,7 +31,6 @@
     <ClInclude Include="..\..\sources\Debug\Debug.h" />
     <ClInclude Include="..\..\sources\Game.h" />
     <ClInclude Include="..\..\sources\GameState\State_AppInit.h" />
-    <ClInclude Include="..\..\sources\GameState\State_AppLoad.h" />
     <ClInclude Include="..\..\sources\GameState\State_Game.h" />
     <ClInclude Include="..\..\sources\GameState\State_Loading.h" />
     <ClInclude Include="..\..\sources\GameState\State_MenuMain.h" />

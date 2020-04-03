@@ -52,6 +52,10 @@ CCanvas::CCanvas( CFontAtlas* fontAtlas )
     m_vertexGroup = SIM_NEW CVertexGroup;
     m_vertexGroup->SetVertexSource( m_vertexSource );
 
+    m_shiftDown = false;
+    m_ctrlDown = false;
+    m_altDown = false;
+
     ImGui::SetAllocatorFunctions(&CCanvas::ImGuiAlloc, &CCanvas::ImGuiDelloc, this);
     ImGui::CreateContext( m_fontAtlas->m_imAtlas );
 
@@ -158,13 +162,18 @@ void CCanvas::Resize( f32 w, f32 h )
 
 void CCanvas::ClearEvents() 
 {
-
+    m_eventList.RemoveAll();
 }
 
 // ----------------------------------------------------------------------//
 
 void CCanvas::Update(f32 dt, void* userData)
 {
+    m_eventList.Begin();
+    while (TEvent* ev = m_eventList.Next())
+        OnEvent.Emit(this, ev);
+    m_eventList.RemoveAll();
+
     ImGui::GetIO().DeltaTime = dt;
 
     ImGui::NewFrame();
@@ -241,27 +250,102 @@ void CCanvas::Render( CDriver* driver )
 // ----------------------------------------------------------------------//
 void CCanvas::MouseDown(int button)
 {
-    OnMouseDown.Emit( this, button );
+    TEvent ev;
+
+    ev.evCanvas     = this;
+    ev.evType       = EvType::Mouse;
+
+    ev.evMouse.button = button+1;
+    ev.evMouse.down = true;
+    ev.evMouse.x    = m_mousePos.x;
+    ev.evMouse.y    = m_mousePos.y;
+    ev.evMode.shift = m_shiftDown;
+    ev.evMode.ctrl  = m_ctrlDown;
+    ev.evMode.alt   = m_altDown;
+
+    m_eventList.AddToEnd(ev);
 }
 // ----------------------------------------------------------------------//
 void CCanvas::MouseUp(int button)
 {
-    OnMouseUp.Emit( this, button );
+    TEvent ev;
+
+    ev.evCanvas     = this;
+    ev.evType       = EvType::Mouse;
+
+    ev.evMouse.button = button+1;
+    ev.evMouse.down = false;
+    ev.evMouse.x    = m_mousePos.x;
+    ev.evMouse.y    = m_mousePos.y;
+    ev.evMode.shift = m_shiftDown;
+    ev.evMode.ctrl  = m_ctrlDown;
+    ev.evMode.alt   = m_altDown;
+
+    m_eventList.AddToEnd( ev );
 }
 // ----------------------------------------------------------------------//
 void CCanvas::MouseMove(f32 x, f32 y)
 {
-    OnMouseMove.Emit( this, x, y );
+    TEvent ev;
+
+    ev.evCanvas     = this;
+    ev.evType       = EvType::Mouse;
+
+    ev.evMouse.x    = x;
+    ev.evMouse.y    = y;
+    ev.evMode.shift = m_shiftDown;
+    ev.evMode.ctrl  = m_ctrlDown;
+    ev.evMode.alt   = m_altDown;
+
+    m_eventList.AddToEnd( ev );
+
+    m_mousePos.x    = x;
+    m_mousePos.y    = y;
 }
 // ----------------------------------------------------------------------//
 void CCanvas::KeyDown(int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt)
 {
-    OnKeyDown.Emit( this, Key, KeyShift, KeyCtrl, KeyAlt );
+    TEvent ev;
+
+    ev.evCanvas     = this;
+    ev.evType       = EvType::Key;
+
+    ev.evMouse.x    = m_mousePos.x;
+    ev.evMouse.y    = m_mousePos.y;
+    ev.evKey.code   = Key;
+    ev.evKey.down   = true;
+    ev.evMode.shift = KeyShift;
+    ev.evMode.ctrl  = KeyCtrl;
+    ev.evMode.alt   = KeyAlt;
+
+    m_eventList.AddToEnd( ev );
+
+    m_shiftDown     = KeyShift;
+    m_ctrlDown      = KeyCtrl;
+    m_altDown       = KeyAlt;
+
 }
 // ----------------------------------------------------------------------//
 void CCanvas::KeyUp(int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt)
 {
-    OnKeyUp.Emit( this, Key, KeyShift, KeyCtrl, KeyAlt );
+    TEvent ev;
+
+    ev.evCanvas     = this;
+    ev.evType       = EvType::Key;
+
+    ev.evMouse.x    = m_mousePos.x;
+    ev.evMouse.y    = m_mousePos.y;
+    ev.evKey.code   = Key;
+    ev.evKey.down   = false;
+    ev.evMode.shift = KeyShift;
+    ev.evMode.ctrl  = KeyCtrl;
+    ev.evMode.alt   = KeyAlt;    
+
+    m_eventList.AddToEnd( ev );
+
+    m_shiftDown     = KeyShift;
+    m_ctrlDown      = KeyCtrl;
+    m_altDown       = KeyAlt;
 }
 // ----------------------------------------------------------------------//
 }; // namespace ren
