@@ -92,6 +92,7 @@ public:
             evType = EvType::Key;
             SIM_MEMSET(&evMouse, 0, sizeof(evMouse));
             SIM_MEMSET(&evKey, 0, sizeof(evKey));
+            SIM_MEMSET(&evMode, 0, sizeof(evMode));
         }
     } TEvent;
 
