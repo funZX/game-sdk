@@ -12,23 +12,16 @@ public:
 	CState_Game();
 	~CState_Game();
 // ----------------------------------------------------------------------//	
+protected:
     void				ShowGui( CCanvas* canvas );
     void				Update( f32 dt, void *userData );
 	void				Render( CDriver *driver );
 
-    void				OnEnter( bool isPushed );
-    void				OnExit( bool isPoped );
+    void				OnEnter();
+    void				OnExit();
+    void				OnEvent(CCanvas* canvas, CCanvas::TEvent* ev, sigcxx::SLOT slot = nullptr);
+    void				OnDrawableDraw(CDriver* driver, sigcxx::SLOT slot = nullptr);
 
-protected:
-    // ----------------------------------------------------------------------//	
-    void				MouseDown(CCanvas* canvas, int button, sigcxx::SLOT slot = nullptr);
-    void				MouseUp(CCanvas* canvas, int button, sigcxx::SLOT slot = nullptr);
-    void				MouseMove(CCanvas* canvas, f32 x, f32 y, sigcxx::SLOT slot = nullptr);
-    void				KeyDown(CCanvas* canvas, int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt, sigcxx::SLOT slot = nullptr);
-    void				KeyUp(CCanvas* canvas, int Key, bool KeyShift, bool KeyCtrl, bool KeyAlt, sigcxx::SLOT slot = nullptr);
-	// ----------------------------------------------------------------------//	
-	void				DrawToWidget(CDriver* driver, sigcxx::SLOT slot = nullptr);
-	// ----------------------------------------------------------------------//	
 protected:
     CWorld*             m_world;
 

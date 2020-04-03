@@ -34,14 +34,17 @@ namespace sm
 {
 // ----------------------------------------------------------------------//
 
-CStateMachine::CStateMachine( ren::CCanvas* canvas ) : stl::CStack<IState*>()
+CStateMachine::CStateMachine( ren::CCanvas* canvas, IState* initState ) : stl::CStack<IState*>()
 {
-    m_updateState   = nullptr;
-    m_renderState   = nullptr;
+    m_crtState      = initState;
+    m_updateState   = initState;
+    m_renderState   = initState;
+    m_popState      = nullptr;
 
-    m_isPoped       = false;    
+    initState->OnEnter();
+    Push( initState );
 
-    canvas->OnGui.Connect( this, &CStateMachine::ShowGui );
+    canvas->OnGui.Connect( this, &CStateMachine::OnGui);
 }
 
 // ----------------------------------------------------------------------//
@@ -55,27 +58,25 @@ CStateMachine::~CStateMachine()
 
 void CStateMachine::GoNext( IState* state )
 {
-    m_isPoped = false;
-
     m_updateState   = state;
-    if (m_renderState)
-        m_renderState->OnExit( false );
-    m_updateState->OnEnter( true );
     Push( state );
 }
 
+// ----------------------------------------------------------------------//
+
+void CStateMachine::GoPop( IState* state )
+{
+    m_popState = state;
+}
 // ----------------------------------------------------------------------//
 
 void CStateMachine::GoBack()
 {
 	Pop();
     m_updateState   = *Top();
-    if (m_renderState)
-        m_renderState->OnExit( true );
-    m_updateState->OnEnter( false );
-
-    m_isPoped = true;
 }
+
+// ----------------------------------------------------------------------//
 
 void CStateMachine::PopAll()
 {
@@ -94,9 +95,25 @@ void CStateMachine::Update( f32 dt, void *userData )
 {
     SIM_ASSERT( m_updateState );
 
-    IState* crtState = m_updateState;	
-    crtState->Update( dt, userData );
-    m_renderState = crtState;
+    if ( m_popState != nullptr )
+    {
+        IState* p = *Top();
+        SIM_SAFE_DELETE( p );
+        Pop();
+
+        GoNext( m_popState );
+
+        m_popState      = nullptr;
+        m_renderState   = nullptr;
+    }
+
+    if ( m_updateState != m_renderState )
+        m_updateState->OnEnter();
+
+    m_crtState = m_updateState;
+    m_crtState->Update( dt, userData );
+
+    m_renderState = m_crtState;
 }
 
 // ----------------------------------------------------------------------//
@@ -105,14 +122,17 @@ void CStateMachine::Render( ren::CDriver *driver )
 {
     SIM_ASSERT( m_renderState );
     m_renderState->Render( driver );
+
+    if ( m_updateState != m_renderState || m_popState != nullptr)
+        m_renderState->OnExit();
 }
 
 // ----------------------------------------------------------------------//
 
-void CStateMachine::ShowGui( ren::CCanvas* canvas, sigcxx::SLOT slot )
+void CStateMachine::OnGui( ren::CCanvas* canvas, sigcxx::SLOT slot )
 {
-    if ( m_updateState )
-        m_updateState->ShowGui( canvas );
+    m_updateState->ShowGui( canvas );
+    m_renderState = m_crtState;
 }
 // ----------------------------------------------------------------------//
 }; // namespace sm

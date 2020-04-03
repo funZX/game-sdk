@@ -19,9 +19,6 @@
     <ClCompile Include="..\..\sources\Debug\Debug.cpp">
       <Filter>Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sources\GameState\State_AppLoad.cpp">
-      <Filter>GameState</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\sources\GameState\State_AppInit.cpp">
       <Filter>GameState</Filter>
     </ClCompile>
@@ -44,9 +41,6 @@
       <Filter>Debug</Filter>
     </ClInclude>
     <ClInclude Include="..\..\sources\GameState\State_AppInit.h">
-      <Filter>GameState</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\sources\GameState\State_AppLoad.h">
       <Filter>GameState</Filter>
     </ClInclude>
     <ClInclude Include="..\..\sources\GameState\State_MenuMain.h">

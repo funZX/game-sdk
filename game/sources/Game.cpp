@@ -1,5 +1,6 @@
 #include <core/io/sim_file_system.h>
 #include <core/io/sim_file_stream.h>
+#include <core/sim_state_machine.h>
 
 #include <render/scene/sim_camera.h>
 
@@ -23,8 +24,8 @@
 TGlobal		g = {0};
 // ----------------------------------------------------------------------//
 
-CGame::CGame( const std::string& fsDir )
-	: CEngine()
+CGame::CGame( const std::string& fsDir, IState* initState)
+	: CEngine( initState )
 {
 	m_fsDir = fsDir;
 
@@ -37,8 +38,6 @@ CGame::CGame( const std::string& fsDir )
 
 	g.font				= m_font;
 	g.effect			= m_effect;
-
-	GoNext( SIM_NEW CState_AppInit() );
 }
 
 CGame::~CGame()

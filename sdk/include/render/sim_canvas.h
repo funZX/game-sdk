@@ -28,6 +28,7 @@
 #define __SIM_CANVAS_H
 
 #include <core/sim_core.h>
+#include <core/sim_list.h>
 #include <core/sim_singleton.h>
 #include <core/sim_interfaces.h>
 
@@ -35,6 +36,7 @@
 #include <render/sim_rect_2d.h>
 
 #include <imgui.h>
+#include <zpl.h>
 
 namespace sim
 {
@@ -55,6 +57,44 @@ class CCanvas : public CRect2D
 	friend class sim::CEngine;
 
 public:
+    enum class EvType : u32
+    {
+        Mouse,
+        Key,
+    };
+
+    typedef struct _TEvent
+    {
+        CCanvas*        evCanvas;
+        EvType		    evType;
+
+        struct {
+            int			button;
+            bool        down;
+            int			x;
+            int			y;
+        } evMouse;
+
+        struct {
+            int			code;
+            bool        down;
+        } evKey;
+
+        struct {
+            bool		shift;
+            bool		ctrl;
+            bool		alt;
+        } evMode;
+
+        _TEvent()
+        {
+            evCanvas = nullptr;
+            evType = EvType::Key;
+            SIM_MEMSET(&evMouse, 0, sizeof(evMouse));
+            SIM_MEMSET(&evKey, 0, sizeof(evKey));
+        }
+    } TEvent;
+
 	CCanvas( CFontAtlas *fontAtlas );
 	CCanvas( const std::string& name, CFontAtlas* fontAtlas );
 	virtual ~CCanvas();
@@ -68,12 +108,8 @@ public:
 
 public: // Signals
     // ------------------------------------------------------------------//
-    sigcxx::Signal<CCanvas*>						OnGui;
-    sigcxx::Signal<CCanvas*, int>					OnMouseDown;
-    sigcxx::Signal<CCanvas*, int>					OnMouseUp;
-	sigcxx::Signal<CCanvas*, f32, f32>				OnMouseMove;
-	sigcxx::Signal<CCanvas*, int, bool, bool, bool>	OnKeyDown;
-	sigcxx::Signal<CCanvas*, int, bool, bool, bool>	OnKeyUp;
+    sigcxx::Signal<CCanvas*>					OnGui;
+    sigcxx::Signal<CCanvas*, TEvent*>			OnEvent;
 
 	// ------------------------------------------------------------------//
 protected:
@@ -90,7 +126,13 @@ protected:
 
     CVertexSource*              m_vertexSource;
 	CVertexGroup*				m_vertexGroup;
-	// ------------------------------------------------------------------//
+
+	stl::CList<TEvent>			m_eventList;
+    ImVec2                      m_mousePos;
+    bool                        m_shiftDown;
+    bool                        m_ctrlDown;
+    bool                        m_altDown;
+    // ------------------------------------------------------------------//
 };
 
 // ----------------------------------------------------------------------//

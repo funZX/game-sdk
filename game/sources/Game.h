@@ -9,7 +9,7 @@ class CWindow;
 class CGame : public CEngine
 {
 public:
-	CGame( const std::string& fsDir );
+	CGame( const std::string& fsDir, IState* initState );
 	~CGame();
 
 	void						Update( f32 dt, void *userData );
@@ -19,6 +19,9 @@ protected:
 	std::string					m_fsDir;
 };
 
+
+typedef std::map<std::string, CFileSystem*>				TFsList;
+typedef std::map<std::string, CFileSystem*>::iterator	TFsListIterator;
 
 typedef struct 
 {
@@ -32,6 +35,19 @@ typedef struct
 	CMaterial*					material;
 	CFont*						font;
 	CEffect*					effect;
+
+    TFsList						fsList = {
+        { "debug.7z",       nullptr },
+        { "ui.7z",          nullptr },
+        { "world.7z",       nullptr },
+        { "strawberry.7z",  nullptr },
+    };
+
+    inline CFileSystem* GetFs( const std::string& fsName )
+    {
+		TFsListIterator it = fsList.find(fsName);
+        return it == fsList.end() ? nullptr : fsList[fsName];
+    }
 
 } TGlobal;
 

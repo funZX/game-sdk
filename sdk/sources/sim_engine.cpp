@@ -49,7 +49,7 @@ namespace sim
 
 // ----------------------------------------------------------------------//
 
-CEngine::CEngine()
+CEngine::CEngine( IState* initState )
 {
 	m_driver			= SIM_NEW CDriver();
 	m_vm				= SIM_NEW CSquirrel();
@@ -72,7 +72,7 @@ CEngine::CEngine()
 	m_canvas			= SIM_NEW CCanvas( "engine.Canvas", m_fontAtlas );
     InitCanvas();
 
-    m_sm                = SIM_NEW CStateMachine( m_canvas );
+    m_sm                = SIM_NEW CStateMachine( m_canvas, initState );
 	m_camera			= SIM_NEW ren::CCamera( "engine.Camera" );
     m_crtCamera         = m_camera;
 
@@ -371,11 +371,11 @@ void CEngine::Quit()
 
 void CEngine::Update( f32 dt, void *userData )
 {
-    m_camera->Update( dt, userData );
-	m_driver->Tick( dt );
-
     m_sm->Update(dt, userData);
-    m_canvas->Update( dt, userData );
+    m_canvas->Update(dt, userData);
+
+    m_camera->Update(dt, userData);
+    m_driver->Tick(dt);
 }
 
 // ----------------------------------------------------------------------//
@@ -406,6 +406,15 @@ void CEngine::GoNext( IState* state )
 	m_canvas->ClearEvents();
 	
 	m_sm->GoNext( state );
+}
+
+// ----------------------------------------------------------------------//
+
+void CEngine::GoPop(IState* state)
+{
+    m_canvas->ClearEvents();
+
+    m_sm->GoPop( state );
 }
 
 // ----------------------------------------------------------------------//

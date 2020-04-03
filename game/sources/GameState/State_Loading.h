@@ -9,20 +9,16 @@ public:
     CState_Loading( const std::vector<std::string>& fsLoad, IState* nextState );
 	~CState_Loading();
 // ----------------------------------------------------------------------//	
+protected:
     void				ShowGui( CCanvas* canvas );
     void				Update( f32 dt, void *userData );
 	void				Render( CDriver *driver );
 
-    void				OnEnter( bool isPushed );
-    void				OnExit( bool isPoped );
-
-    static CFileSystem* GetFs(const std::string& fsName);
+    void				OnEnter();
+    void				OnExit();
 
 protected:
     IState*             m_childState;
-    bool                m_dealloc;
-
-    static std::map<std::string, CFileSystem*> m_fsList;
 
 // ----------------------------------------------------------------------//
 };

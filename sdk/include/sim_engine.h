@@ -158,7 +158,7 @@ namespace sim
 class CEngine : public sim::IUpdatable, public sim::IRenderable, public CSingleton<CEngine>, public sigcxx::Trackable
 {
 public:
-	CEngine();
+	CEngine( IState* initState );
 	virtual ~CEngine();
 	
 	inline CDriver*					GetDriver()		{ return m_driver; }
@@ -178,6 +178,7 @@ public:
 	virtual void					Render( CDriver *driver );
 
 	void							GoNext( IState* state );
+    void							GoPop( IState* state );
 	void							GoBack();
 
 	void							SetCamera( CCamera* camera );

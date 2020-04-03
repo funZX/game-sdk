@@ -40,25 +40,26 @@ namespace sm
 class CStateMachine : public stl::CStack < IState* >, public sigcxx::Trackable
 {
 protected:
+	IState*				m_crtState;
 	IState*				m_updateState;
 	IState*				m_renderState;
+	IState*				m_popState;	
 
 public:
-	CStateMachine( ren::CCanvas* canvas );
+	CStateMachine( ren::CCanvas* canvas, IState* initState );
 	virtual ~CStateMachine();
 
 	void				Update( f32 dt, void *userData );
 	void				Render( ren::CDriver *driver );
 
 	void				GoNext( IState* state );
+    void				GoPop( IState* state );
 	void				GoBack();
 
 	void				PopAll();
 
 protected:
-    void				ShowGui( ren::CCanvas* canvas, sigcxx::SLOT slot = nullptr );
-
-	bool				m_isPoped;
+    void				OnGui( ren::CCanvas* canvas, sigcxx::SLOT slot = nullptr );
 };
 
 // ----------------------------------------------------------------------//
