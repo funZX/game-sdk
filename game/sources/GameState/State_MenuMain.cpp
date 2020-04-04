@@ -66,18 +66,7 @@ void CState_MenuMain::OnEvent(CCanvas* canvas, CCanvas::TEvent* ev, sigcxx::SLOT
                 "strawberry.7z"
             };
 
-            auto fnDtor = [fsList]()
-            {
-                for (auto& fsName : fsList)
-                {
-                    TFsListIterator it = g.fsList.find(fsName);
-                    if (it == g.fsList.end())
-                        continue;
-                    if (it->second == nullptr)
-                        continue;
-                    SIM_SAFE_DELETE(it->second);
-                }
-            };
+            auto fnDtor = UNLOAD_FNDTOR(fsList);
             g.game->GoPop(SIM_NEW CState_Loading(fsList, SIM_NEW CState_Game(fnDtor)));
         }
     }
