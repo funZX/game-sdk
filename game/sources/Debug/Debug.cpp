@@ -33,6 +33,9 @@ CDebug::~CDebug()
 {
 	m_debugSphere	= gluDelSphere( m_debugSphere );
 	m_debugCube		= gluDelCube( m_debugCube );
+	m_fs			= nullptr;
+
+	SIM_SAFE_DELETE( m_debugLight );
 }
 // ----------------------------------------------------------------------//
 void CDebug::Update(f32 dt, void* userData)

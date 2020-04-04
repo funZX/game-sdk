@@ -1,6 +1,7 @@
 #ifndef __GAME_H
 #define __GAME_H
 
+#include <core/io/sim_file_system.h>
 #include <sim_engine.h>
 
 class CWorld;
@@ -23,7 +24,7 @@ protected:
 typedef std::map<std::string, CFileSystem*>				TFsList;
 typedef std::map<std::string, CFileSystem*>::iterator	TFsListIterator;
 
-typedef struct 
+typedef struct _TGlobal
 {
 	CGame*						game;
 
@@ -49,6 +50,8 @@ typedef struct
         return it == fsList.end() ? nullptr : fsList[fsName];
     }
 
+    ~_TGlobal();
+
 } TGlobal;
 
 extern TGlobal		g;
@@ -62,9 +65,10 @@ extern TGlobal		g;
             continue; \
         if (it->second == nullptr) \
             continue; \
-        SIM_SAFE_DELETE(it->second); \
+        SIM_PRINT("\nUNLOAD_FNDTOR: %s",fsName.c_str()); \
+        it->second->~CFileSystem(); \
+        it->second = nullptr; \
     } \
-    g.canvas->Reset(); \
 }; \
 
 #endif // __GAME_H

@@ -121,6 +121,7 @@ void CStateMachine::Update( f32 dt, void *userData )
 void CStateMachine::Render( ren::CDriver *driver )
 {
     SIM_ASSERT( m_renderState );
+
     m_renderState->Render( driver );
 
     if ( m_updateState != m_renderState || m_popState != nullptr)

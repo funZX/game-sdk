@@ -102,6 +102,7 @@ public:
 	vm::CScript*				GetScript( const std::string &name );
 	ren::CScene*				GetScene( const std::string &name );
 
+	inline const std::string&	GetFileName() { return m_filename; }
 	inline const std::string&	GetLoadMessage() { return m_loadMessage; }
 
 	void						LinkEffect(const char* effect, const char* material);

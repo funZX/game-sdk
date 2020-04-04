@@ -43,7 +43,7 @@ protected:
 	IState*				m_crtState;
 	IState*				m_updateState;
 	IState*				m_renderState;
-	IState*				m_popState;	
+	IState*				m_popState;
 
 public:
 	CStateMachine( ren::CCanvas* canvas, IState* initState );

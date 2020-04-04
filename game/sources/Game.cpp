@@ -21,7 +21,20 @@
 #include <sim_engine.h>
 
 // ----------------------------------------------------------------------//
-TGlobal		g = {0};
+TGlobal::~TGlobal()
+{
+    IState::TFsList fsList = {
+        "debug.7z",
+        "ui.7z",
+        "world.7z",
+        "strawberry.7z"
+    };
+
+    auto fnDtor = UNLOAD_FNDTOR(fsList);
+    fnDtor();
+}
+// ----------------------------------------------------------------------//
+TGlobal		g = { 0 };
 // ----------------------------------------------------------------------//
 
 CGame::CGame( const std::string& fsDir, IState* initState)
