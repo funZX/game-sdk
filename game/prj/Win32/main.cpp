@@ -1,3 +1,4 @@
+#include <windows.h>
 #include <imgui.h>
 #include <GLFW/glfw3.h>
 
@@ -5,6 +6,23 @@
 #include <GameState/State_AppInit.h>
 
 CGame* game = nullptr;
+
+void onQuit()
+{
+#ifdef _DEBUG
+    _CrtDumpMemoryLeaks();
+#endif
+}
+
+void onStart()
+{
+#ifdef _DEBUG
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    //_crtBreakAlloc = 86830;
+#endif
+
+    atexit(onQuit);
+}
 
 bool ImGui_ImplGlfw_Init(GLFWwindow* window);
 void ImGui_ImplGlfw_UpdateMousePosAndButtons(GLFWwindow* window);
@@ -24,6 +42,8 @@ void glfw_key_callback(GLFWwindow* window, int key, int scancode, int action, in
 
 int main(int argc, char *argv[])
 {
+    onStart();
+
     glfwSetErrorCallback(glfw_error_callback);
 
     if (!glfwInit())
@@ -65,6 +85,9 @@ int main(int argc, char *argv[])
         game->Resize(w, h);
         game->Run();
 
+#if SIM_DEBUG
+        _CrtCheckMemory();
+#endif
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

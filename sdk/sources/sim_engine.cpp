@@ -371,6 +371,8 @@ void CEngine::Quit()
 
 void CEngine::Update( f32 dt, void *userData )
 {
+    SIM_ASSERT(_HEAPOK == _heapchk());
+
     m_sm->Update(dt, userData);
     m_canvas->Update(dt, userData);
 

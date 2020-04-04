@@ -85,6 +85,8 @@ CFileSystem::CFileSystem( const std::string &filename )
 
 CFileSystem::~CFileSystem()
 {
+    SIM_PRINT("~CFileSystem: %s", m_filename.c_str());
+
 	UnloadScenes();
 	UnloadScripts();
 	UnloadSounds();
@@ -100,8 +102,7 @@ CFileSystem::~CFileSystem()
 	UnloadFonts();
 
 	SIM_SAFE_DELETE( m_lzmaStream );
-
-	SIM_PRINT("~CFileSystem: %s", m_filename.c_str());
+	SIM_SAFE_DELETE( m_fontAtlas );
 }
 
 // ----------------------------------------------------------------------//

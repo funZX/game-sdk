@@ -48,7 +48,7 @@ protected:
 		CBalanceTreeNode(K key, D* data) : 
 			CBinaryTreeNode<K, D>(key, data)
 		{
-			m_isRed = false;
+			m_isRed		= false;
 		}
 
 		virtual ~CBalanceTreeNode() {}
@@ -74,7 +74,7 @@ public:
 
 	virtual ~CBalanceTree()
 	{
-
+        SIM_SAFE_DELETE( m_nodepool );
 	}
 	inline u32 GetCount() { return m_count; }
 
@@ -82,7 +82,6 @@ private:
 	// ----------------------------------------------------------------------//	
 	CPool<CBalanceTreeNode<K, D>>*	m_nodepool;
 	// ----------------------------------------------------------------------//	
-
 
 protected:
 	// ----------------------------------------------------------------------//
