@@ -10,7 +10,7 @@ protected:
 
 public:
 	CState_AppInit();
-	~CState_AppInit();
+    virtual ~CState_AppInit();
 // ----------------------------------------------------------------------//	
 protected:
     void				ShowGui( CCanvas* canvas );

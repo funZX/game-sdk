@@ -105,7 +105,7 @@ public:
 	virtual void		        Update( f32 dt, void *userData );
 	virtual void		        Render( CDriver* driver );
 
-	virtual void		        ClearEvents();
+	virtual void		        Reset();
 
 public: // Signals
     // ------------------------------------------------------------------//

@@ -160,8 +160,10 @@ void CCanvas::Resize( f32 w, f32 h )
 
 // ----------------------------------------------------------------------//
 
-void CCanvas::ClearEvents() 
+void CCanvas::Reset() 
 {
+    ImGui::NewFrame();
+    ImGui::Render();
     m_eventList.RemoveAll();
 }
 
@@ -175,7 +177,6 @@ void CCanvas::Update(f32 dt, void* userData)
     m_eventList.RemoveAll();
 
     ImGui::GetIO().DeltaTime = dt;
-
     ImGui::NewFrame();
     OnGui.Emit( this );
     ImGui::Render();

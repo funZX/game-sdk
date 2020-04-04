@@ -39,15 +39,14 @@
 // ----------------------------------------------------------------------//
 CState_Game::CState_Game( IState::TFnDtor fnDtor ) : IState(fnDtor)
 {
-	m_world = nullptr;
-	m_debug = nullptr;
+	m_world     = nullptr;
+	m_debug     = nullptr;
 
-	m_drawable = SIM_NEW CDrawable();
-	m_drawable->MoveTo(300.0f, 100.0f);
-	m_drawable->Resize(512, 512);
-	m_drawable->SetColor(col::Orange);
-	m_drawable->OnDraw.Connect(this, &CState_Game::OnDrawableDraw);
-
+    m_drawable = SIM_NEW CDrawable();
+    m_drawable->MoveTo(300.0f, 100.0f);
+    m_drawable->Resize(512, 512);
+    m_drawable->SetColor(col::Orange);
+    m_drawable->OnDraw.Connect(this, &CState_Game::OnDrawableDraw);
 	/*
 	CBinaryTree<u32, CScript> bt;
 	bt.Insert(0, *script);
@@ -58,9 +57,10 @@ CState_Game::CState_Game( IState::TFnDtor fnDtor ) : IState(fnDtor)
 // ----------------------------------------------------------------------//
 CState_Game::~CState_Game()
 {
-	SIM_SAFE_DELETE( m_drawable );
-
     SIM_PRINT("\n~CState_Game");
+
+    m_drawable->OnDraw.Disconnect(this, &CState_Game::OnDrawableDraw);
+    SIM_SAFE_DELETE(m_drawable);
 }
 // ----------------------------------------------------------------------//
 void CState_Game::Update( f32 dt, void *userData )
@@ -118,13 +118,12 @@ void CState_Game::OnExit()
 {
     SIM_PRINT("\nCState_Game::OnExit");
 
-    SIM_SAFE_DELETE( m_debug );
-    SIM_SAFE_DELETE( m_world );
-
     CCanvas* canvas = g.canvas;
     canvas->OnEvent.Disconnect(this, &CState_Game::OnEvent);
-
     canvas->OnGui.Disconnect(m_debug, &CDebug::ShowGui);
+
+    SIM_SAFE_DELETE( m_debug );
+    SIM_SAFE_DELETE( m_world );
 }
 // ----------------------------------------------------------------------//
 void CState_Game::OnEvent(CCanvas* canvas, CCanvas::TEvent* ev, sigcxx::SLOT slot)

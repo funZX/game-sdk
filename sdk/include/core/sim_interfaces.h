@@ -81,7 +81,7 @@ struct IDummySlot
 
 // ----------------------------------------------------------------------//
 
-struct IState : public IUpdatable
+struct IState : public IUpdatable, public sigcxx::Trackable
 {
 public:
 	typedef std::vector<std::string> TFsList;

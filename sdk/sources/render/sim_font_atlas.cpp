@@ -72,7 +72,7 @@ CFontAtlas::~CFontAtlas()
 
 CFont* CFontAtlas::AddFont( const std::string name, io::CMemStream* ms, f32 pixelSize )
 {
-    CFont* font = SIM_NEW CFont( this );
+    CFont* font = SIM_NEW CFont( this, name );
 
     ImFontConfig fontConfig;
 

@@ -3,13 +3,13 @@
 
 #include <sim_engine.h>
 
-class CState_MenuMain : public IState, public sigcxx::Trackable
+class CState_MenuMain : public IState
 {
 protected:
 
 public:
 	CState_MenuMain( IState::TFnDtor fnDtor );
-	~CState_MenuMain();
+    virtual ~CState_MenuMain();
 // ----------------------------------------------------------------------//	
 protected:
 

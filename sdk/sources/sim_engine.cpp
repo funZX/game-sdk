@@ -65,7 +65,7 @@ CEngine::CEngine( IState* initState )
     InitMaterial();
 
     m_fontAtlas         = SIM_NEW CFontAtlas( "engine.Atlas" );
-    m_font              = SIM_NEW CFont( m_fontAtlas);
+    m_font              = SIM_NEW CFont( m_fontAtlas, "engine.Font" );
 
     InitFont();
 
@@ -403,7 +403,7 @@ void CEngine::Render( CDriver *driver )
 
 void CEngine::GoNext( IState* state )
 {
-	m_canvas->ClearEvents();
+	m_canvas->Reset();
 	
 	m_sm->GoNext( state );
 }
@@ -412,7 +412,7 @@ void CEngine::GoNext( IState* state )
 
 void CEngine::GoPop(IState* state)
 {
-    m_canvas->ClearEvents();
+    m_canvas->Reset();
 
     m_sm->GoPop( state );
 }
@@ -421,7 +421,7 @@ void CEngine::GoPop(IState* state)
 
 void CEngine::GoBack()
 {
-	m_canvas->ClearEvents();
+	m_canvas->Reset();
 
 	m_sm->GoBack();
 }
