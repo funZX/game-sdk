@@ -35,7 +35,7 @@ namespace ren
 {
 // ----------------------------------------------------------------------//
 
-CFont::CFont( CFontAtlas* atlas )
+CFont::CFont( CFontAtlas* atlas, const std::string& name ) : IEngineItem( name )
 {
     m_fontAtlas = atlas;
 
@@ -49,7 +49,16 @@ CFont::~CFont()
 {
 
 }
-
+// ----------------------------------------------------------------------//
+bool CFont::Load( io::CMemStream* ms )
+{
+    return false;
+}
+// ----------------------------------------------------------------------//
+bool CFont::Save( io::CMemStream* ms )
+{
+    return false;
+}
 // ----------------------------------------------------------------------//
 }; // namespace ren
 }; // namespace sim

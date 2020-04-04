@@ -64,6 +64,7 @@ extern TGlobal		g;
             continue; \
         SIM_SAFE_DELETE(it->second); \
     } \
+    g.canvas->Reset(); \
 }; \
 
 #endif // __GAME_H

@@ -4,13 +4,13 @@
 #include <sim_engine.h>
 #include "../Debug/Debug.h"
 
-class CState_Game : public IState, public sigcxx::Trackable
+class CState_Game : public IState
 {
 protected:
 
 public:
 	CState_Game( IState::TFnDtor fnDtor );
-	~CState_Game();
+	virtual ~CState_Game();
 // ----------------------------------------------------------------------//	
 protected:
     void				ShowGui( CCanvas* canvas );

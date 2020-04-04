@@ -41,18 +41,20 @@ namespace ren
 
 class CDriver;
 
-class CFont
+class CFont : public IEngineItem
 {
 public:
     friend class CFontAtlas;
 
-    CFont( CFontAtlas* atlas );
+    CFont( CFontAtlas* atlas, const std::string& name );
 	virtual ~CFont();
 	// ------------------------------------------------------------------//
     inline f32              GetHeight();
 	// ------------------------------------------------------------------//
 
 protected:
+    bool			        Load( io::CMemStream* ms );
+    bool			        Save( io::CMemStream* ms );
 
 	// ------------------------------------------------------------------//
     f32                     m_pixelSize;

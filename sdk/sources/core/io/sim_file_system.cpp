@@ -77,6 +77,7 @@ CFileSystem::CFileSystem( const std::string &filename )
 
 	m_steps			= nullptr;
 	m_crtStep		= nullptr;
+	m_lastStep		= nullptr;
 	m_isLoaded		= false;
 }
 
@@ -99,6 +100,8 @@ CFileSystem::~CFileSystem()
 	UnloadFonts();
 
 	SIM_SAFE_DELETE( m_lzmaStream );
+
+	SIM_PRINT("~CFileSystem: %s", m_filename.c_str());
 }
 
 // ----------------------------------------------------------------------//

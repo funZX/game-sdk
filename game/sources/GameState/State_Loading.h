@@ -7,7 +7,7 @@ class CState_Loading : public IState
 {
 public:
     CState_Loading( const IState::TFsList& fsLoad, IState* nextState );
-	~CState_Loading();
+	virtual ~CState_Loading();
 // ----------------------------------------------------------------------//	
 protected:
     void				ShowGui( CCanvas* canvas );
