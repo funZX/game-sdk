@@ -117,7 +117,7 @@ def main(dirlist):
 			        command = config.EXE_PVRTEX + ' -legacypvr'
 			        if mipmaps_count > 1:
 			            command += ' -m ' + str(mipmaps_count) + ' -mfilter cubic'
-			        command += ' -f PVRTC2_4'
+			        command += ' -f PVRTC1_4'
 			        command += ' -i ' + utils.getWinPath(in_file) + ' -o ' + utils.getWinPath(out_file)
 			    
 			    if out_format!='tga':

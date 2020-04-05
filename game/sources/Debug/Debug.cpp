@@ -20,15 +20,17 @@ CDebug::CDebug( io::CFileSystem* fs )
 	m_debugLight = SIM_NEW CLight();
 	m_debugLight->GetState()->isStatic = false;
 
+    CTexture* nm = fs->GetTexture("nm.0.pvr.clamp.linear.pvr");
+
 	m_debugSphere	= gluNewSphere(32, 1.0f);
     m_debugSphere->vertexGroup->SetMaterial(g.material);
-	//m_debugSphere->vertexGroup->m_vertexSource->m_type = CVertexSource::Type::Points;
 	m_debugSphere->vertexGroup->GetMaterial()->SetEffect(fs->GetEffect("debug.normals"));
+	m_debugSphere->vertexGroup->GetMaterial()->SetTexture(nm, 1);
 
 	m_debugCube		= gluNewCube(1.0f);
 	m_debugCube->vertexGroup->SetMaterial(g.material);
-	//m_debugCube->vertexGroup->m_vertexSource->m_type = CVertexSource::Type::Points;
-	m_debugCube->vertexGroup->GetMaterial()->SetEffect(fs->GetEffect("debug.normals"));
+	m_debugCube->vertexGroup->GetMaterial()->SetEffect(fs->GetEffect("lighting.phong"));
+    m_debugCube->vertexGroup->GetMaterial()->SetTexture(nm, 1);
 }
 // ----------------------------------------------------------------------//
 CDebug::~CDebug()
@@ -54,8 +56,8 @@ void CDebug::Render( CDriver *driver )
 {
 	CCamera* cam = g.game->GetCamera();
 
-	Vec3 p1 = { -1, 0, -10 };
-	Vec3 p2 = {  1, 0, -10 };
+	Vec3 p1 = { -2, 0, -10 };
+	Vec3 p2 = {  2, 0, -10 };
 
 	m_debugLight->Render( driver );
 
@@ -71,8 +73,8 @@ void CDebug::Render( CDriver *driver )
 
     driver->MatrixPush();
     driver->MatrixTranslate(p2);
-    driver->MatrixRotate({ 0, 1, 0 }, zpl_to_radians(100.0f*driver->GetTimer()));
-    driver->MatrixScale({ 1.0f, 1.25f, 1.0f });
+    driver->MatrixRotate({ 1, 0, 0 }, zpl_to_radians(100.0f*driver->GetTimer()));
+	driver->MatrixScale({ s, s, s });;
     gluRenderCube(driver, m_debugCube);
     driver->MatrixPop();
 }
