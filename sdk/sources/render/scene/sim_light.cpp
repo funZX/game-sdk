@@ -45,7 +45,7 @@ CLight::CLight()
     m_type          = Type::Directional;
     m_kind          = Kind::Linear;
 
-	m_attenuation   = 0.05f;
+	m_attenuation   = 0.15f;
     m_fallOffAngle  = 0.0f;
     m_fallOffExponent = 0.0f;
 }
@@ -77,7 +77,7 @@ void CLight::Update( f32 dt, void *userData )
 void CLight::Render( CDriver *driver )
 {
     driver->SetLightPosition( m_transform.translation );
-    driver->SetLightDirection( m_matrix.y.xyz );
+    driver->SetLightDirection( m_matrix.z.xyz );
     
     driver->SetLightChannel(m_channel);
 	driver->SetLightAttenuation( m_attenuation );

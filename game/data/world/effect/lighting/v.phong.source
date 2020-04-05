@@ -1,6 +1,6 @@
 precision mediump float;
 
-attribute vec4 a_WorldPosL;
+attribute vec3 a_WorldPosL;
 attribute vec2 a_TexCoord_0;
 attribute vec3 a_NormalL;
 
@@ -21,7 +21,7 @@ void main()
 {
 	vec4 posV, ligV;
 	
-	posV 			= u_Matrix_WorldView * a_WorldPosL;
+	posV 			= u_Matrix_WorldView * vec4(a_WorldPosL, 1.0);
 	ligV 			= u_Matrix_View * vec4( u_Light_Position_0, 1.0 );
 	
 	v_NormalW 		= u_Matrix_Normal * a_NormalL;

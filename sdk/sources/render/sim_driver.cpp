@@ -316,10 +316,10 @@ void CDriver::BindRenderTexture( CRenderTexture* texture )
 
 void CDriver::ComputeNormalMatrix()
 {
-	Mat4 m;
+	Mat4 m, mi;
 
-    zpl_mat4_mul( &m, GetViewMatrix(), GetWorldMatrix());
-    zpl_mat4_inverse( &m, &m );
+    zpl_mat4_mul( &mi, GetViewMatrix(), GetWorldMatrix());
+    zpl_mat4_inverse( &m, &mi );
     zpl_mat4_transpose( &m );
 
     m_normalMatrix.x = m.x.xyz;

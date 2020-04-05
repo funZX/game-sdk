@@ -102,7 +102,7 @@ void CEffect::AddAttribute( const std::string& name )
 
     SIM_ASSERT( attrib != nullptr );
 
-	zpl_bit_set( &m_attributeMask, Value( attrib->m_compFormat ) );
+	zpl_bit_set( &m_attributeMask, Value( attrib->m_compIndex ) );
 }
 
 // ----------------------------------------------------------------------//
@@ -110,7 +110,7 @@ void CEffect::AddAttribute( const std::string& name )
 void CEffect::SetAttributes()
 {
 	for( s32 k = 0; k < CVertexSource::k_Vertex_Attributes_Count; k++ )
-		if ( zpl_bit_get( m_attributeMask, Value(CShader::Attributes[k].m_compFormat ) ) )
+		if ( zpl_bit_get( m_attributeMask, k ) )
 			glBindAttribLocation( m_iD, k, CShader::Attributes[k].m_name );
 
 	SIM_CHECK_OPENGL();
@@ -298,7 +298,7 @@ void CEffect::Bind( CDriver *driver, CVertexSource *vertexSource )
 
         CVertexSource::AttributeStride attribStride = crtAttrib->m_compStride;
 
-        if ( !zpl_bit_get( m_attributeMask, Value( crtAttrib->m_compFormat ) ) )
+        if ( !zpl_bit_get( m_attributeMask, k ) )
         {
             driver->DisableVertexAttribute(k);
 

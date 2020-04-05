@@ -16,20 +16,20 @@ const float k_Parallax_Scale = 0.065;
 
 void main(void)
 {	
-	vec3 n		= normalize( a_NormalL * u_Matrix_Normal );
-	vec3 t		= normalize( a_TangentL * u_Matrix_Normal );
+	vec3 n		= normalize( u_Matrix_Normal * a_NormalL );
+	vec3 t		= normalize( u_Matrix_Normal * a_TangentL );
 	vec3 b		= cross( n, t );
 
 	mat3 eyeToTangent = mat3( t.x, b.x, n.x, t.y, b.y, n.y, t.z, b.z, n.z);
 	
-	vec4 pos	= a_WorldPosL * u_Matrix_WorldViewProjection;
+	vec4 pos	= u_Matrix_WorldViewProjection * a_WorldPosL;
 
 	v_eyeDir	= pos.xyz;
-	v_eyeDir	= normalize( v_eyeDir * eyeToTangent ) * k_Parallax_Scale;
+	v_eyeDir	= normalize( eyeToTangent * v_eyeDir ) * k_Parallax_Scale;
 	
 	v_lightDir	= normalize( u_Light_Position_0 - pos.xyz );
 	
 	v_Tex0		= a_TexCoord_0;
 
-	gl_Position = u_Matrix_WorldViewProjection * a_WorldPosL;
+	gl_Position = pos;
 }
