@@ -293,7 +293,7 @@ void CEffect::Bind( CDriver *driver, CVertexSource *vertexSource )
 
 		CVertexSource::AttributeFormat hasAttribute = (vertexFormat & crtAttrib->m_compFormat);
 		
-		if ( CVertexSource::AttributeFormat::None == hasAttribute )
+		if (CVertexSource::AttributeFormat::None == hasAttribute)
 			continue;
 
         CVertexSource::AttributeStride attribStride = crtAttrib->m_compStride;

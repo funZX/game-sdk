@@ -22,11 +22,11 @@ CDebug::CDebug( io::CFileSystem* fs )
 
 	m_debugSphere	= gluNewSphere(32, 1.0f);
     m_debugSphere->vertexGroup->SetMaterial(g.material);
-	m_debugSphere->vertexGroup->GetMaterial()->SetEffect(fs->GetEffect("lighting.phong"));
+	//m_debugSphere->vertexGroup->GetMaterial()->SetEffect(fs->GetEffect("debug.normals"));
 
 	m_debugCube		= gluNewCube(1.0f);
 	m_debugCube->vertexGroup->SetMaterial(g.material);
-	m_debugCube->vertexGroup->GetMaterial()->SetEffect(fs->GetEffect("lighting.phong"));
+	//m_debugCube->vertexGroup->GetMaterial()->SetEffect(fs->GetEffect("debug.normals"));
 }
 // ----------------------------------------------------------------------//
 CDebug::~CDebug()
@@ -42,8 +42,8 @@ void CDebug::Update(f32 dt, void* userData)
 {
 	Transform* tr = m_debugLight->GetTransform();
 
-	tr->translation = { 0, 2, -10 };
-	tr->quaternion = zpl_quat_axis_angle({ 0, -1, 0 }, 1);
+	tr->translation = { 0, 5, -10 };
+	//tr->quaternion = zpl_quat_axis_angle({ 0, 1, 0 }, 1);
 
 	m_debugLight->Update( dt, userData );
 }
