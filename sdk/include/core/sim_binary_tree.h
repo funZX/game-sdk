@@ -147,8 +147,8 @@ public:
 	CBinaryTree()
 	{
 		m_root		= nullptr;
-		m_nodepool	= nullptr;
-		m_datapool	= nullptr;
+        m_nodepool	= SIM_NEW CPool<CBinaryTreeNode<K, D>>();
+        m_datapool	= SIM_NEW CPool<D>();
 	}
 
 	virtual ~CBinaryTree()
@@ -434,12 +434,6 @@ public:
 protected:
 	virtual CBinaryTreeNode<K, D>* NewNode( K key, D data )
 	{
-		if (m_nodepool == nullptr)
-		{
-			m_nodepool = SIM_NEW CPool<CBinaryTreeNode<K, D>>();
-			m_datapool = SIM_NEW CPool<D>();
-		}
-
 		return m_nodepool->New(key, m_datapool->New(data));
 	}
 
