@@ -64,7 +64,6 @@ public:
 	void						DelPhysic(phy::CPhysic* physic);
 
 	void						Update( f32 dt, void *userData  );
-	void						Render( CDriver *driver );
 
     void						SetMesh( CMesh *mesh );
 	inline CMesh*				GetMesh()						{ return m_mesh; }
@@ -74,6 +73,8 @@ public:
 	// ------------------------------------------------------------------//
 
 protected:
+    virtual void				Render(CDriver* driver, sigcxx::SLOT slot = nullptr);
+
 	CMesh*						m_mesh;
 
 	btCollisionShape*			m_collisionShape;

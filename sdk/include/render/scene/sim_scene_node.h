@@ -51,17 +51,9 @@ public:
         Cone,
     };
     // ------------------------------------------------------------------//
-    enum class Type : u32
-    {
-        Default,
-        NotCulled,
-        Billboard,
-    };
-    // ------------------------------------------------------------------//
     typedef struct
     {
         Shape		shape;
-        Type		type;
         bool		isVisible;
         bool		isCulled;
         bool		isPhysic;
@@ -83,7 +75,7 @@ public:
 
 	// ------------------------------------------------------------------//
 	virtual void 					Update( f32 dt, void *userData );
-	virtual void 					Render( CDriver *driver );
+	void 					        Render( CDriver *driver );
 
 	CSceneNode*						GetParent()	{ return m_parent; }
 	void							SetParent( CSceneNode* parent )	{ m_parent = parent; }
@@ -117,11 +109,11 @@ public:
 	virtual void					Print();
 #endif
 
+    sigcxx::Signal<f32, void*>	    OnUpdate;
+    sigcxx::Signal<CDriver*>	    OnRender;
 	// ------------------------------------------------------------------//
 
 protected:
-	virtual void					OnResize();
-	virtual void					OnMove();
 	// ------------------------------------------------------------------//
 	u32								m_iD;
 

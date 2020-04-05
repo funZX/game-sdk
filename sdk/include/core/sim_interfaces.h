@@ -101,7 +101,7 @@ protected:
 
 // ----------------------------------------------------------------------//
 
-class IEngineItem
+class IEngineItem : public sigcxx::Trackable
 {
 public:
 	IEngineItem() { m_name = "none";  }
