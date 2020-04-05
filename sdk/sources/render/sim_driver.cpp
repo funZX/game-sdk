@@ -84,14 +84,11 @@ CDriver::CDriver()
 
 	SIM_MEMSET( m_lightParameters, 0, sizeof( m_lightParameters ) );
 
-    m_textureChannel        = CMaterial::TextureChannel::Texture_0;
 	m_matrixMode			= MatrixMode::World;
 	m_lightChannel          = CLight::LightChannel::Light_0;
 	m_cullingMode           = CullingMode::CW;
 
 	m_activeStack           = &m_projectionStack;
-
-	SIM_MEMSET( m_textureBind, 0, sizeof( m_textureBind ) );
 
 	m_fogMode		        = FogMode::Linear;
 	m_fogDensity	        = 0.0f;
@@ -278,20 +275,12 @@ void  CDriver::SetDepthRange( f32 start, f32 end )
 
 // ----------------------------------------------------------------------//
 
-u32  CDriver::BindTexture( TextureTarget target, u32 tex )
+void  CDriver::BindTexture( TextureTarget target, u32 tex, CMaterial::TextureChannel channel)
 {
-	u32 old = m_textureBind[ Value(m_textureChannel) ];
-
-	if( m_textureBind[Value(m_textureChannel)] != tex )
-	{
-		glBindTexture( Value(target), tex );
-
-		SIM_CHECK_OPENGL();
-
-        m_textureBind[Value(m_textureChannel)] = tex;
-    }
-
-	return old;
+	glActiveTexture(GL_TEXTURE0 + Value(channel));
+    glBindTexture(Value(target), tex);
+ 
+	SIM_CHECK_OPENGL();
 }
 
 // ----------------------------------------------------------------------//
@@ -325,24 +314,6 @@ void CDriver::ComputeNormalMatrix()
     m_normalMatrix.x = m.x.xyz;
     m_normalMatrix.y = m.y.xyz;
     m_normalMatrix.z = m.z.xyz;
-}
-
-// ----------------------------------------------------------------------//
-
-CMaterial::TextureChannel CDriver::SetTextureChannel( CMaterial::TextureChannel texChannel )
-{
-	CMaterial::TextureChannel old = m_textureChannel;
-
-    if ( old != texChannel )
-    {
-        glActiveTexture(GL_TEXTURE0 + Value(texChannel));
-
-        SIM_CHECK_OPENGL();
-
-        m_textureChannel = texChannel;
-    }
-
-    return old;
 }
 
 // ----------------------------------------------------------------------//
@@ -391,18 +362,9 @@ void CDriver::EnableDepthFunc(u32 equation)
 
 // ----------------------------------------------------------------------//
 
-CLight::LightChannel CDriver::SetLightChannel( CLight::LightChannel lightChannel )
+void CDriver::SetLightChannel( CLight::LightChannel lightChannel )
 {
-	CLight::LightChannel old = m_lightChannel;
-
-	if(m_lightChannel == lightChannel)
-		return old;
-
 	m_lightChannel = lightChannel;
-
-	SIM_CHECK_OPENGL();
-
-	return old;
 }
 
 CDriver::CullingMode CDriver::SetCullingMode( CullingMode cullingMode )

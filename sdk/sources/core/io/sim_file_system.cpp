@@ -175,10 +175,6 @@ void CFileSystem::Close()
 	}
 
 	SIM_SAFE_DELETE_ARRAY( m_steps );
-
-	u32 tex =
-	m_driver->BindTexture( CDriver::TextureTarget::Texture2D, 0 );
-	m_driver->BindTexture( CDriver::TextureTarget::Texture2D, tex );
 }
 
 
@@ -351,10 +347,7 @@ bool CFileSystem::LoadTexture(const json_t* jsonRoot, s32 index)
 	CMemStream ms(&m_buffer[offset], m_bufferSize);
 	CTexture* texture	= SIM_NEW CTexture( name );
 
-	u32 tex = 
-	m_driver->BindTexture( CDriver::TextureTarget::Texture2D, 0 );
 	texture->Generate( &ms, t, w, f ); 
-	m_driver->BindTexture( CDriver::TextureTarget::Texture2D, tex );
 
 	m_lzmaStream->CloseCurrent(&m_buffer);
 	m_buffer = nullptr;
