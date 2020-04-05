@@ -69,7 +69,7 @@ public:
 		: CBinaryTree<K, D>()
 	{
 		m_count			= 0;
-		m_nodepool		= nullptr;
+        m_nodepool		= SIM_NEW CPool<CBalanceTreeNode<K, D>>();
 	}
 
 	virtual ~CBalanceTree()
@@ -494,12 +494,6 @@ public:
 
 	virtual CBinaryTreeNode<K, D>* NewNode(K key, D data ) override
 	{
-		if (m_nodepool == nullptr)
-		{
-			m_nodepool = SIM_NEW CPool<CBalanceTreeNode<K, D>>();
-			m_datapool = SIM_NEW CPool<D>();
-		}
-		
 		return m_nodepool->New(key, m_datapool->New(data));
 	}
 

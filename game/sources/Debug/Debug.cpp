@@ -63,8 +63,6 @@ void CDebug::Update(f32 dt, void* userData)
 		p.z + 0.25f * (p.x * s + p.z * c),
 	};
 
-	//tr->quaternion = zpl_quat_axis_angle({ 0, 1, 0 }, 1);
-
 	m_debugLight->Update( dt, userData );
 }
 // ----------------------------------------------------------------------//
@@ -77,7 +75,7 @@ void CDebug::Render( CDriver *driver )
 	m_debugLight->Render( driver );
 
 	f32 r = driver->GetTimer();
-	f32 s = 1.0f + 0.25f * zpl_sin(r);
+	f32 s = 1.0f + 0.2f * zpl_sin(r);
 
     driver->MatrixPush();
 	driver->MatrixTranslate(p1);

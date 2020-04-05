@@ -27,6 +27,7 @@
 #include <render/scene/sim_scene.h>
 #include <render/scene/sim_camera.h>
 #include <render/scene/sim_scene_node.h>
+#include <render/sim_driver.h>
 #include <sim_engine.h>
 
 namespace sim
@@ -121,8 +122,6 @@ void CSceneNode::Update( f32 dt, void *userData )
     if ( IsVisible() )
     {
         static CEngine* engine = CEngine::GetSingletonPtr();
-
-        CScene* scene   = (CScene*)userData;
         CCamera* camera = engine->GetCamera();
 
         SIM_ASSERT(camera);
@@ -135,16 +134,14 @@ void CSceneNode::Update( f32 dt, void *userData )
 
     if ( !IsStatic() )
     {
-        zpl_mat4_from_quat(&m_matrix, m_transform.quaternion);
+        zpl_mat4 r;
+        zpl_mat4_from_quat(&r, m_transform.quaternion);
 
-        m_matrix.x.x *= m_transform.scale.x;
-        m_matrix.y.y *= m_transform.scale.y;
-        m_matrix.z.z *= m_transform.scale.z;
-
-        m_matrix.w.xyz = m_transform.translation;
+        zpl_mat4 m;
+        zpl_mat4_to_translate(&m, m_transform.translation);
+        zpl_mat4_scale(&m, m_transform.scale);
+        zpl_mat4_mul(&m_matrix, &m, &r);
     }
-
-
 }
 
 // ----------------------------------------------------------------------//
