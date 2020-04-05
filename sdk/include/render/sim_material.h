@@ -48,11 +48,11 @@ public:
     // ------------------------------------------------------------------//
     enum class TextureChannel : u32
     {
-        Texture_0,
-        Texture_1,
-        Texture_2,
-        Texture_3,
-        Texture_4,
+        Texture_0 = 0,
+        Texture_1 = 1,
+        Texture_2 = 2,
+        Texture_3 = 3,
+        Texture_4 = 4,
     };
     enum { k_Texture_Channels_Count = 5 };
 

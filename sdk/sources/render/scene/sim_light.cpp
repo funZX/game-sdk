@@ -45,7 +45,7 @@ CLight::CLight()
     m_type          = Type::Directional;
     m_kind          = Kind::Linear;
 
-	m_attenuation   = 0.12f;
+	m_attenuation   = 0.25f;
     m_fallOffAngle  = 0.0f;
     m_fallOffExponent = 0.0f;
 }
