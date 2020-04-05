@@ -154,8 +154,7 @@ void CSkyBox::Render( CDriver *driver )
 	driver->SetMaterialShininess( m_material->GetShininess() );
 	driver->SetMaterialRefraction( m_material->GetRefraction() );
 
-	driver->SetTextureChannel( CMaterial::TextureChannel::Texture_4 );
-	driver->BindTexture( CDriver::TextureTarget::TextureCubeMap, m_texture->GetID() );
+	driver->BindTexture( CDriver::TextureTarget::TextureCubeMap, m_texture->GetID(), CMaterial::TextureChannel::Texture_4);
 	driver->Render( m_vertexGroup );
 	
 	SIM_CHECK_OPENGL();

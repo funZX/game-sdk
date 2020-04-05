@@ -130,16 +130,11 @@ void CEffect::ApplyTechnique( CDriver* driver )
 
 // ----------------------------------------------------------------------//
 
-void CEffect::ApplyTextures( CDriver* driver )
+void CEffect::ApplyTextures(CDriver* driver)
 {
-	for( u32 i = 0; i < CMaterial::k_Texture_Channels_Count; i++ )
-	{
-		if ( m_textures[ i ] != nullptr )
-		{
-			driver->SetTextureChannel( static_cast<CMaterial::TextureChannel>(i) );
-			driver->BindTexture( CDriver::TextureTarget::Texture2D, m_textures[ i ]->GetID() );
-		}
-	}
+	for (u32 i = 0; i < CMaterial::k_Texture_Channels_Count; i++)
+		if (m_textures[i] != nullptr)
+			driver->BindTexture(CDriver::TextureTarget::Texture2D, m_textures[i]->GetID(), static_cast<CMaterial::TextureChannel>(i));
 }
 
 // ----------------------------------------------------------------------//

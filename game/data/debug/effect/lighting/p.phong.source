@@ -24,11 +24,11 @@ void main()
 	vec3 toEyeV 	= normalize( v_ToEyeDirV );
 	vec3 toLightV 	= normalize( v_ToLightDirV );
 	
-	float specI 	= pow( max( dot( reflect( -toLightV, norW ), toEyeV ), 0.0 ), u_Material_Shininess );
-	float diffI 	= max( dot( toLightV, norW ), 0.0 );
+	float specular  	= pow( max( dot( reflect( -toLightV, norW ), toEyeV ), 0.0 ), u_Material_Shininess );
+	float lambertian	= max( dot( toLightV, norW ), 0.0 );
 	
-    vec3 spec 	 	= specI * ( u_Material_Specular * u_Light_Specular_0 ).rgb;
-    vec3 diffuse 	= diffI * ( u_Material_Diffuse * u_Light_Diffuse_0 ).rgb;
+    vec3 spec 	 	= specular * ( u_Material_Specular * u_Light_Specular_0 ).rgb;
+    vec3 diffuse 	= lambertian * ( u_Material_Diffuse * u_Light_Diffuse_0 ).rgb;
     vec3 ambient 	= 		  ( u_Material_Ambient * u_Light_Ambient_0 ).rgb;
 
 	vec4 col 		= vec4( ambient + diffuse + spec, u_Light_Diffuse_0.a );

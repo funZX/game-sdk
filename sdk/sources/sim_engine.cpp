@@ -201,7 +201,6 @@ void CEngine::InitTexture()
 
 	SIM_MEMSET( texBuf, 255, texMemSize);
 
-    u32 tex = m_driver->BindTexture(CDriver::TextureTarget::Texture2D, 0);
     m_texture->Generate(texBuf
         , texWidth
         , texHeight
@@ -210,7 +209,6 @@ void CEngine::InitTexture()
         , CTexture::Filter::Nearest
         , CTexture::Format::RGBA4
     );
-	m_driver->BindTexture(CDriver::TextureTarget::Texture2D, tex);
 
 	SIM_SAFE_DELETE_ARRAY( texBuf );
 }

@@ -147,12 +147,11 @@ public:
 	void						ClearColor( Vec4 color );
 	// ------------------------------------------------------------------//
 
-	CMaterial::TextureChannel	SetTextureChannel( CMaterial::TextureChannel textureSelect );
-	CLight::LightChannel		SetLightChannel( CLight::LightChannel lightSelect );
+	void						SetLightChannel( CLight::LightChannel lightSelect );
 	CullingMode					SetCullingMode( CullingMode cullingMode );
 	MatrixMode					SetMatrixMode( MatrixMode matrixMode );
 	
-	u32							BindTexture ( TextureTarget target, u32 tex );
+	void						BindTexture ( TextureTarget target, u32 tex, CMaterial::TextureChannel channel);
 	void						BindRenderTexture( CRenderTexture* framebuffer );
 
 	bool						EnableCulling( bool val );
@@ -340,13 +339,10 @@ protected:
 	bool						m_isActiveStackAlteringNormalMatrix;
 	MatrixMode					m_matrixMode;
 
-	Mat4					    m_boneArrayMatrix[ k_Animation_Bones_Max ];
-
-	u32				            m_textureBind[ CMaterial::k_Texture_Channels_Count ];
-	CMaterial::TextureChannel   m_textureChannel;
-
+    CLight::LightChannel		m_lightChannel;
 	TLightParameters			m_lightParameters[ CLight::k_Light_Channels_Count ];
-	CLight::LightChannel		m_lightChannel;
+
+	Mat4					    m_boneArrayMatrix[k_Animation_Bones_Max];
 
 	CullingMode					m_cullingMode;
 

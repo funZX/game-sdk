@@ -42,8 +42,8 @@ CMaterial::CMaterial()
 	m_emissive   = col::White;
 	m_reflective = col::White;
 
-	m_shininess	 = 0.01f;
-	m_refraction = 0.01f;
+	m_shininess	 = 0.12f;
+	m_refraction = 0.12f;
 
 	m_effect	= nullptr;
 	SIM_MEMSET( m_textures, 0, sizeof( m_textures ) );
@@ -99,13 +99,8 @@ void CMaterial::Render( CDriver *driver )
 	driver->SetMaterialRefraction( m_refraction );
 
 	for( u32 i = 0; i < CMaterial::k_Texture_Channels_Count; i++ )
-	{
 		if ( m_textures[ i ] != nullptr )
-		{
-			driver->SetTextureChannel( static_cast<CMaterial::TextureChannel>(i) );
-			driver->BindTexture( CDriver::TextureTarget::Texture2D, m_textures[ i ]->GetID() );
-		}
-	}
+			driver->BindTexture( CDriver::TextureTarget::Texture2D, m_textures[ i ]->GetID(), static_cast<CMaterial::TextureChannel>(i));
 
 	SIM_CHECK_OPENGL();
 }
