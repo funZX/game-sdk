@@ -40,7 +40,7 @@ CMaterial::CMaterial()
 	m_diffuse    = col::White;
 	m_specular   = col::White;
 	m_emissive   = col::White;
-	m_reflective = col::Black;
+	m_reflective = col::White;
 
 	m_shininess	 = 0.01f;
 	m_refraction = 0.01f;

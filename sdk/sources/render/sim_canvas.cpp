@@ -61,7 +61,7 @@ CCanvas::CCanvas( CFontAtlas* fontAtlas )
 
     ImGuiStyle& style = ImGui::GetStyle();
 
-    style.Colors[ImGuiCol_Text] = ImVec4(0.95f, 0.96f, 0.98f, 1.00f);
+    style.Colors[ImGuiCol_Text] = ImVec4(0.72f, 0.84f, 1.00f, 1.00f);
     style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.36f, 0.42f, 0.47f, 1.00f);
     style.Colors[ImGuiCol_WindowBg] = ImVec4(0.11f, 0.15f, 0.17f, 1.00f);
     style.Colors[ImGuiCol_ChildBg] = ImVec4(0.15f, 0.18f, 0.22f, 1.00f);

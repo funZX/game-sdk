@@ -228,5 +228,6 @@
     <ClInclude Include="..\..\include\header\timer.h">
       <Filter>header</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\zpl_hedley.h" />
   </ItemGroup>
 </Project>
