@@ -21,8 +21,7 @@
 	},
 	
 	"uniforms":[
-		"u_Matrix_WorldViewProjection",
-		"u_Color"
+		"u_Matrix_WorldViewProjection"
 	],
 	
 	"attributes":[

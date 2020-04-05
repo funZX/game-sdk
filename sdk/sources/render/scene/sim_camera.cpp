@@ -110,7 +110,7 @@ void CCamera::Update(f32 dt, void* userData)
 	f32 y = -zpl_vec3_dot(m_matrix.y.xyz, m_transform.translation);
 	f32 z = -zpl_vec3_dot(m_matrix.z.xyz, m_transform.translation);
 
-	m_matrix.w.xyz = {x, y, z};
+	m_matrix.w.xyz	= {x, y, z};
 
 	zpl_frustum_create(&m_frustum, &m_matrix, &m_perspectiveMatrix);
 }
