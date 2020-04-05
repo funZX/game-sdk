@@ -20,18 +20,19 @@ CDebug::CDebug( io::CFileSystem* fs )
 	m_debugLight = SIM_NEW CLight();
 	m_debugLight->GetState()->isStatic = false;
 
-    CTexture* nm = fs->GetTexture("nm.0.pvr.clamp.linear.jpg");
+    CTexture* tex = fs->GetTexture("tex.0.pvr.repeat.nearest.jpg");
+    CTexture* nm = fs->GetTexture("nm.0.pvr.repeat.nearest.jpg");
 
 	m_debugSphere	= gluNewSphere(32, 1.0f);
     m_debugSphere->vertexGroup->SetMaterial(g.material);
 	m_debugSphere->vertexGroup->GetMaterial()->SetEffect(fs->GetEffect("lighting.phong"));
-	m_debugSphere->vertexGroup->GetMaterial()->SetTexture(nm, 0);
+	m_debugSphere->vertexGroup->GetMaterial()->SetTexture(tex, 0);
 	m_debugSphere->vertexGroup->GetMaterial()->SetTexture(nm, 1);
 
 	m_debugCube		= gluNewCube(1.0f);
 	m_debugCube->vertexGroup->SetMaterial(g.material);
 	m_debugCube->vertexGroup->GetMaterial()->SetEffect(fs->GetEffect("texture"));
-	m_debugCube->vertexGroup->GetMaterial()->SetTexture(nm, 0);
+	m_debugCube->vertexGroup->GetMaterial()->SetTexture(tex, 0);
     m_debugCube->vertexGroup->GetMaterial()->SetTexture(nm, 1);
 }
 // ----------------------------------------------------------------------//
