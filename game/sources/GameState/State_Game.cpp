@@ -60,29 +60,26 @@ void CState_Game::Update( f32 dt, void *userData )
 {	
     //SIM_PRINT("\nCState_Game::Update");
 
-    m_debug->Update(dt, userData);
-
     m_drawable->Update(dt, userData);
     m_world->Update( dt, userData );
+    m_debug->Update(dt, userData);
 }
 
 // ----------------------------------------------------------------------//
 void CState_Game::Render( CDriver *driver )
 {
     //SIM_PRINT("\nCState_Game::Render");
-
-    m_debug->Render(driver);
-
     m_drawable->Draw(driver);
+
 	m_world->Render(driver);
+    m_debug->Render(driver);
 }
 
 // ----------------------------------------------------------------------//
 void CState_Game::OnDrawableDraw(CDriver* driver, sigcxx::SLOT slot)
 {
 	m_world->Render(driver);
-
-	m_debug->Render(driver);
+    m_debug->Render(driver);
 }
 // ----------------------------------------------------------------------//
 void CState_Game::ShowGui(CCanvas* canvas)

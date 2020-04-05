@@ -82,22 +82,17 @@ namespace sim
 
     static inline void Mat4StackTranslate( Mat4Stack* m4s, Vec3 translation )
     {
-        zpl_vec3_add( &m4s->topmatrix->w.xyz, m4s->topmatrix->w.xyz, translation );
+        zpl_mat4_translate( m4s->topmatrix, translation );
     }
 
     static inline void Mat4StackRotate( Mat4Stack* m4s, Vec3 axis, f32 angle )
     {
-        Mat4 m;
-        zpl_mat4_rotate( &m, axis, angle );
-
-        Mat4StackMultiply( m4s , &m );
+        zpl_mat4_rotate( m4s->topmatrix, axis, angle );
     }
 
     static inline void Mat4StackScale( Mat4Stack* m4s, Vec3 scale)
     {
-        m4s->topmatrix->x.x *= scale.x;
-        m4s->topmatrix->y.y *= scale.y;
-        m4s->topmatrix->z.z *= scale.z;
+        zpl_mat4_scale( m4s->topmatrix, scale );
     }
 
     static inline void Mat4StackClear( Mat4Stack* m4s )

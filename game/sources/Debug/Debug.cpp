@@ -22,11 +22,13 @@ CDebug::CDebug( io::CFileSystem* fs )
 
 	m_debugSphere	= gluNewSphere(32, 1.0f);
     m_debugSphere->vertexGroup->SetMaterial(g.material);
-	m_debugSphere->vertexGroup->GetMaterial()->SetEffect(fs->GetEffect("lighting.phong"));
+	//m_debugSphere->vertexGroup->m_vertexSource->m_type = CVertexSource::Type::Points;
+	m_debugSphere->vertexGroup->GetMaterial()->SetEffect(fs->GetEffect("debug.normals"));
 
 	m_debugCube		= gluNewCube(1.0f);
 	m_debugCube->vertexGroup->SetMaterial(g.material);
-	m_debugCube->vertexGroup->GetMaterial()->SetEffect(fs->GetEffect("lighting.phong"));
+	//m_debugCube->vertexGroup->m_vertexSource->m_type = CVertexSource::Type::Points;
+	m_debugCube->vertexGroup->GetMaterial()->SetEffect(fs->GetEffect("debug.normals"));
 }
 // ----------------------------------------------------------------------//
 CDebug::~CDebug()
@@ -42,8 +44,8 @@ void CDebug::Update(f32 dt, void* userData)
 {
 	Transform* tr = m_debugLight->GetTransform();
 
-	tr->translation = { 0, 2, -10 };
-	tr->quaternion = zpl_quat_axis_angle({ 0, -1, 0 }, 1);
+	tr->translation = { 0, 5, -10 };
+	//tr->quaternion = zpl_quat_axis_angle({ 0, 1, 0 }, 1);
 
 	m_debugLight->Update( dt, userData );
 }
@@ -57,13 +59,20 @@ void CDebug::Render( CDriver *driver )
 
 	m_debugLight->Render( driver );
 
+	f32 r = driver->GetTimer();
+	f32 s = 1.0f + 0.5f * zpl_sin(r);
+
     driver->MatrixPush();
-    driver->MatrixTranslate(p1);
+	driver->MatrixTranslate(p1);
+    driver->MatrixRotate({ 0, 1, 0 }, zpl_to_radians(100.0f * r));
+    driver->MatrixScale({ s, s, s });
     gluRenderSphere(driver, m_debugSphere);
     driver->MatrixPop();
 
     driver->MatrixPush();
     driver->MatrixTranslate(p2);
+    driver->MatrixRotate({ 0, 1, 0 }, zpl_to_radians(100.0f*driver->GetTimer()));
+    driver->MatrixScale({ 1.0f, 1.25f, 1.0f });
     gluRenderCube(driver, m_debugCube);
     driver->MatrixPop();
 }

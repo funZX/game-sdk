@@ -1,12 +1,12 @@
 {
 	"*": {
-		"Enabled": false,
+		"Enabled": true,
 		"Tracing": {
 			"OutputFilename": "D:/sandbox/game-sdk/%pname.pvrtrace",
 			"RecordData": true,
 			"StartFrame": 0,
 			"AppendTraceVersion": true,
-			"EndFrame": 200,
+			"EndFrame": 500,
 			"ExitOnLastFrame": false,
 			"ClientBufferRecordFrequency": 1,
 			"SaveFrameBuffer": true,
