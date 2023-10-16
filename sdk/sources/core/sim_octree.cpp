@@ -40,7 +40,7 @@ COctreeVolume::COctreeVolume()
 }
 
 // ----------------------------------------------------------------------//
-void COctreeNode::OnOctreeUpdate(sigcxx::SLOT slot)
+void COctreeNode::OnResize(sigcxx::SLOT slot)
 {
 
 }
@@ -77,13 +77,13 @@ void COctreeNode::Split()
 void COctreeNode::NewVolume(COctreeVolume* volume)
 {
 	m_volumetree.Insert(volume->GetID(), volume);
-	volume->OctreeUpdateSignal.Connect(this, &COctreeNode::OnOctreeUpdate);
+	volume->OnResize.Connect(this, &COctreeNode::OnResize);
 }
 // ----------------------------------------------------------------------//
 void COctreeNode::DelVolume(COctreeVolume* volume)
 {
 	m_volumetree.Delete(volume->GetID());
-	volume->OctreeUpdateSignal.Disconnect(this, &COctreeNode::OnOctreeUpdate);
+	volume->OnResize.Disconnect(this, &COctreeNode::OnResize);
 }
 
 

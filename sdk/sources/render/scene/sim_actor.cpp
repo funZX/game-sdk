@@ -60,6 +60,8 @@ CActor::CActor( const std::string &name )
 	: CActor()
 {
 	m_name = name;
+
+	OnRender.Connect(this, &CActor::Render);
 }
 // ----------------------------------------------------------------------//
 
@@ -167,52 +169,32 @@ void CActor::DelPhysic(phy::CPhysic *physic)
 
 void CActor::Update( f32 dt, void *userData )
 {
-	if ( IsPhysic() )
-	{
-		btTransform worldTransform;
-		m_rigidBody->getMotionState()->getWorldTransform( worldTransform );
-		
-		const btVector3& origin = worldTransform.getOrigin();
-		const btQuaternion& quat = worldTransform.getRotation();
+	if (!IsPhysic())
+		return;
 
-        m_transform.translation.x = origin.getX();
-        m_transform.translation.y = origin.getY();
-        m_transform.translation.z = origin.getZ();
+    btTransform worldTransform;
+    m_rigidBody->getMotionState()->getWorldTransform(worldTransform);
 
-        m_transform.quaternion.x = quat.getX();
-        m_transform.quaternion.y = quat.getY();
-        m_transform.quaternion.z = quat.getZ();
-        m_transform.quaternion.w = quat.getW();
-	}
+    const btVector3& origin = worldTransform.getOrigin();
+    const btQuaternion& quat = worldTransform.getRotation();
+
+    m_transform.translation.x = origin.getX();
+    m_transform.translation.y = origin.getY();
+    m_transform.translation.z = origin.getZ();
+
+    m_transform.quaternion.x = quat.getX();
+    m_transform.quaternion.y = quat.getY();
+    m_transform.quaternion.z = quat.getZ();
+    m_transform.quaternion.w = quat.getW();
 
     CSceneNode::Update(dt, userData);
-    CSceneNode::OnMove();
 }
 
 // ----------------------------------------------------------------------//
 
-void CActor::Render( CDriver *driver )
+void CActor::Render( CDriver *driver, sigcxx::SLOT slot)
 {
-	switch(Value(m_state.type))
-	{
-	case Type::Default:
-		driver->EnableCulling( true );
-		break;
-
-	case Type::NotCulled:
-		driver->EnableCulling( false );
-		break;
-
-	case Type::Billboard:
-		break;
-	}
-
-	driver->MatrixPush();
-	{
-		driver->MatrixMultiply( &m_matrix );
-		m_mesh->Render( driver );
-	}
-	driver->MatrixPop();
+    m_mesh->Render(driver);
 }
 
 // ----------------------------------------------------------------------//

@@ -13,13 +13,13 @@ import utils
 
 def main(dirlist):
 
-	StartTime = time.clock()
+	StartTime = time.monotonic()
 	
 	
 	content = {}
 	
 	
-	ElapsedTime = time.clock() - StartTime
+	ElapsedTime = time.monotonic() - StartTime
 	print ('\nElapsed Time: %0.3fs' % (ElapsedTime))
 	
 	return content

@@ -7,7 +7,7 @@ import shlex
 import glob
 import time
 import fnmatch
-import cygwin
+from pathlib import PureWindowsPath, PurePosixPath
 #---------------------------------------------------------------------------------------
 
 def LOG(str):
@@ -20,10 +20,8 @@ def failed(exc):
 	raise exc
 
 #---------------------------------------------------------------------------------------
-
-def getWinPath(path):
-    return cygwin.cygpath(path, 'w').replace('\\','/')
-
+def posixPath(p):
+	return str(PurePosixPath(*PureWindowsPath(p).parts)).replace('\\', '')
 #---------------------------------------------------------------------------------------
 
 def getListOfDirectories(path):
@@ -35,7 +33,7 @@ def getListOfDirectories(path):
 		
 	for l in temp:
 		if os.path.isdir(path + '/' + l):
-			list.append(l)
+			list.append(posixPath(l))
 
 	return list
 
@@ -53,7 +51,7 @@ def getListOfFiles(path, ext):
 		for file in files:
 			e = getFileExtension(file)
 			if e == ext:
-				list.append({'dir':dir, 'file': file})
+				list.append({'dir':posixPath(dir), 'file': file})
 
 	return list
 
@@ -124,8 +122,8 @@ def cloneTree(srcDir, dstDir):
 	dirs = []
 	
 	for l in list:
-		d = dstDir + '/' + l
-		s = srcDir + '/' + l
+		d = posixPath(dstDir) + '/' + l
+		s = posixPath(srcDir) + '/' + l
 		if not isDirEmpty(s):
 			dirs.append({'src': s, 'dst':d, 'id':l})
 			if not os.path.exists(d):
@@ -140,7 +138,7 @@ def spawnProcess(command):
 
 	LOG(command)
 
-	args = shlex.split(command)
+	args = shlex.split(command, posix=False)
 	
 	return subprocess.check_call(args)
 

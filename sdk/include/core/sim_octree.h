@@ -68,7 +68,7 @@ public:
 
 public:
 	// ------------------------------------------------------------------//
-	sigcxx::Signal<>		OctreeUpdateSignal;
+	sigcxx::Signal<>		OnResize;
 	// ------------------------------------------------------------------//
 
 protected:
@@ -133,7 +133,7 @@ protected:
 	enum
 	{ k_TFL, k_TFR, k_TBL, k_TBR, k_BFL, k_BFR, k_BBL, k_BBR };
 	// ----------------------------------------------------------------------//
-	void					OnOctreeUpdate(sigcxx::SLOT slot = nullptr);
+	void					OnResize(sigcxx::SLOT slot = nullptr);
 	// ----------------------------------------------------------------------//
 
 	COctreeNode*			m_octreenodes[8];

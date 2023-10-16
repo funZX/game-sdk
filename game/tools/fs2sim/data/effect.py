@@ -10,12 +10,11 @@ sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
 import config
 import utils
-import cygwin;
 #---------------------------------------------------------------------------------------
 
 def main(dirlist):
     
-    StartTime = time.clock()
+    StartTime = time.monotonic()
     
     content = {}
     
@@ -72,20 +71,20 @@ def main(dirlist):
                     utils.newerFile(in_vsource, out_vsource) or
                     utils.newerFile(in_psource, out_psource) ):
                     
-                    D = ' -P -I ' + utils.getWinPath(d)
+                    D = ' -P -I ' + (d)
                     for define in effect['defines']:
                         D = D + ' -D' + define+'=1'
 
-                    DV = D[:] + ' -o ' + utils.getWinPath(out_vsource) + ' ' + utils.getWinPath(in_vsource)
-                    DP = D[:] + ' -o ' + utils.getWinPath(out_psource) + ' ' + utils.getWinPath(in_psource)
+                    DV = D[:] + ' -o ' + (out_vsource) + ' ' + (in_vsource)
+                    DP = D[:] + ' -o ' + (out_psource) + ' ' + (in_psource)
                     
                     command = config.EXE_MCPP + DV
                     utils.spawnProcess(command)
-                    utils.spawnProcess(config.EXE_GLSL_OPTIMIZER + ' -v '  + utils.getWinPath(out_vsource) + ' ' + utils.getWinPath(out_vsource))
+                    utils.spawnProcess(config.EXE_GLSL_OPTIMIZER + ' -v '  + (out_vsource) + ' ' + (out_vsource))
 
                     command = config.EXE_MCPP + DP
                     utils.spawnProcess(command)
-                    utils.spawnProcess(config.EXE_GLSL_OPTIMIZER + ' -p '  + utils.getWinPath(out_psource) + ' ' + utils.getWinPath(out_psource))
+                    utils.spawnProcess(config.EXE_GLSL_OPTIMIZER + ' -p '  + (out_psource) + ' ' + (out_psource))
 
                     effect['vsource'] = os.path.dirname(effect['vsource']) +'/'+out_vsource_name
                     effect['psource'] = os.path.dirname(effect['psource']) +'/'+out_psource_name

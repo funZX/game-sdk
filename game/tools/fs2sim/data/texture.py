@@ -52,7 +52,7 @@ def parse_texture_name(file_name):
 #---------------------------------------------------------------------------------------
 def main(dirlist):
 
-	StartTime = time.clock()
+	StartTime = time.monotonic()
 
 	content = {}
 	
@@ -112,13 +112,13 @@ def main(dirlist):
 			        command = config.EXE_MIP2SIM 
 			        if mipmaps_count > 1:
 			            command += ' -m '
-			        command += ' -f RGBA4 -k lanczos -w ' + texture_wrap + ' ' + utils.getWinPath(in_file) + ' ' + utils.getWinPath(out_file)
+			        command += ' -f RGBA4 -k lanczos -w ' + texture_wrap + ' ' + (in_file) + ' ' + (out_file)
 			    elif out_format=='pvr':
 			        command = config.EXE_PVRTEX + ' -legacypvr'
 			        if mipmaps_count > 1:
 			            command += ' -m ' + str(mipmaps_count) + ' -mfilter cubic'
 			        command += ' -f PVRTC1_4'
-			        command += ' -i ' + utils.getWinPath(in_file) + ' -o ' + utils.getWinPath(out_file)
+			        command += ' -i ' + (in_file) + ' -o ' + (out_file)
 			    
 			    if out_format!='tga':
 			        utils.spawnProcess(command)
@@ -133,7 +133,7 @@ def main(dirlist):
 			content['name'] = 'texture'
 			content['file'] = 'texture/content.json'
 	
-	ElapsedTime = time.clock() - StartTime
+	ElapsedTime = time.monotonic() - StartTime
 	print ('\nElapsed Time: %0.3fs' % (ElapsedTime))
 
 	return content

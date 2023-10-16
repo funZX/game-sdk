@@ -16,7 +16,7 @@ import utils
 
 def main(dirlist):
 
-	StartTime = time.clock()
+	StartTime = time.monotonic()
 	
 	content = {}
 	
@@ -51,8 +51,8 @@ def main(dirlist):
 			out_file 	= dst_dir + '/' + n + 't'
 
 			if utils.newerFile(in_file, out_file):
-				command = config.EXE_SQ + ' -c -d -o ' + utils.getWinPath(out_file).lower() + ' ' + utils.getWinPath(in_file).lower()
-				#command = config.EXE_SQ + ' -c -o ' + utils.getWinPath(out_file).lower() + ' ' + utils.getWinPath(in_file).lower()
+				command = config.EXE_SQ + ' -c -d -o ' + (out_file).lower() + ' ' + (in_file).lower()
+				#command = config.EXE_SQ + ' -c -o ' + (out_file).lower() + ' ' + (in_file).lower()
 				utils.spawnProcess(command)
 
 			scripts.append({'name' : name, 'file': ('script/' + n + 't')});
@@ -65,7 +65,7 @@ def main(dirlist):
 			content['name'] = 'script'
 			content['file'] = 'script/content.json'
 
-	ElapsedTime = time.clock() - StartTime
+	ElapsedTime = time.monotonic() - StartTime
 	print ('\nElapsed Time: %0.3fs' % (ElapsedTime))
 	
 	return content

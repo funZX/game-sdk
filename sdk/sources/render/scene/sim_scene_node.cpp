@@ -50,7 +50,6 @@ CSceneNode::CSceneNode()
     m_center                = axis::Origin.xyz;
 
     m_state.shape           = Shape::Box;
-    m_state.type            = Type::Default;
     m_state.isVisible       = true;
     m_state.isCulled        = false;
     m_state.isPhysic        = false;
@@ -127,12 +126,9 @@ void CSceneNode::Update( f32 dt, void *userData )
         SIM_ASSERT(camera);
 
         m_state.isCulled = !camera->SphereIn(m_transform.translation, m_radius);
-
-        if (!m_state.isCulled)
-            m_state.isCulled = !camera->BoxIn(m_transform.translation, m_box);
     }
 
-    if ( !IsStatic() )
+    if ( ! ( IsStatic() || IsPhysic() ) )
     {
         zpl_mat4 r;
         zpl_mat4_from_quat(&r, m_transform.quaternion);
@@ -142,27 +138,18 @@ void CSceneNode::Update( f32 dt, void *userData )
         zpl_mat4_scale(&m, m_transform.scale);
         zpl_mat4_mul(&m_matrix, &m, &r);
     }
+
+    OnUpdate.Emit( dt, userData );
 }
 
 // ----------------------------------------------------------------------//
 
 void CSceneNode::Render( CDriver *driver )
 {
-
-}
-
-// ----------------------------------------------------------------------//
-
-void CSceneNode::OnResize()
-{
-	OctreeUpdateSignal.Emit();
-}
-
-// ----------------------------------------------------------------------//
-
-void CSceneNode::OnMove()
-{
-	OctreeUpdateSignal.Emit();
+    driver->MatrixPush(false);
+    driver->MatrixLoad(&m_matrix);
+    OnRender.Emit(driver);
+    driver->MatrixPop();
 }
 
 // ----------------------------------------------------------------------//

@@ -15,7 +15,6 @@
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
     <Environment>PYTHONPATH</Environment>
     <IsWindowsApplication>True</IsWindowsApplication>
-    <InterpreterId>Global|VisualStudio|cygwin64</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,9 +47,6 @@
     <Compile Include="data\texture.py" />
     <Compile Include="make.py" />
     <Compile Include="utils.py" />
-  </ItemGroup>
-  <ItemGroup>
-    <InterpreterReference Include="Global|VisualStudio|cygwin64" />
   </ItemGroup>
   <!-- Uncomment the CoreCompile target to enable the Build command in
        Visual Studio and specify your pre- and post-build commands in
