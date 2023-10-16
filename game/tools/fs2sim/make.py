@@ -28,7 +28,7 @@ import scene
 
 def main(argv):
 
-	StartTime = time.clock()
+	StartTime = time.monotonic()
 
 	dirlist = config.clonedDataDir();	
 	content = []
@@ -94,7 +94,7 @@ def main(argv):
 			utils.spawnProcess(command)
 	
 
-	ElapsedTime = time.clock() - StartTime
+	ElapsedTime = time.monotonic() - StartTime
 	print ('\nElapsed Time: %0.3fs' % (ElapsedTime))
 	
 	return 0

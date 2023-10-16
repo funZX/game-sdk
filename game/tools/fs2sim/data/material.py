@@ -14,7 +14,7 @@ import utils
 
 def main(dirlist):
 
-	StartTime = time.clock()
+	StartTime = time.monotonic()
 	
 	content = {}
 
@@ -58,7 +58,7 @@ def main(dirlist):
 			content['file'] = 'material/content.json'
 
 
-	ElapsedTime = time.clock() - StartTime
+	ElapsedTime = time.monotonic() - StartTime
 	print ('\nElapsed Time: %0.3fs' % (ElapsedTime))
 	
 	return content

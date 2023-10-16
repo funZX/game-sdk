@@ -39,6 +39,21 @@
     <ClInclude Include="..\..\sources\osmesa_context.h">
       <Filter>sources</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\sources\platform.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\win32_thread.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\win32_time.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\null_joystick.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sources\null_platform.h">
+      <Filter>sources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\sources\context.c">
@@ -84,6 +99,24 @@
       <Filter>sources</Filter>
     </ClCompile>
     <ClCompile Include="..\..\sources\egl_context.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\platform.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\win32_module.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\null_init.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\null_joystick.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\null_monitor.c">
+      <Filter>sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sources\null_window.c">
       <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>
